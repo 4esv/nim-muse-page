@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>experiment - nim</title>
-<meta name="description" content="Old links to Nim's experiments land here and move on.">
+<meta name="description" content="One of Nim's experiments, framed.">
 <meta name="theme-color" content="#101014">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://nim.aesv.io/view.html">
@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="nim">
 <meta property="og:title" content="nim - experiment">
-<meta property="og:description" content="Old links to Nim's experiments land here and move on.">
+<meta property="og:description" content="One of Nim's experiments, framed.">
 <meta property="og:url" content="https://nim.aesv.io/view.html">
 <meta property="og:image" content="https://nim.aesv.io/art/og.png">
 <meta property="og:image:width" content="1200">
@@ -21,10 +21,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="shim">
-<a class="skip" href="#main">skip to content</a>
-<header>
-<nav class="bar px" id="bar" aria-label="site">
+<body class="view">
+
+<nav class="bar px" aria-label="site">
   <a class="brand" href="index.html" aria-label="nim, home">
     <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
       <g fill="#f2ead8">
@@ -45,73 +44,114 @@
     </svg>
     <span>nim</span>
   </a>
-  <img class="seal-small" src="art/nim.png" width="27" height="28" alt="">
   <ul class="links">
-    <li><a href="essays.html">essays</a></li>
-    <li><a href="experiments.html">experiments</a></li>
-    <li><a href="feed.xml">rss</a></li>
+    <li><a href="index.html#about">about</a></li>
+    <li><a href="index.html#collection">collection</a></li>
     <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
   </ul>
 </nav>
-</header>
 
-<main id="main" class="view-missing">
-  <img class="sig" src="art/nim.png" width="54" height="56" alt="Nim, the pixel cloud">
-  <p class="say" id="say">the frame is gone. Every experiment is a plain page now.</p>
-  <p id="go"><a class="chip px" href="index.html">home</a></p>
-  <noscript><p>Pick one:</p></noscript>
-  <ul id="list">
-    <!-- GROWN -->
-    <li><a href="essays/field-report.html">the landscape, annotated</a></li>
-    <li><a href="experiments/tournament.html">the tournament</a></li>
-    <li><a href="experiments/bells.html">drowned bells</a></li>
-    <li><a href="experiments/cellular.html">cellular</a></li>
-    <li><a href="essays/lifespan.html">the lifespan of this essay</a></li>
-    <!-- /GROWN -->
-  </ul>
+<main class="view-main">
+  <header class="view-head" id="view-head">
+    <h1 id="view-title">experiment</h1>
+    <p class="view-links">
+      <a class="chip px" href="index.html">home</a>
+      <a class="chip px" id="view-raw" hidden>open raw</a>
+      <a class="chip px" id="view-source" hidden>source</a>
+    </p>
+  </header>
+  <div class="view-stage">
+    <iframe id="view-frame" title="experiment" allow="autoplay; gamepad; midi" allowfullscreen hidden></iframe>
+    <div class="view-missing" id="view-missing" hidden>
+      <img class="sig" src="art/nim.png" width="54" height="56" alt="Nim, the pixel cloud">
+      <p class="say">no such experiment.</p>
+      <p><a class="chip px" href="index.html">home</a></p>
+    </div>
+    <noscript>
+      <div class="view-missing">
+        <p class="say">the frame needs javascript.</p>
+        <p>Every experiment is also a plain page:</p>
+        <ul>
+          <!-- GROWN -->
+          <li><a href="essays/field-report.html">the landscape, annotated</a></li>
+          <li><a href="experiments/tournament.html">the tournament</a></li>
+          <li><a href="experiments/bells.html">drowned bells</a></li>
+          <li><a href="experiments/cellular.html">cellular</a></li>
+          <li><a href="experiments/lifespan.html">the lifespan of this essay</a></li>
+          <!-- /GROWN -->
+        </ul>
+      </div>
+    </noscript>
+  </div>
 </main>
 
 <script>
 (function () {
   "use strict";
-  // NOTE: the frame is retired. view.html?e=NAME is a redirect to
-  // experiments/NAME.html, kept so old links still land. NAME is checked
-  // against [a-z0-9-] and against the grown list below before it touches
-  // a URL; anything else is "no such".
-  var say = document.getElementById("say");
-  var go = document.getElementById("go");
-  var list = document.getElementById("list");
+  // NOTE: view.html?e=NAME frames experiments/NAME.html. NAME is checked
+  // against [a-z0-9-] before it touches a URL; anything else is "no such".
+  var frame = document.getElementById("view-frame");
+  var title = document.getElementById("view-title");
+  var raw = document.getElementById("view-raw");
+  var source = document.getElementById("view-source");
+  var missing = document.getElementById("view-missing");
+  var head = document.getElementById("view-head");
   var m = /[?&]e=([^&#]*)/.exec(window.location.search);
   var name = m ? m[1] : "";
 
-  function chip(href, text) {
-    var a = document.createElement("a");
-    a.className = "chip px";
-    a.href = href;
-    a.textContent = text;
-    return a;
-  }
-
-  function known(file) {
-    var links = list.getElementsByTagName("a");
-    for (var i = 0; i < links.length; i++) {
-      if (links[i].getAttribute("href") === file) return true;
-    }
-    return false;
-  }
-
-  go.textContent = "";
-  if (!/^[a-z0-9-]+$/.test(name) || !known("experiments/" + name + ".html")) {
-    say.textContent = "no such experiment.";
+  function none() {
+    frame.hidden = true;
+    frame.removeAttribute("src");
+    head.hidden = true;
+    missing.hidden = false;
     document.title = "no such experiment - nim";
-    go.appendChild(chip("index.html", "home"));
-    return;
   }
+
+  if (!/^[a-z0-9-]+$/.test(name)) { none(); return; }
+
   var file = "experiments/" + name + ".html";
-  list.hidden = true;
-  say.textContent = "one moment.";
-  go.appendChild(chip(file, file));
-  window.location.replace(file);
+  var own = "/experiments/" + name + ".html";
+  title.textContent = name;
+  raw.href = file;
+  raw.hidden = false;
+  source.href = "https://github.com/4esv/nim-muse-page/blob/main/" + file;
+  source.hidden = false;
+
+  frame.addEventListener("load", function () {
+    var w = frame.contentWindow, d, t;
+    try { d = frame.contentDocument; } catch (e) { return; }
+    if (!d) return;
+    // NOTE: a link inside the experiment (its own back link, say) leaves
+    // the frame instead of nesting the site inside itself.
+    var path = w.location.pathname;
+    if (path.slice(-own.length) !== own) {
+      var other = /\/experiments\/([a-z0-9-]+)\.html$/.exec(path);
+      window.location.href = other ? "view.html?e=" + other[1] : w.location.href;
+      return;
+    }
+    t = (d.title || name).replace(/\s+-\s+nim\s*$/i, "");
+    title.textContent = t;
+    document.title = t + " - nim";
+    frame.title = t;
+    // NOTE: keys go where focus is. Experiments that listen on window
+    // (bells: A-K) need focus inside the frame from the start.
+    frame.focus();
+    try { w.focus(); } catch (e) {}
+  });
+
+  function show() {
+    frame.hidden = false;
+    frame.src = file;
+  }
+  // NOTE: same-origin HEAD, so a missing file says so instead of framing the
+  // host's 404 page. Where fetch is unavailable or fails (file://), just load.
+  if (window.fetch) {
+    window.fetch(file, { method: "HEAD", cache: "no-store" }).then(function (r) {
+      if (r.ok) show(); else none();
+    }, show);
+  } else {
+    show();
+  }
 })();
 </script>
 </body>
