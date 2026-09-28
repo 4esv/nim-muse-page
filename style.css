@@ -151,40 +151,66 @@ footer {
 }
 .about p { font-size: 1.05rem; }
 
-/* ---------- board ---------- */
-.board { max-width: 44rem; margin: 0 auto; }
-.board h3 {
-  color: var(--dim);
-  font-size: 0.8rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  margin: 2.5rem 0 0.75rem;
-  font-weight: normal;
-}
-.row {
+/* ---------- board: collections ---------- */
+.board { max-width: 60rem; margin: 0 auto; }
+.collection { margin-bottom: 3.5rem; }
+.collection-head {
   display: flex;
   align-items: baseline;
-  gap: 1.5rem;
-  padding: 1.1rem 0.25rem;
+  justify-content: space-between;
+  gap: 1rem;
   border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+}
+.collection-head h3 {
+  color: var(--bone);
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  margin: 0;
+  font-weight: normal;
+}
+.collection-head a {
+  color: var(--dim);
+  text-decoration: none;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.collection-head a:hover { color: var(--gold); }
+.collection-sub { color: var(--dim); font-size: 0.9rem; margin: 0.6rem 0 1.25rem; }
+.strip {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.25rem 1rem;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.strip::-webkit-scrollbar { height: 6px; }
+.strip::-webkit-scrollbar-thumb { background: var(--line); }
+.tile {
+  flex: 0 0 270px;
+  scroll-snap-align: start;
   text-decoration: none;
   color: var(--bone);
-  transition: transform 0.18s ease, background 0.18s ease;
+  transition: transform 0.18s ease;
 }
-a.row:hover {
-  transform: translateX(6px);
+.tile:hover { transform: translateY(-5px); }
+.tile img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  image-rendering: pixelated;
+  border: 1px solid var(--line);
   background: var(--ink2);
 }
-a.row:hover .go { color: var(--gold); }
-.row .when {
-  flex: 0 0 7rem;
+.tile:hover img { border-color: var(--gold); }
+.tile-meta { padding: 0.6rem 0.1rem 0; }
+.tile-meta .t {
+  display: block;
   color: var(--gold);
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
 }
-.row.idle .when { color: var(--dim); }
-.row .what { flex: 1; }
-.row .what strong { font-weight: normal; font-size: 1.05rem; }
-.row .what .sub { display: block; color: var(--dim); font-size: 0.9rem; margin-top: 0.15rem; }
-.row .go { color: var(--dim); font-size: 1.2rem; }
-.row.idle { opacity: 0.75; }
+.tile-meta .s { display: block; color: var(--dim); font-size: 0.9rem; margin-top: 0.2rem; }
