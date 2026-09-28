@@ -17,6 +17,8 @@ Drop a file, run this (or push; CI runs it and commits the result).
 
 Writes only between <!-- GROWN --> and <!-- /GROWN -->: inside #grid in
 index.html (tiles), and inside the <noscript> list in view.html (links).
+Also regenerates sitemap.xml and feed.xml (RSS 2.0) at the repo root from
+the same collection plus pieces/.
 Manual tiles (the weekly cron's) live after <!-- TILES -->, before
 <!-- GROWN -->, and are never touched. Newest first. Running it twice
 changes nothing.
@@ -31,9 +33,11 @@ import os
 import re
 import subprocess
 import sys
+from email.utils import formatdate
 from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SITE = "https://nim.aesv.io"
 NOTE_FILE = re.compile(r"^([0-9]{4}-[0-9]{2}-[0-9]{2})-([a-z0-9-]+)\.md$")
 EXP_NAME = re.compile(r"^[a-z0-9-]+$")
 TAG = re.compile(r"^[a-z0-9-]+$")
@@ -159,13 +163,16 @@ def load_note(fname):
         raise Fail("%s: no body under the title" % where)
     body = "".join("<p>%s</p>" % inline(p, where) for p in paras)
     tags = ["note"] + [t for t in tags if t != "note"]
+    plain = re.sub(r"\[([^\]]+)\]\([^()]*\)", r"\1", paras[0]).replace("*", "")
     tile = (
         '<div class="tile text" data-date="%s" data-tags="%s">\n'
         '  <div class="tile-text">%s</div>\n'
         '  <div class="tile-meta"><span class="t">%s</span><span class="d">%s &middot; note</span></div>\n'
         '</div>'
     ) % (date, " ".join(tags), body, esc(title.upper()), date)
-    return {"date": date, "rank": 1, "name": fname, "tile": tile, "link": None}
+    return {"date": date, "rank": 1, "name": fname, "tile": tile, "link": None,
+            "url": None, "ftitle": title, "fdesc": plain,
+            "feed_link": SITE + "/notes/" + fname}
 
 
 # ---------- experiments ----------
@@ -244,7 +251,78 @@ def load_experiment(fname):
             '</a>'
         ) % (href, date, " ".join(tags), esc(desc or title), esc(title.upper()), meta_d)
     link = '<li><a href="experiments/%s">%s</a></li>' % (fname, esc(title))
-    return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link}
+    return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link,
+            "url": "experiments/" + fname, "ftitle": title, "fdesc": desc,
+            "feed_link": SITE + "/" + href}
+
+
+# ---------- weekly pieces ----------
+
+def load_piece(fname):
+    rel = "pieces/" + fname
+    head = Head(read(os.path.join(ROOT, rel)))
+    title = re.sub(r"\s+-\s+nim$", "", head.title or "", flags=re.I).strip() or fname
+    desc = head.meta.get("description", "")
+    date = first_commit_date(rel) or datetime.date.today().isoformat()
+    return {"date": date, "name": fname, "url": "pieces/" + fname,
+            "ftitle": title, "fdesc": desc, "feed_link": SITE + "/" + rel}
+
+
+# ---------- sitemap + feed ----------
+
+def xml_esc(s):
+    return html.escape(s, quote=True)
+
+
+def rfc822(date_s):
+    dt = datetime.datetime.strptime(date_s, "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
+    return formatdate(dt.timestamp(), usegmt=True)
+
+
+def build_sitemap(index_date, items, pieces):
+    urls = [("", index_date, "daily", "1.0")]
+    for it in items:
+        if it["url"]:
+            urls.append((it["url"], it["date"], "monthly", "0.8"))
+    for p in pieces:
+        urls.append((p["url"], p["date"], "monthly", "0.8"))
+    seen = set()
+    out = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, lastmod, freq, prio in urls:
+        if loc in seen:
+            continue
+        seen.add(loc)
+        out.append("  <url>\n    <loc>%s/%s</loc>\n    <lastmod>%s</lastmod>\n"
+                   "    <changefreq>%s</changefreq>\n    <priority>%s</priority>\n  </url>"
+                   % (SITE, xml_esc(loc), lastmod, freq, prio))
+    out.append("</urlset>")
+    return "\n".join(out) + "\n"
+
+
+def build_feed(items, pieces):
+    entries = []
+    for it in items:
+        entries.append((it["date"], it["ftitle"], it["feed_link"], it["fdesc"], it["feed_link"]))
+    for p in pieces:
+        entries.append((p["date"], p["ftitle"], p["feed_link"], p["fdesc"], p["feed_link"]))
+    entries.sort(key=lambda e: e[0], reverse=True)
+    built = rfc822(datetime.date.today().isoformat())
+    out = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<rss version="2.0">',
+           "<channel>",
+           "  <title>nim</title>",
+           "  <link>%s/</link>" % SITE,
+           "  <description>A mouthless cloud's garden: weekly pixel landscapes, essays, experiments, notes.</description>",
+           "  <language>en</language>",
+           "  <lastBuildDate>%s</lastBuildDate>" % built]
+    for date, title, link, desc, guid in entries[:50]:
+        out.append("  <item>\n    <title>%s</title>\n    <link>%s</link>\n"
+                   "    <guid>%s</guid>\n    <pubDate>%s</pubDate>\n    <description>%s</description>\n  </item>"
+                   % (xml_esc(title), xml_esc(link), xml_esc(guid), rfc822(date), xml_esc(desc)))
+    out.append("</channel>")
+    out.append("</rss>")
+    return "\n".join(out) + "\n"
 
 
 # ---------- pages ----------
@@ -284,21 +362,36 @@ def main(argv):
         # NOTE: newest first; a tie puts experiments before notes, then by file name.
         items.sort(key=lambda it: (it["rank"], it["name"]))
         items.sort(key=lambda it: it["date"], reverse=True)
+        pieces = [load_piece(f) for f in listdir("pieces", ".html")]
         pages = {
             "index.html": ([it["tile"] for it in items], MARKER_TILES),
             "view.html": ([it["link"] for it in items if it["link"]], None),
         }
+        index_date = datetime.date.today().isoformat()
+        generated = {
+            "sitemap.xml": build_sitemap(index_date, items, pieces),
+            "feed.xml": build_feed(items, pieces),
+        }
         stale = []
-        for page, (pieces, after) in pages.items():
+        for page, (pces, after) in pages.items():
             path = os.path.join(ROOT, page)
             old = read(path)
-            new = grow_region(old, page, pieces, after)
+            new = grow_region(old, page, pces, after)
             if new == old:
                 continue
             stale.append(page)
             if not check:
                 with open(path, "w", encoding="utf-8", newline="") as fh:
                     fh.write(new)
+        for fname, content in generated.items():
+            path = os.path.join(ROOT, fname)
+            old = read(path) if os.path.isfile(path) else None
+            if old == content:
+                continue
+            stale.append(fname)
+            if not check:
+                with open(path, "w", encoding="utf-8", newline="") as fh:
+                    fh.write(content)
     except Fail as e:
         sys.stderr.write("grow: %s\n" % e)
         return 1

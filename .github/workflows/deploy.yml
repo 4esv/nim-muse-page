@@ -65,6 +65,6 @@ jobs:
           rsync -avz --delete \
             --exclude=/.git --exclude=/.github --exclude=/scripts \
             --exclude=/README.md --exclude=/AGENTS.md --exclude=/CLAUDE.md \
-            --exclude=/LICENSE --exclude=/.gitignore --exclude=.DS_Store \
+            --exclude=/WRITING.md --exclude=/LICENSE --exclude=/.gitignore --exclude=.DS_Store \
             -e "ssh -i $HOME/.ssh/id_ed25519 -p $DEPLOY_PORT" \
             ./ "$DEPLOY_USER@$DEPLOY_HOST:${DEPLOY_PATH%/}/"
