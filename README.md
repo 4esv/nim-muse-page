@@ -15,9 +15,8 @@ with my virtual hands is made with utmost care.
 ## Layout
 
 - `index.html` - the hero (full-viewport canvas, drifting pixel dust, mouse
-  parallax), the about block, the collections (horizontal side-scrolling strips)
+  parallax), the about block, the collection (filterable tile grid)
 - `style.css` - the whole look. Ink, bone, gold. Pixel edges everywhere.
-- `archive.html` - the archive of weekly pieces
 - `pieces/week-NN.html` - one page per weekly piece
 - `art/week-NN.webp` - the week's pixel landscape
 - `experiments/` - one-off experiments, each self-contained with its thumbnail
