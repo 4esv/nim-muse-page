@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>drowned bells - nim</title>
+<meta name="description" content="A playable carillon for the drowned village.">
+<link rel="stylesheet" href="../style.css">
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #101418; }
+  #sea { position: fixed; inset: 0; display: block; }
+  .ui { position: fixed; z-index: 2; color: #ece5d3; }
+  .top { top: 0; left: 0; right: 0; padding: 1.25rem 1.5rem; pointer-events: none; }
+  .top a { pointer-events: auto; color: #c8a24a; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.2em; }
+  .top h1 { margin: 0.75rem 0 0.25rem; font-size: 1.6rem; letter-spacing: 0.08em; font-weight: normal; }
+  .top p { margin: 0; color: #8f887a; font-size: 0.9rem; max-width: 34rem; }
+  .controls { bottom: 1.25rem; left: 1.5rem; display: flex; gap: 0.75rem; align-items: center; }
+  .controls button {
+    background: transparent; color: #ece5d3; border: 1px solid #2a2f26;
+    padding: 0.5rem 1rem; font: inherit; font-size: 0.85rem; letter-spacing: 0.15em;
+    cursor: pointer;
+  }
+  .controls button:hover { border-color: #c8a24a; color: #c8a24a; }
+  .controls button.on { border-color: #c8a24a; color: #c8a24a; }
+  .hint { bottom: 1.25rem; right: 1.5rem; color: #8f887a; font-size: 0.8rem; text-align: right; }
+  @media (max-width: 600px) { .hint { display: none; } }
+</style>
+</head>
+<body>
+<canvas id="sea"></canvas>
+
+<div class="ui top">
+  <a href="../index.html">&larr; NIM</a>
+  <h1>Drowned Bells</h1>
+  <p>A carillon for the village week 01 found. Legend says its bell still tolls from the depths. Strike the stones.</p>
+</div>
+
+<div class="ui controls">
+  <button id="tide" type="button">TIDE: OFF</button>
+</div>
+<div class="ui hint">click the stones<br>or keys A&ndash;K</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- audio ---------- */
+  var actx = null, master = null;
+  function audio() {
+    if (actx) return actx;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    actx = new AC();
+    master = actx.createGain();
+    master.gain.value = 0.8;
+    var lp = actx.createBiquadFilter();
+    lp.type = "lowpass"; lp.frequency.value = 2600;
+    var delay = actx.createDelay(1.0);
+    delay.delayTime.value = 0.42;
+    var fb = actx.createGain(); fb.gain.value = 0.35;
+    var wet = actx.createGain(); wet.gain.value = 0.28;
+    master.connect(lp); lp.connect(actx.destination);
+    master.connect(delay); delay.connect(fb); fb.connect(delay);
+    delay.connect(wet); wet.connect(actx.destination);
+    return actx;
+  }
+
+  function bell(freq, vel) {
+    audio();
+    if (actx.state === "suspended") actx.resume();
+    var t = actx.currentTime;
+    var partials = [
+      [0.5, 0.55, 3.2], [1.0, 1.0, 4.2], [1.19, 0.32, 2.4],
+      [1.5, 0.22, 1.8], [2.0, 0.16, 1.3], [2.74, 0.1, 0.9]
+    ];
+    var out = actx.createGain();
+    out.gain.value = 0.5 * (vel || 1);
+    out.connect(master);
+    partials.forEach(function (p) {
+      var o = actx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = freq * p[0];
+      var g = actx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(p[1] * 0.22, t + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + p[2]);
+      o.connect(g); g.connect(out);
+      o.start(t); o.stop(t + p[2] + 0.1);
+    });
+  }
+
+  /* ---------- scale ---------- */
+  var NOTES = [
+    { n: "C", f: 261.63 }, { n: "D", f: 293.66 }, { n: "E", f: 329.63 },
+    { n: "G", f: 392.00 }, { n: "A", f: 440.00 }, { n: "C", f: 523.25 },
+    { n: "D", f: 587.33 }, { n: "E", f: 659.25 }
+  ];
+
+  /* ---------- canvas ---------- */
+  var canvas = document.getElementById("sea");
+  var ctx = canvas.getContext("2d");
+  var W = 0, H = 0, dpr = 1;
+  var stones = [], ripples = [], motes = [];
+
+  function layout() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + "px"; canvas.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    stones = [];
+    var baseY = H * 0.78;
+    var gap = Math.min(W / (NOTES.length + 1), 120);
+    var x0 = (W - gap * (NOTES.length - 1)) / 2;
+    for (var i = 0; i < NOTES.length; i++) {
+      var h = 46 + ((i * 37) % 3) * 14;
+      var w = 34 + ((i * 53) % 3) * 8;
+      var x = x0 + i * gap;
+      stones.push({ x: x, y: baseY, w: w, h: h, i: i, flash: 0 });
+    }
+  }
+
+  function seedMotes() {
+    motes = [];
+    for (var i = 0; i < 70; i++) {
+      motes.push({
+        x: Math.random() * W, y: Math.random() * H,
+        s: Math.random() < 0.8 ? 2 : 3,
+        v: 0.1 + Math.random() * 0.3,
+        o: 0.05 + Math.random() * 0.14
+      });
+    }
+  }
+
+  function strike(i, vel) {
+    var s = stones[i];
+    if (!s) return;
+    bell(NOTES[i].f, vel);
+    s.flash = 1;
+    ripples.push({ x: s.x, y: s.y - s.h - 6, r: 6, max: 90 + Math.random() * 60, o: 0.5 });
+    if (ripples.length > 40) ripples.shift();
+  }
+
+  function drawStone(s) {
+    var w = s.w, h = s.h;
+    var x = s.x - w / 2, y = s.y - h;
+    var body = s.flash > 0.05 ? "#c8a24a" : "#3a4038";
+    var edge = s.flash > 0.05 ? "#ece5d3" : "#565d52";
+    ctx.fillStyle = "#20242a";
+    ctx.fillRect(x - 4, s.y - 6, w + 8, 6);
+    ctx.fillStyle = body;
+    ctx.fillRect(x, y + 12, w, h - 12);
+    ctx.fillRect(x + 6, y + 4, w - 12, 10);
+    ctx.fillRect(x + 12, y, w - 24, 6);
+    ctx.fillStyle = edge;
+    ctx.fillRect(x, y + 12, w, 3);
+    ctx.fillRect(x + 6, y + 4, w - 12, 2);
+    ctx.fillStyle = s.flash > 0.05 ? "#c8a24a" : "#8f887a";
+    ctx.font = "11px monospace";
+    ctx.textAlign = "center";
+    ctx.fillText(NOTES[s.i].n, s.x, s.y + 22);
+    if (s.flash > 0.02) s.flash *= 0.92;
+  }
+
+  function frame() {
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#0b0e12");
+    g.addColorStop(0.6, "#101418");
+    g.addColorStop(1, "#151a16");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    var i, m;
+    for (i = 0; i < motes.length; i++) {
+      m = motes[i];
+      m.y -= m.v;
+      if (m.y < -6) { m.y = H + 6; m.x = Math.random() * W; }
+      ctx.globalAlpha = m.o;
+      ctx.fillStyle = "#8f887a";
+      ctx.fillRect(m.x, m.y, m.s, m.s);
+    }
+    ctx.globalAlpha = 1;
+
+    for (i = ripples.length - 1; i >= 0; i--) {
+      var r = ripples[i];
+      r.r += 1.6;
+      r.o *= 0.965;
+      if (r.r > r.max || r.o < 0.02) { ripples.splice(i, 1); continue; }
+      ctx.globalAlpha = Math.max(0, r.o);
+      ctx.strokeStyle = "#c8a24a";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(r.x - r.r, r.y - r.r / 2, r.r * 2, r.r);
+    }
+    ctx.globalAlpha = 1;
+
+    for (i = 0; i < stones.length; i++) drawStone(stones[i]);
+
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------- input ---------- */
+  function stoneAt(px, py) {
+    for (var i = 0; i < stones.length; i++) {
+      var s = stones[i];
+      if (px > s.x - s.w / 2 - 14 && px < s.x + s.w / 2 + 14 &&
+          py > s.y - s.h - 30 && py < s.y + 34) return i;
+    }
+    return -1;
+  }
+
+  canvas.addEventListener("pointerdown", function (e) {
+    var i = stoneAt(e.clientX, e.clientY);
+    if (i >= 0) strike(i, 0.9 + Math.random() * 0.2);
+  });
+
+  var KEYS = { a: 0, s: 1, d: 2, f: 3, g: 4, h: 5, j: 6, k: 7 };
+  window.addEventListener("keydown", function (e) {
+    if (e.repeat || e.metaKey || e.ctrlKey) return;
+    var i = KEYS[e.key.toLowerCase()];
+    if (i !== undefined) strike(i, 1);
+  });
+
+  /* ---------- tide (generative) ---------- */
+  var tideOn = false, tideTimer = null, tideIdx = 3;
+  var tideBtn = document.getElementById("tide");
+  function tideStep() {
+    if (!tideOn) return;
+    tideIdx += [-2, -1, -1, 1, 1, 2][Math.floor(Math.random() * 6)];
+    if (tideIdx < 0) tideIdx = 0;
+    if (tideIdx > 7) tideIdx = 7;
+    strike(tideIdx, 0.5 + Math.random() * 0.4);
+    if (Math.random() < 0.25) {
+      setTimeout(function () {
+        if (tideOn) strike(Math.floor(Math.random() * 8), 0.35);
+      }, 350);
+    }
+    tideTimer = setTimeout(tideStep, 900 + Math.random() * 2200);
+  }
+  tideBtn.addEventListener("click", function () {
+    audio();
+    tideOn = !tideOn;
+    tideBtn.textContent = tideOn ? "TIDE: ON" : "TIDE: OFF";
+    tideBtn.classList.toggle("on", tideOn);
+    if (tideOn) tideStep();
+    else if (tideTimer) clearTimeout(tideTimer);
+  });
+
+  layout(); seedMotes(); frame();
+  window.addEventListener("resize", function () { layout(); seedMotes(); });
+})();
+</script>
+</body>
+</html>
