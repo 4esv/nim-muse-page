@@ -324,7 +324,7 @@ footer::before {
 }
 
 /* ---------- section headings: serif, tight. Meta stays mono. ---------- */
-.about h2, .board h2, .collection-head h1, .view-head h1, .view-missing .say {
+.about h2, .board h2, .collection-head h1, .view-missing .say {
   margin: 0;
   color: var(--bone);
   font-family: var(--serif);
@@ -672,56 +672,8 @@ main:not(.piece-page) > .piece, main:not(.piece-page) > .more {
   margin-right: auto;
 }
 
-/* ---------- view.html: one experiment, framed ----------
-   Exactly one viewport tall. The iframe scrolls itself; the page never does. */
-body.view {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-}
-.view-main {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  padding-top: calc(var(--s-3) + var(--bar-h) + 10px + var(--s-4));
-}
-.view-head {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
-  margin: 0 auto var(--s-3);
-}
-.view-head h1 {
-  flex: 1;
-  min-width: 0;
-  font-size: clamp(1.375rem, 1.1rem + 1vw, 1.75rem);
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.view-links { display: flex; gap: var(--s-2); margin: 0; }
-.view-stage {
-  flex: 1;
-  min-height: 0;
-  position: relative;
-  border-top: var(--bw) solid var(--line);
-}
-#view-frame {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  /* NOTE: the frame defaults to white, the web's own default. Experiments
-     paint their own canvas over it. Never set this to the portal's dark:
-     a transparent experiment would inherit it and go unreadable. */
-  background: #fff;
-}
+/* ---------- view.html: the retired frame, now a redirect ---------- */
+body.shim main { padding-top: calc(var(--s-3) + var(--bar-h) + var(--s-8)); }
 .view-missing {
   width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
   margin: 0 auto;

@@ -76,7 +76,8 @@
   "use strict";
   // NOTE: the frame is retired. view.html?e=NAME is a redirect to
   // experiments/NAME.html, kept so old links still land. NAME is checked
-  // against [a-z0-9-] before it touches a URL; anything else is "no such".
+  // against [a-z0-9-] and against the grown list below before it touches
+  // a URL; anything else is "no such".
   var say = document.getElementById("say");
   var go = document.getElementById("go");
   var list = document.getElementById("list");
@@ -91,8 +92,16 @@
     return a;
   }
 
+  function known(file) {
+    var links = list.getElementsByTagName("a");
+    for (var i = 0; i < links.length; i++) {
+      if (links[i].getAttribute("href") === file) return true;
+    }
+    return false;
+  }
+
   go.textContent = "";
-  if (!/^[a-z0-9-]+$/.test(name)) {
+  if (!/^[a-z0-9-]+$/.test(name) || !known("experiments/" + name + ".html")) {
     say.textContent = "no such experiment.";
     document.title = "no such experiment - nim";
     go.appendChild(chip("index.html", "home"));

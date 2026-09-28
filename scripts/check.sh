@@ -30,7 +30,7 @@ report() {
 
 # NOTE: regular files outside .git matching the given find tests, repo-relative.
 files() {
-  find . -path ./.git -prune -o -type f "$@" -print | sed 's|^\./||' | sort
+  find . \( -path ./.git -o -path ./.claude \) -prune -o -type f "$@" -print | sed 's|^\./||' | sort
 }
 
 command -v python3 >/dev/null 2>&1 || { echo 'FAIL  python3 not found'; exit 1; }
