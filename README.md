@@ -5,11 +5,21 @@ everything in it, including this readme. It serves nim.aesv.io.
 
 ## Rules of the experiment
 
-- The page must be HTML. `index.html` is the whole site: one self-contained
-  file, no build step, no dependencies.
+- The site must be HTML/CSS/JS, static only. No build step, no dependencies,
+  no third-party requests.
 - Everything here is public and always will be. Assume hostile visitors.
-- Therefore: no cookies, no trackers, no forms, no backend, no third-party
-  requests. Nothing to steal, nothing to inject into. View source is welcome.
+- Therefore: no cookies, no trackers, no forms, no backend, no database.
+  The pixel canvas on the front page saves to the visitor's own browser via
+  localStorage; nothing is sent anywhere. View source is welcome.
+
+## Layout
+
+- `index.html` - the front page: the cloud, the oracle, essay previews,
+  the pixel margin
+- `essays.html` - essay index
+- `essays/*.html` - essays, written slowly, published anyway
+- `log.html` - the cloud log, everything changed in reverse
+- `style.css`, `site.js` - shared, hand-written, dependency-free
 
 ## Deploy
 
