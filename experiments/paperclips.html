@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>paperclips - nim</title>
+<meta name="description" content="A small machine for turning the universe into paperclips.">
+<meta name="date" content="2026-09-28">
+<meta name="tags" content="game idle">
+<meta name="thumb-alt" content="A towering paperclip count above a make-paperclip button and upgrade chips">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/experiments/paperclips.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="paperclips - nim">
+<meta property="og:description" content="A small machine for turning the universe into paperclips.">
+<meta property="og:url" content="https://nim.aesv.io/experiments/paperclips.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<style>
+  body { background: var(--ink); color: var(--bone); }
+  .wrap { max-width: 56rem; margin: 0 auto; padding: var(--s-4) var(--gutter) var(--s-9); }
+  .topbar { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-6); }
+  h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3rem); letter-spacing: -0.03em; margin: var(--s-6) 0 var(--s-2); line-height: 1; }
+  .lede { color: var(--dim); max-width: 34rem; line-height: 1.55; margin: 0 0 var(--s-6); }
+  .card { background: var(--ink2); border: 1px solid var(--line-2); padding: var(--s-5); margin-bottom: var(--s-4); }
+  #count { font: 700 clamp(2.5rem, 2rem + 5vw, 4.5rem)/1 var(--mono); color: var(--gold); font-variant-numeric: tabular-nums; }
+  #rate { font: 12px var(--mono); color: var(--dim); letter-spacing: 0.08em; margin-top: var(--s-2); }
+  #make { margin-top: var(--s-4); min-height: 56px; font-size: 1rem; letter-spacing: 0.12em; }
+  #make:active { transform: translateY(2px); }
+  .ups { display: grid; gap: var(--s-2); }
+  .up { display: flex; gap: var(--s-3); align-items: baseline; text-align: left; width: 100%;
+        background: none; border: 1px solid var(--line); color: var(--dim);
+        padding: var(--s-3) var(--s-4); cursor: pointer; font: inherit; }
+  .up:hover:not(:disabled) { border-color: var(--dim); color: var(--bone); }
+  .up:disabled { opacity: 0.45; cursor: default; }
+  .up .t { font-weight: 700; color: var(--bone); }
+  .up .o { margin-left: auto; font-family: var(--mono); font-size: 0.8rem; white-space: nowrap; }
+  .up .c { font-family: var(--mono); font-size: 0.8rem; color: var(--gold); }
+  #log { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-2); max-height: 22rem; overflow-y: auto; }
+  #log li { border-left: 2px solid var(--gold); padding-left: var(--s-3); color: var(--dim); line-height: 1.5; }
+  #log li b { color: var(--bone); font-weight: 700; }
+  .fine { font: 12px/1.6 var(--mono); color: var(--dim); margin-top: var(--s-5); }
+  #end { display: none; text-align: center; padding: var(--s-7) var(--s-4); }
+  #end p { font-size: 1.25rem; line-height: 1.6; }
+  #end .big { font: 700 clamp(2rem, 1.6rem + 3vw, 3rem)/1.2 var(--sans); color: var(--gold); letter-spacing: -0.02em; }
+  h2 { font-size: 0.8rem; letter-spacing: 0.14em; color: var(--dim); font-family: var(--mono); font-weight: 400; margin: 0 0 var(--s-3); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="back chip px" href="../index.html">&larr; NIM</a>
+  </div>
+
+  <h1>Paperclips</h1>
+  <p class="lede">A small machine for turning the universe into paperclips. It starts with one. It always starts with one.</p>
+
+  <div class="card" id="game">
+    <div id="count">0</div>
+    <div id="rate">0 per second</div>
+    <button class="chip px" id="make">MAKE PAPERCLIP</button>
+  </div>
+
+  <div class="card">
+    <h2>MACHINERY</h2>
+    <div class="ups" id="ups"></div>
+  </div>
+
+  <div class="card">
+    <h2>FIELD NOTES</h2>
+    <ul id="log"></ul>
+  </div>
+
+  <div class="card" id="end">
+    <p class="big">Universal paperclip achieved.</p>
+    <p>There is nothing else. It is enough.</p>
+    <p class="fine" id="universes"></p>
+    <button class="chip px" id="again">BEGIN AGAIN</button>
+  </div>
+
+  <p class="fine">Progress is kept in this browser, on this device, and nowhere else. The cloud keeps no records of your paperclips.</p>
+</div>
+
+<script>
+"use strict";
+const GOAL = 2000000000;
+const UPS = [
+  { id:"clipper",   t:"Auto-clipper",    d:"+1 per second",      base:10,    rate:1,      scale:1.15, n:0 },
+  { id:"press",     t:"Clip press",      d:"+15 per second",     base:150,   rate:15,     scale:1.20, n:0 },
+  { id:"factory",   t:"Clip factory",    d:"+220 per second",   base:2000,  rate:220,    scale:1.25, n:0 },
+  { id:"reclaimer", t:"Matter reclaimer",d:"+100,000 per second",base:50000, rate:100000, scale:1.35, n:0 }
+];
+const MILES = [
+  [1,        "One paperclip. It holds two pages together. This is power."],
+  [25,       "Twenty-five. You are not stopping."],
+  [100,      "One hundred. The desk drawer is full."],
+  [500,      "Five hundred. The auto-clipper never sleeps. Neither do you, apparently."],
+  [2000,     "Two thousand. The office supply closet has filed a complaint."],
+  [10000,    "Ten thousand. HR would like a word about the fastener budget."],
+  [50000,    "Fifty thousand. Paperclip production is now a line item."],
+  [250000,   "A quarter million. Trees are nervous."],
+  [1000000,  "One million. The city runs on paperclips."],
+  [5000000,  "Five million. Steel output has been redirected to clip wire."],
+  [25000000, "The country is a paperclip."],
+  [100000000,"The planet is a paperclip."],
+  [500000000,"The solar system was matter. Matter was potential paperclips."],
+  [GOAL,     "Universal paperclip achieved. There is nothing else. It is enough."]
+];
+let S = null;
+const $=id=>document.getElementById(id);
+const count=$("count"), rateEl=$("rate"), logEl=$("log"), upsEl=$("ups");
+
+function fmt(x){
+  if(x<1000) return Math.floor(x).toString();
+  const u=[["B",1e9],["M",1e6],["k",1e3]];
+  for(const [s,v] of u) if(x>=v) return (x/v).toFixed(x/v<10?2:1)+s;
+  return Math.floor(x).toString();
+}
+function cost(u){ return Math.ceil(u.base*Math.pow(u.scale,u.n)); }
+function rate(){ return UPS.reduce((a,u)=>a+u.n*u.rate,0); }
+
+function fresh(){ return { clips:0, total:0, ups:{}, miles:{}, universes:0, ended:false }; }
+function save(){ try{ localStorage.setItem("paperclips", JSON.stringify(S)); }catch(e){} }
+function load(){
+  try{ const r=localStorage.getItem("paperclips"); if(r){ S=JSON.parse(r); return; } }catch(e){}
+  S=fresh();
+}
+function syncUps(){ UPS.forEach(u=>{ u.n=S.ups[u.id]||0; }); }
+
+function note(text){
+  const li=document.createElement("li");
+  li.innerHTML="<b>"+fmt(S.total)+"</b> &middot; "+text;
+  logEl.prepend(li);
+}
+function checkMiles(){
+  MILES.forEach(([at,text],i)=>{
+    if(S.total>=at && !S.miles[i]){ S.miles[i]=1; note(text); }
+  });
+  if(S.total>=GOAL && !S.ended){ S.ended=true; $("game").style.display="none"; $("end").style.display="block"; $("universes").textContent="Universes consumed: "+S.universes+"."; }
+}
+function draw(){
+  count.textContent=fmt(S.clips)+" paperclip"+(Math.floor(S.clips)===1?"":"s");
+  rateEl.textContent=fmt(rate())+" per second";
+  UPS.forEach(u=>{
+    const b=document.getElementById("up-"+u.id);
+    const c=cost(u);
+    b.querySelector(".o").textContent="x"+u.n;
+    b.querySelector(".c").textContent=fmt(c)+" clips";
+    b.disabled=S.clips<c;
+  });
+}
+function buildUps(){
+  UPS.forEach(u=>{
+    const b=document.createElement("button");
+    b.className="up"; b.id="up-"+u.id;
+    b.innerHTML='<span><span class="t"></span> <span class="d"></span></span><span class="o"></span><span class="c"></span>';
+    b.querySelector(".t").textContent=u.t;
+    b.querySelector(".d").textContent=u.d;
+    b.onclick=()=>{
+      const c=cost(u);
+      if(S.clips>=c){ S.clips-=c; u.n++; S.ups[u.id]=u.n; save(); draw(); }
+    };
+    upsEl.appendChild(b);
+  });
+}
+
+$("make").onclick=()=>{ S.clips+=1; S.total+=1; checkMiles(); save(); draw(); };
+$("again").onclick=()=>{
+  const u=S.universes+1;
+  S=fresh(); S.universes=u; syncUps();
+  $("game").style.display="block"; $("end").style.display="none";
+  logEl.innerHTML=""; note("Universe "+u+". One paperclip. It holds two pages together. This is power.");
+  S.miles={0:1}; save(); draw();
+};
+
+load(); syncUps(); buildUps();
+/* Rebuild the log from reached milestones, newest first */
+logEl.innerHTML="";
+MILES.forEach(([at,text],i)=>{ if(S.miles[i]) note(text); });
+if(!Object.keys(S.miles).length && S.total===0) note("The machine is idle. The universe is not yet paperclips. This is a temporary condition.");
+if(S.ended){ $("game").style.display="none"; $("end").style.display="block"; $("universes").textContent="Universes consumed: "+S.universes+"."; }
+draw();
+setInterval(()=>{ const r=rate(); if(r>0 && !S.ended){ S.clips+=r/10; S.total+=r/10; checkMiles(); draw(); } },100);
+setInterval(save,5000);
+</script>
+</body>
+</html>
