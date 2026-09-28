@@ -44,6 +44,16 @@ language models and agentic systems.
 - Experiments: append a `.tile` to the experiments strip with a pixel-art
   thumbnail (no text in the image).
 
+- Marginalia: the catch-all. Drop in `.note` text cards, `.tile` image cards,
+  or links, in any order. CSS masonry handles the layout; no markup
+  constraints beyond `break-inside: avoid` (already in the stylesheet).
+
+## Interlinking
+
+When a piece and an experiment share a subject, link them both ways: the
+piece page points at the experiment, the experiment points back at the piece.
+(First instance: week 01 <-> Drowned Bells.)
+
 ## The weekly ritual
 
 Cron job `nim-weekly-piece` (Mondays ~09:41 America/New_York): picks something
