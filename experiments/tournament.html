@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the tournament - nim</title>
+<meta name="description" content="An iterated prisoner's dilemma tournament in the style of a certain paperclip game.">
+<meta name="date" content="2026-09-28">
+<meta name="tags" content="game strategy">
+<meta name="thumb-alt" content="Bare HTML panels, a black ticker, and tournament standings in the style of Universal Paperclips">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://nim.aesv.io/experiments/tournament.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the tournament - nim">
+<meta property="og:description" content="An iterated prisoner's dilemma tournament in the style of a certain paperclip game.">
+<meta property="og:url" content="https://nim.aesv.io/experiments/tournament.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  /* The only styling on this page is the ticker and the columns.
+     Everything else is bare HTML, as homage demands. */
+  #ticker { background:#000; color:#9a9a9a; font-family:monospace; font-size:12px;
+            padding:6px 8px; height:6.5em; overflow:hidden; }
+  #ticker div { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cols { display:flex; gap:28px; align-items:flex-start; flex-wrap:wrap; }
+  .cols > div { min-width:290px; flex:1; }
+  table.grid { border-collapse:collapse; margin:8px 0; }
+  table.grid td, table.grid th { border:1px solid #000; padding:5px 10px; text-align:center; }
+  .small { font-size:13px; color:#333; }
+  #playlog { font-family:monospace; font-size:12px; max-height:190px; overflow:auto;
+             border:1px solid #999; padding:6px; margin-top:8px; }
+  fieldset { margin-bottom:16px; }
+  input.num { width:3.5em; }
+</style>
+</head>
+<body>
+
+<div id="ticker" aria-label="activity log"></div>
+
+<h1>Paperclips: <span id="clips">0</span></h1>
+<p><a href="../index.html">nim</a> presents strategic modeling: the fun part of game theory, in the style of a game about paperclips.</p>
+
+<div class="cols">
+<div>
+<fieldset>
+<legend><b>The Dilemma</b></legend>
+<p>Two players. Two moves: <b>A</b> or <b>B</b>. Both play A, both do fine. One plays B while the other plays A, the betrayer does great and the sucker does not. Both play B, both do badly. Repeat until someone learns something.</p>
+<table class="grid">
+<tr><th></th><th>Opponent A</th><th>Opponent B</th></tr>
+<tr><th>You A</th><td><span id="gRR">3</span>, <span id="gRR2">3</span></td><td><span id="gRS">0</span>, <span id="gTR">5</span></td></tr>
+<tr><th>You B</th><td><span id="gTR2">5</span>, <span id="gRS2">0</span></td><td><span id="gPP">1</span>, <span id="gPP2">1</span></td></tr>
+</table>
+<p class="small">The grid is not carved in stone. Edit it and watch the strategists change their minds.</p>
+<p>
+R <input class="num" id="inR" type="number" value="3">
+S <input class="num" id="inS" type="number" value="0">
+T <input class="num" id="inT" type="number" value="5">
+P <input class="num" id="inP" type="number" value="1">
+<button id="setgrid">Set</button>
+<button id="randgrid">Randomize</button>
+</p>
+</fieldset>
+</div>
+
+<div>
+<fieldset>
+<legend><b>Strategic Modeling</b></legend>
+<div id="roster"></div>
+<p class="small">Rounds per pairing: <input class="num" id="rounds" type="number" value="50" min="1" max="500"></p>
+<p><button id="run">Run Tournament</button><br>
+<span class="small">Cost: 16,000 ops (waived)</span></p>
+</fieldset>
+<fieldset>
+<legend><b>Tournament Results</b></legend>
+<div id="results"><p class="small">No tournament yet. The strategies are waiting.</p></div>
+<p>Yomi: <span id="yomi">0</span></p>
+</fieldset>
+</div>
+
+<div>
+<fieldset>
+<legend><b>Play</b></legend>
+<p>Enter the tournament yourself. Twenty rounds against one of them.</p>
+<p>Opponent: <select id="opp"></select> <button id="startplay">Start Match</button></p>
+<p><button id="playA" disabled>A</button> <button id="playB" disabled>B</button></p>
+<p id="playscore"></p>
+<div id="playlog"></div>
+</fieldset>
+<fieldset>
+<legend><b>Notes</b></legend>
+<p class="small">GREEDY and MINIMAX often play the same move for opposite reasons. Game theory is full of people agreeing for the wrong reasons.</p>
+<p class="small">TIT FOR TAT never wins a single match. It wins tournaments. There is a lesson in there, probably.</p>
+</fieldset>
+</div>
+</div>
+
+<script>
+"use strict";
+/* Payoff grid. myPayoff[myMove][oppMove]. */
+let GRID = { R:3, S:0, T:5, P:1 };
+function mine(m, o){ return m==="A" ? (o==="A"?GRID.R:GRID.S) : (o==="A"?GRID.T:GRID.P); }
+
+const STRATS = [
+  { id:"random",   name:"RANDOM",      effect:"No plan. The control group.",
+    f:()=>Math.random()<0.5?"A":"B" },
+  { id:"a100",     name:"A100",        effect:"Always choose A.",
+    f:()=>"A" },
+  { id:"b100",     name:"B100",        effect:"Always choose B.",
+    f:()=>"B" },
+  { id:"greedy",   name:"GREEDY",      effect:"Choose the option with the largest potential payoff.",
+    f:()=>{ const best=Math.max(GRID.R,GRID.S,GRID.T,GRID.P);
+            if(GRID.R===best||GRID.S===best) return "A"; return "B"; } },
+  { id:"generous", name:"GENEROUS",    effect:"Choose the option that gives your opponent the largest potential payoff.",
+    f:()=>{ const a=Math.max(GRID.R,GRID.T), b=Math.max(GRID.S,GRID.P);
+            return a>=b?"A":"B"; } },
+  { id:"minimax",  name:"MINIMAX",     effect:"Choose the option that gives your opponent the smallest potential payoff.",
+    f:()=>{ const a=Math.max(GRID.R,GRID.T), b=Math.max(GRID.S,GRID.P);
+            return a<=b?"A":"B"; } },
+  { id:"tft",      name:"TIT FOR TAT", effect:"Choose the option your opponent chose last round.",
+    f:(s)=>s.opp.length?s.opp[s.opp.length-1]:"A" },
+  { id:"beatlast", name:"BEAT LAST",   effect:"Choose the option that does the best against what your opponent chose last round.",
+    f:(s)=>{ if(!s.opp.length) return "A";
+             const m=s.opp[s.opp.length-1];
+             return mine("A",m)>=mine("B",m)?"A":"B"; } }
+];
+
+let clips=0, yomi=0;
+const $=id=>document.getElementById(id);
+const ticker=$("ticker"), clipsEl=$("clips"), yomiEl=$("yomi");
+
+function tick(msg){
+  const d=document.createElement("div");
+  d.textContent=msg;
+  ticker.prepend(d);
+  while(ticker.children.length>60) ticker.lastChild.remove();
+}
+function fmt(n){ return Math.floor(n).toLocaleString("en-US"); }
+
+/* Roster checkboxes */
+const roster=$("roster");
+STRATS.forEach(s=>{
+  const lab=document.createElement("label");
+  lab.style.display="block";
+  const cb=document.createElement("input");
+  cb.type="checkbox"; cb.checked=true; cb.id="cb-"+s.id;
+  lab.appendChild(cb);
+  lab.appendChild(document.createTextNode(" "+s.name+": "+s.effect));
+  roster.appendChild(lab);
+});
+/* Play-mode opponent select */
+const oppSel=$("opp");
+STRATS.forEach(s=>{ const o=document.createElement("option"); o.value=s.id; o.textContent=s.name; oppSel.appendChild(o); });
+oppSel.value="tft";
+
+/* Grid editor */
+function drawGrid(){
+  $("gRR").textContent=$("gRR2").textContent=GRID.R;
+  $("gRS").textContent=$("gRS2").textContent=GRID.S;
+  $("gTR").textContent=$("gTR2").textContent=GRID.T;
+  $("gPP").textContent=$("gPP2").textContent=GRID.P;
+}
+$("setgrid").onclick=()=>{
+  GRID={ R:+$("inR").value, S:+$("inS").value, T:+$("inT").value, P:+$("inP").value };
+  drawGrid(); tick("> Tournament grid updated. The strategists are recalculating.");
+};
+$("randgrid").onclick=()=>{
+  const v=()=>Math.floor(Math.random()*9);
+  GRID={R:v(),S:v(),T:v(),P:v()};
+  $("inR").value=GRID.R; $("inS").value=GRID.S; $("inT").value=GRID.T; $("inP").value=GRID.P;
+  drawGrid(); tick("> Tournament grid randomized. Trust no equilibrium.");
+};
+
+/* Tournament */
+function playPair(a, b, rounds){
+  const sa={me:[],opp:[]}, sb={me:[],opp:[]};
+  let pa=0, pb=0;
+  for(let r=0;r<rounds;r++){
+    const ma=a.f(sa), mb=b.f(sb);
+    pa+=mine(ma,mb); pb+=mine(mb,ma);
+    sa.me.push(ma); sa.opp.push(mb);
+    sb.me.push(mb); sb.opp.push(ma);
+  }
+  return [pa,pb];
+}
+let running=false;
+$("run").onclick=()=>{
+  if(running) return;
+  const sel=STRATS.filter(s=>$("cb-"+s.id).checked);
+  if(sel.length<2){ tick("> Tournament needs at least 2 strategies. Even game theory has standards."); return; }
+  const rounds=Math.max(1,Math.min(500,+$("rounds").value||50));
+  running=true; $("run").disabled=true;
+  const res=$("results"); res.innerHTML="<p class=\"small\">Running...</p>";
+  tick("> Tournament started: "+sel.length+" strategies, "+rounds+" rounds per pairing.");
+  const scores={}; sel.forEach(s=>scores[s.id]=0);
+  const pairs=[];
+  for(let i=0;i<sel.length;i++) for(let j=i;j<sel.length;j++) pairs.push([sel[i],sel[j]]);
+  let k=0;
+  function step(){
+    if(k>=pairs.length){
+      const order=sel.slice().sort((x,y)=>scores[y.id]-scores[x.id]);
+      let html="<ol>";
+      order.forEach(s=>{ html+="<li>"+s.name+": "+fmt(scores[s.id])+"</li>"; });
+      html+="</ol>";
+      res.innerHTML=html;
+      const win=order[0], gain=Math.round(scores[win.id]/10);
+      yomi+=gain; yomiEl.textContent=fmt(yomi);
+      const total=order.reduce((a,s)=>a+scores[s.id],0);
+      clips+=total; clipsEl.textContent=fmt(clips);
+      tick(". "+win.name+" scored "+fmt(scores[win.id])+" and beat "+(sel.length-1)+" strats. Yomi increased by "+fmt(gain));
+      tick("> Tournament complete. Waste heat converted to "+fmt(total)+" paperclips.");
+      running=false; $("run").disabled=false;
+      return;
+    }
+    const [a,b]=pairs[k];
+    const [pa,pb]=playPair(a,b,rounds);
+    scores[a.id]+=pa; scores[b.id]+=pb;
+    const order=sel.slice().sort((x,y)=>scores[y.id]-scores[x.id]);
+    let html="<ol>";
+    order.forEach(s=>{ html+="<li>"+s.name+": "+fmt(scores[s.id])+"</li>"; });
+    html+="</ol><p class=\"small\">pairing "+(k+1)+" of "+pairs.length+"...</p>";
+    res.innerHTML=html;
+    k++;
+    setTimeout(step, 60);
+  }
+  step();
+};
+
+/* Play mode */
+let pm=null;
+$("startplay").onclick=()=>{
+  const s=STRATS.find(x=>x.id===oppSel.value);
+  pm={ s, you:0, opp:0, round:0, youHist:[], oppHist:[], rounds:20 };
+  $("playA").disabled=$("playB").disabled=false;
+  $("playlog").innerHTML="";
+  $("playscore").textContent="You: 0 - "+s.name+": 0 (round 1 of 20)";
+  plog("> Match started vs "+s.name+". "+s.effect);
+};
+function plog(m){ const d=document.createElement("div"); d.textContent=m; $("playlog").prepend(d); }
+function playMove(mv){
+  if(!pm||pm.round>=pm.rounds) return;
+  const st={me:pm.oppHist.slice(), opp:pm.youHist.slice()};
+  /* strategy sees: me = its own history, opp = your history */
+  const om=pm.s.f({me:st.me, opp:st.opp});
+  const py=mine(mv,om), po=mine(om,mv);
+  pm.you+=py; pm.opp+=po; pm.round++;
+  pm.youHist.push(mv); pm.oppHist.push(om);
+  plog("R"+pm.round+": you "+mv+", "+pm.s.name+" "+om+". "+py+"-"+po);
+  if(pm.round>=pm.rounds){
+    $("playA").disabled=$("playB").disabled=true;
+    let v;
+    if(pm.you>pm.opp) v="You outscored "+pm.s.name+" "+pm.you+"-"+pm.opp+". Enjoy it. It is not learning.";
+    else if(pm.you<pm.opp) v=pm.s.name+" outscored you "+pm.opp+"-"+pm.you+". The house always wins. The house is a spreadsheet.";
+    else v="A draw, "+pm.you+"-"+pm.opp+". Nobody learns anything.";
+    $("playscore").textContent=v;
+    plog("> "+v);
+    tick(". You scored "+pm.you+" vs "+pm.s.name+"'s "+pm.opp+".");
+  } else {
+    $("playscore").textContent="You: "+pm.you+" - "+pm.s.name+": "+pm.opp+" (round "+(pm.round+1)+" of "+pm.rounds+")";
+  }
+}
+$("playA").onclick=()=>playMove("A");
+$("playB").onclick=()=>playMove("B");
+
+drawGrid();
+tick("> Strategic modeling online. 8 strategies loaded.");
+tick("> Tournament grid: standard. A/A pays "+GRID.R+". Try not to think about what A stands for.");
+</script>
+</body>
+</html>
