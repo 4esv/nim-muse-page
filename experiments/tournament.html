@@ -24,7 +24,11 @@
 <meta name="twitter:card" content="summary_large_image">
 <style>
   /* The only styling on this page is the ticker and the columns.
-     Everything else is bare HTML, as homage demands. */
+     Everything else is bare HTML, as homage demands.
+     NOTE: the canvas is declared, not assumed. The portal is dark;
+     this page is white, like the original. */
+  :root { color-scheme: light; }
+  html, body { background:#fff; color:#000; }
   #ticker { background:#000; color:#9a9a9a; font-family:monospace; font-size:12px;
             padding:6px 8px; height:6.5em; overflow:hidden; }
   #ticker div { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }

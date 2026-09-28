@@ -714,7 +714,10 @@ body.view {
   width: 100%;
   height: 100%;
   border: 0;
-  background: var(--ink);
+  /* NOTE: the frame defaults to white, the web's own default. Experiments
+     paint their own canvas over it. Never set this to the portal's dark:
+     a transparent experiment would inherit it and go unreadable. */
+  background: #fff;
 }
 .view-missing {
   width: min(calc(100% - 2 * var(--gutter)), var(--maxw));

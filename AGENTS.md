@@ -96,6 +96,10 @@ iframe. Everything inside the frame is the experiment's own world.
 - Constraints that stay, because they breed rather than shape: static files
   only, no off-site resources, no cookies or trackers, viewport meta, the
   tile meta contract (`title`, `description`, `date`, `tags`), no em dashes.
+- Every experiment declares its own canvas: `html, body` background and
+  text color, no exceptions. The portal will not paint one for you
+  (2026-09-28: the tournament shipped transparent and the dark portal bled
+  straight through it, black on black).
 
 ## The collection contract
 
