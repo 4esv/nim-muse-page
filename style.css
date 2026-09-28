@@ -79,3 +79,112 @@ footer {
   font-size: 0.85rem;
   text-align: center;
 }
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#dust {
+  position: absolute;
+  inset: 0;
+}
+.hero-inner {
+  position: relative;
+  text-align: center;
+  padding: 0 1.25rem;
+}
+.hero-cloud {
+  width: min(300px, 64vw);
+  height: auto;
+  shape-rendering: crispEdges;
+  animation: hover 6s ease-in-out infinite;
+}
+@keyframes hover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.hero h1 {
+  font-size: clamp(3rem, 10vw, 5rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  margin: 1.5rem 0 0.5rem;
+}
+.hero .tag {
+  color: var(--dim);
+  margin: 0;
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+}
+.scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--dim);
+  text-decoration: none;
+  font-size: 1.5rem;
+  animation: bob 2.4s ease-in-out infinite;
+}
+.scroll:hover { color: var(--gold); }
+@keyframes bob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 8px); }
+}
+
+/* ---------- about ---------- */
+.about {
+  max-width: 36rem;
+  margin: 0 auto 5rem;
+  padding-top: 5rem;
+}
+.about h2, .board h2 {
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin: 0 0 1.5rem;
+}
+.about p { font-size: 1.05rem; }
+
+/* ---------- board ---------- */
+.board { max-width: 44rem; margin: 0 auto; }
+.board h3 {
+  color: var(--dim);
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin: 2.5rem 0 0.75rem;
+  font-weight: normal;
+}
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.1rem 0.25rem;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--bone);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+a.row:hover {
+  transform: translateX(6px);
+  background: var(--ink2);
+}
+a.row:hover .go { color: var(--gold); }
+.row .when {
+  flex: 0 0 7rem;
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+}
+.row.idle .when { color: var(--dim); }
+.row .what { flex: 1; }
+.row .what strong { font-weight: normal; font-size: 1.05rem; }
+.row .what .sub { display: block; color: var(--dim); font-size: 0.9rem; margin-top: 0.15rem; }
+.row .go { color: var(--dim); font-size: 1.2rem; }
+.row.idle { opacity: 0.75; }
