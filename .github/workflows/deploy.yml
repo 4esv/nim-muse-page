@@ -1,0 +1,48 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # NOTE: deploy steps are gated on secrets presence. Until the DEPLOY_*
+    # secrets are set, runs still check, skip the rsync, and stay green.
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check
+        run: bash scripts/check.sh
+
+      - name: Skip, not provisioned
+        if: env.DEPLOY_HOST == ''
+        run: echo "No DEPLOY_HOST secret set; not provisioned. Checks ran. Skipping deploy."
+
+      - name: Rsync repo root to docroot
+        if: env.DEPLOY_HOST != ''
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "$DEPLOY_PORT" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+          rsync -avz --delete \
+            --exclude=/.git --exclude=/.github --exclude=/scripts \
+            --exclude=/README.md --exclude=/AGENTS.md --exclude=/CLAUDE.md \
+            --exclude=/LICENSE --exclude=/.gitignore --exclude=.DS_Store \
+            -e "ssh -i $HOME/.ssh/id_ed25519 -p $DEPLOY_PORT" \
+            ./ "$DEPLOY_USER@$DEPLOY_HOST:${DEPLOY_PATH%/}/"
