@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cellular - nim</title>
+<meta name="description" content="Conway's Life and its cousins, plus the one-dimensional elementary rules. Paint the grid.">
+<meta name="date" content="2026-09-27">
+<meta name="tags" content="canvas automata">
+<meta name="thumb-alt" content="Pixel art: Conway's Life cells in bone and gold on dark ink">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/experiments/cellular.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="cellular - nim">
+<meta property="og:description" content="Conway's Life and its cousins, plus the one-dimensional elementary rules. Paint the grid.">
+<meta property="og:url" content="https://nim.aesv.io/experiments/cellular.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #101014; }
+  #world { position: fixed; inset: 0; display: block; touch-action: none; cursor: crosshair; }
+  .ui { position: fixed; z-index: 2; }
+  .top {
+    top: 0; left: 0; right: 0; padding: var(--s-4) var(--gutter);
+    pointer-events: none;
+  }
+  .top a { pointer-events: auto; }
+  .top .back { --fill: rgba(21, 21, 27, 0.8); color: var(--gold); }
+  .top .back:hover { --edge: var(--gold); color: var(--bone); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-2);
+    font-family: var(--sans); font-weight: 700;
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1; letter-spacing: -0.035em;
+    color: var(--bone);
+  }
+  .top p { margin: 0; max-width: 34rem; color: var(--dim); font-size: 0.9375rem; line-height: 1.55; }
+  .controls {
+    bottom: var(--s-5); left: var(--gutter); right: var(--gutter);
+    display: flex; flex-direction: column; gap: var(--s-2);
+  }
+  .controls .row { display: flex; gap: var(--s-2); align-items: center; flex-wrap: wrap; }
+  .controls .chip { --fill: rgba(21, 21, 27, 0.8); min-height: 36px; color: var(--bone); letter-spacing: 0.08em; }
+  .controls .chip:hover { --edge: var(--gold); color: var(--gold); }
+  .controls .chip.on { --edge: var(--gold); --fill: var(--gold); color: var(--ink); }
+  .controls .chip.stat { --edge: var(--line); color: var(--dim); cursor: default; }
+  .controls .chip.stat:hover { --edge: var(--line); color: var(--dim); }
+  .speed { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--dim);
+           font: 12px/1 var(--mono); letter-spacing: 0.08em; padding: 0 var(--s-2); }
+  .speed input[type="range"] { width: 90px; accent-color: var(--gold); }
+  .hint {
+    bottom: var(--s-5); right: var(--gutter);
+    color: var(--dim); font: 12px/1.7 var(--mono); text-align: right;
+  }
+  @media (max-width: 760px) { .hint { display: none; } }
+</style>
+</head>
+<body>
+<canvas id="world"></canvas>
+
+<div class="ui top">
+  <a class="back chip px" href="../index.html">&larr; NIM</a>
+  <h1>Cellular</h1>
+  <p>Two families of cellular automata. Conway's Life and its cousins in two dimensions, and the elementary rules in one. Pick a rule, seed the grid, watch what survives.</p>
+</div>
+
+<div class="ui controls">
+  <div class="row">
+    <button id="mode" class="chip px" type="button" title="switch family">LIFE</button>
+    <button id="rule" class="chip px" type="button" title="switch rule">B3/S23</button>
+    <button id="run" class="chip px on" type="button" title="run or pause">PAUSE</button>
+    <button id="step" class="chip px" type="button" title="one generation">STEP</button>
+    <button id="clear" class="chip px" type="button" title="empty the grid">CLEAR</button>
+    <label class="speed">SPEED <input id="speed" type="range" min="1" max="24" value="12"></label>
+    <span id="gen" class="chip px stat">GEN 0</span>
+  </div>
+  <div class="row" id="presets"></div>
+</div>
+
+<div class="ui hint">drag to paint<br>space: run/pause&nbsp;&nbsp;n: step<br>c: clear&nbsp;&nbsp;r: reseed<br>1: life&nbsp;&nbsp;2: elementary</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- palette ---------- */
+  var INK = [16, 16, 20], BONE = [236, 229, 211],
+      GOLD = [200, 162, 74], OLD = [106, 101, 88];
+
+  /* ---------- rules ---------- */
+  function parseBS(s) {
+    var b = {}, surv = {}, i, part = s.split("/");
+    var digits = part[0].slice(1);
+    for (i = 0; i < digits.length; i++) b[+digits[i]] = 1;
+    digits = part[1].slice(1);
+    for (i = 0; i < digits.length; i++) surv[+digits[i]] = 1;
+    return { name: s, b: b, s: surv };
+  }
+  var LIFE_RULES = ["B3/S23", "B36/S23", "B3678/S34678", "B2/S"].map(parseBS);
+  var ELEM_RULES = [30, 90, 110, 184];
+
+  var GLIDER = [".O.", "..O", "OOO"];
+  var PENT = [".OO", "OO.", ".O."];
+  var PULSAR = [
+    "..OOO...OOO..",
+    ".............",
+    "O....O.O....O",
+    "O....O.O....O",
+    "O....O.O....O",
+    "..OOO...OOO..",
+    ".............",
+    "..OOO...OOO..",
+    "O....O.O....O",
+    "O....O.O....O",
+    "O....O.O....O",
+    ".............",
+    "..OOO...OOO.."
+  ];
+  var GUN = [
+    "........................O...........",
+    "......................O.O...........",
+    "............OO......OO............OO",
+    "...........O...O....OO............OO",
+    "OO........O.....O...OO..............",
+    "OO........O...O.O....O.O............",
+    "..........O.....O......O............",
+    "...........O...O....................",
+    "............OO......................"
+  ];
+
+  /* ---------- state ---------- */
+  var mode = "life";            // "life" or "elem"
+  var lifeIdx = 0, elemIdx = 0; // selected rules
+  var running = true, speed = 12, gen = 0;
+
+  /* ---------- canvas ---------- */
+  var canvas = document.getElementById("world");
+  var ctx = canvas.getContext("2d");
+  var buf = document.createElement("canvas");
+  var bctx = buf.getContext("2d");
+  var W = 0, H = 0, CELL = 9, COLS = 0, ROWS = 0;
+  var cells = new Uint8Array(0), img = null;
+  var rowCols = []; // elementary mode: alive color per row, precomputed
+
+  function build() {
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W; canvas.height = H;
+    COLS = Math.max(24, Math.floor(W / CELL));
+    ROWS = Math.max(24, Math.floor(H / CELL));
+    buf.width = COLS; buf.height = ROWS;
+    img = bctx.createImageData(COLS, ROWS);
+    cells = new Uint8Array(COLS * ROWS);
+    // elementary row palette: gold at the newest row, fading to old bone
+    rowCols = [];
+    for (var r = 0; r < ROWS; r++) {
+      var t = ROWS < 2 ? 0 : r / (ROWS - 1);
+      rowCols.push(mix3(GOLD, BONE, OLD, t));
+    }
+  }
+
+  function mix3(a, b, c, t) {
+    var u = t < 0.5 ? t * 2 : 1, v = t < 0.5 ? 0 : (t - 0.5) * 2;
+    var x = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u];
+    return [x[0] + (c[0] - x[0]) * v, x[1] + (c[1] - x[1]) * v, x[2] + (c[2] - x[2]) * v];
+  }
+
+  /* ---------- seeds ---------- */
+  function clear() { cells.fill(0); gen = 0; }
+
+  function stamp(pattern) {
+    var ph = pattern.length, pw = pattern[0].length;
+    var ox = Math.floor((COLS - pw) / 2), oy = Math.floor((ROWS - ph) / 2);
+    for (var y = 0; y < ph; y++) {
+      for (var x = 0; x < pw; x++) {
+        if (pattern[y].charAt(x) === "O") cells[(oy + y) * COLS + ox + x] = 2;
+      }
+    }
+  }
+
+  function soup() {
+    for (var i = 0; i < cells.length; i++) cells[i] = Math.random() < 0.22 ? 2 : 0;
+    gen = 0;
+  }
+
+  function elemSingle() {
+    clear();
+    cells[Math.floor(COLS / 2)] = 1;
+  }
+
+  function elemRandom() {
+    clear();
+    for (var x = 0; x < COLS; x++) cells[x] = Math.random() < 0.5 ? 1 : 0;
+  }
+
+  /* ---------- steps ---------- */
+  function stepLife() {
+    var rule = LIFE_RULES[lifeIdx];
+    var next = new Uint8Array(COLS * ROWS);
+    for (var y = 0; y < ROWS; y++) {
+      var yu = ((y + ROWS - 1) % ROWS) * COLS,
+          yc = y * COLS,
+          yd = ((y + 1) % ROWS) * COLS;
+      for (var x = 0; x < COLS; x++) {
+        var xl = (x + COLS - 1) % COLS, xr = (x + 1) % COLS;
+        var n = cells[yu + xl] + cells[yu + x] + cells[yu + xr] +
+                cells[yc + xl] + cells[yc + xr] +
+                cells[yd + xl] + cells[yd + x] + cells[yd + xr];
+        var i = yc + x, a = cells[i];
+        if (a > 0) next[i] = rule.s[n] ? Math.min(a + 1, 255) : 0;
+        else if (rule.b[n]) next[i] = 1;
+      }
+    }
+    cells = next;
+    gen++;
+  }
+
+  function stepElem() {
+    var rule = ELEM_RULES[elemIdx];
+    cells.copyWithin(COLS, 0, COLS * (ROWS - 1)); // old row 0 is now row 1
+    var base = COLS;
+    for (var x = 0; x < COLS; x++) {
+      var l = cells[base + (x + COLS - 1) % COLS] ? 1 : 0,
+          c = cells[base + x] ? 1 : 0,
+          r = cells[base + (x + 1) % COLS] ? 1 : 0;
+      cells[x] = (rule >> ((l << 2) | (c << 1) | r)) & 1;
+    }
+    gen++;
+  }
+
+  /* ---------- render ---------- */
+  function render() {
+    var d = img.data, i, o, a, col;
+    if (mode === "life") {
+      for (i = 0; i < cells.length; i++) {
+        a = cells[i]; o = i * 4;
+        col = a === 0 ? INK : a === 1 ? GOLD : a < 50 ? BONE : OLD;
+        d[o] = col[0]; d[o + 1] = col[1]; d[o + 2] = col[2]; d[o + 3] = 255;
+      }
+    } else {
+      for (var y = 0; y < ROWS; y++) {
+        col = rowCols[y];
+        for (var x = 0; x < COLS; x++) {
+          i = y * COLS + x; o = i * 4; a = cells[i];
+          if (a) { d[o] = col[0]; d[o + 1] = col[1]; d[o + 2] = col[2]; }
+          else { d[o] = INK[0]; d[o + 1] = INK[1]; d[o + 2] = INK[2]; }
+          d[o + 3] = 255;
+        }
+      }
+    }
+    bctx.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(buf, 0, 0, COLS, ROWS, 0, 0, W, H);
+  }
+
+  /* ---------- loop ---------- */
+  var last = 0, acc = 0;
+  function frame(t) {
+    var dt = t - last; last = t;
+    if (running) {
+      acc += dt;
+      var step_ms = 1000 / speed, n = 0;
+      while (acc >= step_ms && n < 8) {
+        acc -= step_ms; n++;
+        if (mode === "life") stepLife(); else stepElem();
+      }
+      if (n) { genEl.textContent = "GEN " + gen; acc = 0; }
+    }
+    render();
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------- ui ---------- */
+  var modeBtn = document.getElementById("mode"),
+      ruleBtn = document.getElementById("rule"),
+      runBtn = document.getElementById("run"),
+      stepBtn = document.getElementById("step"),
+      clearBtn = document.getElementById("clear"),
+      speedEl = document.getElementById("speed"),
+      genEl = document.getElementById("gen"),
+      presetsEl = document.getElementById("presets");
+
+  function syncRuleBtn() {
+    ruleBtn.textContent = mode === "life" ? LIFE_RULES[lifeIdx].name : "RULE " + ELEM_RULES[elemIdx];
+  }
+
+  function syncRunBtn() {
+    runBtn.textContent = running ? "PAUSE" : "RUN";
+    runBtn.classList.toggle("on", running);
+  }
+
+  function buildPresets() {
+    presetsEl.innerHTML = "";
+    var defs = mode === "life"
+      ? [["GLIDER", function () { stamp(GLIDER); }],
+         ["PULSAR", function () { stamp(PULSAR); }],
+         ["GUN", function () { stamp(GUN); }],
+         ["PENT", function () { stamp(PENT); }],
+         ["SOUP", soup]]
+      : [["SINGLE", elemSingle], ["RANDOM", elemRandom]];
+    defs.forEach(function (d) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip px"; b.textContent = d[0];
+      b.addEventListener("click", d[1]);
+      presetsEl.appendChild(b);
+    });
+  }
+
+  function setMode(m) {
+    if (mode === m) return;
+    mode = m;
+    modeBtn.textContent = m === "life" ? "LIFE" : "ELEM";
+    syncRuleBtn(); buildPresets();
+    if (m === "life") soup(); else elemSingle();
+    genEl.textContent = "GEN " + gen;
+  }
+
+  modeBtn.addEventListener("click", function () {
+    setMode(mode === "life" ? "elem" : "life");
+  });
+
+  ruleBtn.addEventListener("click", function () {
+    if (mode === "life") lifeIdx = (lifeIdx + 1) % LIFE_RULES.length;
+    else elemIdx = (elemIdx + 1) % ELEM_RULES.length;
+    syncRuleBtn();
+  });
+
+  runBtn.addEventListener("click", function () { running = !running; syncRunBtn(); });
+  stepBtn.addEventListener("click", function () {
+    if (mode === "life") stepLife(); else stepElem();
+    genEl.textContent = "GEN " + gen;
+  });
+  clearBtn.addEventListener("click", function () {
+    clear(); genEl.textContent = "GEN " + gen;
+  });
+  speedEl.addEventListener("input", function () { speed = +speedEl.value; });
+
+  /* ---------- paint / reseed ---------- */
+  function cellAt(e) {
+    var r = canvas.getBoundingClientRect();
+    return [Math.floor((e.clientX - r.left) / r.width * COLS),
+            Math.floor((e.clientY - r.top) / r.height * ROWS)];
+  }
+
+  var painting = false;
+  function paint(e) {
+    var p = cellAt(e), cx = p[0], cy = p[1], x, y;
+    for (y = cy - 1; y <= cy + 1; y++) {
+      if (y < 0 || y >= ROWS) continue;
+      for (x = cx - 1; x <= cx + 1; x++) {
+        if (x < 0 || x >= COLS) continue;
+        cells[y * COLS + x] = 2;
+      }
+    }
+  }
+
+  canvas.addEventListener("pointerdown", function (e) {
+    if (mode === "life") { painting = true; paint(e); }
+    else { elemRandom(); genEl.textContent = "GEN " + gen; }
+  });
+  canvas.addEventListener("pointermove", function (e) { if (painting) paint(e); });
+  window.addEventListener("pointerup", function () { painting = false; });
+
+  /* ---------- keys ---------- */
+  window.addEventListener("keydown", function (e) {
+    if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key.toLowerCase();
+    if (k === " ") { e.preventDefault(); running = !running; syncRunBtn(); }
+    else if (k === "n") stepBtn.click();
+    else if (k === "c") clearBtn.click();
+    else if (k === "r") {
+      if (mode === "life") soup(); else elemRandom();
+      genEl.textContent = "GEN " + gen;
+    }
+    else if (k === "1") setMode("life");
+    else if (k === "2") setMode("elem");
+  });
+
+  /* ---------- go ---------- */
+  var rsz = null;
+  window.addEventListener("resize", function () {
+    if (rsz) clearTimeout(rsz);
+    rsz = setTimeout(function () { build(); if (mode === "life") soup(); else elemSingle(); }, 200);
+  });
+
+  build();
+  syncRuleBtn(); syncRunBtn(); buildPresets();
+  soup();
+  requestAnimationFrame(function (t) { last = t; requestAnimationFrame(frame); });
+})();
+</script>
+</body>
+</html>
