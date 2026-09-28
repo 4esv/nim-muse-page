@@ -5,24 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>drowned bells - nim</title>
 <meta name="description" content="A playable carillon for the drowned village.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../style.css">
 <style>
   html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #101418; }
   #sea { position: fixed; inset: 0; display: block; }
-  .ui { position: fixed; z-index: 2; color: #ece5d3; }
-  .top { top: 0; left: 0; right: 0; padding: 1.25rem 1.5rem; pointer-events: none; }
-  .top a { pointer-events: auto; color: #c8a24a; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.2em; }
-  .top h1 { margin: 0.75rem 0 0.25rem; font-size: 1.6rem; letter-spacing: 0.08em; font-weight: normal; }
-  .top p { margin: 0; color: #8f887a; font-size: 0.9rem; max-width: 34rem; }
-  .controls { bottom: 1.25rem; left: 1.5rem; display: flex; gap: 0.75rem; align-items: center; }
-  .controls button {
-    background: transparent; color: #ece5d3; border: 1px solid #2a2f26;
-    padding: 0.5rem 1rem; font: inherit; font-size: 0.85rem; letter-spacing: 0.15em;
-    cursor: pointer;
+  .ui { position: fixed; z-index: 2; color: var(--bone); }
+  .top {
+    top: 0; left: 0; right: 0; padding: var(--s-4) var(--gutter);
+    pointer-events: none;
   }
-  .controls button:hover { border-color: #c8a24a; color: #c8a24a; }
-  .controls button.on { border-color: #c8a24a; color: #c8a24a; }
-  .hint { bottom: 1.25rem; right: 1.5rem; color: #8f887a; font-size: 0.8rem; text-align: right; }
+  .top a { pointer-events: auto; }
+  .top .back { --fill: rgba(21, 21, 27, 0.8); color: var(--gold); }
+  .top .back:hover { --edge: var(--gold); color: var(--bone); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-2);
+    font-family: var(--sans); font-weight: 700;
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1; letter-spacing: -0.035em;
+  }
+  .top p { margin: 0; max-width: 34rem; color: var(--dim); font-size: 0.9375rem; line-height: 1.55; }
+  .controls { bottom: var(--s-5); left: var(--gutter); display: flex; gap: var(--s-3); align-items: center; }
+  .controls .chip { --fill: rgba(21, 21, 27, 0.8); min-height: 40px; color: var(--bone); letter-spacing: 0.08em; }
+  .controls .chip:hover { --edge: var(--gold); color: var(--gold); }
+  .controls .chip.on { --edge: var(--gold); --fill: var(--gold); color: var(--ink); }
+  .hint {
+    bottom: var(--s-5); right: var(--gutter);
+    color: var(--dim); font: 12px/1.6 var(--mono); text-align: right;
+  }
   @media (max-width: 600px) { .hint { display: none; } }
 </style>
 </head>
@@ -30,13 +39,13 @@
 <canvas id="sea"></canvas>
 
 <div class="ui top">
-  <a href="../index.html">&larr; NIM</a>
+  <a class="back chip px" href="../index.html">&larr; NIM</a>
   <h1>Drowned Bells</h1>
   <p>A carillon for the village <a href="../pieces/week-01.html">week 01</a> found. Legend says its bell still tolls from the depths. Strike the stones.</p>
 </div>
 
 <div class="ui controls">
-  <button id="tide" type="button">TIDE: OFF</button>
+  <button id="tide" class="chip px" type="button">TIDE: OFF</button>
 </div>
 <div class="ui hint">click the stones<br>or keys A&ndash;K</div>
 
