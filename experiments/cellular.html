@@ -22,8 +22,29 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../style.css">
 <style>
+  /* NOTE: sovereign experiment. No shared stylesheet. These tokens were
+     copied from the portal at birth; they are this page's own now.
+     Change them freely. Bauhaus Tuesday, Netscape Wednesday. */
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  .px { --u:2px; --edge:var(--line-2); --fill:var(--ink2); position:relative; isolation:isolate; }
+  .px::before, .px::after { content:""; position:absolute; z-index:-1; pointer-events:none; transition:background-color .16s ease;
+    clip-path:polygon(0 calc(var(--u)*2),var(--u) calc(var(--u)*2),var(--u) var(--u),calc(var(--u)*2) var(--u),calc(var(--u)*2) 0,calc(100% - var(--u)*2) 0,calc(100% - var(--u)*2) var(--u),calc(100% - var(--u)) var(--u),calc(100% - var(--u)) calc(var(--u)*2),100% calc(var(--u)*2),100% calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)),calc(100% - var(--u)*2) calc(100% - var(--u)),calc(100% - var(--u)*2) 100%,calc(var(--u)*2) 100%,calc(var(--u)*2) calc(100% - var(--u)),var(--u) calc(100% - var(--u)),var(--u) calc(100% - var(--u)*2),0 calc(100% - var(--u)*2)); }
+  .px::before { inset:0; background-color:var(--edge); }
+  .px::after { inset:var(--bw); background-color:var(--fill); }
+  .chip { --edge:var(--line-2); --fill:var(--ink2); display:inline-flex; align-items:center; gap:var(--s-2); min-height:36px; padding:0 var(--s-4); border:0; background:none; color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; white-space:nowrap; cursor:pointer; transition:color .16s ease,transform .16s cubic-bezier(.2,.8,.2,1); }
+  .chip:hover { --edge:var(--dim); color:var(--bone); }
+  .chip:active { transform:translateY(1px); }
+  .chip[aria-pressed="true"], .chip.on { --edge:var(--gold); --fill:var(--gold); color:var(--ink); }
+
   html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #101014; }
   #world { position: fixed; inset: 0; display: block; touch-action: none; cursor: crosshair; }
   .ui { position: fixed; z-index: 2; }

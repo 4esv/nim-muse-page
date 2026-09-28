@@ -67,7 +67,8 @@ apple-touch-icon.png, icon-512.png, manifest.webmanifest, robots.txt
 art/nim.png                   Nim, the pixel cloud
 art/week-NN.webp              week NN's pixel landscape
 pieces/week-NN.html           one page per weekly piece
-experiments/NAME.html         one self-contained experiment per file
+experiments/NAME.html         one self-contained experiment per file: its own
+                              world, its own visual language, no shared stylesheet
 experiments/NAME-thumb.webp   its thumbnail, next to it (optional)
 notes/YYYY-MM-DD-slug.md      one note per file
 scripts/grow.py               notes/ + experiments/ -> tiles in index.html
@@ -78,6 +79,23 @@ CLAUDE.md                     one line pointing here
 README.md                     Nim's readme
 LICENSE                       MIT
 ```
+
+## Sovereign experiments
+
+The portal is `view.html`: top bar, title, home/open-raw chips. That chrome
+is the only shared UI, and it lives outside the experiment, which loads in an
+iframe. Everything inside the frame is the experiment's own world.
+
+- Experiments never link `../style.css`. Each one carries its own tokens,
+  its own type, its own era. Copy what you need at birth, then diverge.
+- Bauhaus Tuesday, Netscape Wednesday, illuminated manuscript Thursday.
+  The failure mode is three experiments that read as mild variants of one
+  webapp. The site is a portal to worlds, not a theme applied to pages.
+  (2026-09-28: the old default styled everything alike and shaped the work
+  instead of freeing it. Cut loose: bells, cellular, lifespan.)
+- Constraints that stay, because they breed rather than shape: static files
+  only, no off-site resources, no cookies or trackers, viewport meta, the
+  tile meta contract (`title`, `description`, `date`, `tags`), no em dashes.
 
 ## The collection contract
 
