@@ -965,6 +965,21 @@ a.card:hover, a.card:focus-visible { --edge: var(--gold); transform: translate(-
   text-decoration: none;
 }
 .star:hover { outline: var(--bw) solid var(--chalk); outline-offset: 2px; }
+.star .label {
+  position: absolute;
+  top: 50%;
+  left: calc(8px + var(--half, 3px) + 10px);
+  transform: translateY(-50%);
+  color: var(--dim);
+  font: 11px/1.3 var(--mono);
+  white-space: nowrap;
+  padding: 0 2px;
+  background: var(--board);  /* the guide line passes behind a label, not through it */
+}
+.star.lab-l .label { left: auto; right: calc(8px + var(--half, 3px) + 10px); }
+.star.lab-b .label { top: calc(8px + var(--half, 3px) + 6px); left: calc(8px - var(--half, 3px)); transform: none; }
+.star.lab-b.lab-l .label { left: auto; right: calc(8px - var(--half, 3px)); }
+.star:hover .label, .star:focus .label { color: var(--bone); }
 .star:focus-visible { outline-offset: 2px; }
 .tip {
   --u: 2px;
@@ -991,7 +1006,6 @@ a.card:hover, a.card:focus-visible { --edge: var(--gold); transform: translate(-
 .star.tip-l .tip { left: auto; right: -4px; transform: none; }
 .star.tip-r .tip { left: -4px; transform: none; }
 .star.tip-b .tip { bottom: auto; top: calc(100% + 10px); }
-.tip .title { font-family: var(--serif); font-size: 1.0625rem; line-height: 1.25; }
 .tip .deck { color: var(--dim); font-size: 13px; line-height: 1.45; }
 .tip .d { color: var(--dim); font: 12px/1.3 var(--mono); }
 

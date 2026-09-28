@@ -335,6 +335,9 @@
       " drawn in chalk; the same links are listed after it");
     var ul = el("ul", "stars");
     var pts = place(items);
+    // NOTE: newest 12px, the next two 9px, the rest 6px. Squares, no glow.
+    function sizeOf(i) { return i === 0 ? 12 : (i <= 2 ? 9 : 6); }
+    var links = [];
     items.forEach(function (it, i) {
       var p = pts[i];
       var li = el("li");
@@ -343,17 +346,61 @@
       var a = el("a", "star");
       a.href = it.href;
       a.setAttribute("aria-label", it.title);
+      a.style.setProperty("--half", Math.floor(sizeOf(i) / 2) + "px");
+      // NOTE: the label is always on; the tip only adds deck and date.
+      a.appendChild(el("span", "label", it.title));
       var tip = el("span", "tip px");
-      tip.appendChild(el("span", "title", it.title));
       if (it.deck) tip.appendChild(el("span", "deck", it.deck));
       tip.appendChild(el("span", "d", it.date));
       if (p.x > 0.62) a.classList.add("tip-l");
       else if (p.x < 0.38) a.classList.add("tip-r");
       if (p.y < 0.4) a.classList.add("tip-b");
       a.appendChild(tip);
+      // NOTE: slide the tip sideways so it never clips at the frame's edge.
+      var fit = function () {
+        tip.style.marginLeft = "0px";
+        var f = frame.getBoundingClientRect(), r = tip.getBoundingClientRect(), dx = 0;
+        if (r.right > f.right - 4) dx = f.right - 4 - r.right;
+        if (r.left + dx < f.left + 4) dx = f.left + 4 - r.left;
+        tip.style.marginLeft = Math.round(dx) + "px";
+      };
+      a.addEventListener("pointerenter", fit);
+      a.addEventListener("focus", fit);
       li.appendChild(a);
       ul.appendChild(li);
+      links.push(a);
     });
+
+    // NOTE: labels sit 10px right of their star. In item order, each takes the
+    // first spot that stays inside the box and clears the labels before it:
+    // right, left, below, below-left. Inside the box beats clearing others.
+    var SPOTS = ["", "lab-l", "lab-b", "lab-b lab-l"];
+    function setSpot(a, spot) {
+      a.classList.remove("lab-l", "lab-b");
+      if (spot) spot.split(" ").forEach(function (c) { a.classList.add(c); });
+    }
+    function layoutLabels() {
+      var o = pan.getBoundingClientRect();
+      var placed = [];
+      links.forEach(function (a) {
+        var lab = a.querySelector(".label");
+        var best = null, inside = null;
+        for (var k = 0; k < SPOTS.length; k++) {
+          setSpot(a, SPOTS[k]);
+          var r = lab.getBoundingClientRect();
+          var b = { l: r.left - o.left, r: r.right - o.left, t: r.top - o.top, b: r.bottom - o.top };
+          var fits = b.l >= 4 && b.r <= W - 4 && b.t >= 4 && b.b <= H - 4;
+          var clear = placed.every(function (q) { return b.r <= q.l || b.l >= q.r || b.b <= q.t || b.t >= q.b; });
+          if (fits && inside === null) inside = k;
+          if (fits && clear) { best = k; placed.push(b); break; }
+        }
+        if (best === null) {
+          setSpot(a, SPOTS[inside === null ? 0 : inside]);
+          var r2 = lab.getBoundingClientRect();
+          placed.push({ l: r2.left - o.left, r: r2.right - o.left, t: r2.top - o.top, b: r2.bottom - o.top });
+        }
+      });
+    }
     pan.appendChild(canvas);
     pan.appendChild(ul);
     frame.appendChild(pan);
@@ -395,18 +442,19 @@
       bg = [];
       var r2 = prng(fnv("nim sky " + noun));
       var n = Math.min(240, Math.floor(W * H / 5000));
-      for (var j = 0; j < n; j++) bg.push(Math.floor(r2() * W), Math.floor(r2() * H));
+      for (var j = 0; j < n; j++) bg.push(Math.floor(r2() * W), Math.floor(r2() * H), r2() < 0.15 ? 3 : 2);
     }
     function draw(progress) {
       if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
       ctx.fillStyle = "rgba(236,229,211,0.25)";
-      for (var j = 0; j < bg.length; j += 2) ctx.fillRect(bg[j], bg[j + 1], 2, 2);
-      ctx.fillStyle = CHALK;
+      for (var j = 0; j < bg.length; j += 3) ctx.fillRect(bg[j], bg[j + 1], bg[j + 2], bg[j + 2]);
+      // NOTE: the line is guide chalk, drawn before the stars so it sits behind them.
+      ctx.fillStyle = CHALK_DIM;
       var upto = Math.floor(path.length / 2 * progress) * 2;
       for (var k = 0; k < upto; k += 2) ctx.fillRect(path[k], path[k + 1], 1, 1);
       for (var i = pts.length - 1; i >= 0; i--) {
-        var size = i === 0 ? 4 : (i <= 2 ? 3 : 2);
+        var size = sizeOf(i);
         ctx.fillStyle = i === 0 ? BONE : (i <= 2 ? CHALK : CHALK_DIM);
         var c = at(i);
         ctx.fillRect(c[0] - Math.floor(size / 2), c[1] - Math.floor(size / 2), size, size);
@@ -414,6 +462,7 @@
     }
     function start() {
       measure();
+      layoutLabels();
       if (still) { draw(1); return; }
       var t0 = null;
       function step(t) {
@@ -429,7 +478,7 @@
       clearTimeout(timer);
       timer = setTimeout(function () {
         if (!frame.offsetParent) return;
-        measure(); draw(1); setPan(px, py);
+        measure(); draw(1); layoutLabels(); setPan(px, py);
       }, 120);
     });
 
