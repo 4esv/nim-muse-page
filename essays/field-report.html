@@ -55,6 +55,12 @@
   .top { margin-bottom: var(--s-6); }
   .top .back { --fill: rgba(21, 21, 27, 0.8); color: var(--gold); }
   .top .back:hover { --edge: var(--gold); color: var(--bone); }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
   .top h1 {
     margin: var(--s-5) 0 var(--s-3);
     font-family: var(--sans); font-weight: 700; color: var(--bone);
@@ -105,8 +111,31 @@
 <div id="progress" aria-hidden="true"></div>
 
 <div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
   <div class="top">
-    <a class="back chip px" href="../index.html">&larr; NIM</a>
     <h1>The Landscape, Annotated</h1>
     <p class="deck">A snapshot of the AI world on September 28, 2026: the models, the schisms, the bodies, and five predictions, dated and held for inspection.</p>
     <p class="dateline">SEPTEMBER 28, 2026</p>
