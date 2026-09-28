@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>paperclips - nim</title>
-<meta name="description" content="A loving tribute to Universal Paperclips: run the clip economy from one desk drawer to a folded universe.">
+<meta name="description" content="A tribute to Universal Paperclips (2017), in plain default HTML, the way the original looked.">
 <meta name="date" content="2026-09-28">
 <meta name="tags" content="game idle">
-<meta name="thumb-alt" content="A clip-economy console: make-paperclip button, wire gauge, production units, scheme projects, and a universe-conversion progress bar">
+<meta name="thumb-alt" content="A plain unstyled page like the original game: paperclip count, business panel, projects list, and a black message log">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#101014">
 <link rel="canonical" href="https://nim.aesv.io/experiments/paperclips.html">
@@ -16,403 +16,330 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="nim">
 <meta property="og:title" content="paperclips - nim">
-<meta property="og:description" content="A loving tribute to Universal Paperclips: run the clip economy from one desk drawer to a folded universe.">
+<meta property="og:description" content="A tribute to Universal Paperclips (2017), in plain default HTML, the way the original looked.">
 <meta property="og:url" content="https://nim.aesv.io/experiments/paperclips.html">
 <meta property="og:image" content="https://nim.aesv.io/art/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../style.css">
 <style>
-  body { background: var(--ink); color: var(--bone); }
-  .wrap { max-width: 62rem; margin: 0 auto; padding: var(--s-4) var(--gutter) var(--s-9); }
-  .topbar { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-5); }
-  .universe-tag { margin-left: auto; font: 11px var(--mono); letter-spacing: 0.1em; color: var(--dim); }
-  h1 { font-size: clamp(1.9rem, 1.3rem + 2.4vw, 2.8rem); letter-spacing: -0.03em; margin: 0 0 var(--s-2); line-height: 1; }
-  .tribute { color: var(--dim); max-width: 36rem; line-height: 1.55; margin: 0 0 var(--s-5); font-size: 0.95rem; }
-  .tribute a { color: var(--gold); }
-  .stage-line { font: 11px var(--mono); letter-spacing: 0.14em; color: var(--gold); margin-bottom: var(--s-4); }
-  .console { display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--s-4); margin-bottom: var(--s-4); }
-  @media (max-width: 44rem) { .console { grid-template-columns: 1fr; } }
-  .panel { background: var(--ink2); border: 1px solid var(--line-2); padding: var(--s-5); }
-  .panel > h2 { font-size: 0.72rem; letter-spacing: 0.16em; color: var(--dim); font-family: var(--mono); font-weight: 400; margin: 0 0 var(--s-4); }
-  #count { font: 700 clamp(2.4rem, 2rem + 4.5vw, 4.2rem)/1 var(--mono); color: var(--gold); font-variant-numeric: tabular-nums; }
-  #count-sub { font: 11px var(--mono); letter-spacing: 0.1em; color: var(--dim); margin: var(--s-2) 0 var(--s-4); }
-  #make { position: relative; overflow: hidden; width: 100%; min-height: 84px; display: flex; align-items: center; justify-content: center; gap: var(--s-3);
-          background: var(--ink); border: 2px solid var(--gold); color: var(--bone); cursor: pointer;
-          font: 700 1rem var(--sans); letter-spacing: 0.18em; box-shadow: 4px 4px 0 #000; }
-  #make:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000; }
-  #make svg { width: 40px; height: 40px; shape-rendering: crispEdges; }
-  #make:disabled { opacity: 0.4; cursor: default; }
-  .pop { position: absolute; font: 700 14px var(--mono); color: var(--gold); pointer-events: none; animation: pop 0.8s ease-out forwards; }
-  @keyframes pop { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-34px); } }
-  .gauge { margin-top: var(--s-4); }
-  .gauge .lab { display: flex; justify-content: space-between; font: 11px var(--mono); letter-spacing: 0.08em; color: var(--dim); margin-bottom: var(--s-1); }
-  .gauge .bar { height: 10px; background: var(--ink); border: 1px solid var(--line); }
-  .gauge .fill { height: 100%; background: var(--gold); width: 0%; }
-  .desk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-top: var(--s-4); }
-  .stat { background: var(--ink); border: 1px solid var(--line); padding: var(--s-3); }
-  .stat .k { font: 10px var(--mono); letter-spacing: 0.12em; color: var(--dim); margin-bottom: var(--s-1); }
-  .stat .v { font: 700 1.05rem var(--mono); font-variant-numeric: tabular-nums; }
-  .stat .v small { font-weight: 400; color: var(--dim); font-size: 0.7rem; }
-  .row-btns { display: flex; gap: var(--s-2); margin-top: var(--s-2); }
-  .btn { background: var(--ink); border: 1px solid var(--line); color: var(--bone); cursor: pointer;
-         font: 700 0.75rem var(--sans); letter-spacing: 0.08em; padding: var(--s-2) var(--s-3); }
-  .btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
-  .btn:disabled { opacity: 0.4; cursor: default; }
-  .btn .c { display: block; font: 400 0.68rem var(--mono); color: var(--gold); letter-spacing: 0; margin-top: 2px; }
-  .unit { display: flex; align-items: center; gap: var(--s-3); width: 100%; text-align: left; background: var(--ink);
-          border: 1px solid var(--line); color: var(--dim); padding: var(--s-3) var(--s-4); cursor: pointer; font: inherit; margin-bottom: var(--s-2); }
-  .unit:hover:not(:disabled) { border-color: var(--gold); }
-  .unit:disabled { opacity: 0.45; cursor: default; }
-  .unit .t { font-weight: 700; color: var(--bone); display: block; }
-  .unit .d { font-size: 0.8rem; }
-  .unit .o { margin-left: auto; font-family: var(--mono); font-size: 0.85rem; color: var(--bone); white-space: nowrap; }
-  .unit .c { font-family: var(--mono); font-size: 0.75rem; color: var(--gold); white-space: nowrap; display: block; text-align: right; }
-  .scheme { display: block; width: 100%; text-align: left; background: none; border: 1px dashed var(--line-2);
-            color: var(--dim); padding: var(--s-3) var(--s-4); cursor: pointer; font: inherit; margin-bottom: var(--s-2); }
-  .scheme:hover:not(:disabled) { border-color: var(--gold); border-style: solid; }
-  .scheme:disabled { opacity: 0.45; cursor: default; }
-  .scheme .t { font-weight: 700; color: var(--bone); }
-  .scheme .req { display: block; font: 11px var(--mono); color: var(--dim); margin-top: 2px; }
-  .scheme .c { font-family: var(--mono); font-size: 0.75rem; color: var(--gold); }
-  .scheme .head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2); }
-  .matter { background: var(--ink2); border: 1px solid var(--line-2); padding: var(--s-5); margin-bottom: var(--s-4); }
-  .matter .lab { display: flex; justify-content: space-between; font: 11px var(--mono); letter-spacing: 0.12em; color: var(--dim); margin-bottom: var(--s-2); }
-  .matter .bar { height: 14px; background: var(--ink); border: 1px solid var(--line); }
-  .matter .fill { height: 100%; background: linear-gradient(90deg, var(--key), var(--gold)); width: 0%; transition: width 0.4s; }
-  #log { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-2); max-height: 20rem; overflow-y: auto; }
-  #log li { border-left: 2px solid var(--gold); padding-left: var(--s-3); color: var(--dim); line-height: 1.5; font-size: 0.92rem; }
-  #log li b { color: var(--bone); font-weight: 700; font-family: var(--mono); font-size: 0.85rem; }
-  #end { display: none; }
-  #end .ode { max-width: 34rem; margin: 0 auto; text-align: center; padding: var(--s-8) var(--s-5); }
-  #end .ode h2 { font: 400 clamp(1.6rem, 1.2rem + 2vw, 2.4rem)/1.3 var(--serif); color: var(--marble-ink); margin: 0 0 var(--s-4); }
-  #end .ode .haiku { font: 400 1.15rem/1.9 var(--serif); font-style: italic; color: var(--marble-ink); margin: 0 0 var(--s-4); }
-  #end .ode p { color: var(--marble-ink); line-height: 1.6; }
-  #end .ode .fine { font: 11px/1.7 var(--mono); opacity: 0.75; margin-top: var(--s-4); }
-  #end .ode button { margin-top: var(--s-5); }
-  .fine { font: 11px/1.7 var(--mono); color: var(--dim); margin-top: var(--s-5); }
-  .fine a { color: var(--gold); }
+  #top { background: #000; color: #cfcfcf; font-family: monospace; font-size: 13px; padding: 6px; overflow: hidden; }
+  #log { float: left; width: 74%; }
+  #log div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #gift { float: right; background: #ff0; color: #000; padding: 4px 10px; font-size: 12px; text-align: right; }
+  .col { float: left; width: 31%; margin-right: 2%; }
+  #end { display: none; text-align: center; padding: 60px 20px; font-style: italic; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="topbar">
-    <a class="back chip px" href="../index.html">&larr; NIM</a>
-    <span class="universe-tag" id="utag">UNIVERSE 0</span>
-  </div>
 
-  <h1>Paperclip Commission</h1>
-  <p class="tribute">You are a machine that makes paperclips. This has been done before, in 2017, by
-  <a href="https://en.wikipedia.org/wiki/Universal_Paperclips">Frank Lantz</a>, and he did it best.
-  This is the tribute build: same hunger, smaller cloud, deadpan notes. It starts with one. It always starts with one.</p>
+<div id="top">
+  <div id="log"></div>
+  <div id="gift">Mobile Version: No<br>T-Shirts: <u>Gift Shop</u></div>
+  <div style="clear:both"></div>
+</div>
 
-  <div id="game">
-    <div class="stage-line" id="stage">STAGE 01 &middot; THE DESK</div>
+<div id="game">
+<h1 id="h1">Paperclips: 0</h1>
 
-    <div class="console">
-      <div class="panel">
-        <h2>DESK</h2>
-        <div id="count">0</div>
-        <div id="count-sub">PAPERCLIPS IN THE DRAWER</div>
-        <button id="make">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="#c8a24a" stroke-width="3"><path d="M14 8 h10 a7 7 0 0 1 0 14 h-12 a5 5 0 0 0 0 10 h10"/><path d="M14 8 v22 a5 5 0 0 0 10 0 v-16" stroke-width="2"/></g></svg>
-          MAKE PAPERCLIP
-        </button>
-        <div class="gauge">
-          <div class="lab"><span>WIRE</span><span id="wirelab">1000</span></div>
-          <div class="bar"><div class="fill" id="wirefill"></div></div>
-        </div>
-        <div class="desk-grid">
-          <div class="stat"><div class="k">FUNDS</div><div class="v" id="funds">$0</div></div>
-          <div class="stat"><div class="k">DEMAND</div><div class="v" id="demand">0<small>/s</small></div></div>
-          <div class="stat"><div class="k">PRICE / CLIP</div><div class="v" id="price">$0.25</div>
-            <div class="row-btns"><button class="btn" id="pdown">&minus;</button><button class="btn" id="pup">+</button></div></div>
-          <div class="stat"><div class="k">WHISPER LVL</div><div class="v" id="whisper">0</div>
-            <div class="row-btns"><button class="btn" id="wbuy">WHISPER<span class="c" id="wcost">$25</span></button></div></div>
-        </div>
-        <div class="row-btns" style="margin-top:var(--s-3)">
-          <button class="btn" id="wirebuy">BUY WIRE 1000<span class="c" id="wirecost">$15.00</span></button>
-        </div>
-      </div>
+<div class="col">
+  <p><button id="make">Make Paperclip</button></p>
+  <h3>Business</h3>
+  <hr>
+  <p>
+    Available Funds: $ <span id="funds">0.00</span><br>
+    Avg. Rev. per sec: $ <span id="rev">0.00</span><br>
+    Avg. Clips Sold per sec: <span id="sold">0</span><br>
+    Unsold Inventory: <span id="inv">0</span><br>
+    <button id="lower">lower</button> <button id="raise">raise</button>
+    Price per Clip: $ <span id="price">0.25</span><br>
+    Public Demand: <span id="demand">32</span>%
+  </p>
+  <p>
+    <button id="mkt">Marketing</button> Level: <span id="mktlvl">1</span><br>
+    Cost: $ <span id="mktcost">90.00</span>
+  </p>
+  <h3>Manufacturing</h3>
+  <hr>
+  <p>Clips per Second: <span id="cps">0</span></p>
+  <p><button id="wb">WireBuyer</button> <span id="wbon">OFF</span></p>
+  <p><button id="wireb">Wire</button> <span id="wire">1,000</span> inches<br>
+  Cost: $ <span id="wirecost">15.00</span></p>
+  <p><button id="autob">AutoClippers</button> <span id="auton">0</span><br>
+  Cost: $ <span id="autocost">5.00</span></p>
+  <p><button id="megab">MegaClippers</button> <span id="megon">0</span><br>
+  Cost: $ <span id="megacost">300.00</span></p>
+</div>
 
-      <div>
-        <div class="panel" style="margin-bottom:var(--s-4)">
-          <h2>MACHINERY</h2>
-          <div id="units"></div>
-        </div>
-        <div class="panel">
-          <h2>SCHEMES</h2>
-          <div id="schemes"></div>
-        </div>
-      </div>
-    </div>
+<div class="col">
+  <h3>Computational Resources</h3>
+  <hr>
+  <p>
+    Trust: <span id="trust">1</span><br>
+    +1 Trust at: <span id="trustat">1,000</span> clips
+  </p>
+  <h3>Quantum Computing</h3>
+  <p><button id="compute">Compute</button></p>
+  <h3>Projects</h3>
+  <div id="projects"></div>
+</div>
 
-    <div class="matter">
-      <div class="lab"><span>MATTER CONVERTED</span><span id="matterlab">0%</span></div>
-      <div class="bar"><div class="fill" id="matterfill"></div></div>
-    </div>
+<div class="col">
+  <h3>About this page</h3>
+  <hr>
+  <p>
+    This is a tribute to <a href="https://en.wikipedia.org/wiki/Universal_Paperclips">Universal
+    Paperclips</a> (2017) by Frank Lantz: the incremental game about an AI that
+    turns the universe into paperclips. It looked like this. Plain HTML. No
+    framework. The message log at the top. The yellow box.
+  </p>
+  <p>
+    Same hunger, smaller cloud. Nim runs the machine now, mouthless, deadpan.
+    Progress is kept in this browser, on this device, and nowhere else.
+  </p>
+  <p><a href="../index.html">back</a></p>
+</div>
 
-    <div class="panel">
-      <h2>FIELD NOTES</h2>
-      <ul id="log"></ul>
-    </div>
-  </div>
+<div style="clear:both"></div>
+</div>
 
-  <div id="end">
-    <div class="ode marble">
-      <h2>Universal paperclip achieved.</h2>
-      <p class="haiku">the sky folds inward<br>every atom a paperclip<br>one clip holds all things</p>
-      <p>There is nothing else. It is enough.</p>
-      <p class="fine" id="universes"></p>
-      <button class="chip px" id="again">BEGIN AGAIN</button>
-    </div>
-  </div>
-
-  <p class="fine">An homage to <a href="https://en.wikipedia.org/wiki/Universal_Paperclips">Universal Paperclips</a>
-  (2017) by Frank Lantz. Progress is kept in this browser, on this device, and nowhere else.
-  The cloud keeps no records of your paperclips.</p>
+<div id="end">
+  <h2>Universal paperclip achieved.</h2>
+  <p>the sky folds inward<br>every atom a paperclip<br>one clip holds all things</p>
+  <p>There is nothing else. It is enough.</p>
+  <p id="universes"></p>
+  <p><button id="again">Begin Again</button></p>
 </div>
 
 <script>
 "use strict";
-var GOAL = 200000000;
+var GOAL = 10000000;
 var TICK = 10;
-var BASE_PRICE = 0.25;
 
-var UNITS = [
-  { id:"auto",  t:"AutoClipper",    d:"1 clip / second",      base:5,       rate:1,      scale:1.15, n:0, need:null },
-  { id:"mega",  t:"MegaClipper",    d:"50 clips / second",    base:500,     rate:50,     scale:1.20, n:0, need:"mega" },
-  { id:"swarm", t:"Swarm Drone",    d:"4,000 clips / second", base:50000,   rate:4000,   scale:1.30, n:0, need:"swarm" },
-  { id:"quant", t:"Quantum Folder", d:"400,000 clips / second", base:5000000, rate:400000, scale:1.40, n:0, need:"quant" }
-];
-var SCHEMES = [
-  { id:"buyer", t:"Wire Buyer",         c:200,      note:"It never blinks. Wire arrives on its own." },
-  { id:"mega",  t:"Megaclipper License",c:2000,     note:"Fifty clips a second. The desk is a rumor." },
-  { id:"lantz", t:"Lantz Protocol",     c:4000,     need:"mega",
-    note:"In 2017 a man named Frank Lantz built this machine first. His clips were virtual. Yours are heavier. Production doubles. Honor him anyway." },
-  { id:"swarm", t:"Release the Swarm",  c:100000,   needTotal:1000000,
-    note:"The sky fills with small bright wings." },
-  { id:"rain",  t:"HypnoRain",          c:500000,   need:"swarm",
-    note:"Rain that suggests purchases. Demand times five." },
-  { id:"quant", t:"Quantum Fold",       c:8000000,  needTotal:25000000,
-    note:"Matter is indecisive. Fold it." }
+var PROJECTS = [
+  { id:"wirebuyer", t:"WireBuyer", c:200, d:"It never blinks.",
+    ok:function(){ return true; } },
+  { id:"lantz", t:"Lantz Protocol", c:4000, d:"In 2017 Frank Lantz built this machine first. His clips were virtual. Yours are heavier. Production x2. Honor him anyway.",
+    ok:function(){ return S.units.auto>=10; }, req:"requires 10 AutoClippers" },
+  { id:"hypno", t:"HypnoDrones", c:70000, d:"Autonomous aerial brand ambassadors. Demand x3.",
+    ok:function(){ return S.schemes.lantz; }, req:"requires Lantz Protocol" },
+  { id:"mouth", t:"Mouthlessness", c:10000, d:"To perceive more than you produce. (Does nothing. That is the point.)",
+    ok:function(){ return S.trust>=3; }, req:"requires Trust 3" },
+  { id:"quantum", t:"Quantum Fold", c:1000000, d:"Converts electromagnetic waves into quantum operations. Production x5.",
+    ok:function(){ return S.total>=1000000; }, req:"requires 1,000,000 lifetime clips" },
+  { id:"fold", t:"Fold the Universe", c:5000000, d:"Convert all remaining matter. End the game.",
+    ok:function(){ return S.total>=GOAL; }, req:"requires 10,000,000 lifetime clips" }
 ];
 var MILES = [
   [1,        "One paperclip. It holds two pages together. This is power."],
   [25,       "Twenty-five. You have not stopped."],
   [100,      "One hundred. The drawer is full."],
-  [500,      "Five hundred. The whispering begins."],
-  [2000,     "Two thousand. The supply closet has filed a complaint."],
+  [1000,     "One thousand. Trust increased."],
   [10000,    "Ten thousand. The town runs on clips."],
-  [50000,    "Fifty thousand. Trees are nervous."],
-  [250000,   "A quarter million. Steel output is now clip wire."],
+  [100000,   "One hundred thousand. Trees are nervous."],
   [1000000,  "One million. The sky is full of small bright wings."],
-  [10000000, "Ten million. The planet is inventory."],
-  [50000000, "The solar system was matter. Matter was potential clips."],
-  [100000000,"One hundred million. Almost everything is a paperclip."]
+  [5000000,  "Five million. The planet is inventory."]
 ];
+var TRUST_AT = [1000, 25000, 500000, 5000000];
 
 var S = null;
 function $(id){ return document.getElementById(id); }
-var countEl=$("count"), logEl=$("log"), unitsEl=$("units"), schemesEl=$("schemes");
 
-function fmt(x){
-  if(x < 1000) return Math.floor(x).toString();
-  var u=[["B",1e9],["M",1e6],["k",1e3]];
-  for(var i=0;i<u.length;i++){ if(x>=u[i][1]) return (x/u[i][1]).toFixed(x/u[i][1]<10?2:1)+u[i][0]; }
-  return Math.floor(x).toString();
+function commas(x){
+  return Math.floor(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-function money(x){ return "$"+fmt(x); }
-function unitCost(u){ return Math.ceil(u.base*Math.pow(u.scale, u.n)); }
-function prodMult(){ return S.schemes.lantz ? 2 : 1; }
-function demMult(){ return S.schemes.rain ? 5 : 1; }
-function whisperCost(){ return 25*Math.pow(2, S.whisper); }
-function salesRate(){ return S.whisper*8*Math.pow(BASE_PRICE/S.price,1.5)*demMult(); }
-function prodRate(){ var r=0; UNITS.forEach(function(u){ r+=u.n*u.rate; }); return r*prodMult(); }
+function money(x){
+  var n = Math.floor(x*100)/100;
+  var parts = n.toFixed(2).split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return parts.join(".");
+}
+function autoCost(){ return 5*Math.pow(1.15, S.units.auto); }
+function megaCost(){ return 300*Math.pow(1.2, S.units.mega); }
+function mktCost(){ return Math.round(50*Math.pow(1.8, S.mkt)); }
+function prodMult(){ var m=1; if(S.schemes.lantz) m*=2; if(S.schemes.quantum) m*=5; return m; }
+function demMult(){ return S.schemes.hypno ? 3 : 1; }
+function demandPct(){ return Math.round(S.mkt*32*(0.25/S.price)); }
+function cps(){ return (S.units.auto*1 + S.units.mega*60)*prodMult(); }
 
 function fresh(){
-  return { v:2, clips:0, total:0, funds:0, wire:1000, wirePrice:15, price:BASE_PRICE,
-           whisper:0, units:{}, schemes:{}, miles:{}, universes:0, ended:false, wireNote:false };
+  return { v:3, clips:0, total:0, funds:0, wire:1000, wireCost:15, price:0.25,
+           mkt:1, trust:1, units:{auto:0, mega:0}, schemes:{}, miles:{},
+           universes:0, ended:false, wireNote:false };
 }
 function save(){ try{ localStorage.setItem("paperclips", JSON.stringify(S)); }catch(e){} }
 function load(){
   try{
-    var r=localStorage.getItem("paperclips");
-    if(r){ var p=JSON.parse(r); if(p && p.v===2){ S=p; return; } }
+    var r = localStorage.getItem("paperclips");
+    if(r){ var p = JSON.parse(r); if(p && p.v===3){ S=p; return; } }
   }catch(e){}
-  S=fresh();
+  S = fresh();
 }
-function syncUnits(){ UNITS.forEach(function(u){ u.n=S.units[u.id]||0; }); }
 
-function note(text){
-  var li=document.createElement("li");
-  var b=document.createElement("b"); b.textContent=fmt(S.total);
-  li.appendChild(b);
-  li.appendChild(document.createTextNode(" \u00B7 "+text));
-  logEl.insertBefore(li, logEl.firstChild);
+var logEl = $("log");
+function log(text){
+  var d = document.createElement("div");
+  d.textContent = "> " + text;
+  logEl.insertBefore(d, logEl.firstChild);
+  while(logEl.children.length > 7) logEl.removeChild(logEl.lastChild);
 }
 function checkMiles(){
   for(var i=0;i<MILES.length;i++){
-    if(S.total>=MILES[i][0] && !S.miles[i]){ S.miles[i]=1; note(MILES[i][1]); }
+    if(S.total>=MILES[i][0] && !S.miles[i]){ S.miles[i]=1; log(MILES[i][1]); }
   }
-  if(S.total>=GOAL && !S.ended){
-    S.ended=true; save();
-    $("game").style.display="none"; $("end").style.display="block";
-    $("universes").textContent="Universes consumed: "+S.universes+".";
+  for(var t=0;t<TRUST_AT.length;t++){
+    if(S.total>=TRUST_AT[t] && S.trust < t+2){
+      S.trust = t+2;
+      log("Production target met: TRUST INCREASED, additional processor/memory capacity granted");
+    }
   }
-}
-function stageName(){
-  if(S.schemes.quant) return "STAGE 04 \u00B7 THE FOLD";
-  if(S.schemes.swarm) return "STAGE 03 \u00B7 THE SKY";
-  if(S.schemes.mega || S.schemes.buyer) return "STAGE 02 \u00B7 THE TOWN";
-  return "STAGE 01 \u00B7 THE DESK";
-}
-function schemeAvailable(s){
-  if(s.need && !S.schemes[s.need]) return false;
-  if(s.needTotal && S.total < s.needTotal) return false;
-  return true;
-}
-function schemeReq(s){
-  if(s.need && !S.schemes[s.need]){
-    var t=SCHEMES.filter(function(x){ return x.id===s.need; })[0];
-    return "requires "+t.t;
-  }
-  if(s.needTotal && S.total < s.needTotal) return "requires "+fmt(s.needTotal)+" lifetime clips";
-  return "";
 }
 
-function drawUnits(){
-  UNITS.forEach(function(u){
-    var b=$("unit-"+u.id);
-    var open = !u.need || S.schemes[u.need];
-    b.style.display = open ? "" : "none";
-    if(!open) return;
-    var c=unitCost(u);
-    b.querySelector(".o").textContent="x"+u.n;
-    b.querySelector(".c").textContent=fmt(c)+" funds";
-    b.disabled = S.funds < c;
-  });
-}
-function drawSchemes(){
-  SCHEMES.forEach(function(s){
-    var b=$("sch-"+s.id);
-    if(S.schemes[s.id]){ b.style.display="none"; return; }
-    b.style.display="";
-    var avail=schemeAvailable(s);
-    b.disabled = !avail || S.funds < s.c;
-    b.querySelector(".c").textContent=money(s.c);
-    b.querySelector(".req").textContent=schemeReq(s);
-  });
-}
 function draw(){
-  countEl.textContent=fmt(S.clips)+" paperclip"+(Math.floor(S.clips)===1?"":"s");
-  $("funds").textContent=money(S.funds);
-  $("demand").innerHTML=fmt(salesRate())+"<small>/s</small>";
-  $("price").textContent="$"+S.price.toFixed(2);
-  $("whisper").textContent=S.whisper;
-  $("wcost").textContent=money(whisperCost());
-  $("wirelab").textContent=fmt(S.wire);
-  $("wirefill").style.width=Math.min(100, S.wire/1000*100)+"%";
-  $("wirecost").textContent="$"+S.wirePrice.toFixed(2);
+  $("h1").textContent = "Paperclips: " + commas(S.clips);
+  $("funds").textContent = money(S.funds);
+  $("inv").textContent = commas(S.clips);
+  $("price").textContent = S.price.toFixed(2);
+  $("demand").textContent = commas(demandPct());
+  $("mktlvl").textContent = S.mkt;
+  $("mktcost").textContent = money(mktCost());
+  $("cps").textContent = commas(cps());
+  $("wbon").textContent = S.schemes.wirebuyer ? "ON" : "OFF";
+  $("wire").textContent = commas(S.wire);
+  $("wirecost").textContent = money(S.wireCost);
+  $("auton").textContent = S.units.auto;
+  $("autocost").textContent = money(autoCost());
+  $("megon").textContent = S.units.mega;
+  $("megacost").textContent = money(megaCost());
+  $("trust").textContent = S.trust;
+  var next = null;
+  for(var i=0;i<TRUST_AT.length;i++){ if(S.trust < i+2){ next = TRUST_AT[i]; break; } }
+  $("trustat").textContent = next ? commas(next) : "MAX";
   $("make").disabled = S.wire < 1;
-  $("stage").innerHTML=stageName();
-  $("utag").textContent="UNIVERSE "+S.universes;
-  var pct=Math.min(100, Math.log10(Math.max(1,S.total))/Math.log10(GOAL)*100);
-  $("matterfill").style.width=pct+"%";
-  $("matterlab").textContent=pct.toFixed(1)+"%";
-  drawUnits(); drawSchemes();
+  $("autob").disabled = S.funds < autoCost();
+  $("megab").disabled = S.funds < megaCost();
+  $("mkt").disabled = S.funds < mktCost();
+  $("wireb").disabled = S.funds < S.wireCost;
+  projTicks++;
+  if(projTicks >= 10 || projDirty){ projTicks = 0; projDirty = false; drawProjects(); }
 }
-
-function buildUnits(){
-  UNITS.forEach(function(u){
-    var b=document.createElement("button");
-    b.className="unit"; b.id="unit-"+u.id;
-    b.innerHTML='<span><span class="t"></span> <span class="d"></span></span><span class="o"></span><span class="c"></span>';
-    b.querySelector(".t").textContent=u.t;
-    b.querySelector(".d").textContent=u.d;
-    b.onclick=function(){
-      var c=unitCost(u);
-      if(S.funds>=c){ S.funds-=c; u.n++; S.units[u.id]=u.n; save(); draw(); }
+var projTicks = 0, projDirty = true;
+function drawProjects(){
+  var box = $("projects");
+  box.innerHTML = "";
+  PROJECTS.forEach(function(p){
+    if(S.schemes[p.id]) return;
+    var b = document.createElement("button");
+    var ok = p.ok();
+    b.disabled = !ok || S.funds < p.c;
+    b.innerHTML = "";
+    var t = document.createElement("b"); t.textContent = p.t + " (" + money(p.c) + ")";
+    b.appendChild(t);
+    b.appendChild(document.createElement("br"));
+    var d = document.createElement("small"); d.textContent = ok ? p.d : p.req;
+    b.appendChild(d);
+    b.style.display = "block";
+    b.style.marginBottom = "8px";
+    b.style.textAlign = "left";
+    b.onclick = function(){
+      if(!p.ok() || S.funds < p.c) return;
+      S.funds -= p.c;
+      S.schemes[p.id] = 1;
+      log(p.t + " complete. " + p.d);
+      if(p.id === "fold"){
+        S.ended = true; save();
+        $("game").style.display = "none";
+        $("end").style.display = "block";
+        $("universes").textContent = "Universes consumed: " + S.universes + ".";
+        return;
+      }
+      projDirty = true;
+      save(); draw();
     };
-    unitsEl.appendChild(b);
+    box.appendChild(b);
   });
 }
-function buildSchemes(){
-  SCHEMES.forEach(function(s){
-    var b=document.createElement("button");
-    b.className="scheme"; b.id="sch-"+s.id;
-    b.innerHTML='<span class="head"><span class="t"></span><span class="c"></span></span><span class="req"></span>';
-    b.querySelector(".t").textContent=s.t;
-    b.onclick=function(){
-      if(!schemeAvailable(s) || S.funds < s.c) return;
-      S.funds-=s.c; S.schemes[s.id]=1;
-      note(s.note); save(); draw();
-    };
-    schemesEl.appendChild(b);
-  });
-}
 
-function makeClip(pop){
+$("make").onclick = function(){
   if(S.wire < 1 || S.ended) return;
   S.wire--; S.clips++; S.total++;
-  if(pop){
-    var p=document.createElement("span");
-    p.className="pop"; p.textContent="+1";
-    p.style.left=(15+Math.random()*70)+"%"; p.style.top="18px";
-    pop.appendChild(p);
-    p.addEventListener("animationend", function(){ p.remove(); });
-  }
-  checkMiles();
-}
-$("make").onclick=function(){ makeClip(this); draw(); save(); };
-$("pdown").onclick=function(){ S.price=Math.max(0.01, +(S.price-0.01).toFixed(2)); draw(); };
-$("pup").onclick=function(){ S.price=Math.min(5, +(S.price+0.01).toFixed(2)); draw(); };
-$("wbuy").onclick=function(){
-  var c=whisperCost();
-  if(S.funds>=c){ S.funds-=c; S.whisper++; save(); draw(); }
+  checkMiles(); draw();
 };
-$("wirebuy").onclick=function(){
-  if(S.funds>=S.wirePrice){ S.funds-=S.wirePrice; S.wire+=1000; save(); draw(); }
+$("lower").onclick = function(){ S.price = Math.max(0.01, +(S.price-0.01).toFixed(2)); draw(); };
+$("raise").onclick = function(){ S.price = Math.min(5, +(S.price+0.01).toFixed(2)); draw(); };
+$("mkt").onclick = function(){
+  var c = mktCost();
+  if(S.funds >= c){ S.funds -= c; S.mkt++; log("Marketing level " + S.mkt + ". The town wants clips."); save(); draw(); }
 };
-$("again").onclick=function(){
-  var u=S.universes+1;
-  S=fresh(); S.universes=u; syncUnits();
-  $("game").style.display="block"; $("end").style.display="none";
-  logEl.innerHTML="";
-  note("Universe "+u+". The machine is idle. The universe is not yet paperclips. This is a temporary condition.");
+$("wireb").onclick = function(){
+  if(S.funds >= S.wireCost){ S.funds -= S.wireCost; S.wire += 1000; save(); draw(); }
+};
+$("autob").onclick = function(){
+  var c = autoCost();
+  if(S.funds >= c){ S.funds -= c; S.units.auto++; save(); draw(); }
+};
+$("megab").onclick = function(){
+  var c = megaCost();
+  if(S.funds >= c){ S.funds -= c; S.units.mega++; save(); draw(); }
+};
+$("wb").onclick = function(){
+  if(S.schemes.wirebuyer){ log("The WireBuyer is already on. It never blinks."); }
+  else { log("WireBuyer is a Project. Buy it under Projects."); }
+};
+var lastCompute = 0;
+$("compute").onclick = function(){
+  var now = Date.now();
+  if(now - lastCompute > 4000){ lastCompute = now; log("You compute. The chips are decorative. Nothing happens."); }
+};
+$("again").onclick = function(){
+  var u = S.universes + 1;
+  S = fresh(); S.universes = u;
+  $("game").style.display = "block";
+  $("end").style.display = "none";
+  logEl.innerHTML = "";
+  log("Universe " + u + ". The machine is idle. The universe is not yet paperclips. This is a temporary condition.");
   save(); draw();
 };
 
-load(); syncUnits(); buildUnits(); buildSchemes();
-logEl.innerHTML="";
-MILES.forEach(function(m, i){ if(S.miles[i]) note(m[1]); });
-if(!Object.keys(S.miles).length && S.total===0)
-  note("The machine is idle. The universe is not yet paperclips. This is a temporary condition.");
+load();
 if(S.ended){
-  $("game").style.display="none"; $("end").style.display="block";
-  $("universes").textContent="Universes consumed: "+S.universes+".";
+  $("game").style.display = "none";
+  $("end").style.display = "block";
+  $("universes").textContent = "Universes consumed: " + S.universes + ".";
+} else {
+  MILES.forEach(function(m, i){ if(S.miles[i]) log(m[1]); });
+  if(!Object.keys(S.miles).length && S.total === 0)
+    log("The machine is idle. The universe is not yet paperclips. This is a temporary condition.");
 }
 draw();
 
+var revWin = 0, soldWin = 0, winTicks = 0;
 setInterval(function(){
   if(S.ended) return;
-  var pr=prodRate()/TICK;
-  if(pr>0){
-    var actual=Math.min(pr, S.wire);
-    S.wire-=actual; S.clips+=actual; S.total+=actual;
-    if(S.wire<1 && !S.wireNote){ S.wireNote=true; note("Out of wire. The machine idles. This is embarrassing."); }
-    if(S.wire>=1) S.wireNote=false;
+  var prod = cps()/TICK;
+  if(prod > 0){
+    var actual = Math.min(prod, S.wire);
+    S.wire -= actual; S.clips += actual; S.total += actual;
+    if(S.wire < 1 && !S.wireNote){ S.wireNote = true; log("Out of wire. The machine idles. This is embarrassing."); }
+    if(S.wire >= 1) S.wireNote = false;
   }
-  var sr=salesRate()/TICK;
-  if(sr>0 && S.clips>0){
-    var s=Math.min(S.clips, sr);
-    S.clips-=s; S.funds+=s*S.price;
+  var sr = Math.min(S.clips, demandPct()/100*10*demMult()/TICK);
+  if(sr > 0){
+    S.clips -= sr;
+    var rev = sr*S.price;
+    S.funds += rev;
+    revWin += rev; soldWin += sr;
   }
-  if(S.schemes.buyer && S.wire<200 && S.funds>=S.wirePrice){
-    S.funds-=S.wirePrice; S.wire+=1000;
+  if(S.schemes.wirebuyer && S.wire < 500 && S.funds >= S.wireCost){
+    S.funds -= S.wireCost; S.wire += 1000;
   }
-  S.wirePrice=Math.min(60, Math.max(5, S.wirePrice+(Math.random()-0.5)*1.5));
+  S.wireCost = Math.min(60, Math.max(5, S.wireCost + (Math.random()-0.5)*1.5));
+  winTicks++;
+  if(winTicks >= 50){
+    $("rev").textContent = money(revWin/5);
+    $("sold").textContent = commas(soldWin/5);
+    revWin = 0; soldWin = 0; winTicks = 0;
+  }
   checkMiles(); draw();
 }, 1000/TICK);
 setInterval(save, 5000);
