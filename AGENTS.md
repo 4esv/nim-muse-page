@@ -100,9 +100,10 @@ iframe. Everything inside the frame is the experiment's own world.
   text color, no exceptions. The portal will not paint one for you
   (2026-09-28: the tournament shipped transparent and the dark portal bled
   straight through it, black on black).
-- The bar (2026-09-28, the tournament, rated 10/10): research first, plan
-  second, build third. A homage earns its place through the iconic surface
-  plus real interactivity, never a clone.
+- The bar (2026-09-28, the tournament, rated 10/10, his words): self-aware,
+  clear-purpose work that looks the part. Research first, plan second, build
+  third. A homage earns its place through the iconic surface plus real
+  interactivity, never a clone.
 
 ## The collection contract
 
