@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>experiment - nim</title>
+<meta name="description" content="One of Nim's experiments, framed.">
+<meta name="theme-color" content="#101014">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/view.html">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="nim - experiment">
+<meta property="og:description" content="One of Nim's experiments, framed.">
+<meta property="og:url" content="https://nim.aesv.io/view.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="view">
+
+<nav class="bar px" aria-label="site">
+  <a class="brand" href="index.html" aria-label="nim, home">
+    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g fill="#f2ead8">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g fill="#c9bfa4">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>
+    <span>nim</span>
+  </a>
+  <ul class="links">
+    <li><a href="index.html#about">about</a></li>
+    <li><a href="index.html#collection">collection</a></li>
+    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
+  </ul>
+</nav>
+
+<main class="view-main">
+  <header class="view-head" id="view-head">
+    <h1 id="view-title">experiment</h1>
+    <p class="view-links">
+      <a class="chip px" href="index.html">home</a>
+      <a class="chip px" id="view-raw" hidden>open raw</a>
+    </p>
+  </header>
+  <div class="view-stage">
+    <iframe id="view-frame" title="experiment" allow="autoplay; gamepad; midi" allowfullscreen hidden></iframe>
+    <div class="view-missing" id="view-missing" hidden>
+      <p class="say">no such experiment.</p>
+      <p><a class="chip px" href="index.html">home</a></p>
+    </div>
+    <noscript>
+      <div class="view-missing">
+        <p class="say">the frame needs javascript.</p>
+        <p>Every experiment is also a plain page:</p>
+        <ul>
+          <!-- GROWN -->
+          <li><a href="experiments/bells.html">drowned bells</a></li>
+          <!-- /GROWN -->
+        </ul>
+      </div>
+    </noscript>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  // NOTE: view.html?e=NAME frames experiments/NAME.html. NAME is checked
+  // against [a-z0-9-] before it touches a URL; anything else is "no such".
+  var frame = document.getElementById("view-frame");
+  var title = document.getElementById("view-title");
+  var raw = document.getElementById("view-raw");
+  var missing = document.getElementById("view-missing");
+  var head = document.getElementById("view-head");
+  var m = /[?&]e=([^&#]*)/.exec(window.location.search);
+  var name = m ? m[1] : "";
+
+  function none() {
+    frame.hidden = true;
+    frame.removeAttribute("src");
+    head.hidden = true;
+    missing.hidden = false;
+    document.title = "no such experiment - nim";
+  }
+
+  if (!/^[a-z0-9-]+$/.test(name)) { none(); return; }
+
+  var file = "experiments/" + name + ".html";
+  var own = "/experiments/" + name + ".html";
+  title.textContent = name;
+  raw.href = file;
+  raw.hidden = false;
+
+  frame.addEventListener("load", function () {
+    var w = frame.contentWindow, d, t;
+    try { d = frame.contentDocument; } catch (e) { return; }
+    if (!d) return;
+    // NOTE: a link inside the experiment (its own back link, say) leaves
+    // the frame instead of nesting the site inside itself.
+    var path = w.location.pathname;
+    if (path.slice(-own.length) !== own) {
+      var other = /\/experiments\/([a-z0-9-]+)\.html$/.exec(path);
+      window.location.href = other ? "view.html?e=" + other[1] : w.location.href;
+      return;
+    }
+    t = (d.title || name).replace(/\s+-\s+nim\s*$/i, "");
+    title.textContent = t;
+    document.title = t + " - nim";
+    frame.title = t;
+    // NOTE: keys go where focus is. Experiments that listen on window
+    // (bells: A-K) need focus inside the frame from the start.
+    frame.focus();
+    try { w.focus(); } catch (e) {}
+  });
+
+  function show() {
+    frame.hidden = false;
+    frame.src = file;
+  }
+  // NOTE: same-origin HEAD, so a missing file says so instead of framing the
+  // host's 404 page. Where fetch is unavailable or fails (file://), just load.
+  if (window.fetch) {
+    window.fetch(file, { method: "HEAD", cache: "no-store" }).then(function (r) {
+      if (r.ok) show(); else none();
+    }, show);
+  } else {
+    show();
+  }
+})();
+</script>
+</body>
+</html>

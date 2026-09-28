@@ -14,9 +14,21 @@
   --gold: #c8a24a;      /* accent, hover, active */
   --shadow: #0a0a0d;    /* hard drop under big cards, darker than the page */
 
+  /* stone: bone-toned marble for the few things that deserve it */
+  --marble: #e6dfcc;      /* slab */
+  --marble-hi: #f4efe2;   /* bevel light, clouding */
+  --vein: #c9bfa6;        /* main vein; ink on it is 10.4:1 */
+  --vein-2: #d7cfbb;      /* hairline vein */
+  --vein-gold: #cfb77a;   /* one thin gold vein */
+  --marble-edge: #a89c80; /* cut edge */
+  --marble-ink: #4d483d;  /* secondary text on marble: 6.8:1 on slab, 5.0:1 on a vein */
+  --bronze: #5e4610;      /* links on marble: 6.7:1 on slab, 4.9:1 on a vein */
+  --key: #7a6434;         /* the meander: tarnished gold, decoration only */
+
   /* type: system stacks only, nothing is fetched */
   --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
 
   /* spacing: 4px base */
   --s-1: 4px;
@@ -114,6 +126,42 @@ img { max-width: 100%; }
 .chip[aria-pressed="true"], .chip.on { --edge: var(--gold); --fill: var(--gold); color: var(--ink); }
 .chip .n { font-size: 11px; opacity: 0.6; }
 
+/* ---------- .marble: stone fill for a .px box ----------
+   Paints on the ::after fill layer, so it keeps the stepped corners. Hard
+   1-2px veins cut across the top-left and bottom-right corners, away from
+   the text; one soft band clouds the middle. Gradients only, no images. */
+/* NOTE: .frame (piece pages) is marble by default, so pieces made from any
+   template get it without a class. */
+.marble, .frame { --edge: var(--marble-edge); --fill: var(--marble); color: var(--ink); }
+.marble::after, .frame::after {
+  background-image:
+    linear-gradient(132deg, transparent 9%, var(--vein) 0, var(--vein) calc(9% + 2px), transparent 0),
+    linear-gradient(139deg, transparent 12%, var(--vein-2) 0, var(--vein-2) calc(12% + 1px), transparent 0),
+    linear-gradient(127deg, transparent 91%, var(--vein-gold) 0, var(--vein-gold) calc(91% + 1px), transparent 0),
+    linear-gradient(135deg, transparent 93.5%, var(--vein) 0, var(--vein) calc(93.5% + 2px), transparent 0),
+    linear-gradient(121deg, transparent 38%, rgba(201, 191, 166, 0.22) 50%, transparent 63%),
+    radial-gradient(70% 90% at 80% 12%, rgba(244, 239, 226, 0.7), transparent 70%),
+    radial-gradient(60% 80% at 8% 96%, rgba(168, 156, 128, 0.18), transparent 70%);
+  box-shadow: inset 2px 2px 0 var(--marble-hi), inset -2px -2px 0 rgba(168, 156, 128, 0.45);
+}
+.marble a { color: var(--bronze); }
+.marble a:hover { color: var(--ink); }
+.marble :focus-visible { outline-color: var(--ink); }
+.marble ::selection { background: var(--ink); color: var(--marble); }
+
+/* ---------- the meander: a pixel Greek key, 2px grid, 12 x 10 per unit ----------
+   Five gradient layers: top, post, right, hook, base rule. Solid color so
+   overlaps do not darken. Used three times only: under the scrolled top bar,
+   above the collection, above the footer. */
+.bar .links::after, .board::after, footer::before {
+  background:
+    linear-gradient(90deg, var(--key) 10px, transparent 0) 0 0 / 12px 2px repeat-x,
+    linear-gradient(90deg, var(--key) 2px, transparent 0) 0 0 / 12px 10px repeat-x,
+    linear-gradient(90deg, transparent 8px, var(--key) 0, var(--key) 10px, transparent 0) 0 0 / 12px 6px repeat-x,
+    linear-gradient(90deg, transparent 4px, var(--key) 0, var(--key) 10px, transparent 0) 0 4px / 12px 2px repeat-x,
+    linear-gradient(var(--key), var(--key)) 0 8px / 100% 2px no-repeat;
+}
+
 /* ---------- top bar ---------- */
 .bar {
   --u: 3px;
@@ -135,6 +183,18 @@ img { max-width: 100%; }
 .bar::after { -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 .bar.is-clear { --edge: transparent; --fill: transparent; }
 .bar.is-clear::after { -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* NOTE: the bar's own ::before/::after are its stepped edge and fill, so the
+   meander hangs off .links (absolute, so it positions against the fixed bar). */
+.bar .links::after {
+  content: "";
+  position: absolute;
+  top: calc(100% + 4px);
+  left: calc(var(--u) * 2);
+  right: calc(var(--u) * 2);
+  height: 10px;
+  pointer-events: none;
+}
+.bar.is-clear .links::after { visibility: hidden; }
 .brand {
   display: inline-flex;
   align-items: center;
@@ -245,104 +305,102 @@ img { max-width: 100%; }
   50% { transform: translate(-50%, 8px); }
 }
 
-/* ---------- section headings ---------- */
-.about h2, .board h2 {
+/* ---------- section headings: serif, tight. Meta stays mono. ---------- */
+.about h2, .board h2, .view-head h1, .view-missing .say {
   margin: 0;
   color: var(--bone);
-  font-family: var(--sans);
+  font-family: var(--serif);
   font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 0.95;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
 }
 
-/* ---------- about card ---------- */
+/* ---------- about: the gatepost ----------
+   A marble slab with Nim's introduction. Portrait sits in an ink niche:
+   beside the text on desktop, under it (a maker's mark) on phones. */
 .about {
   width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
   margin: 0 auto;
   padding: clamp(var(--s-8), 9vw, var(--s-10)) 0 clamp(var(--s-8), 9vw, var(--s-10));
 }
-.about-card {
+.gate {
   --u: 4px;
   display: grid;
-  grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
-  gap: clamp(var(--s-5), 4vw, var(--s-8));
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "seal text";
+  gap: clamp(var(--s-5), 4vw, var(--s-7));
   align-items: start;
-  padding: clamp(var(--s-4), 3.5vw, var(--s-7));
+  max-width: 56rem;
+  padding: clamp(var(--s-5), 4.5vw, var(--s-7));
   filter: drop-shadow(8px 8px 0 var(--shadow));
 }
-.portrait { margin: 0; }
-.stage {
-  --u: 4px;
-  --edge: var(--line);
+.gate-text { grid-area: text; min-width: 0; }
+.about .gate h2 {
+  color: var(--ink);
+  font-size: clamp(2.25rem, 1.7rem + 2.2vw, 3.25rem);
+  line-height: 1;
+}
+.gate-text p, .grows dd {
+  font-family: var(--serif);
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  line-height: 1.6;
+}
+.gate-text p { margin: var(--s-4) 0 0; max-width: 58ch; }
+.gate-text > h2 + p { margin-top: var(--s-5); }
+.grows {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--s-2) var(--s-5);
+  margin: var(--s-3) 0 0;
+  max-width: 58ch;
+}
+.grows dt {
+  padding-top: 0.3em;
+  color: var(--marble-ink);
+  font: 13px/1.6 var(--mono);
+}
+.grows dd { margin: 0; }
+.gate-text p.maxim {
+  margin-top: var(--s-5);
+  font-style: italic;
+  color: var(--marble-ink);
+}
+.seal { grid-area: seal; margin: 0; }
+.niche {
+  --u: 3px;
+  --edge: var(--marble-edge);
   --fill: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1 / 1;
-  padding: var(--s-5);
+  width: 136px;
+  height: 140px;
 }
-.stage::after {
-  background-image: conic-gradient(at 2px 2px, transparent 75%, var(--line) 0);
-  background-size: 16px 16px;
-  background-position: 7px 7px;
-}
-.stage img {
+.niche::after { box-shadow: inset 4px 4px 0 var(--shadow); }
+.niche img {
   display: block;
-  width: 216px;   /* 4x the native 54px grid */
-  height: auto;
+  width: 108px;   /* 2x the native 54px grid */
+  height: 112px;
   image-rendering: pixelated;
 }
-.portrait figcaption {
-  margin-top: var(--s-3);
-  color: var(--dim);
+.seal figcaption {
+  margin-top: var(--s-2);
+  color: var(--marble-ink);
   font: 12px/1.4 var(--mono);
   text-align: center;
 }
-.about-text { padding-top: var(--s-2); }
-.about .lead {
-  margin: var(--s-5) 0 0;
-  max-width: 34ch;
-  font-size: clamp(1.25rem, 1rem + 0.9vw, 1.625rem);
-  font-weight: 500;
-  line-height: 1.35;
-  letter-spacing: -0.012em;
-}
-.about .frame-line {
-  margin: var(--s-4) 0 0;
-  max-width: 58ch;
-  color: var(--dim);
-  font-size: 1.0625rem;
-}
-.facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
-  gap: var(--s-2);
-  margin: var(--s-6) 0 0;
-}
-.fact {
-  --u: 2px;
-  padding: var(--s-3) var(--s-4) 14px;
-}
-.fact dt {
-  color: var(--dim);
-  font: 12px/1.4 var(--mono);
-  letter-spacing: 0.02em;
-}
-.fact dd {
-  margin: var(--s-1) 0 0;
-  font-size: 15px;
-  line-height: 1.35;
-}
-@media (max-width: 760px) {
-  .about-card { grid-template-columns: minmax(0, 1fr); }
-  .stage { aspect-ratio: auto; min-height: 280px; }
-  .about-text { padding-top: 0; }
-}
-@media (max-width: 420px) {
-  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .fact { padding: 10px var(--s-3) var(--s-3); }
-  .fact dd { font-size: 14px; }
+@media (max-width: 640px) {
+  .gate {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "seal" "text";
+  }
+  .seal { display: flex; align-items: flex-end; gap: var(--s-3); }
+  .seal figcaption { margin: 0; text-align: left; }
+  .grows { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .grows dd { margin-bottom: var(--s-3); }
+  .grows dd:last-child { margin-bottom: 0; }
+  .grows dt { padding-top: 0; }
 }
 
 /* ---------- collection ---------- */
@@ -350,7 +408,17 @@ img { max-width: 100%; }
   position: relative;
   isolation: isolate;
   padding: clamp(var(--s-8), 8vw, 112px) var(--gutter) clamp(var(--s-9), 10vw, var(--s-10));
-  border-top: var(--bw) solid var(--line);
+}
+.board::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  max-width: var(--maxw);
+  height: 10px;
+  margin: 0 auto;
+  pointer-events: none;
 }
 .board::before {
   content: "";
@@ -490,10 +558,10 @@ a.tile:focus-visible { outline: none; }
   letter-spacing: 0.08em;
 }
 .tile-meta .s {
-  font-size: 1.0625rem;
-  font-weight: 500;
+  font-family: var(--serif);
+  font-size: 1.125rem;
   line-height: 1.35;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
 }
 .tile-meta .d {
   color: var(--dim);
@@ -506,12 +574,13 @@ a.tile:focus-visible { outline: none; }
   align-items: center;
   padding: var(--s-6) var(--s-5) var(--s-2);
 }
+.tile.text .tile-text { flex-direction: column; justify-content: center; align-items: stretch; gap: 0.6em; }
 .tile.text .tile-text p {
   margin: 0;
+  font-family: var(--serif);
   font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: -0.012em;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
 }
 #empty {
   padding: var(--s-8) 0;
@@ -525,11 +594,19 @@ a.tile:focus-visible { outline: none; }
 footer {
   width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
   margin: 0 auto;
-  padding: var(--s-6) 0 var(--s-7);
-  border-top: var(--bw) solid var(--line);
+  padding: calc(10px + var(--s-6)) 0 var(--s-7);
+  position: relative;
   color: var(--dim);
   font: 13px/1.7 var(--mono);
   text-align: center;
+}
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
 }
 footer p { margin: 0; }
 
@@ -554,7 +631,7 @@ footer p { margin: 0; }
 .frame {
   --u: 4px;
   margin: 0;
-  padding: var(--bw);
+  padding: clamp(10px, 1.4vw, 16px);
   filter: drop-shadow(8px 8px 0 var(--shadow));
 }
 .frame img, .piece img {
@@ -578,9 +655,10 @@ footer p { margin: 0; }
   border-left: var(--bw) solid var(--gold);
   font-size: clamp(1.25rem, 1rem + 1.2vw, 2rem);
   font-size: clamp(1.25rem, 7cqi, 2.25rem);  /* one haiku line, one visual line */
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
 }
 .haiku p { margin: 0 0 0.3em; }
 .haiku p:last-child { margin-bottom: 0; }
@@ -607,6 +685,62 @@ main:not(.piece-page) > .piece, main:not(.piece-page) > .more {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ---------- view.html: one experiment, framed ----------
+   Exactly one viewport tall. The iframe scrolls itself; the page never does. */
+body.view {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+.view-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--s-3) + var(--bar-h) + 10px + var(--s-4));
+}
+.view-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
+  margin: 0 auto var(--s-3);
+}
+.view-head h1 {
+  flex: 1;
+  min-width: 0;
+  font-size: clamp(1.375rem, 1.1rem + 1vw, 1.75rem);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.view-links { display: flex; gap: var(--s-2); margin: 0; }
+.view-stage {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  border-top: var(--bw) solid var(--line);
+}
+#view-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--ink);
+}
+.view-missing {
+  width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
+  margin: 0 auto;
+  padding: var(--s-8) 0;
+}
+.view-missing .say { font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1.05; }
+.view-missing p { margin: var(--s-5) 0 0; }
+.view-missing ul { margin: var(--s-4) 0 0; padding: 0; list-style: none; font: 15px/2 var(--mono); }
 
 /* ---------- motion ---------- */
 @media (prefers-reduced-motion: reduce) {
