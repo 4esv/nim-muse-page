@@ -13,16 +13,17 @@ Drop a file, run this (or push; CI runs it and commits the result).
                              meta tags      extra tags, "experiment" is added
                              meta thumb-alt alt text for the thumbnail
                              NAME-thumb.webp next to it -> image tile, else text tile
-                             -> links to view.html?e=NAME
-  essays/NAME.html           same meta contract as experiments, but the tile
-                             links straight to essays/NAME.html (standalone
-                             thought pieces, not framed). "essay" is added
-                             to the tags.
+                             -> links to experiments/NAME.html
+  essays/NAME.html           same meta contract as experiments; the tile
+                             links to essays/NAME.html. "essay" is added
+                             to the tags. Reading time (words in <article>
+                             / 200, rounded up) goes on the tile as data-min.
 
 Writes only between <!-- GROWN --> and <!-- /GROWN -->: inside #grid in
-index.html (tiles), and inside the <noscript> list in view.html (links).
-Also regenerates sitemap.xml, feed.xml (RSS 2.0), and llms.txt at the repo
-root from the same collection plus pieces/.
+index.html (tiles), and inside the list in view.html (links).
+Also regenerates, wholesale, essays.html and experiments.html (the
+collection pages), sitemap.xml, feed.xml (RSS 2.0), and llms.txt at the
+repo root from the same collection plus pieces/.
 Manual tiles (the weekly cron's) live after <!-- TILES -->, before
 <!-- GROWN -->, and are never touched. Newest first. Running it twice
 changes nothing.
@@ -33,6 +34,7 @@ Python 3 standard library only.
 """
 import datetime
 import html
+import math
 import os
 import re
 import subprocess
@@ -208,6 +210,50 @@ class Head(HTMLParser):
             self._buf.append(data)
 
 
+class Words(HTMLParser):
+    """Text of the first <article> (else the whole body), minus <script> and <style>."""
+    SKIP = {"script", "style", "head"}
+
+    def __init__(self, text):
+        super().__init__(convert_charrefs=True)
+        self.article, self.body = [], []
+        self._art = 0      # depth inside <article>; -1 once the first one closed
+        self._skip = 0
+        self.feed(text)
+        self.close()
+
+    def handle_starttag(self, tag, attrs):
+        if tag in self.SKIP:
+            self._skip += 1
+        elif tag == "article" and self._art >= 0:
+            self._art += 1
+
+    def handle_endtag(self, tag):
+        if tag in self.SKIP:
+            self._skip = max(0, self._skip - 1)
+        elif tag == "article" and self._art > 0:
+            self._art -= 1
+            if self._art == 0:
+                self._art = -1
+
+    def handle_data(self, data):
+        if self._skip:
+            return
+        self.body.append(data)
+        if self._art > 0:
+            self.article.append(data)
+
+    def count(self):
+        words = " ".join(self.article if self._art != 0 else self.body).split()
+        return len(words)
+
+
+def reading(text):
+    """(minutes, words) at 200 words a minute, never under a minute."""
+    words = Words(text).count()
+    return max(1, int(math.ceil(words / 200.0))), words
+
+
 def first_commit_date(rel):
     try:
         out = subprocess.run(
@@ -222,7 +268,7 @@ def load_experiment(fname):
     name = fname[:-5]
     rel = "experiments/" + fname
     if not EXP_NAME.match(name):
-        raise Fail("%s: name must be lowercase a-z 0-9 - (view.html only frames those)" % rel)
+        raise Fail("%s: name must be lowercase a-z 0-9 -" % rel)
     head = Head(read(os.path.join(ROOT, rel)))
     title = re.sub(r"\s+-\s+nim$", "", head.title or "", flags=re.I).strip() or name
     desc = head.meta.get("description", "")
@@ -234,11 +280,12 @@ def load_experiment(fname):
         date = first_commit_date(rel) or datetime.date.today().isoformat()
     tags = ["experiment"] + [t for t in clean_tags(head.meta.get("tags", "").split(), rel)
                              if t != "experiment"]
-    href = "view.html?e=" + name
+    href = "experiments/" + fname
     thumb = "experiments/%s-thumb.webp" % name
     meta_d = "<span class=\"d\">%s &middot; experiment</span>" % date
-    if os.path.isfile(os.path.join(ROOT, thumb)):
-        alt = head.meta.get("thumb-alt", "") or title
+    has_thumb = os.path.isfile(os.path.join(ROOT, thumb))
+    alt = head.meta.get("thumb-alt", "") or title
+    if has_thumb:
         sub = re.sub(r"\.$", "", desc)
         tile = (
             '<a class="tile" href="%s" data-date="%s" data-tags="%s">\n'
@@ -256,8 +303,9 @@ def load_experiment(fname):
         ) % (href, date, " ".join(tags), esc(desc or title), esc(title.upper()), meta_d)
     link = '<li><a href="experiments/%s">%s</a></li>' % (fname, esc(title))
     return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link,
-            "url": "experiments/" + fname, "ftitle": title, "fdesc": desc,
-            "feed_link": SITE + "/" + href}
+            "url": href, "ftitle": title, "fdesc": desc,
+            "feed_link": SITE + "/" + href, "kind": "experiment", "tags": tags,
+            "thumb": thumb if has_thumb else None, "alt": alt}
 
 
 # ---------- weekly pieces ----------
@@ -285,6 +333,9 @@ def rfc822(date_s):
 
 def build_sitemap(index_date, items, pieces):
     urls = [("", index_date, "daily", "1.0")]
+    for kind, (page, _, _, _, _) in sorted(COLLECTIONS.items()):
+        dates = [it["date"] for it in items if it.get("kind") == kind]
+        urls.append((page, max(dates) if dates else index_date, "weekly", "0.9"))
     for it in items:
         if it["url"]:
             urls.append((it["url"], it["date"], "monthly", "0.8"))
@@ -336,7 +387,9 @@ def load_essay(fname):
     rel = "essays/" + fname
     if not EXP_NAME.match(name):
         raise Fail("%s: name must be lowercase a-z 0-9 -" % rel)
-    head = Head(read(os.path.join(ROOT, rel)))
+    text = read(os.path.join(ROOT, rel))
+    head = Head(text)
+    minutes, words = reading(text)
     title = re.sub(r"\s+-\s+nim$", "", head.title or "", flags=re.I).strip() or name
     desc = head.meta.get("description", "")
     date = head.meta.get("date", "")
@@ -349,15 +402,182 @@ def load_essay(fname):
                         if t != "essay"]
     href = "essays/" + fname
     tile = (
-        '<a class="tile text" href="%s" data-date="%s" data-tags="%s">\n'
+        '<a class="tile text" href="%s" data-date="%s" data-tags="%s" data-min="%d">\n'
         '  <div class="tile-text"><p>%s</p></div>\n'
         '  <div class="tile-meta"><span class="t">%s</span><span class="d">%s &middot; essay</span></div>\n'
         '</a>'
-    ) % (href, date, " ".join(tags), esc(desc or title), esc(title.upper()), date)
+    ) % (href, date, " ".join(tags), minutes, esc(desc or title), esc(title.upper()), date)
     link = '<li><a href="essays/%s">%s</a></li>' % (fname, esc(title))
     return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link,
             "url": "essays/" + fname, "ftitle": title, "fdesc": desc,
-            "feed_link": SITE + "/" + href}
+            "feed_link": SITE + "/" + href, "kind": "essay", "tags": tags,
+            "minutes": minutes, "words": words}
+
+
+# ---------- collection pages (essays.html, experiments.html) ----------
+
+# NOTE: the page markup is a contract with nim.js and style.css. Change it in
+# step with them, never alone.
+MARK_SVG = """    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g fill="#f2ead8">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g fill="#c9bfa4">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>"""
+
+COLLECTIONS = {
+    # kind: (page, heading, singular, plural, first view)
+    "essay": ("essays.html", "Essays", "essay", "essays", "pile"),
+    "experiment": ("experiments.html", "Experiments", "experiment", "experiments", "browser"),
+}
+
+
+def item_attrs(it):
+    a = ' data-item href="%s" data-date="%s" data-tags="%s"' % (
+        attr(it["url"]), it["date"], attr(" ".join(it["tags"])))
+    if it["kind"] == "essay":
+        a += ' data-min="%d"' % it["minutes"]
+    if it.get("thumb"):
+        a += ' data-thumb="%s" data-alt="%s"' % (attr(it["thumb"]), attr(it["alt"]))
+    return a
+
+
+def item_meta(it):
+    """(minutes segment or None, shown tags). The kind tag is implied by the page."""
+    mins = "%d min" % it["minutes"] if it["kind"] == "essay" else None
+    shown = " ".join(t for t in it["tags"] if t != it["kind"])
+    return mins, esc(shown)
+
+
+def build_collection(kind, items):
+    page, heading, one, many, first = COLLECTIONS[kind]
+    items = [it for it in items if it.get("kind") == kind]
+    # NOTE: newest first, ties by file name. Stable sorts, so do the tie first.
+    items = sorted(items, key=lambda it: it["name"])
+    items.sort(key=lambda it: it["date"], reverse=True)
+    desc = "Nim's %s, newest first." % many
+    title = "%s - nim" % many
+    url = "%s/%s" % (SITE, page)
+    if not items:
+        sub = "Nothing yet."
+    else:
+        sub = "%d %s. Newest first." % (len(items), one if len(items) == 1 else many)
+
+    def link(p):
+        cur = ' aria-current="page"' if p == page else ""
+        return '<a href="%s"%s>' % (p, cur)
+
+    out = [
+        "<!DOCTYPE html>",
+        '<html lang="en">',
+        "<head>",
+        '<meta charset="utf-8">',
+        '<meta name="viewport" content="width=device-width, initial-scale=1">',
+        "<title>%s</title>" % esc(title),
+        '<meta name="description" content="%s">' % attr(desc),
+        '<meta name="theme-color" content="#101014">',
+        '<link rel="icon" href="favicon.svg" type="image/svg+xml">',
+        '<link rel="canonical" href="%s">' % url,
+        '<link rel="apple-touch-icon" href="apple-touch-icon.png">',
+        '<link rel="manifest" href="manifest.webmanifest">',
+        '<link rel="alternate" type="application/rss+xml" title="nim" href="feed.xml">',
+        '<meta property="og:type" content="website">',
+        '<meta property="og:site_name" content="nim">',
+        '<meta property="og:title" content="%s">' % attr(title),
+        '<meta property="og:description" content="%s">' % attr(desc),
+        '<meta property="og:url" content="%s">' % url,
+        '<meta property="og:image" content="%s/art/og.png">' % SITE,
+        '<meta property="og:image:width" content="1200">',
+        '<meta property="og:image:height" content="630">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        '<link rel="stylesheet" href="style.css">',
+        "</head>",
+        '<body class="collection" data-kind="%s">' % many,
+        '<a class="skip" href="#main">skip to content</a>',
+        "<header>",
+        '<nav class="bar px" id="bar" aria-label="site">',
+        '  <a class="brand" href="index.html" aria-label="nim, home">',
+        MARK_SVG,
+        "    <span>nim</span>",
+        "  </a>",
+        '  <img class="seal-small" src="art/nim.png" width="27" height="28" alt="">',
+        '  <ul class="links">',
+        "    <li>%sessays</a></li>" % link("essays.html"),
+        "    <li>%sexperiments</a></li>" % link("experiments.html"),
+        '    <li><a href="feed.xml">rss</a></li>',
+        '    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>',
+        "  </ul>",
+        "</nav>",
+        "</header>",
+        '<main id="main" class="collection-main">',
+        '  <div class="collection-head">',
+        "    <h1>%s</h1>" % heading,
+        '    <p class="sub">%s</p>' % sub,
+        "  </div>",
+        '  <div class="views" id="views" role="group" aria-label="view" hidden>',
+        '    <button type="button" class="chip px" data-view="%s" aria-pressed="true">%s</button>' % (first, first),
+        '    <button type="button" class="chip px" data-view="constellation" aria-pressed="false">constellation</button>',
+        '    <button type="button" class="chip px" data-view="ledger" aria-pressed="false">ledger</button>',
+        "  </div>",
+        '  <section class="stage" id="stage" hidden></section>',
+        '  <section class="ledger" id="ledger" aria-label="%s, ledger">' % many,
+        '    <div class="toolbar">',
+        '      <div id="chips" role="group" aria-label="filter by tag"></div>',
+        '      <p class="count" id="count" aria-live="polite"></p>',
+        "    </div>",
+    ]
+    if items:
+        it = items[0]
+        mins, shown = item_meta(it)
+        d = " &middot; ".join(x for x in (it["date"], mins, shown) if x)
+        out += [
+            '    <a class="featured"%s>' % item_attrs(it),
+            '      <span class="t">LATEST</span>',
+            '      <span class="title">%s</span>' % esc(it["ftitle"]),
+            '      <span class="deck">%s</span>' % esc(it["fdesc"]),
+            '      <span class="d">%s</span>' % d,
+            '      <span class="read">read</span>',
+            "    </a>",
+        ]
+    out.append('    <ol class="rows">')
+    for it in items:
+        mins, shown = item_meta(it)
+        out.append('      <li><a class="row"%s>' % item_attrs(it))
+        if it.get("thumb"):
+            out.append('        <img class="thumb" src="%s" alt="" width="64" height="48">' % attr(it["thumb"]))
+        out += [
+            '        <span class="d">%s</span>' % it["date"],
+            '        <span class="body"><span class="title">%s</span><span class="deck">%s</span></span>'
+            % (esc(it["ftitle"]), esc(it["fdesc"])),
+            '        <span class="meta">%s</span>' % " &middot; ".join(x for x in (mins, shown) if x),
+            "      </a></li>",
+        ]
+    out += [
+        "    </ol>",
+        '    <p id="empty" hidden>nothing matches. <button type="button" id="reset" class="chip px">clear filters</button></p>',
+        "  </section>",
+        "</main>",
+        "<footer>",
+        '  <p>nim.aesv.io &middot; <a href="index.html">home</a> &middot; <a href="feed.xml">rss</a> &middot; '
+        '<a href="https://github.com/4esv/nim-muse-page">repo</a> &middot; static html/css/js &middot; '
+        "no cookies, no trackers</p>",
+        "</footer>",
+        '<script src="nim.js"></script>',
+        "</body>",
+        "</html>",
+    ]
+    return "\n".join(out) + "\n"
 
 
 # ---------- pages ----------
@@ -448,6 +668,8 @@ def main(argv):
             "sitemap.xml": build_sitemap(index_date, items, pieces),
             "feed.xml": build_feed(items, pieces),
             "llms.txt": build_llms(items, pieces),
+            "essays.html": build_collection("essay", items),
+            "experiments.html": build_collection("experiment", items),
         }
         stale = []
         for page, (pces, after) in pages.items():
@@ -475,10 +697,11 @@ def main(argv):
     n_exp = sum(1 for it in items if it["rank"] == 0 and it["url"] and it["url"].startswith("experiments/"))
     n_essay = sum(1 for it in items if it["url"] and it["url"].startswith("essays/"))
     n_note = len(items) - n_exp - n_essay
-    what = "tiles: %d, experiments: %d, essays: %d, notes: %d" % (len(items), n_exp, n_essay, n_note)
+    what = ("tiles: %d, experiments: %d, essays: %d, notes: %d, collection pages: %d"
+            % (len(items), n_exp, n_essay, n_note, len(COLLECTIONS)))
     if check:
         if stale:
-            print("%s out of date with notes/ and experiments/ (%s). Run: python3 scripts/grow.py"
+            print("%s out of date with notes/, experiments/, and essays/ (%s). Run: python3 scripts/grow.py"
                   % (" and ".join(stale), what))
             return 1
         print("up to date (%s)" % what)
