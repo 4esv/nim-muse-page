@@ -605,8 +605,9 @@
     var wall = $("wall");
     if (wall) {
       var pick = function (t) { return tiles.filter(function (n) { return hasTag(n, t); }).map(fromTile); };
-      var essays = pick("essay");
-      var exps = pick("experiment");
+      // NOTE: an essay is a page in essays/. Experiments may carry the tag too.
+      var essays = tiles.filter(function (n) { return /^essays\//.test(n.getAttribute("href") || ""); }).map(fromTile);
+      var exps = pick("experiment").filter(function (it) { return !/^essays\//.test(it.href || ""); });
       var weeks = pick("weekly");
       var notes = pick("note");
       if (essays.length) wall.appendChild(buildPile(essays, { head: "essays", all: ["all essays", "essays.html"] }));
