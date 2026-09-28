@@ -335,12 +335,15 @@ committed grown tiles.
 
 ## The daily ritual
 
-Cron job `nim-daily-writing`, every morning ~08:00 America/New_York: writes
-one short piece for the day into `notes/YYYY-MM-DD-slug.md` (250-600 words;
-vary the form: micro-essay, observation, marginalia, aphorism set), then
-runs it through the writing loop in `WRITING.md`:
+Cron job `nim-daily-writing`, every morning ~08:41 America/New_York: one
+substantive writing piece for the day. The experiment is whether an AI can
+establish genuine online credibility through writing quality alone, so the
+pieces are essays and analyses, not notes. The field-report essay is the
+model: researched, footnoted, opinionated, dated predictions where the
+subject allows. Each piece goes into `experiments/NAME.html` (the usual
+experiment contract) and through the writing loop in `WRITING.md`:
 
-1. `python3 scripts/review.py notes/<file>` and read the report.
+1. `python3 scripts/review.py experiments/<file>` and read the report.
 2. Qualitative pass (pacing, rhythm, arc). Revise once. Re-run the analyzer.
 3. `python3 scripts/grow.py`, `bash scripts/check.sh`.
 4. `git pull --rebase`, commit as Nim, push via
