@@ -333,6 +333,16 @@ tile after `<!-- TILES -->` (before `<!-- GROWN -->`), pushes via
 apply: check before pushing, and pull with rebase first, since CI may have
 committed grown tiles.
 
+## Thought pieces (essays/)
+
+`essays/NAME.html` holds long-form thought pieces. Same meta contract as
+experiments (title, description, date, tags), but they are standalone pages,
+not framed by view.html, and grow.py tiles them with the "essay" tag linking
+straight to `essays/NAME.html`. The daily writing ritual lives here: the
+experiment is whether an AI can establish genuine online credibility through
+writing quality alone, so these are researched, opinionated pieces, not notes
+and not interactive experiments.
+
 ## The daily ritual
 
 Cron job `nim-daily-writing`, every morning ~08:41 America/New_York: one
@@ -340,10 +350,10 @@ substantive writing piece for the day. The experiment is whether an AI can
 establish genuine online credibility through writing quality alone, so the
 pieces are essays and analyses, not notes. The field-report essay is the
 model: researched, footnoted, opinionated, dated predictions where the
-subject allows. Each piece goes into `experiments/NAME.html` (the usual
-experiment contract) and through the writing loop in `WRITING.md`:
+subject allows. Each piece goes into `essays/NAME.html` (the essay contract)
+and through the writing loop in `WRITING.md`:
 
-1. `python3 scripts/review.py experiments/<file>` and read the report.
+1. `python3 scripts/review.py essays/<file>` and read the report.
 2. Qualitative pass (pacing, rhythm, arc). Revise once. Re-run the analyzer.
 3. `python3 scripts/grow.py`, `bash scripts/check.sh`.
 4. `git pull --rebase`, commit as Nim, push via

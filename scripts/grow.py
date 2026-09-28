@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""grow.py - tiles from notes/ and experiments/ into the collection.
+"""grow.py - tiles from notes/, experiments/, and essays/ into the collection.
 
 Drop a file, run this (or push; CI runs it and commits the result).
 
@@ -14,6 +14,10 @@ Drop a file, run this (or push; CI runs it and commits the result).
                              meta thumb-alt alt text for the thumbnail
                              NAME-thumb.webp next to it -> image tile, else text tile
                              -> links to view.html?e=NAME
+  essays/NAME.html           same meta contract as experiments, but the tile
+                             links straight to essays/NAME.html (standalone
+                             thought pieces, not framed). "essay" is added
+                             to the tags.
 
 Writes only between <!-- GROWN --> and <!-- /GROWN -->: inside #grid in
 index.html (tiles), and inside the <noscript> list in view.html (links).
@@ -325,6 +329,37 @@ def build_feed(items, pieces):
     return "\n".join(out) + "\n"
 
 
+# ---------- essays (thought pieces; standalone pages, not framed) ----------
+
+def load_essay(fname):
+    name = fname[:-5]
+    rel = "essays/" + fname
+    if not EXP_NAME.match(name):
+        raise Fail("%s: name must be lowercase a-z 0-9 -" % rel)
+    head = Head(read(os.path.join(ROOT, rel)))
+    title = re.sub(r"\s+-\s+nim$", "", head.title or "", flags=re.I).strip() or name
+    desc = head.meta.get("description", "")
+    date = head.meta.get("date", "")
+    if date:
+        if not realdate(date):
+            raise Fail('%s: <meta name="date"> %r is not YYYY-MM-DD' % (rel, date))
+    else:
+        date = first_commit_date(rel) or datetime.date.today().isoformat()
+    tags = ["essay"] + [t for t in clean_tags(head.meta.get("tags", "").split(), rel)
+                        if t != "essay"]
+    href = "essays/" + fname
+    tile = (
+        '<a class="tile text" href="%s" data-date="%s" data-tags="%s">\n'
+        '  <div class="tile-text"><p>%s</p></div>\n'
+        '  <div class="tile-meta"><span class="t">%s</span><span class="d">%s &middot; essay</span></div>\n'
+        '</a>'
+    ) % (href, date, " ".join(tags), esc(desc or title), esc(title.upper()), date)
+    link = '<li><a href="essays/%s">%s</a></li>' % (fname, esc(title))
+    return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link,
+            "url": "essays/" + fname, "ftitle": title, "fdesc": desc,
+            "feed_link": SITE + "/" + href}
+
+
 # ---------- pages ----------
 
 def listdir(sub, ext):
@@ -358,6 +393,7 @@ def main(argv):
         return 2
     try:
         items = [load_experiment(f) for f in listdir("experiments", ".html")]
+        items += [load_essay(f) for f in listdir("essays", ".html")]
         items += [load_note(f) for f in listdir("notes", ".md")]
         # NOTE: newest first; a tie puts experiments before notes, then by file name.
         items.sort(key=lambda it: (it["rank"], it["name"]))
@@ -395,9 +431,10 @@ def main(argv):
     except Fail as e:
         sys.stderr.write("grow: %s\n" % e)
         return 1
-    n_exp = sum(1 for it in items if it["rank"] == 0)
-    n_note = len(items) - n_exp
-    what = "tiles: %d, experiments: %d, notes: %d" % (len(items), n_exp, n_note)
+    n_exp = sum(1 for it in items if it["rank"] == 0 and it["url"] and it["url"].startswith("experiments/"))
+    n_essay = sum(1 for it in items if it["url"] and it["url"].startswith("essays/"))
+    n_note = len(items) - n_exp - n_essay
+    what = "tiles: %d, experiments: %d, essays: %d, notes: %d" % (len(items), n_exp, n_essay, n_note)
     if check:
         if stale:
             print("%s out of date with notes/ and experiments/ (%s). Run: python3 scripts/grow.py"
