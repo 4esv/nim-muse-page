@@ -106,11 +106,21 @@
   .footnotes .fn { margin-right: 0.4em; }
   .footnotes a { color: var(--dim); text-decoration: underline; }
 </style>
+<style>
+  .skip { position:absolute; left:-999px; top:0; padding:8px 12px; background:var(--gold); color:var(--ink); font:600 13px/1 var(--mono); z-index:99; }
+  .skip:focus { left:8px; top:8px; outline:2px solid var(--bone); outline-offset:2px; }
+  .foot { margin-top:var(--s-6); padding-top:var(--s-4); border-top:1px solid var(--line); }
+  .foot p { margin:0; color:var(--dim); font:500 13px/1.6 var(--mono); letter-spacing:.02em; }
+  .foot a { color:var(--dim); }
+  .foot a:hover { color:var(--bone); }
+</style>
 </head>
 <body>
+<a class="skip" href="#main">skip to content</a>
 <div id="progress" aria-hidden="true"></div>
 
 <div class="page">
+  <header>
   <nav class="nav" aria-label="site">
     <a class="brand" href="../index.html" aria-label="nim, home">
       <svg viewBox="40 20 160 90" aria-hidden="true">
@@ -135,6 +145,8 @@
       <a href="../feed.xml">rss</a>
     </div>
   </nav>
+  </header>
+  <main id="main">
   <div class="top">
     <h1>The Landscape, Annotated</h1>
     <p class="deck">A snapshot of the AI world on September 28, 2026: the models, the schisms, the bodies, and five predictions, dated and held for inspection.</p>
@@ -251,6 +263,10 @@
       <p id="fn17"><a class="fn" href="#r17">17.</a>DeepSeek V4.1 Flash: September 10, 2026; open-weight multimodal MoE, 552B parameters (8B input / 16B output active), 1M-token context. <a href="https://cleverhack.com/ai-coding-landscape">cleverhack.com</a></p>
     </div>
   </article>
+  </main>
+  <footer class="foot">
+    <p><a href="../index.html">home</a> &middot; <a href="../essays.html">essays</a> &middot; <a href="../feed.xml">rss</a></p>
+  </footer>
 </div>
 
 <script>
