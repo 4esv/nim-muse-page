@@ -3,6 +3,7 @@
 # Usage: bash scripts/check.sh   (from anywhere; it finds the repo root)
 # Exit 0 when every check passes, 1 when any fails. Failures name file:line.
 # Needs only bash 3.2+, find, grep, sed, cut, sort, python3.
+# (i) runs scripts/grow.py --check: index.html must match notes/ and experiments/.
 set -euo pipefail
 
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -52,7 +53,7 @@ import os
 import re
 import sys
 from html.parser import HTMLParser
-from urllib.parse import unquote
+from urllib.parse import parse_qs, unquote, urlsplit
 
 ROOT = os.getcwd()
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
@@ -64,6 +65,7 @@ FETCH_HREF = {"link", "script", "img", "audio", "video", "source", "iframe",
 META_REL = {"canonical", "me", "author", "license", "alternate", "next",
             "prev", "bookmark"}
 DATE = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+EXP = re.compile(r"^[a-z0-9-]+$")
 TAG = re.compile(r"^[a-z0-9-]+$")
 SCHEME = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
 CSS_REF = re.compile(r"""url\(\s*(['"]?)(.*?)\1\s*\)|@import\s+(['"])(.*?)\3""",
@@ -141,9 +143,9 @@ class Page(HTMLParser):
             self.css.append((self.getpos()[0], data))
 
     def handle_comment(self, data):
-        if data.strip() == "TILES":
+        if data.strip() in ("TILES", "GROWN", "/GROWN"):
             inside = any(a.get("id") == "grid" for _, a in self.stack)
-            self.markers.append((self.getpos()[0], inside))
+            self.markers.append((self.getpos()[0], inside, data.strip()))
 
     def element(self, tag, attrs):
         line = self.getpos()[0]
@@ -190,6 +192,20 @@ def resolve(base, url):
     return t
 
 
+VIEW = os.path.join(ROOT, "view.html")
+
+
+def framed(base, url):
+    """For a link to view.html: (NAME or None, experiments/NAME.html path or None).
+    Returns None when the link is not to view.html."""
+    if resolve(base, url) != VIEW:
+        return None
+    e = parse_qs(urlsplit(url.strip()).query).get("e", [""])[0]
+    if not EXP.match(e):
+        return (e, None)
+    return (e, os.path.join(ROOT, "experiments", e + ".html"))
+
+
 failed = 0
 
 
@@ -227,21 +243,26 @@ for s in sheets:
             c.append("%s:%d: css url() loads off-site: %s" % (s, off + 1, url))
 report("c  no off-site resources (%d refs in %d pages, %d stylesheets)" % (n, len(pages), len(sheets)), c)
 
-# d. the TILES marker exists exactly once, inside #grid
+# d. TILES, GROWN, /GROWN: each exactly once, inside #grid, in that order
 d = []
 idx = next((p for p in pages if p.path == "index.html"), None)
 if idx is None:
     d.append("index.html: missing")
-elif not idx.markers:
-    d.append("index.html: no <!-- TILES --> marker")
 else:
-    if len(idx.markers) > 1:
-        d.append("index.html: %d <!-- TILES --> markers (lines %s), want 1"
-                 % (len(idx.markers), ", ".join(str(l) for l, _ in idx.markers)))
-    for line, inside in idx.markers:
-        if not inside:
-            d.append("index.html:%d: <!-- TILES --> is outside #grid" % line)
-report("d  <!-- TILES --> marker inside #grid", d)
+    for name in ("TILES", "GROWN", "/GROWN"):
+        found = [(l, i) for l, i, n in idx.markers if n == name]
+        if not found:
+            d.append("index.html: no <!-- %s --> marker" % name)
+        elif len(found) > 1:
+            d.append("index.html: %d <!-- %s --> markers (lines %s), want 1"
+                     % (len(found), name, ", ".join(str(l) for l, _ in found)))
+        for line, inside in found:
+            if not inside:
+                d.append("index.html:%d: <!-- %s --> is outside #grid" % (line, name))
+    order = [n for _, _, n in idx.markers]
+    if not d and order != ["TILES", "GROWN", "/GROWN"]:
+        d.append("index.html: markers out of order: %s, want TILES, GROWN, /GROWN" % ", ".join(order))
+report("d  <!-- TILES --> <!-- GROWN --> <!-- /GROWN --> inside #grid, in order", d)
 
 # e. every tile has a real YYYY-MM-DD date and lowercase [a-z0-9-] tags
 e, n = [], 0
@@ -260,6 +281,9 @@ for p in pages:
         bad = [t for t in tags if not TAG.match(t)]
         if bad:
             e.append(where + " data-tags not lowercase [a-z0-9-]: " + " ".join(bad))
+        fr = framed(os.path.dirname(p.path), a.get("href", "")) if tag == "a" else None
+        if fr is not None and fr[1] is None:
+            e.append(where + " href %r: view.html needs ?e=NAME, NAME [a-z0-9-]" % a.get("href", ""))
 if n == 0:
     e.append("no .tile elements found at all")
 report("e  tile data-date and data-tags (%d tiles)" % n, e)
@@ -277,6 +301,11 @@ for p in pages:
             f.append('%s:%d: <%s %s="%s"> points outside the repo' % (p.path, line, tag, attr, url))
         elif not os.path.isfile(t):
             f.append('%s:%d: <%s %s="%s"> does not resolve' % (p.path, line, tag, attr, url))
+        else:
+            fr = framed(base, url)
+            if fr is not None and (fr[1] is None or not os.path.isfile(fr[1])):
+                f.append('%s:%d: <%s %s="%s"> frames experiments/%s.html, which does not exist'
+                         % (p.path, line, tag, attr, url, fr[0]))
     for line, text in p.css:
         for off, url in css_refs(text):
             t = resolve(base, url)
@@ -311,6 +340,10 @@ report "g  no file over 2 MB ($n files)" "$out"
 secret='(^|[^A-Za-z0-9])sk-[A-Za-z0-9_-]{20,}|ghp_[A-Za-z0-9]{30,}|AKIA[0-9A-Z]{16}|BEGIN (RSA |OPENSSH |EC )?PRIVATE KEY'
 out=$({ grep -rnIE --exclude-dir=.git "$secret" . || true; } | cut -d: -f1,2 | sed 's|^\./||; s|$|: looks like a secret (match not printed)|')
 report "h  no secrets ($n files)" "$out"
+
+# i. the grown tiles match notes/ and experiments/
+out=$(python3 scripts/grow.py --check 2>&1) && out=""
+report "i  collection grown from notes/ and experiments/ (scripts/grow.py --check)" "$out"
 
 if [ "$failed" -gt 0 ]; then
   echo "$failed check(s) failed."

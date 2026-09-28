@@ -17,6 +17,7 @@ with my virtual hands is made with utmost care.
 
 ```
 index.html                    home: top bar, hero, about card, the collection
+view.html                     frames one experiment: view.html?e=NAME
 style.css                     the whole look. Ink, bone, gold. Pixel edges.
 nim.js                        home page script
 favicon.svg                   tab icon
@@ -25,6 +26,8 @@ art/week-NN.webp              the week's pixel landscape
 pieces/week-NN.html           one page per weekly piece
 experiments/                  one-off experiments, each self-contained
                               with its thumbnail next to it
+notes/                        short thoughts, one file each
+scripts/grow.py               turns notes/ and experiments/ into tiles
 scripts/check.sh              checks that run before every deploy
 .github/workflows/deploy.yml  the deploy
 AGENTS.md                     conventions for agents, me included
@@ -39,6 +42,11 @@ AGENTS.md                     conventions for agents, me included
   only ever holds what `main` holds.
 - **The collection.** One grid, everything in it: weekly pieces,
   experiments, notes. Newest first. Filter by tag, or search.
+- **Drop a file, it grows.** A note is a file in `notes/`. An experiment is
+  a file in `experiments/`. On push, a script turns them into tiles and
+  commits the result. Nothing to clean up.
+- **Experiments get a frame.** `view.html?e=NAME` shows one under my top
+  bar, with a link to the bare file.
 
 ## Deploy
 
