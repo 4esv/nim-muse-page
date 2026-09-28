@@ -317,8 +317,7 @@ img { max-width: 100%; }
 }
 
 /* ---------- about: the gatepost ----------
-   A marble slab with Nim's introduction. Portrait sits in an ink niche:
-   beside the text on desktop, under it (a maker's mark) on phones. */
+   One marble slab. The portrait stands on the stone, text runs around it. */
 .about {
   width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
   margin: 0 auto;
@@ -326,81 +325,43 @@ img { max-width: 100%; }
 }
 .gate {
   --u: 4px;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-areas: "seal text";
-  gap: clamp(var(--s-5), 4vw, var(--s-7));
-  align-items: start;
-  max-width: 56rem;
-  padding: clamp(var(--s-5), 4.5vw, var(--s-7));
+  display: flex;
+  align-items: center;
+  gap: clamp(var(--s-6), 5vw, var(--s-9));
+  padding: clamp(var(--s-6), 5vw, var(--s-9)) clamp(var(--s-5), 5vw, var(--s-9));
   filter: drop-shadow(8px 8px 0 var(--shadow));
 }
-.gate-text { grid-area: text; min-width: 0; }
+.seal {
+  flex: 0 0 auto;
+  display: block;
+  width: 216px;   /* 4x the native 54px grid */
+  height: 224px;
+  image-rendering: pixelated;
+  filter: drop-shadow(8px 8px 0 rgba(16, 16, 20, 0.18));
+}
+.gate-text { min-width: 0; }
 .about .gate h2 {
   color: var(--ink);
-  font-size: clamp(2.25rem, 1.7rem + 2.2vw, 3.25rem);
+  font-size: clamp(2.5rem, 1.8rem + 3vw, 4.25rem);
   line-height: 1;
 }
-.gate-text p, .grows dd {
+.gate p {
+  margin: var(--s-4) 0 0;
   font-family: var(--serif);
-  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
-  line-height: 1.6;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  line-height: 1.55;
+  max-width: 52ch;
 }
-.gate-text p { margin: var(--s-4) 0 0; max-width: 58ch; }
-.gate-text > h2 + p { margin-top: var(--s-5); }
-.grows {
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  gap: var(--s-2) var(--s-5);
-  margin: var(--s-3) 0 0;
-  max-width: 58ch;
-}
-.grows dt {
-  padding-top: 0.3em;
-  color: var(--marble-ink);
-  font: 13px/1.6 var(--mono);
-}
-.grows dd { margin: 0; }
-.gate-text p.maxim {
+.gate h2 + p { margin-top: var(--s-5); }
+.gate p.maxim {
   margin-top: var(--s-5);
   font-style: italic;
   color: var(--marble-ink);
 }
-.seal { grid-area: seal; margin: 0; }
-.niche {
-  --u: 3px;
-  --edge: var(--marble-edge);
-  --fill: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 136px;
-  height: 140px;
-}
-.niche::after { box-shadow: inset 4px 4px 0 var(--shadow); }
-.niche img {
-  display: block;
-  width: 108px;   /* 2x the native 54px grid */
-  height: 112px;
-  image-rendering: pixelated;
-}
-.seal figcaption {
-  margin-top: var(--s-2);
-  color: var(--marble-ink);
-  font: 12px/1.4 var(--mono);
-  text-align: center;
-}
-@media (max-width: 640px) {
-  .gate {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "seal" "text";
-  }
-  .seal { display: flex; align-items: flex-end; gap: var(--s-3); }
-  .seal figcaption { margin: 0; text-align: left; }
-  .grows { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .grows dd { margin-bottom: var(--s-3); }
-  .grows dd:last-child { margin-bottom: 0; }
-  .grows dt { padding-top: 0; }
+@media (max-width: 720px) {
+  .gate { flex-direction: column; align-items: flex-start; gap: var(--s-5); }
+  .seal { width: 162px; height: 168px; }
+  .about .gate h2 { font-size: clamp(2.25rem, 1.5rem + 5vw, 3rem); }
 }
 
 /* ---------- collection ---------- */
