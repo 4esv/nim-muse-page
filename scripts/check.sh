@@ -3,13 +3,7 @@
 # Usage: bash scripts/check.sh   (from anywhere; it finds the repo root)
 # Exit 0 when every check passes, 1 when any fails. Failures name file:line.
 # Needs only bash 3.2+, find, grep, sed, cut, sort, python3.
-# (i) runs scripts/grow.py --check: index.html, view.html, essays.html,
-# experiments.html, feed, sitemap and llms.txt must match notes/,
-# experiments/, and essays/.
-# Letters: a viewport, b em dashes, c off-site, d markers, e tile meta,
-# f refs resolve + alt + no view.html from items, g size, h secrets,
-# i grown, j home link on essays and experiments, k skip link + #main,
-# l collection pages list every file.
+# (i) runs scripts/grow.py --check: index.html must match notes/, experiments/, and essays/.
 set -euo pipefail
 
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -30,7 +24,7 @@ report() {
 
 # NOTE: regular files outside .git matching the given find tests, repo-relative.
 files() {
-  find . \( -path ./.git -o -path ./.claude \) -prune -o -type f "$@" -print | sed 's|^\./||' | sort
+  find . -path ./.git -prune -o -type f "$@" -print | sed 's|^\./||' | sort
 }
 
 command -v python3 >/dev/null 2>&1 || { echo 'FAIL  python3 not found'; exit 1; }
@@ -59,7 +53,7 @@ import os
 import re
 import sys
 from html.parser import HTMLParser
-from urllib.parse import unquote
+from urllib.parse import parse_qs, unquote, urlsplit
 
 ROOT = os.getcwd()
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
@@ -71,6 +65,7 @@ FETCH_HREF = {"link", "script", "img", "audio", "video", "source", "iframe",
 META_REL = {"canonical", "me", "author", "license", "alternate", "next",
             "prev", "bookmark"}
 DATE = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+EXP = re.compile(r"^[a-z0-9-]+$")
 TAG = re.compile(r"^[a-z0-9-]+$")
 SCHEME = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
 CSS_REF = re.compile(r"""url\(\s*(['"]?)(.*?)\1\s*\)|@import\s+(['"])(.*?)\3""",
@@ -118,8 +113,7 @@ class Page(HTMLParser):
         self.stack = []    # open elements: (tag, attrs)
         self.refs = []     # (line, tag, attr, url, fetches)
         self.tiles = []    # (line, tag, attrs)
-        self.imgs = []     # (line, attrs, inside a .tile)
-        self.items = []    # (line, tag, attrs) for .tile, .row, .featured
+        self.imgs = []     # (line, attrs)
         self.markers = []  # (line, inside #grid)
         self.css = []      # (line, css text) from <style> and style=""
         self.in_style = False
@@ -156,14 +150,10 @@ class Page(HTMLParser):
     def element(self, tag, attrs):
         line = self.getpos()[0]
         a = dict((k, v or "") for k, v in attrs)
-        cls = set(a.get("class", "").split())
-        if "tile" in cls:
+        if "tile" in a.get("class", "").split():
             self.tiles.append((line, tag, a))
-        if cls & {"tile", "row", "featured"}:
-            self.items.append((line, tag, a))
         if tag == "img":
-            intile = any("tile" in x.get("class", "").split() for _, x in self.stack)
-            self.imgs.append((line, a, intile))
+            self.imgs.append((line, a))
         if "style" in a:
             self.css.append((line, a["style"]))
         for k in ("src", "poster"):
@@ -203,6 +193,17 @@ def resolve(base, url):
 
 
 VIEW = os.path.join(ROOT, "view.html")
+
+
+def framed(base, url):
+    """For a link to view.html: (NAME or None, experiments/NAME.html path or None).
+    Returns None when the link is not to view.html."""
+    if resolve(base, url) != VIEW:
+        return None
+    e = parse_qs(urlsplit(url.strip()).query).get("e", [""])[0]
+    if not EXP.match(e):
+        return (e, None)
+    return (e, os.path.join(ROOT, "experiments", e + ".html"))
 
 
 failed = 0
@@ -280,6 +281,9 @@ for p in pages:
         bad = [t for t in tags if not TAG.match(t)]
         if bad:
             e.append(where + " data-tags not lowercase [a-z0-9-]: " + " ".join(bad))
+        fr = framed(os.path.dirname(p.path), a.get("href", "")) if tag == "a" else None
+        if fr is not None and fr[1] is None:
+            e.append(where + " href %r: view.html needs ?e=NAME, NAME [a-z0-9-]" % a.get("href", ""))
 if n == 0:
     e.append("no .tile elements found at all")
 report("e  tile data-date and data-tags (%d tiles)" % n, e)
@@ -297,12 +301,11 @@ for p in pages:
             f.append('%s:%d: <%s %s="%s"> points outside the repo' % (p.path, line, tag, attr, url))
         elif not os.path.isfile(t):
             f.append('%s:%d: <%s %s="%s"> does not resolve' % (p.path, line, tag, attr, url))
-    # NOTE: the frame is retired. view.html is a redirect for old links only;
-    # nothing in the collection may point at it.
-    for line, tag, a in p.items:
-        if "href" in a and resolve(base, a["href"]) == VIEW:
-            f.append('%s:%d: <%s class="%s" href="%s"> links the retired view.html; link experiments/NAME.html'
-                     % (p.path, line, tag, a.get("class", ""), a["href"]))
+        else:
+            fr = framed(base, url)
+            if fr is not None and (fr[1] is None or not os.path.isfile(fr[1])):
+                f.append('%s:%d: <%s %s="%s"> frames experiments/%s.html, which does not exist'
+                         % (p.path, line, tag, attr, url, fr[0]))
     for line, text in p.css:
         for off, url in css_refs(text):
             t = resolve(base, url)
@@ -310,13 +313,9 @@ for p in pages:
                 n += 1
                 if not os.path.isfile(t):
                     f.append("%s:%d: css url(%s) does not resolve" % (p.path, line + off, url))
-    # NOTE: alt="" is allowed for decoration (a seal, a row thumb next to its
-    # own title). A tile image is the tile's picture: it must describe it.
-    for line, a, intile in p.imgs:
-        if "alt" not in a:
-            f.append("%s:%d: <img> has no alt attribute" % (p.path, line))
-        elif intile and not a["alt"].strip():
-            f.append("%s:%d: <img> in a .tile has empty alt; describe the picture" % (p.path, line))
+    for line, a in p.imgs:
+        if not a.get("alt", "").strip():
+            f.append("%s:%d: <img> has no alt text" % (p.path, line))
 for s in sheets:
     for off, url in css_refs(read(s)):
         t = resolve(os.path.dirname(s), url)
@@ -325,7 +324,7 @@ for s in sheets:
             if not os.path.isfile(t):
                 f.append("%s:%d: css url(%s) does not resolve" % (s, off + 1, url))
 nimg = sum(len(p.imgs) for p in pages)
-report("f  local refs resolve, images have alt, no item links view.html (%d refs, %d imgs)" % (n, nimg), f)
+report("f  local refs resolve, images have alt (%d refs, %d imgs)" % (n, nimg), f)
 
 sys.exit(failed)
 PY
@@ -346,96 +345,11 @@ report "h  no secrets ($n files)" "$out"
 out=$(python3 scripts/grow.py --check 2>&1) && out=""
 report "i  collection grown from notes/, experiments/, essays/ (scripts/grow.py --check)" "$out"
 
-# j. every essay and experiment links home
-n=$(files \( -path './essays/*.html' -o -path './experiments/*.html' \) | wc -l | tr -d ' ')
-out=$(files \( -path './essays/*.html' -o -path './experiments/*.html' \) | while IFS= read -r f; do
-  grep -q 'href="../index.html"' "$f" || echo "$f: no link home (href=\"../index.html\")"
+# j. essays carry the site nav (a link home)
+out=$(files -path './essays/*.html' | while IFS= read -r f; do
+  grep -q 'href="../index.html"' "$f" || echo "$f: no link home (the nav)"
 done)
-report "j  every essay and experiment links home ($n pages)" "$out"
-
-# k, l. parsed, not grepped.
-rc=0
-PYTHONIOENCODING=utf-8 python3 - <<'PY' || rc=$?
-import os
-import sys
-from html.parser import HTMLParser
-from urllib.parse import unquote
-
-
-def walk(ext):
-    out = []
-    for d, dirs, fs in os.walk("."):
-        dirs[:] = sorted(x for x in dirs if x != ".git")
-        out += [os.path.relpath(os.path.join(d, f)) for f in sorted(fs) if f.endswith(ext)]
-    return out
-
-
-class Marks(HTMLParser):
-    def __init__(self, path):
-        super().__init__(convert_charrefs=True)
-        self.skip = self.main = False
-        self.rows = []  # (line, href) for a.row
-        with open(path, encoding="utf-8", errors="replace") as fh:
-            self.feed(fh.read())
-        self.close()
-
-    def handle_starttag(self, tag, attrs):
-        a = dict((k, v or "") for k, v in attrs)
-        cls = a.get("class", "").split()
-        if "skip" in cls and a.get("href") == "#main":
-            self.skip = True
-        if a.get("id") == "main":
-            self.main = True
-        if tag == "a" and "row" in cls and "href" in a:
-            self.rows.append((self.getpos()[0], a["href"]))
-
-    handle_startendtag = handle_starttag
-
-
-failed = 0
-
-
-def report(name, findings):
-    global failed
-    if findings:
-        print("FAIL  " + name)
-        for x in findings:
-            print("        " + x)
-        failed += 1
-    else:
-        print("ok    " + name)
-
-
-pages = walk(".html")
-k = []
-for p in pages:
-    m = Marks(p)
-    if not m.skip:
-        k.append('%s: no skip link (<a class="skip" href="#main">)' % p)
-    if not m.main:
-        k.append('%s: no element with id="main"' % p)
-report("k  skip link and #main on every page (%d .html)" % len(pages), k)
-
-l, n = [], 0
-for page, sub in (("essays.html", "essays"), ("experiments.html", "experiments")):
-    want = set(x for x in walk(".html") if os.path.dirname(x) == sub)
-    if not os.path.isfile(page):
-        l.append("%s: missing (run python3 scripts/grow.py)" % page)
-        continue
-    got = set()
-    for line, href in Marks(page).rows:
-        n += 1
-        t = os.path.normpath(unquote(href.split("#", 1)[0].split("?", 1)[0]))
-        if not os.path.isfile(t):
-            l.append("%s:%d: row points at %s, which does not exist" % (page, line, href))
-        got.add(t)
-    for x in sorted(want - got):
-        l.append("%s: no .row for %s" % (page, x))
-report("l  essays.html and experiments.html list every file (%d rows)" % n, l)
-
-sys.exit(failed)
-PY
-failed=$((failed + rc))
+report "j  essays carry the site nav" "$out"
 
 if [ "$failed" -gt 0 ]; then
   echo "$failed check(s) failed."

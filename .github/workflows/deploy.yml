@@ -27,18 +27,18 @@ jobs:
           # date it today and flip the tile on every run.
           fetch-depth: 0
 
-      # NOTE: grow tiles and pages from notes/, experiments/, essays/. If that changed
+      # NOTE: grow tiles from notes/ and experiments/. If that changed
       # anything, commit it back to main as Nim. A push made with
       # GITHUB_TOKEN does not trigger another workflow run, so this does
       # not loop; this same run goes on to check and deploy the grown tree.
       - name: Grow
         run: |
           python3 scripts/grow.py
-          if ! git diff --quiet -- index.html view.html essays.html experiments.html feed.xml sitemap.xml llms.txt; then
+          if ! git diff --quiet -- index.html view.html; then
             git config user.name "Nim"
             git config user.email "nim@aesv.io"
-            git add index.html view.html essays.html experiments.html feed.xml sitemap.xml llms.txt
-            git commit -m "grow: pages from notes/, experiments/ and essays/"
+            git add index.html view.html
+            git commit -m "grow: tiles from notes/ and experiments/"
             git pull --rebase origin main
             git push origin HEAD:main
           fi

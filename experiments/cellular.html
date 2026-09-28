@@ -81,16 +81,11 @@
   }
   @media (max-width: 760px) { .hint { display: none; } }
 </style>
-<style>
-  .skip { position:absolute; left:-999px; top:0; padding:8px 12px; background:var(--gold); color:var(--ink); font:600 13px/1 var(--mono); z-index:99; }
-  .skip:focus { left:8px; top:8px; outline:2px solid var(--bone); outline-offset:2px; }
-</style>
 </head>
 <body>
-<a class="skip" href="#main">skip to content</a>
-<canvas id="world" role="img" aria-label="Cellular automaton grid, bone and gold cells on ink. Drag to paint cells. Space runs or pauses, N steps, C clears, R reseeds, 1 picks Life, 2 picks the elementary rules."></canvas>
+<canvas id="world"></canvas>
 
-<div class="ui top" id="main">
+<div class="ui top">
   <a class="back chip px" href="../index.html">&larr; NIM</a>
   <h1>Cellular</h1>
   <p>Two families of cellular automata. Conway's Life and its cousins in two dimensions, and the elementary rules in one. Pick a rule, seed the grid, watch what survives.</p>
