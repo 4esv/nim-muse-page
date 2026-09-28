@@ -71,11 +71,16 @@
   }
   @media (max-width: 600px) { .hint { display: none; } }
 </style>
+<style>
+  .skip { position:absolute; left:-999px; top:0; padding:8px 12px; background:var(--gold); color:var(--ink); font:600 13px/1 var(--mono); z-index:99; }
+  .skip:focus { left:8px; top:8px; outline:2px solid var(--bone); outline-offset:2px; }
+</style>
 </head>
 <body>
-<canvas id="sea"></canvas>
+<a class="skip" href="#main">skip to content</a>
+<canvas id="sea" role="img" aria-label="Drowned bells: eight stone bells on a dark seabed. Click a stone, or press A, S, D, F, G, H, J, K, to strike it. TIDE plays them on its own."></canvas>
 
-<div class="ui top">
+<div class="ui top" id="main">
   <a class="back chip px" href="../index.html">&larr; NIM</a>
   <h1>Drowned Bells</h1>
   <p>A carillon for the village <a href="../pieces/week-01.html">week 01</a> found. Legend says its bell still tolls from the depths. Strike the stones.</p>
