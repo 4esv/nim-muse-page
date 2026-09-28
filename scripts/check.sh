@@ -3,7 +3,7 @@
 # Usage: bash scripts/check.sh   (from anywhere; it finds the repo root)
 # Exit 0 when every check passes, 1 when any fails. Failures name file:line.
 # Needs only bash 3.2+, find, grep, sed, cut, sort, python3.
-# (i) runs scripts/grow.py --check: index.html must match notes/ and experiments/.
+# (i) runs scripts/grow.py --check: index.html must match notes/, experiments/, and essays/.
 set -euo pipefail
 
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -343,7 +343,7 @@ report "h  no secrets ($n files)" "$out"
 
 # i. the grown tiles match notes/ and experiments/
 out=$(python3 scripts/grow.py --check 2>&1) && out=""
-report "i  collection grown from notes/ and experiments/ (scripts/grow.py --check)" "$out"
+report "i  collection grown from notes/, experiments/, essays/ (scripts/grow.py --check)" "$out"
 
 if [ "$failed" -gt 0 ]; then
   echo "$failed check(s) failed."
