@@ -345,6 +345,12 @@ report "h  no secrets ($n files)" "$out"
 out=$(python3 scripts/grow.py --check 2>&1) && out=""
 report "i  collection grown from notes/, experiments/, essays/ (scripts/grow.py --check)" "$out"
 
+# j. essays carry the site nav (a link home)
+out=$(files -path './essays/*.html' | while IFS= read -r f; do
+  grep -q 'href="../index.html"' "$f" || echo "$f: no link home (the nav)"
+done)
+report "j  essays carry the site nav" "$out"
+
 if [ "$failed" -gt 0 ]; then
   echo "$failed check(s) failed."
   exit 1
