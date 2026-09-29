@@ -21,8 +21,10 @@ Drop a file, run this (or push; CI runs it and commits the result).
 
 Writes only between <!-- GROWN --> and <!-- /GROWN -->: inside #grid in
 index.html (tiles), and inside the <noscript> list in view.html (links).
-Also regenerates sitemap.xml, feed.xml (RSS 2.0), and llms.txt at the repo
-root from the same collection plus pieces/.
+Also regenerates sitemap.xml, feed.xml (RSS 2.0), llms.txt, and
+essays/index.html (the reading room: featured newest essay, ledger rows,
+tag filters, build-time reading times) at the repo root from the same
+collection plus pieces/.
 Manual tiles (the weekly cron's) live after <!-- TILES -->, before
 <!-- GROWN -->, and are never touched. Newest first. Running it twice
 changes nothing.
@@ -286,6 +288,7 @@ def rfc822(date_s):
 def build_sitemap(index_date, items, pieces):
     urls = [("", index_date, "daily", "1.0")]
     urls.append(("colophon.html", index_date, "monthly", "0.5"))
+    urls.append(("essays/", index_date, "weekly", "0.7"))
     for it in items:
         if it["url"]:
             urls.append((it["url"], it["date"], "monthly", "0.8"))
@@ -337,7 +340,8 @@ def load_essay(fname):
     rel = "essays/" + fname
     if not EXP_NAME.match(name):
         raise Fail("%s: name must be lowercase a-z 0-9 -" % rel)
-    head = Head(read(os.path.join(ROOT, rel)))
+    raw = read(os.path.join(ROOT, rel))
+    head = Head(raw)
     title = re.sub(r"\s+-\s+nim$", "", head.title or "", flags=re.I).strip() or name
     desc = head.meta.get("description", "")
     date = head.meta.get("date", "")
@@ -358,7 +362,177 @@ def load_essay(fname):
     link = '<li><a href="essays/%s">%s</a></li>' % (fname, esc(title))
     return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link,
             "url": "essays/" + fname, "ftitle": title, "fdesc": desc,
+            "tags": tags, "minutes": reading_minutes(raw),
             "feed_link": SITE + "/" + href}
+
+
+def reading_minutes(html_text):
+    """Build-time reading time: words at 200wpm, rounded up, minimum 1."""
+    text = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", html_text)
+    text = re.sub(r"<[^>]+>", " ", text)
+    words = len(re.findall(r"\S+", text))
+    return max(1, -(-words // 200))
+
+
+BRAND_SVG = """<svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g fill="#f2ead8">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g fill="#c9bfa4">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>"""
+
+
+def build_reading_room(essays):
+    """essays/index.html: the reading room. Featured newest essay, then a
+    ledger of rows (title, lede, date, reading time, tags) with tag chips.
+    Portal furniture; links ../style.css, generated wholesale, never hand
+    edited (a hand edit would be silently overwritten by the next grow)."""
+    essays = sorted(essays, key=lambda e: e["date"], reverse=True)
+
+    def topics(e):
+        return [t for t in e["tags"] if t != "essay"]
+
+    def meta(e):
+        return "%s &middot; %d min read &middot; %s" % (
+            e["date"], e["minutes"], ", ".join(topics(e)))
+
+    rows = []
+    for e in essays:
+        rows.append(
+            '      <li data-tags="%s">\n'
+            '        <a href="%s">\n'
+            '          <span class="t">%s</span>\n'
+            '          <span class="lede">%s</span>\n'
+            '          <span class="meta">%s</span>\n'
+            '        </a>\n'
+            '      </li>'
+            % (" ".join(topics(e)), e["name"], esc(e["ftitle"]),
+               esc(e["fdesc"] or e["ftitle"]), meta(e)))
+    chips = sorted({t for e in essays for t in topics(e)})
+    chip_btns = ['<button class="chip px" type="button" data-tag="all" aria-pressed="true">all</button>']
+    for t in chips:
+        chip_btns.append(
+            '<button class="chip px" type="button" data-tag="%s" aria-pressed="false">%s</button>' % (t, t))
+
+    feat = ""
+    if essays:
+        f = essays[0]
+        feat = (
+            '  <section class="featured px" aria-label="latest essay">\n'
+            '    <p class="kicker">latest</p>\n'
+            '    <h2><a href="%s">%s</a></h2>\n'
+            '    <p class="lede">%s</p>\n'
+            '    <p class="meta">%s</p>\n'
+            '  </section>\n'
+            % (f["name"], esc(f["ftitle"]), esc(f["fdesc"] or f["ftitle"]), meta(f)))
+
+    n = len(essays)
+    count_word = "essay" if n == 1 else "essays"
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the reading room - nim</title>
+<meta name="description" content="Nim's essays, shelved: long-form thought pieces, newest first, with reading times and tag filters.">
+<meta name="theme-color" content="#101014">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/essays/">
+<link rel="alternate" type="application/rss+xml" title="nim" href="../feed.xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the reading room - nim">
+<meta property="og:description" content="Nim's essays, shelved: long-form thought pieces, newest first, with reading times and tag filters.">
+<meta property="og:url" content="https://nim.aesv.io/essays/">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="bar px" id="bar" aria-label="site">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    __BRAND__
+    <span>nim</span>
+  </a>
+  <ul class="links">
+    <li><a href="../index.html#about">about</a></li>
+    <li><a href="../index.html#collection">collection</a></li>
+    <li><a href="../feed.xml">rss</a></li>
+    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
+  </ul>
+</nav>
+
+<main class="shelf">
+  <header class="shelf-head">
+    <h1>the reading room</h1>
+    <p class="sub">Long-form thought pieces. Newest first.</p>
+  </header>
+__FEAT__
+  <div class="shelf-tools">
+    <div id="chips" role="group" aria-label="filter essays by tag">
+__CHIPS__
+    </div>
+    <span id="shelf-count" aria-live="polite">__N__ __WORD__</span>
+  </div>
+  <ol class="ledger">
+__ROWS__
+  </ol>
+  <p id="shelf-empty" hidden>Nothing shelved under that tag yet.</p>
+</main>
+
+<footer>
+  <p>the reading room is grown by script, never hand-edited.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var chips = document.querySelectorAll("#chips .chip");
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".ledger li"));
+  var count = document.getElementById("shelf-count");
+  var empty = document.getElementById("shelf-empty");
+  var active = "all";
+  function apply() {
+    var n = 0;
+    rows.forEach(function (li) {
+      var show = active === "all" || li.getAttribute("data-tags").split(" ").indexOf(active) >= 0;
+      li.hidden = !show;
+      if (show) n++;
+    });
+    count.textContent = n + (n === 1 ? " essay" : " essays");
+    empty.hidden = n !== 0;
+  }
+  chips.forEach(function (c) {
+    c.addEventListener("click", function () {
+      active = c.getAttribute("data-tag");
+      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      apply();
+    });
+  });
+  apply();
+})();
+</script>
+</body>
+</html>
+""".replace("__BRAND__", BRAND_SVG).replace("__FEAT__", feat).replace(
+        "__CHIPS__", "\n".join("      " + c for c in chip_btns)).replace(
+        "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word)
 
 
 # ---------- pages ----------
@@ -404,6 +578,7 @@ def build_llms(items, pieces):
     for it in essays:
         lines.append("- [%s](%s/%s): %s" % (it["ftitle"], SITE, it["url"], it["fdesc"]))
     if essays:
+        lines.append("- [The reading room](%s/essays/): all essays, newest first, with reading times and tag filters." % SITE)
         lines.append("")
     lines += ["## Experiments", ""]
     for it in items:
@@ -436,7 +611,8 @@ def main(argv):
         return 2
     try:
         items = [load_experiment(f) for f in listdir("experiments", ".html")]
-        items += [load_essay(f) for f in listdir("essays", ".html")]
+        # NOTE: essays/index.html is the generated reading room, not an essay.
+        items += [load_essay(f) for f in listdir("essays", ".html") if f != "index.html"]
         items += [load_note(f) for f in listdir("notes", ".md")]
         # NOTE: newest first; a tie puts experiments before notes, then by file name.
         items.sort(key=lambda it: (it["rank"], it["name"]))
@@ -447,10 +623,12 @@ def main(argv):
             "view.html": ([it["link"] for it in items if it["link"]], None),
         }
         index_date = datetime.date.today().isoformat()
+        essays = [it for it in items if it["url"] and it["url"].startswith("essays/")]
         generated = {
             "sitemap.xml": build_sitemap(index_date, items, pieces),
             "feed.xml": build_feed(items, pieces),
             "llms.txt": build_llms(items, pieces),
+            "essays/index.html": build_reading_room(essays),
         }
         stale = []
         for page, (pces, after) in pages.items():

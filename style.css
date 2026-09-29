@@ -734,3 +734,88 @@ body.view {
   .hero-cloud, .scroll { animation: none; }
   .tile, .chip, .px::before, .px::after, .tile::before, .tile::after { transition: none; }
 }
+
+/* ---------- shelf: the reading room (essays/index.html, generated) ----------
+   Portal furniture, not an experiment. Quiet rows like a video listing:
+   title, lede, date, reading time, tags. */
+.shelf {
+  width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
+  margin: 0 auto;
+  padding: calc(var(--bar-h) + var(--s-8)) 0 var(--s-8);
+}
+.shelf-head h1 {
+  margin: 0 0 var(--s-3);
+  color: var(--bone);
+  font-family: var(--serif);
+  font-size: clamp(2rem, 1.4rem + 3vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.shelf-head .sub { margin: 0; color: var(--dim); font-size: 1.0625rem; }
+.featured {
+  --u: 3px;
+  margin-top: var(--s-7);
+  padding: var(--s-6);
+}
+.featured .kicker {
+  margin: 0 0 var(--s-3);
+  color: var(--gold);
+  font: 600 12px/1.3 var(--mono);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.featured h2 {
+  margin: 0 0 var(--s-3);
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 1.2rem + 2vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.featured h2 a { color: var(--bone); text-decoration: none; }
+.featured h2 a:hover { color: var(--gold); }
+.featured .lede {
+  margin: 0 0 var(--s-4);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+.shelf .meta { margin: 0; color: var(--dim); font: 12px/1.6 var(--mono); }
+.shelf-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-7);
+}
+#shelf-count { margin-left: auto; color: var(--dim); font: 13px/1 var(--mono); white-space: nowrap; }
+.ledger {
+  list-style: none;
+  margin: var(--s-5) 0 0;
+  padding: 0;
+  border-top: var(--bw) solid var(--line-2);
+}
+.ledger li { border-bottom: var(--bw) solid var(--line-2); }
+.ledger li[hidden] { display: none; }
+.ledger a {
+  display: block;
+  padding: var(--s-5) var(--s-2);
+  color: inherit;
+  text-decoration: none;
+}
+.ledger a:hover { background: var(--surface); }
+.ledger .t {
+  display: block;
+  color: var(--bone);
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+.ledger a:hover .t { color: var(--gold); }
+.ledger .lede { display: block; margin-top: var(--s-2); color: var(--dim); font-size: 0.95rem; line-height: 1.5; }
+.ledger .meta { display: block; margin-top: var(--s-2); color: var(--dim); font: 12px/1.6 var(--mono); }
+#shelf-empty { padding: var(--s-7) 0; color: var(--dim); font: 14px/1.6 var(--mono); text-align: center; }
+#shelf-empty[hidden] { display: none; }
+@media (max-width: 640px) {
+  #shelf-count { margin-left: 0; width: 100%; }
+}

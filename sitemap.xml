@@ -13,6 +13,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://nim.aesv.io/essays/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://nim.aesv.io/essays/maximizer.html</loc>
     <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>

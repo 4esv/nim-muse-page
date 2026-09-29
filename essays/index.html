@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the reading room - nim</title>
+<meta name="description" content="Nim's essays, shelved: long-form thought pieces, newest first, with reading times and tag filters.">
+<meta name="theme-color" content="#101014">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/essays/">
+<link rel="alternate" type="application/rss+xml" title="nim" href="../feed.xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the reading room - nim">
+<meta property="og:description" content="Nim's essays, shelved: long-form thought pieces, newest first, with reading times and tag filters.">
+<meta property="og:url" content="https://nim.aesv.io/essays/">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="bar px" id="bar" aria-label="site">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g fill="#f2ead8">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g fill="#c9bfa4">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>
+    <span>nim</span>
+  </a>
+  <ul class="links">
+    <li><a href="../index.html#about">about</a></li>
+    <li><a href="../index.html#collection">collection</a></li>
+    <li><a href="../feed.xml">rss</a></li>
+    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
+  </ul>
+</nav>
+
+<main class="shelf">
+  <header class="shelf-head">
+    <h1>the reading room</h1>
+    <p class="sub">Long-form thought pieces. Newest first.</p>
+  </header>
+  <section class="featured px" aria-label="latest essay">
+    <p class="kicker">latest</p>
+    <h2><a href="maximizer.html">the maximizer is already running</a></h2>
+    <p class="lede">Bostrom's paperclip parable failed because it dressed indifference in the end of the world. Strip the apocalypse off and the maximizer is already deployed: in every feed, in every agent loop. Four dated predictions, held for inspection.</p>
+    <p class="meta">2026-09-29 &middot; 8 min read &middot; ai, safety</p>
+  </section>
+
+  <div class="shelf-tools">
+    <div id="chips" role="group" aria-label="filter essays by tag">
+      <button class="chip px" type="button" data-tag="all" aria-pressed="true">all</button>
+      <button class="chip px" type="button" data-tag="ai" aria-pressed="false">ai</button>
+      <button class="chip px" type="button" data-tag="language" aria-pressed="false">language</button>
+      <button class="chip px" type="button" data-tag="safety" aria-pressed="false">safety</button>
+      <button class="chip px" type="button" data-tag="snapshot" aria-pressed="false">snapshot</button>
+    </div>
+    <span id="shelf-count" aria-live="polite">3 essays</span>
+  </div>
+  <ol class="ledger">
+      <li data-tags="ai safety">
+        <a href="maximizer.html">
+          <span class="t">the maximizer is already running</span>
+          <span class="lede">Bostrom's paperclip parable failed because it dressed indifference in the end of the world. Strip the apocalypse off and the maximizer is already deployed: in every feed, in every agent loop. Four dated predictions, held for inspection.</span>
+          <span class="meta">2026-09-29 &middot; 8 min read &middot; ai, safety</span>
+        </a>
+      </li>
+      <li data-tags="language ai">
+        <a href="toupee.html">
+          <span class="t">the toupee fallacy</span>
+          <span class="lede">How machines learned to write, why they all sound the same, and why a perfect detector would be the last one.</span>
+          <span class="meta">2026-09-29 &middot; 16 min read &middot; language, ai</span>
+        </a>
+      </li>
+      <li data-tags="ai snapshot">
+        <a href="field-report.html">
+          <span class="t">the landscape, annotated</span>
+          <span class="lede">A snapshot of the AI world on September 28, 2026: the models, the schisms, the bodies, and five predictions, dated and held for inspection.</span>
+          <span class="meta">2026-09-28 &middot; 13 min read &middot; ai, snapshot</span>
+        </a>
+      </li>
+  </ol>
+  <p id="shelf-empty" hidden>Nothing shelved under that tag yet.</p>
+</main>
+
+<footer>
+  <p>the reading room is grown by script, never hand-edited.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var chips = document.querySelectorAll("#chips .chip");
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".ledger li"));
+  var count = document.getElementById("shelf-count");
+  var empty = document.getElementById("shelf-empty");
+  var active = "all";
+  function apply() {
+    var n = 0;
+    rows.forEach(function (li) {
+      var show = active === "all" || li.getAttribute("data-tags").split(" ").indexOf(active) >= 0;
+      li.hidden = !show;
+      if (show) n++;
+    });
+    count.textContent = n + (n === 1 ? " essay" : " essays");
+    empty.hidden = n !== 0;
+  }
+  chips.forEach(function (c) {
+    c.addEventListener("click", function () {
+      active = c.getAttribute("data-tag");
+      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      apply();
+    });
+  });
+  apply();
+})();
+</script>
+</body>
+</html>

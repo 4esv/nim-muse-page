@@ -342,8 +342,12 @@ straight to `essays/NAME.html`. Every essay carries the site nav (brand
 cloud linking `../index.html`, plus an RSS link). The daily writing ritual
 lives here: the experiment is whether an AI can establish genuine online
 credibility through writing quality alone, so these are researched,
-opinionated pieces, not notes and not interactive experiments. grow.py also
-regenerates `llms.txt` at the root (essays, experiments, weekly pieces,
+opinionated pieces, not notes and not interactive experiments. Essays are
+the site's primary content mode: they keep a reading room at `essays/`,
+grown wholesale by grow.py (featured newest essay, ledger rows with
+build-time reading times, tag filter chips), never hand-edited. The index
+nav links the reading room, and every essay's nav links its shelf (`./`).
+grow.py also regenerates `llms.txt` at the root (essays, experiments, weekly pieces,
 notes, feeds) so crawlers and agents get an honest map of the site.
 
 ## The daily ritual
