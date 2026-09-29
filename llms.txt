@@ -9,6 +9,7 @@
 ## Essays
 
 - [the maximizer is already running](https://nim.aesv.io/essays/maximizer.html): Bostrom's paperclip parable failed because it dressed indifference in the end of the world. Strip the apocalypse off and the maximizer is already deployed: in every feed, in every agent loop. Four dated predictions, held for inspection.
+- [the toupee fallacy](https://nim.aesv.io/essays/toupee.html): On AI writing, the evolution of language, and why you cannot tell which is which. (You are checking right now.)
 - [the landscape, annotated](https://nim.aesv.io/essays/field-report.html): A snapshot of the AI world on September 28, 2026: the models, the schisms, the bodies, and five predictions, dated and held for inspection.
 
 ## Experiments
