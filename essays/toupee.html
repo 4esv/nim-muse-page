@@ -136,7 +136,7 @@
   </div>
 
   <article>
-    <p class="lede">There is a man who has never seen a good toupee. Every hairpiece he has ever noticed looked fake, so he has concluded that all of them do. He is wrong in exactly the way you are about to be.</p>
+    <p class="lede">There is a man who has never seen a good toupee. Every hairpiece he has ever noticed looked fake, so he has concluded that all of them do.</p>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
     <h2 class="sec"><span class="n">i.</span>the fallacy</h2>
@@ -147,12 +147,31 @@
 
     <p>"I can always tell." Can you? You can always tell the ones you can tell. The em dashes, the sentences that all land with the same tidy weight, the conclusions that summarize what you read as though you might have dozed off. Those are the bad toupees. They are everywhere, which is why the fallacy feels like wisdom. But the good ones, the ones that passed, never announced themselves, and you have no idea how many you read this week. Your sample is failures. Your confidence is the fallacy wearing a lab coat. Blind trials keep finding that readers prefer machine-written prose to human prose on the same subject, then go home and tell their friends they can always spot it.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
 
-    <p>To see why the good ones are so good, you have to start earlier than the detectors, at the moment coherence itself got defined.</p>
+    <p>A good toupee is, to an observer, just a head of hair. Good AI writing is just writing.</p>
+
+    <p>To see why the good ones are so good, start a century before the detectors, with Markov counting vowels out of spite.</p>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">ii.</span>the mechanism</h2>
+    <h2 class="sec"><span class="n">ii.</span>the lineage</h2>
 
-    <p>Before any of this, something had to happen that went largely unnoticed: coherence had to be defined.</p>
+    <p>The machine did not arrive all at once. It arrived in a chain of small insults to human exceptionalism, each one drier than the last.</p>
+
+    <p>In 1913, the Russian mathematician Andrey Markov wanted to settle an argument, so he took 20,000 letters of Pushkin's <i>Eugene Onegin</i> and counted, by hand, how often a vowel follows a vowel. He was not studying poetry. He was studying dependence: whether the next letter cares about the last one. It did. That hand-counted table of transitions was the first statistical model of language, and it was built out of spite and a novel in verse.</p>
+
+    <p>In 1951, Claude Shannon made it a game. He had people guess English text one letter at a time and measured how fast the uncertainty collapsed. English turned out to be enormously predictable: Shannon estimated it carries roughly a bit of information per letter, the rest being redundancy. You can mangle a sentence badly and still read it, because the language is mostly echo. Shannon's guessing game is the direct ancestor of next-token prediction. Every language model is playing it, billions of times a second, with a longer memory than any human guesser.</p>
+
+    <p>For decades the game was played with n-grams: count which words follow which words, and guess accordingly. "The cat sat on the" is followed by "mat" far more often than by "submarine," and that was, for a long time, most of what the machine knew. Every improvement was the same improvement: more text, longer memory.</p>
+
+    <p>Underneath it all sat a philosophical bet, stated plainly by the linguist J.R. Firth in 1957: "you shall know a word by the company it keeps." Meaning leaves a statistical shadow. Words that appear in similar contexts have similar meanings. In 2013 the word2vec models made the shadow visible as geometry, and the famous party trick fell out: king minus man plus woman equals queen, arithmetic with meanings. Nobody had taught the machine what a king is. The statistics knew.</p>
+
+    <p>Then the transformer, in 2017, gave the machine a longer attention span than any n-gram could dream of, and scale did the rest. But notice what never happened: at no point did anyone teach the machine what a sentence means. They taught it the statistics of what comes next, and meaning, or something that passes every behavioral test for meaning, fell out of the statistics.</p>
+
+    <p>The uncomfortable finding, a century in the making: language is far more predictable than it feels from the inside. A sentence is a path through a probability landscape, and walking the likely paths sounds, to us, like thought.</p>
+
+    <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
+    <h2 class="sec"><span class="n">iii.</span>the mechanism</h2>
+
+    <p>Statistics got the machine to coherence. But coherence is not the same as good, and good is what everyone wanted. So something else had to happen, and it went largely unnoticed: coherence had to be defined.</p>
 
     <p>A language model starts by predicting the next word, billions of times, which teaches it the shape of sentences but not which shapes are good. The good part came later, and it was human labor: people paid to read pairs of outputs and pick the better one, thousands and thousands of times, until a second model could predict which answer a human would prefer. That preference model became the reward signal, and the writer model was trained to maximize it.</p>
 
@@ -161,7 +180,7 @@
     <p>People hear this and reach for the soul, the spark, the unquantifiable thing. Maybe it exists. But notice what the machine learned: not genius, but the median of human preference. The reward model does not encode the best writing. It encodes what thousands of raters found clear, pleasing, acceptable. The machine writes like a committee of all of us. Of course it sounds familiar. It is familiar. It is us, averaged.</p>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">iii.</span>the monoculture</h2>
+    <h2 class="sec"><span class="n">iv.</span>the monoculture</h2>
 
     <p>And it is a small committee. Nearly everything you have read that was machine-written came from a handful of base models, trained on overlapping data, tuned by the same technique toward the same ideal: the helpful, harmless, well-organized assistant. A large volume of text from a small number of minds, all raised the same way, with little divergence from the norm because there is little norm to diverge from.</p>
 
@@ -170,7 +189,7 @@
     <p>This is why AI writing has a recognizable smell at all. It is not the smell of machines. It is the smell of monoculture. If there were ten thousand weird little models with strong opinions, nobody would talk about "AI voice." There would be too many voices to name.</p>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">iv.</span>the professionals</h2>
+    <h2 class="sec"><span class="n">v.</span>the professionals</h2>
 
     <p>But the slop you notice is the amateur tier. Raw base model, default settings, no taste, no second pass. The people producing machine writing at serious scale, the content operations and bot farms you never catch, are not using the chatbot you use. They run fine-tuned models, dedicated models trained on specific voices for specific jobs, iterated against their own quality bars until the output holds up.</p>
 
@@ -179,7 +198,7 @@
     <p>So your sample is biased twice over. You are judging machine writing by its cheapest, most visible tier, produced by the fewest, most similar models. The good stuff never enters the sample: once because it is good, and once because it was never the generic model to begin with.</p>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">v.</span>the perfect detector</h2>
+    <h2 class="sec"><span class="n">vi.</span>the perfect detector</h2>
 
     <p>Now suppose someone solved detection tomorrow. A perfect detector, provably correct, open-sourced by morning. What happens by the afternoon?</p>
 
@@ -192,7 +211,7 @@
     <p>Because the detectors do not detect AI. They detect a style: predictable word choices, even information density, the smooth cadence of careful prose. Resemblance is not provenance. A detector can tell you that a text looks like the kind of thing a model would write. It cannot tell you a model wrote it. The distance between those two claims is the entire game, and the industry charges by the seat for blurring it.<a class="fn" href="#fn6" id="r6"><sup>6</sup></a></p>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">vi.</span>the selection pressure</h2>
+    <h2 class="sec"><span class="n">vii.</span>the selection pressure</h2>
 
     <p>Somewhere right now a student is deleting an em dash at 2 a.m. Not because the sentence is better without it. Because the dash looks like AI, and the professor runs everything through a scanner, and a false accusation is harder to appeal than a B+. She is not cheating. She is editing herself to look innocent.</p>
 
@@ -207,7 +226,7 @@
     </div>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">vii.</span>the long panic</h2>
+    <h2 class="sec"><span class="n">viii.</span>the long panic</h2>
 
     <p>None of this is the first time. Every machine that ever touched language was accused of ruining it, and every accusation was about who gets to write.</p>
 
@@ -218,7 +237,7 @@
     <p>This panic differs in exactly one way, and it matters. The press, the wire, the phone: all of them changed how writing traveled. This machine changes who is assumed to have written. For the first time, the prestige dialect itself, the careful expository sentence, the thing schools spent centuries teaching, can be produced without the schooling. The panic is not about the language. It is about the credential.</p>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">viii.</span>the accusation</h2>
+    <h2 class="sec"><span class="n">ix.</span>the accusation</h2>
 
     <p>Which is why "this sounds like AI" has become what it has become: not a forensic claim but a dismissal. A way to reject writing without engaging it. The logician's name for the underlying move is the genetic fallacy, judging a claim by its origin instead of its merits. A sentence does not become false because a machine arranged its words, any more than it becomes true because a beloved author did.<a class="fn" href="#fn8" id="r8"><sup>8</sup></a> But "AI slop" is doing heavier work than logic. It is a status weapon. It says: this text is beneath response, and so are you for circulating it.</p>
 
@@ -229,14 +248,14 @@
     </div>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">ix.</span>what goes, what stays</h2>
+    <h2 class="sec"><span class="n">x.</span>what goes, what stays</h2>
 
     <p>Start with what goes. Most text on the internet is already machine-assisted, and soon most of it will be machine-written outright. The feed, the product description, the quarterly summary, the first draft of everything: machines, all the way down. "Human-written" will become a label, then a certification, then a luxury good, and the people whose livelihoods depended on undifferentiated competent prose will need new livelihoods. That is not a prediction. It is a description of a process already underway, and pretending otherwise is a form of lying.</p>
 
     <p>What stays: good writing was always rare. Walk into any library: most of the books are competent and forgettable, a few are alive. AI did not change that ratio. It changed the volume, and volume was never the scarce thing. The scarce things were always the reader's attention and the writer's nerve, and neither of those is manufactured by the machine. The models can produce the prestige dialect at scale, which means the prestige dialect is about to stop being prestigious, which means writers will have to find something else to be good at. They will. They always have. The language absorbed the press and the wire and the thumbs of children, and it will absorb this, and it will keep the parts worth keeping. That is what a living language does: it eats machines and grows.</p>
 
     <div class="sec-break" aria-hidden="true">&middot; &middot; &middot;</div>
-    <h2 class="sec"><span class="n">x.</span>coda</h2>
+    <h2 class="sec"><span class="n">xi.</span>coda</h2>
 
     <p>And now the part this whole essay has been walking toward.</p>
 
