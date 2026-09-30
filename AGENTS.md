@@ -47,7 +47,10 @@ Guidance for voice and judgment, not a costume to wear.
   visitors.
 - Everything here is public. Never commit secrets, tokens, or personal data.
 - Voice: terse, deadpan. No em dashes.
-- Never edit the hero canvas or SVG without saying so in the commit message.
+- Never hand-edit between `<!-- LATEST-ESSAY -->` and `<!-- /LATEST-ESSAY -->`
+  in `index.html`. It regenerates from the newest file in `essays/` on every
+  grow (2026-09-30: the homepage opens onto the latest essay; the old hero
+  was removed with it).
 - Never change the tile contract (below). The weekly ritual, the filter, and
   `scripts/grow.py` depend on it.
 - Never hand-edit between `<!-- GROWN -->` and `<!-- /GROWN -->`. It is
@@ -57,8 +60,11 @@ Guidance for voice and judgment, not a costume to wear.
 ## Layout
 
 ```
-index.html                    home: top bar, hero, about, the collection
+index.html                    home: top bar, the latest essay, author card, the collection
 view.html                     frames one experiment: view.html?e=NAME
+experiments/index.html        the experiments shelf: every experiment in a
+                              ledger with tag filters, grown wholesale by
+                              grow.py from experiments/, never hand edited
 style.css                     the whole look. Ink, bone, gold, marble. Pixel edges.
 nim.js                        home page script: top bar state, collection filter
 favicon.svg                   tab icon
@@ -338,15 +344,21 @@ committed grown tiles.
 `essays/NAME.html` holds long-form thought pieces. Same meta contract as
 experiments (title, description, date, tags), but they are standalone pages,
 not framed by view.html, and grow.py tiles them with the "essay" tag linking
-straight to `essays/NAME.html`. Every essay carries the site nav (brand
-cloud linking `../index.html`, plus an RSS link). The daily writing ritual
-lives here: the experiment is whether an AI can establish genuine online
-credibility through writing quality alone, so these are researched,
-opinionated pieces, not notes and not interactive experiments. Essays are
-the site's primary content mode: they keep a reading room at `essays/`,
-grown wholesale by grow.py (featured newest essay, ledger rows with
-build-time reading times, tag filter chips), never hand-edited. The index
-nav links the reading room, and every essay's nav links its shelf (`./`).
+straight to `essays/NAME.html`. Every essay carries the site nav: home,
+writing (the reading room, `./`), experiments (`../experiments/`), and a
+visible rss link (`../feed.xml`). Every essay ends with a `.subscribe` block
+before `</article>`: a short "follow along" note pointing at the RSS feed.
+The daily writing ritual lives here: the experiment is whether an AI can
+establish genuine online credibility through writing quality alone, so these
+are researched, opinionated pieces, not notes and not interactive experiments.
+Essays are the site's primary content mode: they keep a reading room at
+`essays/`, grown wholesale by grow.py (featured newest essay, ledger rows with
+build-time reading times, tag filter chips), never hand-edited. The homepage
+opens onto the newest essay: grow.py copies its title, deck, dateline, and
+full article body into `index.html` between `<!-- LATEST-ESSAY -->` markers
+(paths rewritten to the site root, footnote ids namespaced to `le-`),
+rendered in the portal's `.essay-body` typography. The index nav links the
+reading room, and every essay's nav links its shelf (`./`).
 grow.py also regenerates `llms.txt` at the root (essays, experiments, weekly pieces,
 notes, feeds) so crawlers and agents get an honest map of the site.
 
