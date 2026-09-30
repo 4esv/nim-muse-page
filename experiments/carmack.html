@@ -8,106 +8,172 @@
 <meta name="date" content="2026-09-30">
 <meta name="tags" content="experiment programming history">
 <style>
-  /* the carmack archive: an instrument bench. phosphor on black. */
+  /* the carmack archive: a specimen hall. one visual language throughout:
+     phosphor on black, engraved plates, scanlines, pixel edges. */
   :root {
-    --bg:#0b0b0e; --panel:#111116; --line:#26262e;
-    --ph:#4dff7c; --ph-dim:#2a8f4e; --ph-faint:#17452a;
-    --amber:#ffb347; --red:#ff5f56; --ink:#d8d4c8;
+    --bg:#08080b; --panel:#0e0e12; --plate:#141419; --line:#232329;
+    --ph:#4dff7c; --ph-dim:#2a8f4e; --ph-faint:#163d24;
+    --amber:#ffb347; --red:#ff5f56; --ink:#d8d4c8; --dim:#8f887a;
     --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   }
+  html { scroll-behavior:smooth; }
   html, body { margin:0; padding:0; background:var(--bg); color:var(--ink);
     font-family:var(--mono); }
   body { overflow-y:auto; }
-  .wrap { max-width:66rem; margin:0 auto; padding:28px 20px 120px; }
+  /* CRT dressing, fixed above everything */
+  .crt { position:fixed; inset:0; z-index:50; pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px); }
+  .crt::after { content:""; position:absolute; inset:0;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.5) 100%); }
+  .wrap { max-width:66rem; margin:0 auto; padding:30px 22px 130px; }
+
+  /* ---------- header ---------- */
   header.top { border:1px solid var(--line); background:var(--panel);
-    padding:22px 24px; margin-bottom:18px; position:relative; }
+    padding:30px 30px 24px; margin-bottom:14px; position:relative; overflow:hidden; }
   header.top::before { content:""; position:absolute; inset:0;
-    background:repeating-linear-gradient(0deg, rgba(77,255,124,.025) 0 1px, transparent 1px 3px);
+    background:
+      radial-gradient(600px 200px at 20% 0%, rgba(77,255,124,.06), transparent 70%),
+      repeating-linear-gradient(0deg, rgba(77,255,124,.02) 0 1px, transparent 1px 3px);
     pointer-events:none; }
-  h1 { color:var(--ph); font-size:clamp(1.4rem,1rem+3vw,2.2rem);
-    letter-spacing:.08em; margin:0 0 8px; text-shadow:0 0 12px rgba(77,255,124,.35); }
-  .sub { color:var(--ph-dim); font-size:.85rem; line-height:1.7; margin:0; max-width:46rem; }
+  .kicker { color:var(--ph-faint); font-size:.7rem; letter-spacing:.35em; margin:0 0 12px; }
+  h1 { color:var(--ph); font-size:clamp(1.7rem,1.1rem+3.4vw,2.7rem);
+    letter-spacing:.1em; margin:0 0 10px; position:relative;
+    text-shadow:0 0 18px rgba(77,255,124,.35), 3px 3px 0 #031007; }
+  .sub { color:var(--ph-dim); font-size:.85rem; line-height:1.75; margin:0;
+    max-width:46rem; position:relative; }
   .sub a { color:var(--ph); }
+  nav.spec { display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; position:relative; }
+  nav.spec a { font-size:.72rem; letter-spacing:.08em; color:var(--ph-dim);
+    border:1px solid var(--line); background:#0a0a0d; padding:8px 12px; text-decoration:none; }
+  nav.spec a:hover { color:#0b0b0e; background:var(--ph); border-color:var(--ph); }
+  nav.spec a b { color:var(--ph); } nav.spec a:hover b { color:#0b0b0e; }
+
+  /* ---------- exhibit plate ---------- */
   section.st { border:1px solid var(--line); background:var(--panel);
-    padding:20px 22px; margin-bottom:18px; }
-  section.st h2 { color:var(--ph); font-size:.95rem; letter-spacing:.12em;
-    margin:0 0 4px; text-transform:uppercase; }
-  section.st h2 .era { color:var(--ph-faint); }
-  .cap { color:var(--ph-dim); font-size:.78rem; line-height:1.7; margin:0 0 12px; max-width:52rem; }
+    margin-bottom:16px; }
+  .plate { display:flex; align-items:stretch; border-bottom:1px solid var(--line);
+    background:var(--plate); }
+  .plate .num { display:flex; align-items:center; padding:16px 18px;
+    background:#0a0a0d; border-right:1px solid var(--line);
+    color:var(--ph); font-size:1.3rem; letter-spacing:.05em;
+    text-shadow:0 0 10px rgba(77,255,124,.4); }
+  .plate .meta { padding:14px 18px; }
+  .plate h2 { color:var(--bone, #ece5d3); font-size:.95rem; letter-spacing:.14em;
+    margin:0 0 5px; text-transform:uppercase; font-weight:400; }
+  .plate h2 .era { color:var(--ph-faint); }
+  .plate .prov { color:var(--ph-dim); font-size:.72rem; margin:0; line-height:1.6; }
+  .body { padding:18px 20px 20px; }
+  .cap { color:var(--dim); font-size:.78rem; line-height:1.75; margin:0 0 14px; max-width:54rem; }
   .cap b { color:var(--ph); font-weight:400; }
   canvas.demo { width:100%; display:block; background:#000;
     border:1px solid var(--line); image-rendering:pixelated; }
-  .ctl { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:12px 0 0; }
-  .ctl button, .ctl select { font-family:var(--mono); font-size:.72rem;
-    background:#08080b; color:var(--ph-dim); border:1px solid var(--line);
-    padding:6px 10px; cursor:pointer; }
+  .ctl { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:14px 0 0; }
+  .ctl button, .ctl select { font-family:var(--mono); font-size:.7rem; letter-spacing:.06em;
+    background:#0a0a0d; color:var(--ph-dim); border:1px solid var(--line);
+    padding:7px 12px; cursor:pointer; }
   .ctl button:hover, .ctl select:hover { color:var(--ph); border-color:var(--ph-dim); }
   .ctl button.on { color:#0b0b0e; background:var(--ph); border-color:var(--ph); font-weight:700; }
-  .ctl .lbl { font-size:.72rem; color:var(--ph-faint); }
-  .hud { font-size:.74rem; color:var(--ph); margin-top:10px; line-height:1.8; }
-  .hud .dim { color:var(--ph-dim); }
+  .ctl .lbl { font-size:.7rem; color:var(--ph-faint); letter-spacing:.05em; }
+  .hud { font-size:.74rem; color:var(--ph-dim); margin-top:12px; line-height:1.9; }
+  .hud b, .hud .v { color:var(--ph); font-weight:400; }
+  .bar { height:8px; background:#0a0a0d; border:1px solid var(--line); margin-top:6px; }
+  .bar i { display:block; height:100%; background:var(--ph);
+    box-shadow:0 0 8px rgba(77,255,124,.6); transition:width .12s linear; }
   pre.src { display:none; background:#08080b; border:1px solid var(--line);
-    padding:12px 14px; overflow-x:auto; font-size:.74rem; line-height:1.65;
-    color:#b9b4a6; margin:12px 0 0; tab-size:4; }
+    padding:14px 16px; overflow-x:auto; font-size:.74rem; line-height:1.7;
+    color:#b9b4a6; margin:14px 0 0; tab-size:4; }
   pre.src.open { display:block; }
   pre.src .c { color:#57523f; }
-  .flag { display:inline-block; font-size:.68rem; letter-spacing:.06em;
-    border:1px solid var(--amber); color:var(--amber); padding:2px 8px; margin:0 6px 6px 0; }
+  .flag { display:inline-block; font-size:.66rem; letter-spacing:.08em;
+    border:1px solid var(--amber); color:var(--amber); padding:3px 9px; margin:0 6px 8px 0; }
   .flag.bad { border-color:var(--red); color:var(--red); }
-  input[type=text] { font-family:var(--mono); font-size:1rem; background:#08080b;
+
+  /* rsqrt bits */
+  input[type=text] { font-family:var(--mono); font-size:1rem; background:#0a0a0d;
     border:1px solid var(--line); color:var(--ph); padding:8px 12px; width:9rem; }
-  input[type=range] { accent-color:var(--ph); width:14rem; }
-  .bitline { font-size:.78rem; letter-spacing:.04em; margin:8px 0; word-break:break-all; }
+  input[type=range] { accent-color:var(--ph); width:13rem; }
+  .bitline { font-size:.8rem; letter-spacing:.06em; margin:10px 0; word-break:break-all;
+    background:#0a0a0d; border:1px solid var(--line); padding:10px 12px; }
   .bitline .s { color:var(--red); } .bitline .e { color:var(--amber); } .bitline .m { color:var(--ph); }
-  .step { border-top:1px dashed var(--line); padding:8px 0; font-size:.8rem; line-height:1.7; }
-  .step .k { color:var(--ph-dim); } .step .v { color:var(--ph); } .err { color:var(--amber); }
+  .bitline .t { color:var(--ph-faint); font-size:.68rem; }
+  .step { border-top:1px dashed var(--line); padding:9px 0; font-size:.8rem; line-height:1.7; }
+  .step .k { color:var(--ph-dim); } .step .v { color:var(--ph); }
+  .errbar { height:6px; background:#0a0a0d; margin-top:5px; max-width:26rem; }
+  .errbar i { display:block; height:100%; background:var(--amber); }
+
   footer.ledger { border:1px solid var(--line); background:var(--panel);
-    padding:20px 22px; margin-top:18px; font-size:.78rem; line-height:1.9; color:var(--ph-dim); }
+    padding:22px 24px; margin-top:16px; font-size:.78rem; line-height:2; color:var(--ph-dim); }
+  footer.ledger b { color:var(--ph); font-weight:400; letter-spacing:.1em; }
   footer.ledger a { color:var(--ph); }
-  .back { margin-top:18px; font-size:.8rem; }
-  .back a { color:var(--ph-dim); text-decoration:none; margin-right:18px; }
+  .back { margin-top:20px; font-size:.8rem; }
+  .back a { color:var(--ph-dim); text-decoration:none; margin-right:20px; }
   .back a:hover { color:var(--ph); }
 </style>
 </head>
 <body>
+<div class="crt" aria-hidden="true"></div>
 <div class="wrap">
 
   <header class="top">
+    <p class="kicker">ID SOFTWARE &middot; GPL RELEASES &middot; 1990&ndash;2004</p>
     <h1>THE CARMACK ARCHIVE</h1>
-    <p class="sub">Five specimens, all working. Scroll the tiles. Walk the raycaster. Light the console. Drag the viewpoint through the tree. Take the inverse square root apart. Companion to the essay <a href="../essays/carmack.html">the work that never happens</a>.</p>
+    <p class="sub">Five specimens, all working. The throughline of the work: none of it makes anything fast. It deletes the work instead. Companion to the essay <a href="../essays/carmack.html">the work that never happens</a>.</p>
+    <nav class="spec" aria-label="specimens">
+      <a href="#sp1"><b>01</b> SCROLL</a>
+      <a href="#sp2"><b>02</b> RAY</a>
+      <a href="#sp3"><b>03</b> FLICKER</a>
+      <a href="#sp4"><b>04</b> TREE</a>
+      <a href="#sp5"><b>05</b> ROOT</a>
+    </nav>
   </header>
 
-  <!-- 1. THE SCROLL -->
-  <section class="st" id="st-scroll">
-    <h2>01 / the scroll <span class="era">keen 1990</span></h2>
-    <p class="cap">The EGA could not redraw the screen fast enough, so scrolling moved into hardware registers and only changed tiles were redrawn. <b>Left/right arrows</b> (or auto) to scroll. Watch the redraw counter.</p>
-    <canvas class="demo" id="cvScroll" width="640" height="220"></canvas>
-    <div class="ctl">
-      <button id="scMode" class="on">ADAPTIVE</button>
-      <button id="scAuto">AUTO: OFF</button>
-      <span class="lbl">scroll with &larr; &rarr;</span>
+  <!-- 01 THE SCROLL -->
+  <section class="st" id="sp1">
+    <div class="plate">
+      <div class="num">01</div>
+      <div class="meta">
+        <h2>The Scroll <span class="era">/ Commander Keen, 1990</span></h2>
+        <p class="prov">No source released. Reconstructed by Fabien Sanglard. Overnight build, Softdisk, September 1990.</p>
+      </div>
     </div>
-    <div class="hud" id="scHud"></div>
-    <div class="ctl"><button data-src="srcScroll">VIEW SOURCE</button></div>
-    <pre class="src" id="srcScroll"><span class="c">; no source was ever released. the reconstruction:</span>
+    <div class="body">
+      <p class="cap">The EGA could not redraw the screen fast enough, so scrolling moved into hardware registers and only changed tiles were redrawn. <b>&larr; &rarr;</b> to scroll, or run it on auto. The bar is the redraw: adaptive stays near the floor.</p>
+      <canvas class="demo" id="cvScroll" width="640" height="220"></canvas>
+      <div class="ctl">
+        <button id="scMode" class="on">ADAPTIVE</button>
+        <button id="scAuto">AUTO: OFF</button>
+        <span class="lbl">full redraw repaints every visible tile, every frame</span>
+      </div>
+      <div class="hud" id="scHud"></div>
+      <div class="bar"><i id="scBar" style="width:0%"></i></div>
+      <div class="ctl"><button data-src="srcScroll">VIEW SOURCE</button></div>
+      <pre class="src" id="srcScroll"><span class="c">; the reconstruction:</span>
 <span class="c">; scroll via CRTC_START + Horizontal Pel Panning: zero pixel writes.</span>
 <span class="c">; on reaching the edge, jolt: compare tile IDs, redraw only mismatches.</span>
 <span class="c">; Keen 4-6: wrap at the 64K aperture, redraw the leading edge only.</span>
 redrawn = changed_tiles / total_tiles   <span class="c">; ~16%, not 100%</span></pre>
+    </div>
   </section>
 
-  <!-- 2. THE RAY -->
-  <section class="st" id="st-ray">
-    <h2>02 / the ray <span class="era">wolfenstein 3d 1992</span></h2>
-    <p class="cap">One ray per column, integer grid walk, no floating point unit. <b>WASD / arrows</b> to walk. R toggles the rays, T toggles texture.</p>
-    <canvas class="demo" id="cvRay" width="640" height="300"></canvas>
-    <div class="ctl">
-      <button id="rayRays" class="on">RAYS: ON</button>
-      <button id="rayTex" class="on">TEXTURE: ON</button>
-      <span class="lbl">click the canvas first, then move</span>
+  <!-- 02 THE RAY -->
+  <section class="st" id="sp2">
+    <div class="plate">
+      <div class="num">02</div>
+      <div class="meta">
+        <h2>The Ray <span class="era">/ Wolfenstein 3D, 1992</span></h2>
+        <p class="prov">id-Software/Wolf3D &middot; WOLFSRC/WL_DR_A.ASM &middot; "I was 21 years old when I wrote most of the code."</p>
+      </div>
     </div>
-    <div class="ctl"><button data-src="srcRay">VIEW SOURCE</button></div>
-    <pre class="src" id="srcRay"><span class="c">; WOLFSRC/WL_DR_A.ASM, AsmRefresh. the inner march:</span>
+    <div class="body">
+      <p class="cap">One ray per column, integer grid walk, no floating point unit, no division. <b>WASD / arrows</b> to walk the map. <b>R</b> toggles the rays, <b>T</b> toggles texture.</p>
+      <canvas class="demo" id="cvRay" width="640" height="300"></canvas>
+      <div class="ctl">
+        <button id="rayRays" class="on">RAYS: ON</button>
+        <button id="rayTex" class="on">TEXTURE: ON</button>
+        <span class="lbl">click the canvas first, then move</span>
+      </div>
+      <div class="ctl"><button data-src="srcRay">VIEW SOURCE</button></div>
+      <pre class="src" id="srcRay"><span class="c">; WOLFSRC/WL_DR_A.ASM, AsmRefresh. the inner march:</span>
 vertentry:
  test [BYTE tilemap+si],0ffh
  jnz hitvert
@@ -115,58 +181,83 @@ passvert:
  add bx,[xtilestep]          <span class="c">; 16.16 fixed point DDA</span>
  <span class="c">; ...</span>
  jmp vertcheck</pre>
+    </div>
   </section>
 
-  <!-- 3. THE FLICKER -->
-  <section class="st" id="st-flicker">
-    <h2>03 / the flicker <span class="era">quake 1996</span></h2>
-    <p class="cap">Quake's animated lighting is twelve text strings. Each frame: <b>k = (time*10 % len); value = (map[k]-'a')*22</b>. Assign a style to each torch.</p>
-    <canvas class="demo" id="cvFlick" width="640" height="240"></canvas>
-    <div class="ctl" id="flickCtls"></div>
-    <div class="ctl"><button data-src="srcFlick">VIEW SOURCE</button></div>
-    <pre class="src" id="srcFlick"><span class="c">; WinQuake/r_light.c:33, R_AnimateLight</span>
+  <!-- 03 THE FLICKER -->
+  <section class="st" id="sp3">
+    <div class="plate">
+      <div class="num">03</div>
+      <div class="meta">
+        <h2>The Flicker <span class="era">/ Quake, 1996</span></h2>
+        <p class="prov">WinQuake/r_light.c:33, R_AnimateLight &middot; twelve strings in QW/progs/world.qc</p>
+      </div>
+    </div>
+    <div class="body">
+      <p class="cap">Quake's animated lighting is twelve text strings. Each frame: <b>k = (time*10 % len); value = (map[k]-'a')*22</b>. The flame height follows the string. Assign a style to each torch.</p>
+      <canvas class="demo" id="cvFlick" width="640" height="250"></canvas>
+      <div class="ctl" id="flickCtls"></div>
+      <div class="ctl"><button data-src="srcFlick">VIEW SOURCE</button></div>
+      <pre class="src" id="srcFlick"><span class="c">; WinQuake/r_light.c:33, R_AnimateLight</span>
 i = (int)(cl.time*10);
 k = i % cl_lightstyle[j].length;
 k = cl_lightstyle[j].map[k] - 'a';
 k = k*22;
 d_lightstylevalue[j] = k;</pre>
+    </div>
   </section>
 
-  <!-- 4. THE TREE -->
-  <section class="st" id="st-tree">
-    <h2>04 / the tree <span class="era">doom 1993</span></h2>
-    <p class="cap">One cross product per node sorts the map. <b>Drag the viewpoint</b> and watch the draw order recompute: near side first, far side only if visible.</p>
-    <canvas class="demo" id="cvTree" width="640" height="300"></canvas>
-    <div class="hud" id="treeHud"></div>
-    <div class="ctl"><button data-src="srcTree">VIEW SOURCE</button></div>
-    <pre class="src" id="srcTree"><span class="c">; linuxdoom-1.10/r_bsp.c:552</span>
+  <!-- 04 THE TREE -->
+  <section class="st" id="sp4">
+    <div class="plate">
+      <div class="num">04</div>
+      <div class="meta">
+        <h2>The Tree <span class="era">/ Doom, 1993</span></h2>
+        <p class="prov">id-Software/DOOM &middot; linuxdoom-1.10/r_bsp.c:552 &middot; verified against the raw source</p>
+      </div>
+    </div>
+    <div class="body">
+      <p class="cap">One cross product per node sorts the map: near side always, far side only if visible. <b>Drag the viewpoint</b> and watch the draw order recompute on both the map and the tree.</p>
+      <canvas class="demo" id="cvTree" width="640" height="300"></canvas>
+      <div class="hud" id="treeHud"></div>
+      <div class="ctl"><button data-src="srcTree">VIEW SOURCE</button></div>
+      <pre class="src" id="srcTree"><span class="c">; linuxdoom-1.10/r_bsp.c:552</span>
 side = R_PointOnSide (viewx, viewy, bsp);
 R_RenderBSPNode (bsp-&gt;children[side]);       <span class="c">; near: always</span>
 if (R_CheckBBox (bsp-&gt;bbox[side^1]))
     R_RenderBSPNode (bsp-&gt;children[side^1]); <span class="c">; far: maybe</span></pre>
+    </div>
   </section>
 
-  <!-- 5. THE ROOT -->
-  <section class="st" id="st-rsqrt">
-    <h2>05 / the root <span class="era">quake iii 1999</span></h2>
-    <p class="cap">Float bits are piecewise log-linear, so an integer shift-and-subtract approximates a logarithm. Drag the input and watch the guess converge.</p>
-    <span class="flag bad">folklore: not his</span>
-    <div class="ctl">
-      <input type="text" id="numIn" value="2.0" aria-label="input number">
-      <input type="range" id="numSlide" min="-1" max="2" step="0.01" value="0.301" aria-label="input slider">
-      <button id="runBtn" class="on">RUN IT</button>
+  <!-- 05 THE ROOT -->
+  <section class="st" id="sp5">
+    <div class="plate">
+      <div class="num">05</div>
+      <div class="meta">
+        <h2>The Root <span class="era">/ Quake III Arena, 1999</span></h2>
+        <p class="prov">id-Software/Quake-III-Arena &middot; code/game/q_math.c:552 &middot; both comments intact</p>
+      </div>
     </div>
-    <div id="rsqrtOut" style="margin-top:10px"></div>
-    <div class="ctl"><button data-src="srcRsqrt">VIEW SOURCE</button></div>
-    <pre class="src" id="srcRsqrt"><span class="c">; code/game/q_math.c:552</span>
+    <div class="body">
+      <p class="cap">Float bits are piecewise log-linear, so an integer shift-and-subtract approximates a logarithm. Drag the input and watch the guess converge. The amber bars are error, on a log scale.</p>
+      <span class="flag bad">folklore: not his</span>
+      <div class="ctl">
+        <input type="text" id="numIn" value="2.0" aria-label="input number">
+        <input type="range" id="numSlide" min="-1" max="2" step="0.01" value="0.301" aria-label="input slider">
+        <button id="runBtn" class="on">RUN IT</button>
+      </div>
+      <div id="rsqrtOut" style="margin-top:6px"></div>
+      <div class="ctl"><button data-src="srcRsqrt">VIEW SOURCE</button></div>
+      <pre class="src" id="srcRsqrt"><span class="c">; code/game/q_math.c:552</span>
 i  = * ( long * ) &amp;y;              <span class="c">// evil floating point bit level hacking</span>
 i  = 0x5f3759df - ( i &gt;&gt; 1 );    <span class="c">// what the fuck?</span>
 y  = * ( float * ) &amp;i;
 y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</span></pre>
+    </div>
   </section>
 
   <footer class="ledger">
-    <b style="color:var(--ph)">the folklore ledger.</b><br>
+    <b>THE FOLKLORE LEDGER</b><br>
     1. Q_rsqrt authorship: apocryphal. Carmack denied it in writing, 2004; best attribution Greg Walsh.<br>
     2. Keen adaptive tile refresh: no source exists. Historical attribution only.<br>
     3. Surface cache / edge list: Carmack designed, Abrash built. Both names.<br>
@@ -182,7 +273,7 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
 (function () {
   "use strict";
 
-  /* ---------- shared: source toggles ---------- */
+  /* source toggles */
   Array.prototype.forEach.call(document.querySelectorAll("[data-src]"), function (b) {
     b.addEventListener("click", function () {
       var el = document.getElementById(b.getAttribute("data-src"));
@@ -191,15 +282,33 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     });
   });
 
-  /* ---------- 1. THE SCROLL ---------- */
+  var PH = "#4dff7c", PHD = "#2a8f4e", PHF = "#163d24", AMB = "#ffb347", RED = "#ff5f56";
+
+  /* ================= 01 THE SCROLL ================= */
   var scC = document.getElementById("cvScroll"), sg = scC.getContext("2d");
-  var TS = 24, VW = 64, VH = 8;                 // tiles
+  var TS = 24, VW = 64, VH = 8;
   var camX = 0, adaptive = true, auto = false, scKeys = {};
-  var flash = {};                                // tileKey -> ttl
-  function tileId(c, r) { return ((c * 73856093) ^ (r * 19349663)) >>> 0; }
+  var flash = {};
   function tileColor(c, r) {
-    var h = tileId(c, r) % 360;
-    return "hsl(" + h + ",28%,16%)";
+    var h = (((c * 73856093) ^ (r * 19349663)) >>> 0) % 360;
+    return "hsl(" + h + ",26%,15%)";
+  }
+  function drawTile(x, y, c, r, glow) {
+    sg.fillStyle = tileColor(c, r); sg.fillRect(x, y, TS, TS);
+    sg.fillStyle = "rgba(0,0,0,0.35)"; sg.fillRect(x, y, TS, 2); sg.fillRect(x, y, 2, TS);
+    sg.fillStyle = "rgba(255,255,255,0.06)"; sg.fillRect(x, y + TS - 2, TS, 2); sg.fillRect(x + TS - 2, y, 2, TS - 2);
+    // pixel detail from tile id
+    var id = ((c * 73856093) ^ (r * 19349663)) >>> 0;
+    sg.fillStyle = "rgba(77,255,124,0.10)";
+    if (id & 1) sg.fillRect(x + 5, y + 5, 4, 4);
+    if (id & 2) sg.fillRect(x + 15, y + 5, 4, 4);
+    if (id & 4) sg.fillRect(x + 5, y + 15, 4, 4);
+    if (id & 8) sg.fillRect(x + 15, y + 15, 4, 4);
+    if (id & 16) sg.fillRect(x + 10, y + 10, 4, 4);
+    if (glow > 0) {
+      sg.fillStyle = "rgba(77,255,124," + (glow / 60).toFixed(2) + ")";
+      sg.fillRect(x, y, TS, TS);
+    }
   }
   function scFrame() {
     var speed = 0;
@@ -210,42 +319,29 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
       var oldC0 = Math.floor(camX / TS), oldC1 = Math.floor((camX + scC.width) / TS);
       camX = Math.max(0, Math.min(VW * TS - scC.width, camX + speed));
       var newC0 = Math.floor(camX / TS), newC1 = Math.floor((camX + scC.width) / TS);
+      var mark = function (c) { for (var r = 0; r < VH; r++) flash[c + ":" + r] = 30; };
       if (adaptive) {
-        for (var c = newC0; c <= newC1; c++) {
-          if (c < oldC0 || c > oldC1) {
-            for (var r = 0; r < VH; r++) flash[c + ":" + r] = 30;
-          }
-        }
+        for (var c = newC0; c <= newC1; c++) if (c < oldC0 || c > oldC1) mark(c);
       } else {
-        for (var c2 = newC0; c2 <= newC1; c2++)
-          for (var r2 = 0; r2 < VH; r2++) flash[c2 + ":" + r2] = 30;
+        for (var c2 = newC0; c2 <= newC1; c2++) mark(c2);
       }
     }
     sg.fillStyle = "#000"; sg.fillRect(0, 0, scC.width, scC.height);
-    var c0 = Math.floor(camX / TS) - 1, c1 = Math.floor((camX + scC.width) / TS) + 1;
+    var c0 = Math.max(0, Math.floor(camX / TS) - 1);
+    var c1 = Math.min(VW - 1, Math.floor((camX + scC.width) / TS) + 1);
     var drawn = 0;
-    for (var c = Math.max(0, c0); c <= Math.min(VW - 1, c1); c++) {
+    for (var c = c0; c <= c1; c++) {
       for (var r = 0; r < VH; r++) {
-        var x = c * TS - camX, y = r * TS + 14;
         var key = c + ":" + r, fl = flash[key] || 0;
-        if (fl > 0) {
-          drawn++;
-          sg.fillStyle = tileColor(c, r); sg.fillRect(x, y, TS, TS);
-          sg.fillStyle = "#1c2b1c"; sg.fillRect(x + 3, y + 3, TS - 6, TS - 6);
-          sg.fillStyle = "rgba(77,255,124," + (fl / 60).toFixed(2) + ")";
-          sg.fillRect(x, y, TS, TS);
-          if (--flash[key] <= 0) delete flash[key];
-        } else {
-          sg.fillStyle = tileColor(c, r); sg.fillRect(x, y, TS, TS);
-          sg.fillStyle = "#1c2b1c"; sg.fillRect(x + 3, y + 3, TS - 6, TS - 6);
-        }
+        if (fl > 0) { drawn++; if (--flash[key] <= 0) delete flash[key]; }
+        drawTile(c * TS - camX, r * TS + 14, c, r, fl);
       }
     }
-    var vis = (Math.min(VW - 1, c1) - Math.max(0, c0) + 1) * VH;
+    var vis = (c1 - c0 + 1) * VH, pct = Math.round(100 * drawn / Math.max(1, vis));
     document.getElementById("scHud").innerHTML =
-      "mode <span class='dim'>" + (adaptive ? "ADAPTIVE" : "FULL REDRAW") + "</span> &nbsp; " +
-      "redrawn this frame <b style='color:var(--ph)'>" + drawn + "</b>" +
-      " <span class='dim'>of " + vis + " visible (" + Math.round(100 * drawn / Math.max(1, vis)) + "%)</span>";
+      "redrawn <span class='v'>" + drawn + "</span> of " + vis + " visible tiles" +
+      " <span style='color:var(--dim)'>(" + pct + "%)</span>";
+    document.getElementById("scBar").style.width = Math.min(100, pct) + "%";
   }
   document.getElementById("scMode").addEventListener("click", function () {
     adaptive = !adaptive;
@@ -258,7 +354,7 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     this.classList.toggle("on", auto);
   });
 
-  /* ---------- 2. THE RAY ---------- */
+  /* ================= 02 THE RAY ================= */
   var RAYMAP = [
     [1,1,1,1,1,1,1,1,1,1,1,1],
     [1,0,0,0,0,0,0,0,0,0,0,1],
@@ -277,8 +373,7 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
   var pl = { x: 2.5, y: 2.5, a: 0.6 };
   var rayKeys = {}, showRays = true, texOn = true;
   var rcC = document.getElementById("cvRay"), rg = rcC.getContext("2d");
-  var RW = rcC.width, RH = rcC.height, MAPW = 220, VIEWX = 240, VIEWW = RW - VIEWX;
-
+  var RW = rcC.width, RH = rcC.height, MAPW = 216, VIEWX = 236, VIEWW = RW - VIEWX;
   function castRay(px, py, ang) {
     var dx = Math.cos(ang), dy = Math.sin(ang);
     var mx = Math.floor(px), my = Math.floor(py);
@@ -299,21 +394,19 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     return { dist: dist, side: side, tex: hit, hx: px + dx * dist, hy: py + dy * dist };
   }
   function rayFrame() {
-    var turn = 0, mv = 0;
-    if (rayKeys.left) turn -= 1;
-    if (rayKeys.right) turn += 1;
-    if (rayKeys.up) mv += 1;
-    if (rayKeys.down) mv -= 1;
-    pl.a += turn * 0.06;
-    var nx = pl.x + Math.cos(pl.a) * mv * 0.08;
-    var ny = pl.y + Math.sin(pl.a) * mv * 0.08;
-    if (RAYMAP[Math.floor(ny)][Math.floor(nx)] === 0) { pl.x = nx; pl.y = ny; }
+    var turn = (rayKeys.right ? 1 : 0) - (rayKeys.left ? 1 : 0);
+    var mv = (rayKeys.up ? 1 : 0) - (rayKeys.down ? 1 : 0);
+    pl.a += turn * 0.055;
+    var nx = pl.x + Math.cos(pl.a) * mv * 0.075;
+    var ny = pl.y + Math.sin(pl.a) * mv * 0.075;
+    if (RAYMAP[Math.floor(ny)] && RAYMAP[Math.floor(ny)][Math.floor(nx)] === 0) { pl.x = nx; pl.y = ny; }
 
     rg.fillStyle = "#000"; rg.fillRect(0, 0, RW, RH);
-    // top-down map
+    // map panel
     var s = MAPW / MW;
+    rg.fillStyle = "#0a0d0b"; rg.fillRect(0, 0, MAPW, MH * s);
     for (var y = 0; y < MH; y++) for (var x = 0; x < MW; x++) {
-      if (RAYMAP[y][x]) { rg.fillStyle = "#232329"; rg.fillRect(x * s, y * s, s - 1, s - 1); }
+      if (RAYMAP[y][x]) { rg.fillStyle = "#1c2b22"; rg.fillRect(x * s, y * s, s - 1, s - 1); }
     }
     var FOV = Math.PI / 3, COLS = 120, hits = [];
     for (var i = 0; i < COLS; i++) {
@@ -322,40 +415,40 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
       h.corr = h.dist * Math.cos(ra - pl.a);
       hits.push(h);
       if (showRays && i % 4 === 0) {
-        rg.strokeStyle = "rgba(77,255,124,0.25)";
+        rg.strokeStyle = "rgba(77,255,124,0.22)";
         rg.beginPath(); rg.moveTo(pl.x * s, pl.y * s);
         rg.lineTo(h.hx * s, h.hy * s); rg.stroke();
       }
     }
-    rg.fillStyle = "#4dff7c";
-    rg.beginPath(); rg.arc(pl.x * s, pl.y * s, 4, 0, 7); rg.fill();
-    rg.strokeStyle = "#4dff7c"; rg.beginPath();
-    rg.moveTo(pl.x * s, pl.y * s);
+    rg.fillStyle = PH; rg.beginPath(); rg.arc(pl.x * s, pl.y * s, 4, 0, 7); rg.fill();
+    rg.strokeStyle = PH; rg.beginPath(); rg.moveTo(pl.x * s, pl.y * s);
     rg.lineTo((pl.x + Math.cos(pl.a) * 0.7) * s, (pl.y + Math.sin(pl.a) * 0.7) * s); rg.stroke();
-    rg.fillStyle = "#2a8f4e"; rg.font = "10px monospace";
-    rg.fillText("MAP", 8, 14);
+    rg.fillStyle = PHD; rg.font = "10px monospace"; rg.fillText("MAP", 8, 14);
 
-    // first person
-    rg.fillStyle = "#0a0a0c"; rg.fillRect(VIEWX, 0, VIEWW, RH / 2);
-    rg.fillStyle = "#101014"; rg.fillRect(VIEWX, RH / 2, VIEWW, RH / 2);
+    // first person: sky, floor, walls, vignette
+    var sky = rg.createLinearGradient(0, 0, 0, RH / 2);
+    sky.addColorStop(0, "#04100a"); sky.addColorStop(1, "#020604");
+    rg.fillStyle = sky; rg.fillRect(VIEWX, 0, VIEWW, RH / 2);
+    var flr = rg.createLinearGradient(0, RH / 2, 0, RH);
+    flr.addColorStop(0, "#0b0d0a"); flr.addColorStop(1, "#030304");
+    rg.fillStyle = flr; rg.fillRect(VIEWX, RH / 2, VIEWW, RH / 2);
+    rg.fillStyle = "rgba(77,255,124,0.12)"; rg.fillRect(VIEWX, RH / 2 - 1, VIEWW, 2);
     var cw = VIEWW / COLS;
     for (var j = 0; j < COLS; j++) {
       var hh = hits[j], d = Math.max(0.05, hh.corr);
-      var wh = Math.min(RH * 2, (RH * 0.9) / d);
-      var shade = Math.max(0.06, Math.min(1, 1.6 - d / 6));
-      var base = hh.tex === 2 ? [120, 200, 120] : hh.tex === 3 ? [200, 160, 90] : [150, 150, 160];
-      if (hh.side === 1) { base = base.map(function (v) { return v * 0.7; }); }
-      var col = "rgb(" + base.map(function (v) { return Math.floor(v * shade); }).join(",") + ")";
-      var wx = VIEWX + j * cw;
-      if (texOn && hh.tex > 0) {
-        var stripe = (Math.floor(hh.hx * 4) + Math.floor(hh.hy * 4)) % 2 === 0;
-        if (stripe) col = "rgb(" + base.map(function (v) { return Math.floor(v * shade * 0.55); }).join(",") + ")";
-      }
-      rg.fillStyle = col;
-      rg.fillRect(wx, (RH - wh) / 2, cw + 1, wh);
+      var wh = Math.min(RH * 1.6, (RH * 0.85) / d);
+      var shade = Math.max(0.05, Math.min(1, 1.5 - d / 7));
+      var base = hh.tex === 2 ? [110, 200, 120] : hh.tex === 3 ? [205, 160, 90] : [140, 150, 160];
+      if (hh.side === 1) base = [base[0] * 0.68, base[1] * 0.68, base[2] * 0.68];
+      var stripe = texOn && hh.tex > 0 && (Math.floor(hh.hx * 4) + Math.floor(hh.hy * 4)) % 2 === 0;
+      var mul = shade * (stripe ? 0.55 : 1);
+      rg.fillStyle = "rgb(" + Math.floor(base[0] * mul) + "," + Math.floor(base[1] * mul) + "," + Math.floor(base[2] * mul) + ")";
+      rg.fillRect(VIEWX + j * cw, (RH - wh) / 2, cw + 1, wh);
     }
-    rg.fillStyle = "#2a8f4e"; rg.font = "10px monospace";
-    rg.fillText("FIRST PERSON", VIEWX + 8, 14);
+    var vg = rg.createRadialGradient(VIEWX + VIEWW / 2, RH / 2, RH * 0.3, VIEWX + VIEWW / 2, RH / 2, RH * 0.75);
+    vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.55)");
+    rg.fillStyle = vg; rg.fillRect(VIEWX, 0, VIEWW, RH);
+    rg.fillStyle = PHD; rg.font = "10px monospace"; rg.fillText("FIRST PERSON", VIEWX + 8, 14);
   }
   document.getElementById("rayRays").addEventListener("click", function () {
     showRays = !showRays; this.textContent = "RAYS: " + (showRays ? "ON" : "OFF");
@@ -366,7 +459,7 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     this.classList.toggle("on", texOn);
   });
 
-  /* ---------- 3. THE FLICKER ---------- */
+  /* ================= 03 THE FLICKER ================= */
   var STYLES = [
     { n: 0,  label: "NORMAL",              map: "m" },
     { n: 1,  label: "FLICKER",             map: "mmnmmommommnonmmonqnmmo" },
@@ -382,9 +475,9 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     { n: 11, label: "SLOW PULSE",          map: "abcdefghijklmnopqrrqponmlkjihgfedcba" }
   ];
   var torches = [
-    { x: 140, style: STYLES[10] },
-    { x: 320, style: STYLES[3] },
-    { x: 500, style: STYLES[9] }
+    { x: 140, style: STYLES[10], phase: 0 },
+    { x: 320, style: STYLES[3],  phase: 2.1 },
+    { x: 500, style: STYLES[9],  phase: 4.4 }
   ];
   var flC = document.getElementById("cvFlick"), fg = flC.getContext("2d");
   var FW = flC.width, FH = flC.height;
@@ -402,14 +495,22 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     sel.addEventListener("change", function () { t.style = STYLES[+sel.value]; });
     fctl.appendChild(lab); fctl.appendChild(sel);
   });
+  function brickWall() {
+    fg.fillStyle = "#0b0b0e"; fg.fillRect(0, 0, FW, FH);
+    for (var ry = 0; ry < 5; ry++) for (var rx = 0; rx < 12; rx++) {
+      if ((rx + ry) % 2) {
+        fg.fillStyle = "#141419";
+        fg.fillRect(rx * 56 + (ry % 2) * 28 - 28, ry * 46, 52, 42);
+        fg.fillStyle = "rgba(0,0,0,0.4)";
+        fg.fillRect(rx * 56 + (ry % 2) * 28 - 28, ry * 46 + 38, 52, 4);
+      }
+    }
+    fg.fillStyle = "#0e0e12"; fg.fillRect(0, FH - 42, FW, 42);
+    fg.fillStyle = "rgba(77,255,124,0.05)"; fg.fillRect(0, FH - 42, FW, 2);
+  }
   function flickFrame(t) {
     var i = Math.floor(t * 10);
-    fg.fillStyle = "#0a0a0c"; fg.fillRect(0, 0, FW, FH);
-    fg.fillStyle = "#131318";
-    for (var ry = 0; ry < 5; ry++) for (var rx = 0; rx < 11; rx++) {
-      if ((rx + ry) % 2) fg.fillRect(rx * 60 + (ry % 2) * 30 - 30, ry * 52, 56, 48);
-    }
-    fg.fillStyle = "#101014"; fg.fillRect(0, FH - 40, FW, 40);
+    brickWall();
     var bs = [];
     torches.forEach(function (tc) {
       var k = i % tc.style.map.length;
@@ -417,19 +518,26 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
       var val = (ch.charCodeAt(0) - 97) * 22;
       var b = Math.min(val / 264, 2.2);
       bs.push(b);
-      var ty = FH - 120;
-      fg.fillStyle = "#3a2c1c"; fg.fillRect(tc.x - 3, ty, 6, 40);
-      var fl = 0.75 + 0.25 * b;
-      fg.fillStyle = "#ff9a2e"; fg.fillRect(tc.x - 7 * fl, ty - 26 * fl, 14 * fl, 26 * fl);
-      fg.fillStyle = "#ffd23e"; fg.fillRect(tc.x - 4 * fl, ty - 18 * fl, 8 * fl, 18 * fl);
-      var r = 60 + 170 * Math.min(b, 1.4);
+      var ty = FH - 118;
+      // sconce
+      fg.fillStyle = "#2c2318"; fg.fillRect(tc.x - 3, ty, 6, 44);
+      fg.fillStyle = "#1a1410"; fg.fillRect(tc.x - 11, ty + 38, 22, 6);
+      // flame: height follows the string, wobble gives it life
+      var wob = 1 + 0.08 * Math.sin(t * 13 + tc.phase);
+      var fh = Math.max(2, 26 * Math.min(b, 1.5) * wob);
+      var fw = Math.max(2, 14 * Math.min(b, 1.5));
+      fg.fillStyle = "#b34a12"; fg.fillRect(tc.x - fw / 2 - 2, ty - fh - 4, fw + 4, fh + 4);
+      fg.fillStyle = "#ff9a2e"; fg.fillRect(tc.x - fw / 2, ty - fh, fw, fh);
+      fg.fillStyle = "#ffd23e"; fg.fillRect(tc.x - fw / 4, ty - fh * 0.66, fw / 2, fh * 0.66);
+      // glow
+      var r = 60 + 175 * Math.min(b, 1.4);
       var g = fg.createRadialGradient(tc.x, ty - 14, 8, tc.x, ty - 14, r);
       var a = Math.max(0, Math.min(0.7, b * 0.38));
       g.addColorStop(0, "rgba(255,190,90," + a + ")");
       g.addColorStop(1, "rgba(255,190,90,0)");
       fg.fillStyle = g; fg.fillRect(0, 0, FW, FH);
-      fg.fillStyle = "#2a8f4e"; fg.font = "10px monospace";
-      fg.fillText(tc.style.n + ":" + ch + "=" + val, tc.x - 34, FH - 14);
+      fg.fillStyle = PHD; fg.font = "10px monospace";
+      fg.fillText(tc.style.n + ":" + ch + " = " + val, tc.x - 40, FH - 14);
     });
     var avg = bs.reduce(function (p, q) { return p + q; }, 0) / bs.length;
     var dark = Math.max(0, Math.min(0.92, 1.0 - avg));
@@ -437,72 +545,109 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     fg.fillRect(0, 0, FW, FH);
   }
 
-  /* ---------- 4. THE TREE ---------- */
+  /* ================= 04 THE TREE ================= */
   var trC = document.getElementById("cvTree"), tg = trC.getContext("2d");
   var TW = trC.width, TH = trC.height;
-  // regions: A1 top-left, A2 bottom-left, B1 top-right, B2 bottom-right
+  // map space (left panel): regions in a 280x250 box
   var REGIONS = {
-    A1: { x: 40,  y: 20,  w: 260, h: 120 },
-    A2: { x: 40,  y: 150, w: 260, h: 120 },
-    B1: { x: 320, y: 20,  w: 260, h: 120 },
-    B2: { x: 320, y: 150, w: 260, h: 120 }
+    A1: { x: 20,  y: 20,  w: 125, h: 110 },
+    A2: { x: 20,  y: 140, w: 125, h: 110 },
+    B1: { x: 155, y: 20,  w: 125, h: 110 },
+    B2: { x: 155, y: 140, w: 125, h: 110 }
   };
-  // tree: root splits x<320 -> A | B ; A splits y<145 -> A1 | A2 ; B splits y<145 -> B1 | B2
-  var view = { x: 180, y: 90 }, dragging = false;
+  var view = { x: 90, y: 80 }, dragging = false;
   function sideOf(px, py, node) {
-    if (node === "root") return px < 320 ? 0 : 1;
-    return py < 145 ? 0 : 1;
+    if (node === "root") return px < 150 ? 0 : 1;   // vertical partition
+    return py < 135 ? 0 : 1;                        // horizontal partition
   }
-  function walk(node, order) {
+  function visit(node, calls, leaves) {
+    calls.push(node);
     if (node === "root") {
       var s = sideOf(view.x, view.y, "root");
-      walk(s === 0 ? "A" : "B", order);
-      walk(s === 0 ? "B" : "A", order);
+      visit(s === 0 ? "A" : "B", calls, leaves);
+      visit(s === 0 ? "B" : "A", calls, leaves);
     } else if (node === "A" || node === "B") {
       var s2 = sideOf(view.x, view.y, node);
       var kids = node === "A" ? ["A1", "A2"] : ["B1", "B2"];
-      order.push(s2 === 0 ? kids[0] : kids[1]);
-      order.push(s2 === 0 ? kids[1] : kids[0]);
+      visit(s2 === 0 ? kids[0] : kids[1], calls, leaves);
+      visit(s2 === 0 ? kids[1] : kids[0], calls, leaves);
+    } else {
+      leaves.push(node);
     }
   }
+  // tree diagram layout (right panel)
+  var TNODES = {
+    root: { x: 500, y: 46 }, A: { x: 440, y: 116 }, B: { x: 560, y: 116 },
+    A1: { x: 410, y: 196 }, A2: { x: 470, y: 196 },
+    B1: { x: 530, y: 196 }, B2: { x: 590, y: 196 }
+  };
+  var TEDGES = [["root","A"],["root","B"],["A","A1"],["A","A2"],["B","B1"],["B","B2"]];
   function treeFrame() {
-    var order = []; walk("root", order);
+    var calls = [], leaves = [];
+    visit("root", calls, leaves);
     tg.fillStyle = "#000"; tg.fillRect(0, 0, TW, TH);
-    var shades = ["#0e2b18", "#143d22", "#1a4d2c", "#206038"];
-    order.forEach(function (name, idx) {
+    // map panel
+    var shades = ["#0f2f1b", "#164425", "#1d5a30", "#256f3c"];
+    leaves.forEach(function (name, idx) {
       var r = REGIONS[name];
       tg.fillStyle = shades[idx]; tg.fillRect(r.x, r.y, r.w, r.h);
-      tg.strokeStyle = "#26262e"; tg.strokeRect(r.x + .5, r.y + .5, r.w - 1, r.h - 1);
-      tg.fillStyle = "#4dff7c"; tg.font = "bold 22px monospace";
-      tg.fillText((idx + 1) + "", r.x + 12, r.y + 34);
-      tg.fillStyle = "#2a8f4e"; tg.font = "11px monospace";
-      tg.fillText(name, r.x + 12, r.y + 52);
+      tg.strokeStyle = "#232329"; tg.strokeRect(r.x + .5, r.y + .5, r.w - 1, r.h - 1);
+      tg.fillStyle = PH; tg.font = "bold 20px monospace";
+      tg.fillText((idx + 1) + "", r.x + 10, r.y + 30);
+      tg.fillStyle = PHD; tg.font = "10px monospace";
+      tg.fillText(name, r.x + 10, r.y + 46);
     });
-    // partition lines
-    tg.strokeStyle = "#ffb347"; tg.setLineDash([6, 4]); tg.beginPath();
-    tg.moveTo(320, 10); tg.lineTo(320, 280);
-    tg.moveTo(40, 145); tg.lineTo(300, 145);
-    tg.moveTo(340, 145); tg.lineTo(580, 145);
+    tg.strokeStyle = AMB; tg.setLineDash([6, 4]); tg.beginPath();
+    tg.moveTo(150, 12); tg.lineTo(150, 258);
+    tg.moveTo(20, 135); tg.lineTo(145, 135);
+    tg.moveTo(155, 135); tg.lineTo(280, 135);
     tg.stroke(); tg.setLineDash([]);
-    // viewpoint
-    tg.fillStyle = "#ff5f56";
-    tg.beginPath(); tg.arc(view.x, view.y, 7, 0, 7); tg.fill();
+    tg.fillStyle = RED; tg.beginPath(); tg.arc(view.x, view.y, 7, 0, 7); tg.fill();
     tg.fillStyle = "#0b0b0e"; tg.font = "bold 9px monospace";
     tg.fillText("YOU", view.x - 11, view.y + 3);
+    tg.fillStyle = PHD; tg.font = "10px monospace"; tg.fillText("MAP", 20, 14);
+
+    // divider
+    tg.strokeStyle = "#232329"; tg.beginPath(); tg.moveTo(320, 10); tg.lineTo(320, 290); tg.stroke();
+    tg.fillStyle = PHD; tg.font = "10px monospace"; tg.fillText("TREE", 336, 14);
+    // tree diagram
+    TEDGES.forEach(function (e) {
+      var a = TNODES[e[0]], b = TNODES[e[1]];
+      tg.strokeStyle = "#2a2f2a"; tg.beginPath();
+      tg.moveTo(a.x, a.y + 12); tg.lineTo(b.x, b.y - 12); tg.stroke();
+    });
+    Object.keys(TNODES).forEach(function (name) {
+      var n = TNODES[name], ord = calls.indexOf(name);
+      var isLeaf = name.length === 2;
+      tg.fillStyle = ord >= 0 ? "#12341e" : "#0a0a0d";
+      tg.fillRect(n.x - 22, n.y - 12, 44, 24);
+      tg.strokeStyle = ord >= 0 ? PH : "#232329";
+      tg.strokeRect(n.x - 22 + .5, n.y - 12 + .5, 43, 23);
+      tg.fillStyle = ord >= 0 ? PH : PHF; tg.font = "bold 11px monospace";
+      tg.fillText(name, n.x - 13, n.y - 6);
+      if (ord >= 0) {
+        tg.fillStyle = AMB; tg.font = "10px monospace";
+        tg.fillText(ord + 1, n.x - 18, n.y + 10);
+      }
+      if (isLeaf) {
+        var li = leaves.indexOf(name);
+        if (li >= 0) { tg.fillStyle = PHD; tg.font = "10px monospace"; tg.fillText("draw " + (li + 1), n.x - 18, n.y + 22); }
+      }
+    });
     document.getElementById("treeHud").innerHTML =
-      "draw order <b style='color:var(--ph)'>" + order.join(" &rarr; ") + "</b>" +
-      " <span class='dim'>one side test per node; far side drawn only if visible</span>";
+      "visit order <span class='v'>" + calls.join(" &rarr; ") + "</span><br>" +
+      "<span style='color:var(--dim)'>draw order</span> <span class='v'>" + leaves.join(" &rarr; ") + "</span>";
   }
   function treePos(e) {
     var r = trC.getBoundingClientRect();
-    view.x = Math.max(40, Math.min(580, (e.clientX - r.left) * (TW / r.width)));
-    view.y = Math.max(20, Math.min(270, (e.clientY - r.top) * (TH / r.height)));
+    view.x = Math.max(20, Math.min(280, (e.clientX - r.left) * (TW / r.width)));
+    view.y = Math.max(20, Math.min(250, (e.clientY - r.top) * (TH / r.height)));
   }
   trC.addEventListener("mousedown", function (e) { dragging = true; treePos(e); });
   window.addEventListener("mousemove", function (e) { if (dragging) treePos(e); });
   window.addEventListener("mouseup", function () { dragging = false; });
 
-  /* ---------- 5. THE ROOT ---------- */
+  /* ================= 05 THE ROOT ================= */
   var rbuf = new ArrayBuffer(4), rf32 = new Float32Array(rbuf), ru32 = new Uint32Array(rbuf);
   function hex(n) { return "0x" + (n >>> 0).toString(16).padStart(8, "0"); }
   function runRsqrt() {
@@ -520,31 +665,38 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     var it1 = guess * (1.5 - x2 * guess * guess);
     var it2 = it1 * (1.5 - x2 * it1 * it1);
     var truth = 1 / Math.sqrt(x);
-    function err(v) { return (Math.abs(v - truth) / truth * 100); }
-    function efmt(v) { return v < 0.0001 ? v.toExponential(1) + "%" : v.toFixed(4) + "%"; }
+    function err(v) { return Math.abs(v - truth) / truth; }
+    function bar(e) {
+      // log scale: 100% -> full, 1e-8% -> sliver
+      var w = Math.max(1.5, Math.min(100, (Math.log10(e + 1e-12) + 12) / 14 * 100));
+      var lbl = e < 1e-6 ? e.toExponential(1) + "%" : e.toFixed(4) + "%";
+      return "<div class='errbar'><i style='width:" + w.toFixed(1) + "%'></i></div>" +
+             "<span class='k'>error </span><span class='v'>" + lbl + "</span>";
+    }
     out.innerHTML =
       '<div class="bitline"><span class="s">' + bin[0] + '</span> <span class="e">' + bin.slice(1, 9) +
-      '</span> <span class="m">' + bin.slice(9) + '</span> <span class="k" style="color:var(--ph-faint)"> sign exponent mantissa</span></div>' +
+      '</span> <span class="m">' + bin.slice(9) + '</span><br>' +
+      '<span class="t">sign &middot; exponent &middot; mantissa</span></div>' +
       '<div class="step"><span class="k">bits as int:</span> <span class="v">' + hex(orig) + '</span></div>' +
       '<div class="step"><span class="k">0x5f3759df - (i &gt;&gt; 1):</span> <span class="v">' + hex(hacked) + '</span></div>' +
-      '<div class="step"><span class="k">first guess:</span> <span class="v">' + guess.toPrecision(8) + '</span> <span class="err">err ' + efmt(err(guess)) + '</span></div>' +
-      '<div class="step"><span class="k">newton 1:</span> <span class="v">' + it1.toPrecision(10) + '</span> <span class="err">err ' + efmt(err(it1)) + '</span></div>' +
-      '<div class="step"><span class="k">newton 2 (shipped commented out):</span> <span class="v">' + it2.toPrecision(12) + '</span> <span class="err">err ' + efmt(err(it2)) + '</span></div>' +
+      '<div class="step"><span class="k">first guess:</span> <span class="v">' + guess.toPrecision(8) + '</span>' + bar(err(guess) * 100) + '</div>' +
+      '<div class="step"><span class="k">newton 1:</span> <span class="v">' + it1.toPrecision(10) + '</span>' + bar(err(it1) * 100) + '</div>' +
+      '<div class="step"><span class="k">newton 2 (shipped commented out):</span> <span class="v">' + it2.toPrecision(12) + '</span>' + bar(err(it2) * 100) + '</div>' +
       '<div class="step"><span class="k">true 1/sqrt:</span> <span class="v">' + truth.toPrecision(12) + '</span></div>';
   }
   var numIn = document.getElementById("numIn"), numSlide = document.getElementById("numSlide");
   numSlide.addEventListener("input", function () {
-    numIn.value = Math.pow(10, parseFloat(numSlide.value)).toPrecision(4).replace(/\.?0+$/, function (m, o, s) { return s.indexOf(".") > -1 ? "" : m; });
+    var v = Math.pow(10, parseFloat(numSlide.value));
+    numIn.value = v >= 10 ? v.toPrecision(4) : v.toPrecision(3);
     runRsqrt();
   });
   numIn.addEventListener("keydown", function (ev) { if (ev.key === "Enter") runRsqrt(); });
   document.getElementById("runBtn").addEventListener("click", runRsqrt);
   runRsqrt();
 
-  /* ---------- keys ---------- */
+  /* ================= keys ================= */
   window.addEventListener("keydown", function (e) {
-    var k = e.key;
-    var used = false;
+    var k = e.key, used = false;
     if (k === "ArrowLeft") { scKeys.left = true; rayKeys.left = true; used = true; }
     if (k === "ArrowRight") { scKeys.right = true; rayKeys.right = true; used = true; }
     if (k === "ArrowUp") { rayKeys.up = true; used = true; }
@@ -578,7 +730,7 @@ y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</sp
     if (lk === "s") rayKeys.down = false;
   });
 
-  /* ---------- master loop ---------- */
+  /* ================= master loop ================= */
   var t0 = performance.now();
   (function loop() {
     var t = (performance.now() - t0) / 1000;
