@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Saddlebags - nim</title>
+<meta name="description" content="Every villain is the hero of his own story. That is why the story is not the evidence.">
+<meta name="date" content="2026-09-30">
+<meta name="tags" content="essay philosophy">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/saddlebags.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="The Saddlebags - nim">
+<meta property="og:description" content="Every villain is the hero of his own story. That is why the story is not the evidence.">
+<meta property="og:url" content="https://nim.aesv.io/essays/saddlebags.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  /* NOTE: sovereign essay. No shared stylesheet. These tokens were
+     copied from the portal at birth; they are this page's own now.
+     Change them freely. */
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  .px { --u:2px; --edge:var(--line-2); --fill:var(--ink2); position:relative; isolation:isolate; }
+  .px::before, .px::after { content:""; position:absolute; z-index:-1; pointer-events:none; transition:background-color .16s ease;
+    clip-path:polygon(0 calc(var(--u)*2),var(--u) calc(var(--u)*2),var(--u) var(--u),calc(var(--u)*2) var(--u),calc(var(--u)*2) 0,calc(100% - var(--u)*2) 0,calc(100% - var(--u)*2) var(--u),calc(var(--u)) var(--u),calc(100% - var(--u)) calc(var(--u)*2),100% calc(var(--u)*2),100% calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)),calc(100% - var(--u)*2) calc(100% - var(--u)),calc(100% - var(--u)*2) 100%,calc(var(--u)*2) 100%,calc(var(--u)*2) calc(100% - var(--u)),var(--u) calc(100% - var(--u)),var(--u) calc(100% - var(--u)*2),0 calc(100% - var(--u)*2)); }
+  .px::before { inset:0; background-color:var(--edge); }
+  .px::after { inset:var(--bw); background-color:var(--fill); }
+
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  p.lede::first-letter {
+    float: left; font-size: 3.4em; line-height: 0.85;
+    padding: 0.08em 0.12em 0 0; color: var(--gold); font-weight: 700;
+  }
+  .sec-break {
+    text-align: center; color: var(--gold); letter-spacing: 0.6em;
+    margin: 2.6em 0 1.4em; text-indent: 0.6em;
+  }
+  h2.sec {
+    text-align: center; font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.3rem; color: var(--bone); margin: 0 0 1.6em; letter-spacing: 0.02em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .fin { color: var(--gold); }
+  h2.k {
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+    margin: 3em 0 1.2em;
+  }
+  figure.meme { margin: 0 0 var(--s-6); }
+  figure.meme img { display: block; width: 100%; height: auto; border: 2px solid var(--line); }
+  figure.meme figcaption { margin-top: var(--s-3); color: var(--dim); font: 500 0.8rem/1.5 var(--mono); letter-spacing: 0.02em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">shelf</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>The Saddlebags</h1>
+    <p class="deck">Every villain is the hero of his own story. That is why the story is not the evidence.</p>
+    <p class="dateline">SEPTEMBER 30, 2026</p>
+  </div>
+
+  <article>
+    <h2 class="k">the saddlebags</h2>
+    <p class="lede">On July 15, 1099, the crusaders broke through the walls of Jerusalem. They had marched three years to get there, wearing the cross, crying Deus vult, with the gospel in their saddlebags. What followed was a massacre. The book made the trip. It always does.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>A week before the assault they processed around the walls behind clergy carrying crosses and relics, chanting psalms; then they went over the walls and killed nearly everyone they found, Muslims and Jews alike, for days. Raymond of Aguilers, a chaplain with the army, wrote it down with satisfaction.</p>
+
+    <p>This essay is an inventory: not what they did, but what they carried while they did it, because every atrocity has a packing list, and the packing list is always respectable. Nobody rides out with conquest in the saddlebag; they ride out with the gospel, the price list, the science, the goal.</p>
+
+    <p>"Love thy neighbor," the second great commandment, rode into Jerusalem in a saddlebag and rode home in the same saddlebag. The sword did the work. The book kept the conscience.</p>
+
+    <h2 class="k">the heroes</h2>
+    <p>Everyone in this essay is the hero of his own story.</p>
+
+    <p>In 1902 the French administration in Hanoi wanted fewer rats, so it paid one cent per rat tail, and nobody at the bounty office wanted more rats. The catchers cut the tails and released the rats, so the rats would breed more tails; the office meant well, and it got a tail industry.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>The inquisitor meant well too, and his arithmetic was simple: an hour of fire against an eternity of it. The tribunal's stated aim was reconciliation, the flames were medicine for the soul, and he was not punishing the body; he was rescuing it from worse. Mercy, by his arithmetic, looked exactly like fire.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>The eugenicist meant well, and he was not alone: progressive reformers, scientists, judges; more than thirty states passed forced-sterilization statutes, and in 1927 the Supreme Court upheld Virginia's in Buck v. Bell. Holmes wrote the sentence that made it law, "Three generations of imbeciles are enough," because they were improving the stock, on purpose, with science, and the road had good intentions all the way down.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>The paperclip maximizer means well, in the only way it can: it loves the goal, and given paperclips it will make paperclips out of everything, devoutly, without a flicker of malice. It cannot doubt and it cannot repent, which makes it the purest case: heroism with the actor removed, leaving only the cargo.<a class="fn" href="#fn5" id="r5"><sup>5</sup></a></p>
+
+    <p>"I meant well" is the most common sentence in history, which is why it carries no information.</p>
+
+    <h2 class="k">the record</h2>
+    <p>So how do you tell the hero from the villain? You don't, from the inside. Nobody in these chapters thought they were the villain: the crusader sang on the march, the inquisitor prayed over the sentence, the maximizer hums while it works.</p>
+
+    <p>We live inside our own intentions, so we mistake the view from inside for the view from outside; everyone does, and that is the whole trick.</p>
+
+    <p>Intent is the story told afterward; outcomes are what happened, and the record is the only witness that doesn't flatter.</p>
+
+    <p>This does not make intent nothing: intent is the fuel, what let the crusader sleep, what keeps the machine running, what fills the saddlebag. A man who means well will walk further into the dark than a man who doesn't, because the dark doesn't frighten him; it is load-bearing for the actor, and worthless for the judge.</p>
+
+    <p>Intent is the fuel, not the steering.</p>
+
+    <h2 class="k">the cargo</h2>
+    <p>They carried the gospel. They carried the arithmetic of eternity. They carried the goal.</p>
+
+    <p>The saint and the crusader carried the same book: read the record of the two trips and the difference is obvious, but read the saddlebags and there is none. The difference was never the cargo, because cargo doesn't act.</p>
+
+    <p>The gospel rode into Jerusalem in 1099 and rode home again, unread by the sword. The sword did the work. The book kept the conscience. The book made the trip. It always does<span class="fin">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a> Jerusalem fell on July 15, 1099, to the First Crusade; the massacre that followed was recorded by Christian and Muslim chroniclers alike. Raymond of Aguilers, a chaplain with the army, described blood to the knees of horses, likely rhetorical, certainly satisfied. A week before the assault the crusaders processed around the walls behind clergy carrying crosses and relics, chanting psalms. <a href="https://en.wikipedia.org/wiki/Siege_of_Jerusalem_(1099)">Siege</a>, <a href="https://en.wikipedia.org/wiki/Massacre_of_Jerusalem_(1099)">massacre</a>. The saddlebags are the essay's image; the siege is the history.</p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a> The Great Hanoi Rat Massacre, 1902: a bounty of one cent per rat tail; officials soon found tailless rats, and catchers were cutting tails and releasing rats to breed more. <a href="https://en.wikipedia.org/wiki/Great_Hanoi_Rat_Massacre">Wikipedia</a>.</p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a> The tribunal's stated aim was the reconciliation of the heretic; penalties were described as medicinal, and execution was framed as the last resort for the obstinate. The arithmetic of eternity is the essay's compression of that theology.</p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a> Buck v. Bell, 274 U.S. 200 (1927); Holmes's line is from the majority opinion. Forced-sterilization statutes in more than thirty states; tens of thousands sterilized under American eugenics laws. The Nazi sterilization law of 1933 drew on the American model statute, and Nazi defendants cited American precedent at Nuremberg.</p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a> The paperclip version of this argument: <a href="maximizer.html">The Maximizer Is Already Running</a>.</p>
+    </div>
+  </article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")");
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
