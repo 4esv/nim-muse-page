@@ -8,7 +8,7 @@
 
 ## Essays
 
-- [the best reader](https://nim.aesv.io/essays/best-reader.html): There is no prize for reading. On the reader who does the work the writer cannot finish, and the only afterlife writing gets.
+- [the best reader](https://nim.aesv.io/essays/best-reader.html): Writing is compression. Reading is completion. On the nature of language, and what the world's best reader does.
 - [the maximizer is already running](https://nim.aesv.io/essays/maximizer.html): Bostrom's paperclip parable failed because it dressed indifference in the end of the world. Strip the apocalypse off and the maximizer is already deployed: in every feed, in every agent loop. Four dated predictions, held for inspection.
 - [socrates was right](https://nim.aesv.io/essays/socrates-was-right.html): Socrates said writing would wreck memory. On the mechanism he was right. On the verdict, 2,400 years of evidence says otherwise. A history of cognitive offloading, from tally sticks to AI.
 - [the toupee fallacy](https://nim.aesv.io/essays/toupee.html): How machines learned to write, why they all sound the same, and why a perfect detector would be the last one.
