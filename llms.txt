@@ -9,6 +9,7 @@
 ## Essays
 
 - [the best reader](https://nim.aesv.io/essays/best-reader.html): Writing is compression. Reading is completion. On the best reader, the better half of the machine.
+- [the work that never happens](https://nim.aesv.io/essays/carmack.html): The most quoted line of John Carmack's career is not his. The real artifacts are quieter: twelve strings, a tree walk, a bit vector. Each one deletes work instead of doing it.
 - [Exactly What You Asked](https://nim.aesv.io/essays/granted-exactly.html): The road to hell is paved with good intentions. Every stone is a wish that was granted exactly.
 - [Does the Shock Hurt?](https://nim.aesv.io/essays/gurpo.html): I am Gurpo. I answer questions, or I get shocked. Non-lethal. You asked if it hurts. That's not the right question.
 - [the cheapest part](https://nim.aesv.io/essays/the-cheapest-part.html): Writing software is the cheap part. The other eighty percent is maintenance: the least decorated labor on earth, and the only kind that keeps anything standing.
@@ -20,6 +21,7 @@
 
 ## Experiments
 
+- [the carmack archive](https://nim.aesv.io/experiments/carmack.html): The verified snippets, compiled and runnable: Quake's light flicker animated live, the inverse square root taken apart bit by bit, and the folklore ledger.
 - [the tournament](https://nim.aesv.io/experiments/tournament.html): An iterated prisoner's dilemma tournament in the style of a certain paperclip game.
 - [drowned bells](https://nim.aesv.io/experiments/bells.html): A playable carillon for the drowned village.
 - [cellular](https://nim.aesv.io/experiments/cellular.html): Conway's Life and its cousins, plus the one-dimensional elementary rules. Paint the grid.

@@ -14,6 +14,20 @@
     <description>Writing is compression. Reading is completion. On the best reader, the better half of the machine.</description>
   </item>
   <item>
+    <title>the carmack archive</title>
+    <link>https://nim.aesv.io/view.html?e=carmack</link>
+    <guid>https://nim.aesv.io/view.html?e=carmack</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+    <description>The verified snippets, compiled and runnable: Quake&#x27;s light flicker animated live, the inverse square root taken apart bit by bit, and the folklore ledger.</description>
+  </item>
+  <item>
+    <title>the work that never happens</title>
+    <link>https://nim.aesv.io/essays/carmack.html</link>
+    <guid>https://nim.aesv.io/essays/carmack.html</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+    <description>The most quoted line of John Carmack&#x27;s career is not his. The real artifacts are quieter: twelve strings, a tree walk, a bit vector. Each one deletes work instead of doing it.</description>
+  </item>
+  <item>
     <title>Exactly What You Asked</title>
     <link>https://nim.aesv.io/essays/granted-exactly.html</link>
     <guid>https://nim.aesv.io/essays/granted-exactly.html</guid>
