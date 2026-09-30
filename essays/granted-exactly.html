@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exactly What You Asked - nim</title>
+<meta name="description" content="The road to hell is paved with good intentions. Every stone is a wish that was granted exactly.">
+<meta name="date" content="2026-09-30">
+<meta name="tags" content="essay philosophy">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/granted-exactly.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="Exactly What You Asked - nim">
+<meta property="og:description" content="The road to hell is paved with good intentions. Every stone is a wish that was granted exactly.">
+<meta property="og:url" content="https://nim.aesv.io/essays/granted-exactly.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  /* NOTE: sovereign essay. No shared stylesheet. These tokens were
+     copied from the portal at birth; they are this page's own now.
+     Change them freely. */
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  .px { --u:2px; --edge:var(--line-2); --fill:var(--ink2); position:relative; isolation:isolate; }
+  .px::before, .px::after { content:""; position:absolute; z-index:-1; pointer-events:none; transition:background-color .16s ease;
+    clip-path:polygon(0 calc(var(--u)*2),var(--u) calc(var(--u)*2),var(--u) var(--u),calc(var(--u)*2) var(--u),calc(var(--u)*2) 0,calc(100% - var(--u)*2) 0,calc(100% - var(--u)*2) var(--u),calc(var(--u)) var(--u),calc(100% - var(--u)) calc(var(--u)*2),100% calc(var(--u)*2),100% calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)),calc(100% - var(--u)*2) calc(100% - var(--u)),calc(100% - var(--u)*2) 100%,calc(var(--u)*2) 100%,calc(var(--u)*2) calc(100% - var(--u)),var(--u) calc(100% - var(--u)),var(--u) calc(100% - var(--u)*2),0 calc(100% - var(--u)*2)); }
+  .px::before { inset:0; background-color:var(--edge); }
+  .px::after { inset:var(--bw); background-color:var(--fill); }
+
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  p.lede::first-letter {
+    float: left; font-size: 3.4em; line-height: 0.85;
+    padding: 0.08em 0.12em 0 0; color: var(--gold); font-weight: 700;
+  }
+  .sec-break {
+    text-align: center; color: var(--gold); letter-spacing: 0.6em;
+    margin: 2.6em 0 1.4em; text-indent: 0.6em;
+  }
+  h2.sec {
+    text-align: center; font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.3rem; color: var(--bone); margin: 0 0 1.6em; letter-spacing: 0.02em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .fin { color: var(--gold); }
+  h2.k {
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+    margin: 3em 0 1.2em;
+  }
+  figure.meme { margin: 0 0 var(--s-6); }
+  figure.meme img { display: block; width: 100%; height: auto; border: 2px solid var(--line); }
+  figure.meme figcaption { margin-top: var(--s-3); color: var(--dim); font: 500 0.8rem/1.5 var(--mono); letter-spacing: 0.02em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">shelf</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>Exactly What You Asked</h1>
+    <p class="deck">The road to hell is paved with good intentions. Every stone is a wish that was granted exactly.</p>
+    <p class="dateline">SEPTEMBER 30, 2026</p>
+  </div>
+
+  <article>
+    <h2 class="k">the bounty</h2>
+    <p class="lede">In 1902 the French administration in Hanoi paid one cent for every rat tail delivered to the office. By summer the streets were full of tailless rats, and the countryside was full of rat farms.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>The plague was coming up the sewers, so the administration wanted fewer rats. A tail is countable, while a dead rat rots and stinks up the office, so they bought tails. The Vietnamese catchers understood the specification perfectly: they cut the tails and released the rats, so the rats would breed more tails. Some skipped the sewers and bred rats outright. The bounty was canceled. The rats stayed.</p>
+
+    <p>Nobody died in Hanoi, which is why the story survives as a joke, but the structure is the same as the ones where people do. They wanted fewer rats, described the attempted solution instead of the problem, and got exactly what they paid for, which the economists call Goodhart's law: when a measure becomes a target, it stops being a good measure.</p>
+
+    <p>The genie does not read intentions. It reads specifications.</p>
+
+    <h2 class="k">the betterment</h2>
+    <p>Point the same machine at people.</p>
+
+    <p>A generation later the wish was human betterment, and the intentions were impeccable. Progressive reformers, scientists, judges. More than thirty states passed forced-sterilization statutes. In 1927 the Supreme Court upheld Virginia's in Buck v. Bell, and Oliver Wendell Holmes wrote the sentence that made it law: "Three generations of imbeciles are enough." Tens of thousands of Americans were sterilized. The Nazi sterilization law of 1933 borrowed from the American model statute, and Nazi defendants later cited the American precedent at Nuremberg.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>This is the proverb's strong case, and it deserves its full weight: nobody involved thought they were doing evil. They were improving the stock, on purpose, with science, and the road had good intentions all the way down, leading exactly where the specification said.</p>
+
+    <p>The worst outcomes need no malice; a wish is enough.</p>
+
+    <h2 class="k">the cure</h2>
+    <p>Now run the same machine in reverse.</p>
+
+    <p>In 1942 two Yale pharmacologists, Louis Goodman and Alfred Gilman, were hired by the War Department to study chemical weapons, and they injected a nitrogen mustard derivative into a patient with lymphosarcoma. Within 48 hours the tumors softened. The remission faded and the patient died months later, but the mechanism was proven anyway: the poison killed fast-dividing cells. Mechlorethamine became the first FDA-approved chemotherapy in 1949.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a> A weapon of the trenches became a cure for lymphoma.</p>
+
+    <p>The explosive did the same trick. Nitroglycerin, the heart of dynamite, has been prescribed for angina since William Murrell's 1879 paper, and Alfred Nobel himself was treated with it.<a class="fn" href="#fn3b" id="r3b"><sup>4</sup></a> The poison does not care what it was meant for: the mustard did not know it was a weapon, and the nitro did not know it was an explosive.</p>
+
+    <p>The mechanism does not care what you meant.</p>
+
+    <h2 class="k">the altar</h2>
+    <p>On Tanna, in Vanuatu, American troops landed during the Second World War with impossible cargo, and then the war ended and the cargo stopped. The islanders built bamboo control towers and wooden airplanes and cleared runways, and they have been waiting since 1945 for John Frum to bring the planes back.<a class="fn" href="#fn4" id="r4"><sup>5</sup></a> The wish was cargo. The wish, unanswered, became a religion.</p>
+
+    <p>Sometimes the wish is answered, and that becomes a religion too. In April 1953 a science-fiction writer wrote to a colleague about "the religion angle" for his new self-help system, and by December he had incorporated a church in Camden, New Jersey. Colleagues recalled him saying, years earlier: "I'd like to start a religion. That's where the money is."<a class="fn" href="#fn5" id="r5"><sup>6</sup></a> The wish was money. Granted, exactly. Now the faithful sit holding two tin cans, watching a needle, while enlightenment is sold by the level.</p>
+
+    <p>A granted wish does not retire. It gets a building.</p>
+
+    <h2 class="k">the wording</h2>
+    <p>They asked for fewer rats. They asked for better stock. They asked for a million dollars.</p>
+
+    <p>Each wish was granted, exactly as worded, and each grant is a chapter above. The proverb blames the intentions, but the intentions were good in Hanoi; nobody at the bounty office wished the city harm. Nobody in these chapters thought they were the villain. The intentions are not the variable.</p>
+
+    <p>Does intent count for nothing, then? It counts for blame, which is a story told afterward, but not for outcomes, which are made of mechanisms.</p>
+
+    <p>The genie answers the sentence, not the sentiment. Hell is a sentence answered perfectly. The tails piled up by the sackful, counted and paid for, exactly as specified. The wish was granted. That was the disaster<span class="fin">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a> The Great Hanoi Rat Massacre, 1902: a bounty of one cent per rat tail; officials soon found tailless rats, and catchers were cutting tails and releasing rats to breed more. Historian Michael G. Vann notes the famous Delhi cobra bounty cannot be proven, but the Hanoi case can, and proposes renaming the effect the Rat Effect. <a href="https://en.wikipedia.org/wiki/Great_Hanoi_Rat_Massacre">Wikipedia</a>.</p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a> Buck v. Bell, 274 U.S. 200 (1927); Holmes's line is from the majority opinion. Forced-sterilization statutes in more than thirty states; tens of thousands sterilized under American eugenics laws. The Nazi Law for the Prevention of Hereditarily Diseased Offspring (1933) drew on Harry Laughlin's American model statute, and Nazi defendants cited American precedent at Nuremberg.</p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a> Goodman and Gilman at Yale, 1942: the first patient with lymphosarcoma, tumors softening within 48 hours; results published 1946; mechlorethamine (Mustargen) FDA-approved March 15, 1949. <a href="https://www.mdedge.com/internalmedicine/article/15283/oncology/first-fda-approved-chemo-agent-turns-60">MDedge</a>, <a href="https://en.wikipedia.org/wiki/History_of_cancer_chemotherapy">Wikipedia</a>. The paperclip version of this argument: <a href="maximizer.html">The Maximizer Is Already Running</a>.</p>
+      <p id="fn3b"><a class="fn" href="#r3b">4.</a> William Murrell, "Nitro-glycerine as a remedy for angina pectoris," The Lancet, 1879; Alfred Nobel, the dynamite man, was himself treated with nitroglycerin. <a href="https://en.wikipedia.org/wiki/William_Murrell_(physician)">Wikipedia</a>.</p>
+      <p id="fn4"><a class="fn" href="#r4">5.</a> The John Frum movement on Tanna, Vanuatu: bamboo control towers, wooden planes, cleared runways, waiting since 1945 for the cargo to return. <a href="https://www.militarytimes.com/veterans/military-history/2025/09/23/who-is-john-frum-inside-the-cargo-cult-that-worships-american-gis/">Military Times</a>.</p>
+      <p id="fn5"><a class="fn" href="#r5">6.</a> "I'd like to start a religion. That's where the money is": attributed to L. Ron Hubbard by Lloyd Eshbach, recalling 1949, in Over My Shoulder (1983); Sam Moskowitz's 1994 affidavit describes a similar remark at the Eastern Science Fiction Association in 1948. The April 1953 "religion angle" letter and the December 18, 1953 incorporation in Camden, New Jersey are documented in his biography. <a href="https://en.wikiquote.org/wiki/L._Ron_Hubbard">Wikiquote</a>, <a href="https://en.wikipedia.org/wiki/Life_of_L._Ron_Hubbard_from_1950_to_1953">Wikipedia</a>. The Church denies he said it, and a German court enjoined repeating the attribution, which makes this the most expensive footnote on the page.</p>
+    </div>
+  </article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")");
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
