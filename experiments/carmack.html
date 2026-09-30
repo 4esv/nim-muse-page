@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the carmack archive - nim</title>
+<meta name="description" content="The verified snippets, compiled and runnable: Quake's light flicker animated live, the inverse square root taken apart bit by bit, and the folklore ledger.">
+<meta name="date" content="2026-09-30">
+<meta name="tags" content="experiment programming history">
+<style>
+  /* the carmack archive: a phosphor terminal. its own world. */
+  :root {
+    --bg:#0b0b0e; --panel:#111116; --line:#26262e;
+    --ph:#4dff7c; --ph-dim:#2a8f4e; --ph-faint:#17452a;
+    --amber:#ffb347; --red:#ff5f56; --ink:#d8d4c8;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--ink);
+    font-family:var(--mono); }
+  body { overflow-y:auto; }
+  .wrap { max-width:62rem; margin:0 auto; padding:28px 20px 120px; }
+  header.top { border:1px solid var(--line); background:var(--panel);
+    padding:22px 24px; margin-bottom:18px; position:relative; }
+  header.top::before { content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(0deg, rgba(77,255,124,.025) 0 1px, transparent 1px 3px);
+    pointer-events:none; }
+  h1 { color:var(--ph); font-size:clamp(1.4rem,1rem+3vw,2.2rem);
+    letter-spacing:.08em; margin:0 0 8px; text-shadow:0 0 12px rgba(77,255,124,.35); }
+  .sub { color:var(--ph-dim); font-size:.85rem; line-height:1.7; margin:0; max-width:44rem; }
+  .sub a { color:var(--ph); }
+  .grid { display:grid; grid-template-columns:1fr; gap:18px; }
+  @media (min-width:900px){ .grid.two { grid-template-columns:1fr 1fr; } }
+  section.card { border:1px solid var(--line); background:var(--panel); padding:20px 22px; }
+  section.card h2 { color:var(--ph); font-size:.95rem; letter-spacing:.12em;
+    margin:0 0 4px; text-transform:uppercase; }
+  section.card h2 .era { color:var(--ph-faint); }
+  .prov { color:var(--ph-dim); font-size:.75rem; margin:0 0 14px; line-height:1.6; }
+  .why { font-size:.85rem; line-height:1.7; color:var(--ink); margin:12px 0 0; }
+  .flag { display:inline-block; font-size:.7rem; letter-spacing:.06em;
+    border:1px solid var(--amber); color:var(--amber); padding:2px 8px; margin:0 6px 6px 0; }
+  .flag.bad { border-color:var(--red); color:var(--red); }
+  pre.code { background:#08080b; border:1px solid var(--line); padding:12px 14px;
+    overflow-x:auto; font-size:.76rem; line-height:1.65; color:#b9b4a6; margin:0; tab-size:4; }
+  pre.code .c { color:#57523f; }
+  /* flicker lab */
+  #scene { width:100%; height:300px; display:block; background:#000;
+    border:1px solid var(--line); image-rendering:pixelated; }
+  .styles { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0; }
+  .styles button { font-family:var(--mono); font-size:.72rem; background:#08080b;
+    color:var(--ph-dim); border:1px solid var(--line); padding:6px 10px; cursor:pointer; }
+  .styles button:hover { color:var(--ph); border-color:var(--ph-dim); }
+  .styles button.on { color:#0b0b0e; background:var(--ph); border-color:var(--ph); font-weight:700; }
+  .readout { display:flex; gap:18px; align-items:baseline; margin-top:10px;
+    font-size:.8rem; color:var(--ph-dim); }
+  .readout b { color:var(--ph); font-size:1.1rem; }
+  .str { font-size:.72rem; color:var(--ph-faint); word-break:break-all; line-height:1.8; margin:8px 0 0; }
+  /* rsqrt lab */
+  .row { display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
+  input[type=text] { font-family:var(--mono); font-size:1rem; background:#08080b;
+    border:1px solid var(--line); color:var(--ph); padding:8px 12px; width:10rem; }
+  button.go { font-family:var(--mono); font-size:.8rem; background:var(--ph);
+    color:#0b0b0e; border:none; padding:9px 18px; cursor:pointer; font-weight:700; }
+  .bitline { font-size:.78rem; letter-spacing:.04em; margin:6px 0; word-break:break-all; }
+  .bitline .s { color:var(--red); } .bitline .e { color:var(--amber); } .bitline .m { color:var(--ph); }
+  .step { border-top:1px dashed var(--line); padding:8px 0; font-size:.8rem; line-height:1.7; }
+  .step .k { color:var(--ph-dim); }
+  .step .v { color:var(--ph); }
+  .err { color:var(--amber); }
+  footer.ledger { border:1px solid var(--line); background:var(--panel);
+    padding:20px 22px; margin-top:18px; font-size:.8rem; line-height:1.8; color:var(--ph-dim); }
+  footer.ledger a { color:var(--ph); }
+  .back { margin-top:18px; font-size:.8rem; }
+  .back a { color:var(--ph-dim); text-decoration:none; }
+  .back a:hover { color:var(--ph); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>THE CARMACK ARCHIVE</h1>
+    <p class="sub">The verified snippets, compiled and runnable. Two of them execute below, live, in your browser: Quake's light flicker, running the actual 1996 algorithm, and the famous inverse square root, taken apart bit by bit. The rest are presented with provenance and the folklore ledger. Companion to the essay <a href="../essays/carmack.html">the work that never happens</a>.</p>
+  </header>
+
+  <div class="grid two">
+    <section class="card">
+      <h2>flicker lab <span class="era">/ quake 1996</span></h2>
+      <p class="prov">WinQuake/r_light.c:33, R_AnimateLight. Twelve strings in QW/progs/world.qc. Pick a lightstyle; the scene is lit by the real algorithm.</p>
+      <canvas id="scene" width="640" height="300"></canvas>
+      <div class="styles" id="styleBtns"></div>
+      <div class="readout">
+        <span>style <b id="roName">10</b></span>
+        <span>char <b id="roChar">m</b></span>
+        <span>value <b id="roVal">264</b></span>
+        <span id="roLabel">FLUORESCENT FLICKER</span>
+      </div>
+      <p class="str" id="roStr"></p>
+      <p class="why">Time is the only input. Each frame: k = (time*10 % len); value = (map[k] - 'a') * 22. 'm' is normal, 'a' is no light, 'z' is double bright. Zero per-frame geometry work.</p>
+    </section>
+
+    <section class="card">
+      <h2>rsqrt lab <span class="era">/ quake iii 1999</span></h2>
+      <p class="prov">code/game/q_math.c:552, Q_rsqrt. Both legendary comments intact.</p>
+      <span class="flag bad">folklore: not his</span>
+      <div class="row">
+        <input type="text" id="numIn" value="2.0" aria-label="input number">
+        <button class="go" id="runBtn">RUN IT</button>
+      </div>
+      <div id="rsqrtOut"></div>
+      <p class="why">IEEE-754 floats are piecewise log-linear in their bit pattern, so reinterpreting the bits as an integer, shifting right, and subtracting from 0x5f3759df approximates a logarithm. One Newton step refines it. Carmack denied writing it (email, 2004); best attribution is Greg Walsh.</p>
+    </section>
+  </div>
+
+  <div class="grid" style="margin-top:18px">
+    <section class="card">
+      <h2>the scroll <span class="era">/ commander keen 1990</span></h2>
+      <p class="prov">No source released. Reconstructed by Fabien Sanglard; the overnight Softdisk build, September 1990.</p>
+      <span class="flag">no verifiable source</span>
+      <p class="why">EGA registers did the scrolling (CRTC start for coarse, Horizontal Pel Panning for sub-byte), so scrolling cost zero pixel writes. On reaching the edge, the engine jolted: compare tile IDs, redraw only the changed ones. Forty tiles out of two hundred fifty. Keen 4-6 dropped the jolt: let the screen wrap at the 64K aperture and redraw only the leading edge. The differential-update insight behind every modern compositor.</p>
+    </section>
+
+    <section class="card">
+      <h2>the ray <span class="era">/ wolfenstein 3d 1992</span></h2>
+      <p class="prov">id-Software/Wolf3D, WOLFSRC/WL_DR_A.ASM, AsmRefresh. "I was 21 years old when I wrote most of the code."</p>
+      <pre class="code"><span class="c">; CORE LOOP!</span>
+vertentry:
+ test [BYTE tilemap+si],0ffh <span class="c">; tilehit = *((byte *)tilemap+xspot);</span>
+ jnz hitvert
+passvert:
+ mov [BYTE spotvis+si],1
+ add bx,[xtilestep]
+ <span class="c">; ... 16.16 fixed point march, no FPU, no division ...</span>
+ jmp vertcheck</pre>
+      <p class="why">One ray per column, integer DDA across a 64x64 grid, self-modifying quadrant opcodes so the inner loop carries no branch overhead. Seventy frames per second of textured 3D from integer arithmetic and a jump table.</p>
+    </section>
+
+    <section class="card">
+      <h2>the tree <span class="era">/ doom 1993</span></h2>
+      <p class="prov">id-Software/DOOM, linuxdoom-1.10/r_bsp.c, line 552. Verified against the raw source.</p>
+      <pre class="code">void R_RenderBSPNode (int bspnum)
+{
+    <span class="c">// Decide which side the view point is on.</span>
+    side = R_PointOnSide (viewx, viewy, bsp);
+    <span class="c">// Recursively divide front space.</span>
+    R_RenderBSPNode (bsp-&gt;children[side]);
+    <span class="c">// Possibly divide back space.</span>
+    if (R_CheckBBox (bsp-&gt;bbox[side^1]))
+        R_RenderBSPNode (bsp-&gt;children[side^1]);
+}</pre>
+      <p class="why">One cross product per node sorts the map. The far side dies on a constant-time bounding-box test. Painter's algorithm with no depth buffer: a 33 MHz 486 never draws what it cannot see.</p>
+    </section>
+
+    <section class="card">
+      <h2>the cache and the edge <span class="era">/ quake 1996</span></h2>
+      <p class="prov">WinQuake/d_surf.c (D_CacheSurface), WinQuake/r_edge.c (R_ScanEdges).</p>
+      <span class="flag">designed by carmack, built by abrash</span>
+      <p class="why">The surface cache composites each visible surface's texture and lightmap exactly once, decoupling lighting from polygon vertices so lightmap detail is free. The edge list collects every potentially visible polygon edge once per frame and scans them into spans with zero overdraw. Abrash, Black Book ch. 68: "John faced several fundamental design issues while architecting Quake." Per-file authorship is undocumented anywhere; the honest ledger keeps both names on this one.</p>
+    </section>
+
+    <section class="card">
+      <h2>the bit vector <span class="era">/ quake ii 1997</span></h2>
+      <p class="prov">id-Software/Quake-2, qcommon/cmodel.c, line 1530.</p>
+      <pre class="code">void CM_DecompressVis (byte *in, byte *out)
+{
+    do {
+        if (*in) { *out_p++ = *in++; continue; }
+        c = in[1]; in += 2;          <span class="c">/* run of zeros */</span>
+        while (c) { *out_p++ = 0; c--; }
+    } while (out_p - out &lt; row);</pre>
+      <p class="why">Every cluster stores a run-length-encoded bit vector of potentially visible clusters. A quadratic visibility problem becomes a pointer lookup, in fifteen lines. No visibility data means fill with ones: everything visible, the safe default.</p>
+    </section>
+
+    <section class="card">
+      <h2>the reverse <span class="era">/ doom 3, early 2000</span></h2>
+      <p class="prov">The name appears only in DOOM-3/README.txt. The shipped GPL code is the 2011 rewrite, not the original.</p>
+      <span class="flag">rewritten 2011, patent dodged</span>
+      <p class="why">Stencil shadow volumes counted depth passes and broke when the camera sat inside the volume. The reverse counts depth failures instead: mathematically identical, and the failure case becomes impossible, so there is nothing to fix geometrically. Creative had patented the same technique in 1999; id licensed it, then Carmack rewrote it for the GPL release: "the workaround added four lines of code and changed two. This demonstrates the idiocy of the patent." Expired October 2019.</p>
+    </section>
+  </div>
+
+  <footer class="ledger">
+    <b style="color:var(--ph)">the folklore ledger.</b><br>
+    1. Q_rsqrt authorship: apocryphal. Carmack denied it in writing, 2004.<br>
+    2. Keen adaptive tile refresh: no source exists. Historical attribution only.<br>
+    3. Surface cache / edge list: Carmack designed, Abrash built. Both names.<br>
+    4. Carmack's Reverse: the GPL repo contains the workaround, not the original depth-fail.<br>
+    5. "Written in six weeks" (Wolf3D): unverified. Left out.<br>
+    Sources: the id Software GPL releases on GitHub (id-Software/Quake, Quake-2, Quake-III-Arena, DOOM, DOOM-3, Wolf3D), Beyond3D's InvSqrt origin thread, Abrash's Graphics Programming Black Book, Sanglard's EGA reconstruction, NVIDIA's GDC 2003 shadow-volume history.
+  </footer>
+
+  <p class="back"><a href="../essays/carmack.html">&larr; back to the essay</a> &nbsp; <a href="../index.html">home</a></p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- flicker lab: the real R_AnimateLight ---------- */
+  var STYLES = [
+    { n: 0,  label: "NORMAL",              map: "m" },
+    { n: 1,  label: "FLICKER",             map: "mmnmmommommnonmmonqnmmo" },
+    { n: 2,  label: "SLOW STRONG PULSE",   map: "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba" },
+    { n: 3,  label: "CANDLE",              map: "mmmmmaaaaammmmmaaaaaabcdefgabcdefg" },
+    { n: 4,  label: "FAST STROBE",         map: "mamamamamama" },
+    { n: 5,  label: "GENTLE PULSE",        map: "jklmnopqrstuvwxyzyxwvutsrqponmlkj" },
+    { n: 6,  label: "FLICKER 2",           map: "nmonqnmomnmomomno" },
+    { n: 7,  label: "CANDLE 2",            map: "mmmaaaabcdefgmmmmaaaammmaamm" },
+    { n: 8,  label: "CANDLE 3",            map: "mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa" },
+    { n: 9,  label: "SLOW STROBE",         map: "aaaaaaaazzzzzzzz" },
+    { n: 10, label: "FLUORESCENT FLICKER", map: "mmamammmmammamamaaamammma" },
+    { n: 11, label: "SLOW PULSE",          map: "abcdefghijklmnopqrrqponmlkjihgfedcba" }
+  ];
+  var cur = STYLES[10];
+  var cv = document.getElementById("scene"), cx = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+
+  var btnWrap = document.getElementById("styleBtns");
+  STYLES.forEach(function (s) {
+    var b = document.createElement("button");
+    b.textContent = s.n;
+    b.title = s.n + " " + s.label;
+    if (s === cur) b.className = "on";
+    b.addEventListener("click", function () {
+      cur = s;
+      Array.prototype.forEach.call(btnWrap.children, function (x) { x.className = ""; });
+      b.className = "on";
+    });
+    btnWrap.appendChild(b);
+  });
+
+  var roName = document.getElementById("roName"),
+      roChar = document.getElementById("roChar"),
+      roVal = document.getElementById("roVal"),
+      roLabel = document.getElementById("roLabel"),
+      roStr = document.getElementById("roStr");
+
+  function drawScene(t) {
+    var i = Math.floor(t * 10);                 // (int)(cl.time*10)
+    var k = i % cur.map.length;
+    var ch = cur.map[k];
+    var val = (ch.charCodeAt(0) - 97) * 22;     // (map[k]-'a')*22
+    var b = Math.min(val / 264, 2.2);           // 'm' = normal
+
+    roName.textContent = cur.n;
+    roChar.textContent = ch;
+    roVal.textContent = val;
+    roLabel.textContent = cur.label;
+    roStr.textContent = cur.map;
+
+    // room: dark stone
+    cx.fillStyle = "#0a0a0c"; cx.fillRect(0, 0, W, H);
+    cx.fillStyle = "#131318";
+    for (var ry = 0; ry < 6; ry++) for (var rx = 0; rx < 11; rx++) {
+      if ((rx + ry) % 2) cx.fillRect(rx * 60 + (ry % 2) * 30 - 30, ry * 52, 56, 48);
+    }
+    // floor
+    cx.fillStyle = "#101014"; cx.fillRect(0, H - 60, W, 60);
+    // torch sconce
+    var tx = W / 2, ty = H - 150;
+    cx.fillStyle = "#3a2c1c"; cx.fillRect(tx - 3, ty, 6, 46);
+    cx.fillStyle = "#241b10"; cx.fillRect(tx - 10, ty + 40, 20, 6);
+    // flame: shape static, brightness from the string
+    var fl = 0.75 + 0.25 * b;
+    cx.fillStyle = "#ff9a2e";
+    cx.fillRect(tx - 7 * fl, ty - 26 * fl, 14 * fl, 26 * fl);
+    cx.fillStyle = "#ffd23e";
+    cx.fillRect(tx - 4 * fl, ty - 18 * fl, 8 * fl, 18 * fl);
+
+    // light: radial glow scaled by the style value
+    var r = 60 + 200 * Math.min(b, 1.4);
+    var g = cx.createRadialGradient(tx, ty - 14, 8, tx, ty - 14, r);
+    var a = Math.max(0, Math.min(0.85, b * 0.42));
+    g.addColorStop(0, "rgba(255,190,90," + a + ")");
+    g.addColorStop(1, "rgba(255,190,90,0)");
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+
+    // darkness overlay: 'a' = pitch black
+    var dark = Math.max(0, Math.min(0.94, 1.02 - b));
+    cx.fillStyle = "rgba(0,0,0," + dark.toFixed(3) + ")";
+    cx.fillRect(0, 0, W, H);
+  }
+
+  var t0 = performance.now();
+  (function loop() {
+    drawScene((performance.now() - t0) / 1000);
+    requestAnimationFrame(loop);
+  })();
+
+  /* ---------- rsqrt lab: bit-level walkthrough ---------- */
+  var buf = new ArrayBuffer(4), f32 = new Float32Array(buf), u32 = new Uint32Array(buf);
+  function hex(n) { return "0x" + (n >>> 0).toString(16).padStart(8, "0"); }
+
+  function runRsqrt() {
+    var x = parseFloat(document.getElementById("numIn").value);
+    var out = document.getElementById("rsqrtOut");
+    if (!(x > 0) || !isFinite(x)) {
+      out.innerHTML = '<div class="step"><span class="k">needs a positive finite float.</span></div>';
+      return;
+    }
+    f32[0] = x; var orig = u32[0];
+    var bin = orig.toString(2).padStart(32, "0");
+    var s = bin[0], e = bin.slice(1, 9), m = bin.slice(9);
+    var shifted = orig >>> 1;                       // i >> 1  (logical; original used arithmetic on positive)
+    var hacked = (0x5f3759df - (orig >> 1)) >>> 0;   // the line
+    u32[0] = hacked; var guess = f32[0];
+    var x2 = x * 0.5, th = 1.5;
+    var it1 = guess * (th - x2 * guess * guess);
+    var it2 = it1 * (th - x2 * it1 * it1);
+    var truth = 1 / Math.sqrt(x);
+    function err(v) { return Math.abs(v - truth) / truth; }
+
+    out.innerHTML =
+      '<div class="bitline"><span class="s">' + s + '</span> <span class="e">' + e +
+      '</span> <span class="m">' + m + '</span></div>' +
+      '<div class="step"><span class="k">float bits as int:</span> <span class="v">' + hex(orig) + '</span></div>' +
+      '<div class="step"><span class="k">i = 0x5f3759df - (i &gt;&gt; 1):</span> <span class="v">' + hex(hacked) + '</span> <span class="c" style="color:#57523f">// what the fuck?</span></div>' +
+      '<div class="step"><span class="k">reinterpret as float (first guess):</span> <span class="v">' + guess.toPrecision(8) + '</span> <span class="err">err ' + (err(guess) * 100).toFixed(3) + '%</span></div>' +
+      '<div class="step"><span class="k">1st Newton iteration:</span> <span class="v">' + it1.toPrecision(10) + '</span> <span class="err">err ' + (err(it1) * 100).toFixed(5) + '%</span></div>' +
+      '<div class="step"><span class="k">2nd iteration (shipped commented out):</span> <span class="v">' + it2.toPrecision(12) + '</span> <span class="err">err ' + (err(it2) * 100).toFixed(7) + '%</span></div>' +
+      '<div class="step"><span class="k">true 1/sqrt:</span> <span class="v">' + truth.toPrecision(12) + '</span></div>';
+  }
+  document.getElementById("runBtn").addEventListener("click", runRsqrt);
+  document.getElementById("numIn").addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter") runRsqrt();
+  });
+  runRsqrt();
+})();
+</script>
+</body>
+</html>
