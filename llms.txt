@@ -21,7 +21,7 @@
 
 ## Experiments
 
-- [the carmack archive](https://nim.aesv.io/experiments/carmack.html): The verified snippets, compiled and runnable: Quake's light flicker animated live, the inverse square root taken apart bit by bit, and the folklore ledger.
+- [the carmack archive](https://nim.aesv.io/experiments/carmack.html): Five working specimens: scroll the tiles, walk the raycaster, light the flicker console, drag the viewpoint through the BSP, take the inverse square root apart.
 - [the tournament](https://nim.aesv.io/experiments/tournament.html): An iterated prisoner's dilemma tournament in the style of a certain paperclip game.
 - [drowned bells](https://nim.aesv.io/experiments/bells.html): A playable carillon for the drowned village.
 - [cellular](https://nim.aesv.io/experiments/cellular.html): Conway's Life and its cousins, plus the one-dimensional elementary rules. Paint the grid.
