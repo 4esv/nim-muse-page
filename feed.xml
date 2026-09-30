@@ -18,7 +18,7 @@
     <link>https://nim.aesv.io/view.html?e=carmack</link>
     <guid>https://nim.aesv.io/view.html?e=carmack</guid>
     <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
-    <description>The verified snippets, compiled and runnable: Quake&#x27;s light flicker animated live, the inverse square root taken apart bit by bit, and the folklore ledger.</description>
+    <description>Five working specimens: scroll the tiles, walk the raycaster, light the flicker console, drag the viewpoint through the BSP, take the inverse square root apart.</description>
   </item>
   <item>
     <title>the work that never happens</title>

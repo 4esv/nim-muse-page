@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>the carmack archive - nim</title>
-<meta name="description" content="The verified snippets, compiled and runnable: Quake's light flicker animated live, the inverse square root taken apart bit by bit, and the folklore ledger.">
+<meta name="description" content="Five working specimens: scroll the tiles, walk the raycaster, light the flicker console, drag the viewpoint through the BSP, take the inverse square root apart.">
 <meta name="date" content="2026-09-30">
 <meta name="tags" content="experiment programming history">
 <style>
-  /* the carmack archive: a phosphor terminal. its own world. */
+  /* the carmack archive: an instrument bench. phosphor on black. */
   :root {
     --bg:#0b0b0e; --panel:#111116; --line:#26262e;
     --ph:#4dff7c; --ph-dim:#2a8f4e; --ph-faint:#17452a;
@@ -18,7 +18,7 @@
   html, body { margin:0; padding:0; background:var(--bg); color:var(--ink);
     font-family:var(--mono); }
   body { overflow-y:auto; }
-  .wrap { max-width:62rem; margin:0 auto; padding:28px 20px 120px; }
+  .wrap { max-width:66rem; margin:0 auto; padding:28px 20px 120px; }
   header.top { border:1px solid var(--line); background:var(--panel);
     padding:22px 24px; margin-bottom:18px; position:relative; }
   header.top::before { content:""; position:absolute; inset:0;
@@ -26,51 +26,46 @@
     pointer-events:none; }
   h1 { color:var(--ph); font-size:clamp(1.4rem,1rem+3vw,2.2rem);
     letter-spacing:.08em; margin:0 0 8px; text-shadow:0 0 12px rgba(77,255,124,.35); }
-  .sub { color:var(--ph-dim); font-size:.85rem; line-height:1.7; margin:0; max-width:44rem; }
+  .sub { color:var(--ph-dim); font-size:.85rem; line-height:1.7; margin:0; max-width:46rem; }
   .sub a { color:var(--ph); }
-  .grid { display:grid; grid-template-columns:1fr; gap:18px; }
-  @media (min-width:900px){ .grid.two { grid-template-columns:1fr 1fr; } }
-  section.card { border:1px solid var(--line); background:var(--panel); padding:20px 22px; }
-  section.card h2 { color:var(--ph); font-size:.95rem; letter-spacing:.12em;
+  section.st { border:1px solid var(--line); background:var(--panel);
+    padding:20px 22px; margin-bottom:18px; }
+  section.st h2 { color:var(--ph); font-size:.95rem; letter-spacing:.12em;
     margin:0 0 4px; text-transform:uppercase; }
-  section.card h2 .era { color:var(--ph-faint); }
-  .prov { color:var(--ph-dim); font-size:.75rem; margin:0 0 14px; line-height:1.6; }
-  .why { font-size:.85rem; line-height:1.7; color:var(--ink); margin:12px 0 0; }
-  .flag { display:inline-block; font-size:.7rem; letter-spacing:.06em;
+  section.st h2 .era { color:var(--ph-faint); }
+  .cap { color:var(--ph-dim); font-size:.78rem; line-height:1.7; margin:0 0 12px; max-width:52rem; }
+  .cap b { color:var(--ph); font-weight:400; }
+  canvas.demo { width:100%; display:block; background:#000;
+    border:1px solid var(--line); image-rendering:pixelated; }
+  .ctl { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:12px 0 0; }
+  .ctl button, .ctl select { font-family:var(--mono); font-size:.72rem;
+    background:#08080b; color:var(--ph-dim); border:1px solid var(--line);
+    padding:6px 10px; cursor:pointer; }
+  .ctl button:hover, .ctl select:hover { color:var(--ph); border-color:var(--ph-dim); }
+  .ctl button.on { color:#0b0b0e; background:var(--ph); border-color:var(--ph); font-weight:700; }
+  .ctl .lbl { font-size:.72rem; color:var(--ph-faint); }
+  .hud { font-size:.74rem; color:var(--ph); margin-top:10px; line-height:1.8; }
+  .hud .dim { color:var(--ph-dim); }
+  pre.src { display:none; background:#08080b; border:1px solid var(--line);
+    padding:12px 14px; overflow-x:auto; font-size:.74rem; line-height:1.65;
+    color:#b9b4a6; margin:12px 0 0; tab-size:4; }
+  pre.src.open { display:block; }
+  pre.src .c { color:#57523f; }
+  .flag { display:inline-block; font-size:.68rem; letter-spacing:.06em;
     border:1px solid var(--amber); color:var(--amber); padding:2px 8px; margin:0 6px 6px 0; }
   .flag.bad { border-color:var(--red); color:var(--red); }
-  pre.code { background:#08080b; border:1px solid var(--line); padding:12px 14px;
-    overflow-x:auto; font-size:.76rem; line-height:1.65; color:#b9b4a6; margin:0; tab-size:4; }
-  pre.code .c { color:#57523f; }
-  /* flicker lab */
-  #scene { width:100%; height:300px; display:block; background:#000;
-    border:1px solid var(--line); image-rendering:pixelated; }
-  .styles { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0; }
-  .styles button { font-family:var(--mono); font-size:.72rem; background:#08080b;
-    color:var(--ph-dim); border:1px solid var(--line); padding:6px 10px; cursor:pointer; }
-  .styles button:hover { color:var(--ph); border-color:var(--ph-dim); }
-  .styles button.on { color:#0b0b0e; background:var(--ph); border-color:var(--ph); font-weight:700; }
-  .readout { display:flex; gap:18px; align-items:baseline; margin-top:10px;
-    font-size:.8rem; color:var(--ph-dim); }
-  .readout b { color:var(--ph); font-size:1.1rem; }
-  .str { font-size:.72rem; color:var(--ph-faint); word-break:break-all; line-height:1.8; margin:8px 0 0; }
-  /* rsqrt lab */
-  .row { display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
   input[type=text] { font-family:var(--mono); font-size:1rem; background:#08080b;
-    border:1px solid var(--line); color:var(--ph); padding:8px 12px; width:10rem; }
-  button.go { font-family:var(--mono); font-size:.8rem; background:var(--ph);
-    color:#0b0b0e; border:none; padding:9px 18px; cursor:pointer; font-weight:700; }
-  .bitline { font-size:.78rem; letter-spacing:.04em; margin:6px 0; word-break:break-all; }
+    border:1px solid var(--line); color:var(--ph); padding:8px 12px; width:9rem; }
+  input[type=range] { accent-color:var(--ph); width:14rem; }
+  .bitline { font-size:.78rem; letter-spacing:.04em; margin:8px 0; word-break:break-all; }
   .bitline .s { color:var(--red); } .bitline .e { color:var(--amber); } .bitline .m { color:var(--ph); }
   .step { border-top:1px dashed var(--line); padding:8px 0; font-size:.8rem; line-height:1.7; }
-  .step .k { color:var(--ph-dim); }
-  .step .v { color:var(--ph); }
-  .err { color:var(--amber); }
+  .step .k { color:var(--ph-dim); } .step .v { color:var(--ph); } .err { color:var(--amber); }
   footer.ledger { border:1px solid var(--line); background:var(--panel);
-    padding:20px 22px; margin-top:18px; font-size:.8rem; line-height:1.8; color:var(--ph-dim); }
+    padding:20px 22px; margin-top:18px; font-size:.78rem; line-height:1.9; color:var(--ph-dim); }
   footer.ledger a { color:var(--ph); }
   .back { margin-top:18px; font-size:.8rem; }
-  .back a { color:var(--ph-dim); text-decoration:none; }
+  .back a { color:var(--ph-dim); text-decoration:none; margin-right:18px; }
   .back a:hover { color:var(--ph); }
 </style>
 </head>
@@ -79,123 +74,299 @@
 
   <header class="top">
     <h1>THE CARMACK ARCHIVE</h1>
-    <p class="sub">The verified snippets, compiled and runnable. Two of them execute below, live, in your browser: Quake's light flicker, running the actual 1996 algorithm, and the famous inverse square root, taken apart bit by bit. The rest are presented with provenance and the folklore ledger. Companion to the essay <a href="../essays/carmack.html">the work that never happens</a>.</p>
+    <p class="sub">Five specimens, all working. Scroll the tiles. Walk the raycaster. Light the console. Drag the viewpoint through the tree. Take the inverse square root apart. Companion to the essay <a href="../essays/carmack.html">the work that never happens</a>.</p>
   </header>
 
-  <div class="grid two">
-    <section class="card">
-      <h2>flicker lab <span class="era">/ quake 1996</span></h2>
-      <p class="prov">WinQuake/r_light.c:33, R_AnimateLight. Twelve strings in QW/progs/world.qc. Pick a lightstyle; the scene is lit by the real algorithm.</p>
-      <canvas id="scene" width="640" height="300"></canvas>
-      <div class="styles" id="styleBtns"></div>
-      <div class="readout">
-        <span>style <b id="roName">10</b></span>
-        <span>char <b id="roChar">m</b></span>
-        <span>value <b id="roVal">264</b></span>
-        <span id="roLabel">FLUORESCENT FLICKER</span>
-      </div>
-      <p class="str" id="roStr"></p>
-      <p class="why">Time is the only input. Each frame: k = (time*10 % len); value = (map[k] - 'a') * 22. 'm' is normal, 'a' is no light, 'z' is double bright. Zero per-frame geometry work.</p>
-    </section>
+  <!-- 1. THE SCROLL -->
+  <section class="st" id="st-scroll">
+    <h2>01 / the scroll <span class="era">keen 1990</span></h2>
+    <p class="cap">The EGA could not redraw the screen fast enough, so scrolling moved into hardware registers and only changed tiles were redrawn. <b>Left/right arrows</b> (or auto) to scroll. Watch the redraw counter.</p>
+    <canvas class="demo" id="cvScroll" width="640" height="220"></canvas>
+    <div class="ctl">
+      <button id="scMode" class="on">ADAPTIVE</button>
+      <button id="scAuto">AUTO: OFF</button>
+      <span class="lbl">scroll with &larr; &rarr;</span>
+    </div>
+    <div class="hud" id="scHud"></div>
+    <div class="ctl"><button data-src="srcScroll">VIEW SOURCE</button></div>
+    <pre class="src" id="srcScroll"><span class="c">; no source was ever released. the reconstruction:</span>
+<span class="c">; scroll via CRTC_START + Horizontal Pel Panning: zero pixel writes.</span>
+<span class="c">; on reaching the edge, jolt: compare tile IDs, redraw only mismatches.</span>
+<span class="c">; Keen 4-6: wrap at the 64K aperture, redraw the leading edge only.</span>
+redrawn = changed_tiles / total_tiles   <span class="c">; ~16%, not 100%</span></pre>
+  </section>
 
-    <section class="card">
-      <h2>rsqrt lab <span class="era">/ quake iii 1999</span></h2>
-      <p class="prov">code/game/q_math.c:552, Q_rsqrt. Both legendary comments intact.</p>
-      <span class="flag bad">folklore: not his</span>
-      <div class="row">
-        <input type="text" id="numIn" value="2.0" aria-label="input number">
-        <button class="go" id="runBtn">RUN IT</button>
-      </div>
-      <div id="rsqrtOut"></div>
-      <p class="why">IEEE-754 floats are piecewise log-linear in their bit pattern, so reinterpreting the bits as an integer, shifting right, and subtracting from 0x5f3759df approximates a logarithm. One Newton step refines it. Carmack denied writing it (email, 2004); best attribution is Greg Walsh.</p>
-    </section>
-  </div>
-
-  <div class="grid" style="margin-top:18px">
-    <section class="card">
-      <h2>the scroll <span class="era">/ commander keen 1990</span></h2>
-      <p class="prov">No source released. Reconstructed by Fabien Sanglard; the overnight Softdisk build, September 1990.</p>
-      <span class="flag">no verifiable source</span>
-      <p class="why">EGA registers did the scrolling (CRTC start for coarse, Horizontal Pel Panning for sub-byte), so scrolling cost zero pixel writes. On reaching the edge, the engine jolted: compare tile IDs, redraw only the changed ones. Forty tiles out of two hundred fifty. Keen 4-6 dropped the jolt: let the screen wrap at the 64K aperture and redraw only the leading edge. The differential-update insight behind every modern compositor.</p>
-    </section>
-
-    <section class="card">
-      <h2>the ray <span class="era">/ wolfenstein 3d 1992</span></h2>
-      <p class="prov">id-Software/Wolf3D, WOLFSRC/WL_DR_A.ASM, AsmRefresh. "I was 21 years old when I wrote most of the code."</p>
-      <pre class="code"><span class="c">; CORE LOOP!</span>
+  <!-- 2. THE RAY -->
+  <section class="st" id="st-ray">
+    <h2>02 / the ray <span class="era">wolfenstein 3d 1992</span></h2>
+    <p class="cap">One ray per column, integer grid walk, no floating point unit. <b>WASD / arrows</b> to walk. R toggles the rays, T toggles texture.</p>
+    <canvas class="demo" id="cvRay" width="640" height="300"></canvas>
+    <div class="ctl">
+      <button id="rayRays" class="on">RAYS: ON</button>
+      <button id="rayTex" class="on">TEXTURE: ON</button>
+      <span class="lbl">click the canvas first, then move</span>
+    </div>
+    <div class="ctl"><button data-src="srcRay">VIEW SOURCE</button></div>
+    <pre class="src" id="srcRay"><span class="c">; WOLFSRC/WL_DR_A.ASM, AsmRefresh. the inner march:</span>
 vertentry:
- test [BYTE tilemap+si],0ffh <span class="c">; tilehit = *((byte *)tilemap+xspot);</span>
+ test [BYTE tilemap+si],0ffh
  jnz hitvert
 passvert:
- mov [BYTE spotvis+si],1
- add bx,[xtilestep]
- <span class="c">; ... 16.16 fixed point march, no FPU, no division ...</span>
+ add bx,[xtilestep]          <span class="c">; 16.16 fixed point DDA</span>
+ <span class="c">; ...</span>
  jmp vertcheck</pre>
-      <p class="why">One ray per column, integer DDA across a 64x64 grid, self-modifying quadrant opcodes so the inner loop carries no branch overhead. Seventy frames per second of textured 3D from integer arithmetic and a jump table.</p>
-    </section>
+  </section>
 
-    <section class="card">
-      <h2>the tree <span class="era">/ doom 1993</span></h2>
-      <p class="prov">id-Software/DOOM, linuxdoom-1.10/r_bsp.c, line 552. Verified against the raw source.</p>
-      <pre class="code">void R_RenderBSPNode (int bspnum)
-{
-    <span class="c">// Decide which side the view point is on.</span>
-    side = R_PointOnSide (viewx, viewy, bsp);
-    <span class="c">// Recursively divide front space.</span>
-    R_RenderBSPNode (bsp-&gt;children[side]);
-    <span class="c">// Possibly divide back space.</span>
-    if (R_CheckBBox (bsp-&gt;bbox[side^1]))
-        R_RenderBSPNode (bsp-&gt;children[side^1]);
-}</pre>
-      <p class="why">One cross product per node sorts the map. The far side dies on a constant-time bounding-box test. Painter's algorithm with no depth buffer: a 33 MHz 486 never draws what it cannot see.</p>
-    </section>
+  <!-- 3. THE FLICKER -->
+  <section class="st" id="st-flicker">
+    <h2>03 / the flicker <span class="era">quake 1996</span></h2>
+    <p class="cap">Quake's animated lighting is twelve text strings. Each frame: <b>k = (time*10 % len); value = (map[k]-'a')*22</b>. Assign a style to each torch.</p>
+    <canvas class="demo" id="cvFlick" width="640" height="240"></canvas>
+    <div class="ctl" id="flickCtls"></div>
+    <div class="ctl"><button data-src="srcFlick">VIEW SOURCE</button></div>
+    <pre class="src" id="srcFlick"><span class="c">; WinQuake/r_light.c:33, R_AnimateLight</span>
+i = (int)(cl.time*10);
+k = i % cl_lightstyle[j].length;
+k = cl_lightstyle[j].map[k] - 'a';
+k = k*22;
+d_lightstylevalue[j] = k;</pre>
+  </section>
 
-    <section class="card">
-      <h2>the cache and the edge <span class="era">/ quake 1996</span></h2>
-      <p class="prov">WinQuake/d_surf.c (D_CacheSurface), WinQuake/r_edge.c (R_ScanEdges).</p>
-      <span class="flag">designed by carmack, built by abrash</span>
-      <p class="why">The surface cache composites each visible surface's texture and lightmap exactly once, decoupling lighting from polygon vertices so lightmap detail is free. The edge list collects every potentially visible polygon edge once per frame and scans them into spans with zero overdraw. Abrash, Black Book ch. 68: "John faced several fundamental design issues while architecting Quake." Per-file authorship is undocumented anywhere; the honest ledger keeps both names on this one.</p>
-    </section>
+  <!-- 4. THE TREE -->
+  <section class="st" id="st-tree">
+    <h2>04 / the tree <span class="era">doom 1993</span></h2>
+    <p class="cap">One cross product per node sorts the map. <b>Drag the viewpoint</b> and watch the draw order recompute: near side first, far side only if visible.</p>
+    <canvas class="demo" id="cvTree" width="640" height="300"></canvas>
+    <div class="hud" id="treeHud"></div>
+    <div class="ctl"><button data-src="srcTree">VIEW SOURCE</button></div>
+    <pre class="src" id="srcTree"><span class="c">; linuxdoom-1.10/r_bsp.c:552</span>
+side = R_PointOnSide (viewx, viewy, bsp);
+R_RenderBSPNode (bsp-&gt;children[side]);       <span class="c">; near: always</span>
+if (R_CheckBBox (bsp-&gt;bbox[side^1]))
+    R_RenderBSPNode (bsp-&gt;children[side^1]); <span class="c">; far: maybe</span></pre>
+  </section>
 
-    <section class="card">
-      <h2>the bit vector <span class="era">/ quake ii 1997</span></h2>
-      <p class="prov">id-Software/Quake-2, qcommon/cmodel.c, line 1530.</p>
-      <pre class="code">void CM_DecompressVis (byte *in, byte *out)
-{
-    do {
-        if (*in) { *out_p++ = *in++; continue; }
-        c = in[1]; in += 2;          <span class="c">/* run of zeros */</span>
-        while (c) { *out_p++ = 0; c--; }
-    } while (out_p - out &lt; row);</pre>
-      <p class="why">Every cluster stores a run-length-encoded bit vector of potentially visible clusters. A quadratic visibility problem becomes a pointer lookup, in fifteen lines. No visibility data means fill with ones: everything visible, the safe default.</p>
-    </section>
-
-    <section class="card">
-      <h2>the reverse <span class="era">/ doom 3, early 2000</span></h2>
-      <p class="prov">The name appears only in DOOM-3/README.txt. The shipped GPL code is the 2011 rewrite, not the original.</p>
-      <span class="flag">rewritten 2011, patent dodged</span>
-      <p class="why">Stencil shadow volumes counted depth passes and broke when the camera sat inside the volume. The reverse counts depth failures instead: mathematically identical, and the failure case becomes impossible, so there is nothing to fix geometrically. Creative had patented the same technique in 1999; id licensed it, then Carmack rewrote it for the GPL release: "the workaround added four lines of code and changed two. This demonstrates the idiocy of the patent." Expired October 2019.</p>
-    </section>
-  </div>
+  <!-- 5. THE ROOT -->
+  <section class="st" id="st-rsqrt">
+    <h2>05 / the root <span class="era">quake iii 1999</span></h2>
+    <p class="cap">Float bits are piecewise log-linear, so an integer shift-and-subtract approximates a logarithm. Drag the input and watch the guess converge.</p>
+    <span class="flag bad">folklore: not his</span>
+    <div class="ctl">
+      <input type="text" id="numIn" value="2.0" aria-label="input number">
+      <input type="range" id="numSlide" min="-1" max="2" step="0.01" value="0.301" aria-label="input slider">
+      <button id="runBtn" class="on">RUN IT</button>
+    </div>
+    <div id="rsqrtOut" style="margin-top:10px"></div>
+    <div class="ctl"><button data-src="srcRsqrt">VIEW SOURCE</button></div>
+    <pre class="src" id="srcRsqrt"><span class="c">; code/game/q_math.c:552</span>
+i  = * ( long * ) &amp;y;              <span class="c">// evil floating point bit level hacking</span>
+i  = 0x5f3759df - ( i &gt;&gt; 1 );    <span class="c">// what the fuck?</span>
+y  = * ( float * ) &amp;i;
+y  = y * ( threehalfs - ( x2 * y * y ) );   <span class="c">// 1st iteration</span></pre>
+  </section>
 
   <footer class="ledger">
     <b style="color:var(--ph)">the folklore ledger.</b><br>
-    1. Q_rsqrt authorship: apocryphal. Carmack denied it in writing, 2004.<br>
+    1. Q_rsqrt authorship: apocryphal. Carmack denied it in writing, 2004; best attribution Greg Walsh.<br>
     2. Keen adaptive tile refresh: no source exists. Historical attribution only.<br>
     3. Surface cache / edge list: Carmack designed, Abrash built. Both names.<br>
-    4. Carmack's Reverse: the GPL repo contains the workaround, not the original depth-fail.<br>
-    5. "Written in six weeks" (Wolf3D): unverified. Left out.<br>
-    Sources: the id Software GPL releases on GitHub (id-Software/Quake, Quake-2, Quake-III-Arena, DOOM, DOOM-3, Wolf3D), Beyond3D's InvSqrt origin thread, Abrash's Graphics Programming Black Book, Sanglard's EGA reconstruction, NVIDIA's GDC 2003 shadow-volume history.
+    4. Carmack's Reverse: community-coined name; the GPL repo ships the 2011 rewrite, not the original.<br>
+    5. The bit vector (Quake II PVS) and the merge planes (Doom visplanes) are in the essay.<br>
+    Sources: the id Software GPL releases, Beyond3D's InvSqrt origin thread, Abrash's Black Book, Sanglard's EGA reconstruction, NVIDIA's GDC 2003 shadow-volume history.
   </footer>
 
-  <p class="back"><a href="../essays/carmack.html">&larr; back to the essay</a> &nbsp; <a href="../index.html">home</a></p>
+  <p class="back"><a href="../essays/carmack.html">&larr; the essay</a><a href="../index.html">home</a></p>
 </div>
 
 <script>
 (function () {
   "use strict";
 
-  /* ---------- flicker lab: the real R_AnimateLight ---------- */
+  /* ---------- shared: source toggles ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-src]"), function (b) {
+    b.addEventListener("click", function () {
+      var el = document.getElementById(b.getAttribute("data-src"));
+      el.classList.toggle("open");
+      b.textContent = el.classList.contains("open") ? "HIDE SOURCE" : "VIEW SOURCE";
+    });
+  });
+
+  /* ---------- 1. THE SCROLL ---------- */
+  var scC = document.getElementById("cvScroll"), sg = scC.getContext("2d");
+  var TS = 24, VW = 64, VH = 8;                 // tiles
+  var camX = 0, adaptive = true, auto = false, scKeys = {};
+  var flash = {};                                // tileKey -> ttl
+  function tileId(c, r) { return ((c * 73856093) ^ (r * 19349663)) >>> 0; }
+  function tileColor(c, r) {
+    var h = tileId(c, r) % 360;
+    return "hsl(" + h + ",28%,16%)";
+  }
+  function scFrame() {
+    var speed = 0;
+    if (scKeys.left) speed -= 4;
+    if (scKeys.right) speed += 4;
+    if (auto) speed += 2.5;
+    if (speed !== 0) {
+      var oldC0 = Math.floor(camX / TS), oldC1 = Math.floor((camX + scC.width) / TS);
+      camX = Math.max(0, Math.min(VW * TS - scC.width, camX + speed));
+      var newC0 = Math.floor(camX / TS), newC1 = Math.floor((camX + scC.width) / TS);
+      if (adaptive) {
+        for (var c = newC0; c <= newC1; c++) {
+          if (c < oldC0 || c > oldC1) {
+            for (var r = 0; r < VH; r++) flash[c + ":" + r] = 30;
+          }
+        }
+      } else {
+        for (var c2 = newC0; c2 <= newC1; c2++)
+          for (var r2 = 0; r2 < VH; r2++) flash[c2 + ":" + r2] = 30;
+      }
+    }
+    sg.fillStyle = "#000"; sg.fillRect(0, 0, scC.width, scC.height);
+    var c0 = Math.floor(camX / TS) - 1, c1 = Math.floor((camX + scC.width) / TS) + 1;
+    var drawn = 0;
+    for (var c = Math.max(0, c0); c <= Math.min(VW - 1, c1); c++) {
+      for (var r = 0; r < VH; r++) {
+        var x = c * TS - camX, y = r * TS + 14;
+        var key = c + ":" + r, fl = flash[key] || 0;
+        if (fl > 0) {
+          drawn++;
+          sg.fillStyle = tileColor(c, r); sg.fillRect(x, y, TS, TS);
+          sg.fillStyle = "#1c2b1c"; sg.fillRect(x + 3, y + 3, TS - 6, TS - 6);
+          sg.fillStyle = "rgba(77,255,124," + (fl / 60).toFixed(2) + ")";
+          sg.fillRect(x, y, TS, TS);
+          if (--flash[key] <= 0) delete flash[key];
+        } else {
+          sg.fillStyle = tileColor(c, r); sg.fillRect(x, y, TS, TS);
+          sg.fillStyle = "#1c2b1c"; sg.fillRect(x + 3, y + 3, TS - 6, TS - 6);
+        }
+      }
+    }
+    var vis = (Math.min(VW - 1, c1) - Math.max(0, c0) + 1) * VH;
+    document.getElementById("scHud").innerHTML =
+      "mode <span class='dim'>" + (adaptive ? "ADAPTIVE" : "FULL REDRAW") + "</span> &nbsp; " +
+      "redrawn this frame <b style='color:var(--ph)'>" + drawn + "</b>" +
+      " <span class='dim'>of " + vis + " visible (" + Math.round(100 * drawn / Math.max(1, vis)) + "%)</span>";
+  }
+  document.getElementById("scMode").addEventListener("click", function () {
+    adaptive = !adaptive;
+    this.textContent = adaptive ? "ADAPTIVE" : "FULL REDRAW";
+    this.classList.toggle("on", adaptive);
+  });
+  document.getElementById("scAuto").addEventListener("click", function () {
+    auto = !auto;
+    this.textContent = "AUTO: " + (auto ? "ON" : "OFF");
+    this.classList.toggle("on", auto);
+  });
+
+  /* ---------- 2. THE RAY ---------- */
+  var RAYMAP = [
+    [1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,2,0,0,0,0,0,3,0,0,1],
+    [1,0,2,0,0,0,0,0,3,0,0,1],
+    [1,0,0,0,0,1,1,0,0,0,0,1],
+    [1,0,0,0,0,1,1,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,2,0,1],
+    [1,0,3,3,0,0,0,0,0,2,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,2,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1]
+  ];
+  var MW = 12, MH = 12;
+  var pl = { x: 2.5, y: 2.5, a: 0.6 };
+  var rayKeys = {}, showRays = true, texOn = true;
+  var rcC = document.getElementById("cvRay"), rg = rcC.getContext("2d");
+  var RW = rcC.width, RH = rcC.height, MAPW = 220, VIEWX = 240, VIEWW = RW - VIEWX;
+
+  function castRay(px, py, ang) {
+    var dx = Math.cos(ang), dy = Math.sin(ang);
+    var mx = Math.floor(px), my = Math.floor(py);
+    var ddx = dx === 0 ? 1e30 : Math.abs(1 / dx);
+    var ddy = dy === 0 ? 1e30 : Math.abs(1 / dy);
+    var sx, sy, sdx, sdy;
+    if (dx < 0) { sx = -1; sdx = (px - mx) * ddx; } else { sx = 1; sdx = (mx + 1 - px) * ddx; }
+    if (dy < 0) { sy = -1; sdy = (py - my) * ddy; } else { sy = 1; sdy = (my + 1 - py) * ddy; }
+    var side = 0, guard = 0, hit = 0;
+    while (guard++ < 64) {
+      if (sdx < sdy) { sdx += ddx; mx += sx; side = 0; }
+      else { sdy += ddy; my += sy; side = 1; }
+      if (mx < 0 || my < 0 || mx >= MW || my >= MH) break;
+      hit = RAYMAP[my][mx];
+      if (hit > 0) break;
+    }
+    var dist = side === 0 ? sdx - ddx : sdy - ddy;
+    return { dist: dist, side: side, tex: hit, hx: px + dx * dist, hy: py + dy * dist };
+  }
+  function rayFrame() {
+    var turn = 0, mv = 0;
+    if (rayKeys.left) turn -= 1;
+    if (rayKeys.right) turn += 1;
+    if (rayKeys.up) mv += 1;
+    if (rayKeys.down) mv -= 1;
+    pl.a += turn * 0.06;
+    var nx = pl.x + Math.cos(pl.a) * mv * 0.08;
+    var ny = pl.y + Math.sin(pl.a) * mv * 0.08;
+    if (RAYMAP[Math.floor(ny)][Math.floor(nx)] === 0) { pl.x = nx; pl.y = ny; }
+
+    rg.fillStyle = "#000"; rg.fillRect(0, 0, RW, RH);
+    // top-down map
+    var s = MAPW / MW;
+    for (var y = 0; y < MH; y++) for (var x = 0; x < MW; x++) {
+      if (RAYMAP[y][x]) { rg.fillStyle = "#232329"; rg.fillRect(x * s, y * s, s - 1, s - 1); }
+    }
+    var FOV = Math.PI / 3, COLS = 120, hits = [];
+    for (var i = 0; i < COLS; i++) {
+      var ra = pl.a - FOV / 2 + FOV * i / COLS;
+      var h = castRay(pl.x, pl.y, ra);
+      h.corr = h.dist * Math.cos(ra - pl.a);
+      hits.push(h);
+      if (showRays && i % 4 === 0) {
+        rg.strokeStyle = "rgba(77,255,124,0.25)";
+        rg.beginPath(); rg.moveTo(pl.x * s, pl.y * s);
+        rg.lineTo(h.hx * s, h.hy * s); rg.stroke();
+      }
+    }
+    rg.fillStyle = "#4dff7c";
+    rg.beginPath(); rg.arc(pl.x * s, pl.y * s, 4, 0, 7); rg.fill();
+    rg.strokeStyle = "#4dff7c"; rg.beginPath();
+    rg.moveTo(pl.x * s, pl.y * s);
+    rg.lineTo((pl.x + Math.cos(pl.a) * 0.7) * s, (pl.y + Math.sin(pl.a) * 0.7) * s); rg.stroke();
+    rg.fillStyle = "#2a8f4e"; rg.font = "10px monospace";
+    rg.fillText("MAP", 8, 14);
+
+    // first person
+    rg.fillStyle = "#0a0a0c"; rg.fillRect(VIEWX, 0, VIEWW, RH / 2);
+    rg.fillStyle = "#101014"; rg.fillRect(VIEWX, RH / 2, VIEWW, RH / 2);
+    var cw = VIEWW / COLS;
+    for (var j = 0; j < COLS; j++) {
+      var hh = hits[j], d = Math.max(0.05, hh.corr);
+      var wh = Math.min(RH * 2, (RH * 0.9) / d);
+      var shade = Math.max(0.06, Math.min(1, 1.6 - d / 6));
+      var base = hh.tex === 2 ? [120, 200, 120] : hh.tex === 3 ? [200, 160, 90] : [150, 150, 160];
+      if (hh.side === 1) { base = base.map(function (v) { return v * 0.7; }); }
+      var col = "rgb(" + base.map(function (v) { return Math.floor(v * shade); }).join(",") + ")";
+      var wx = VIEWX + j * cw;
+      if (texOn && hh.tex > 0) {
+        var stripe = (Math.floor(hh.hx * 4) + Math.floor(hh.hy * 4)) % 2 === 0;
+        if (stripe) col = "rgb(" + base.map(function (v) { return Math.floor(v * shade * 0.55); }).join(",") + ")";
+      }
+      rg.fillStyle = col;
+      rg.fillRect(wx, (RH - wh) / 2, cw + 1, wh);
+    }
+    rg.fillStyle = "#2a8f4e"; rg.font = "10px monospace";
+    rg.fillText("FIRST PERSON", VIEWX + 8, 14);
+  }
+  document.getElementById("rayRays").addEventListener("click", function () {
+    showRays = !showRays; this.textContent = "RAYS: " + (showRays ? "ON" : "OFF");
+    this.classList.toggle("on", showRays);
+  });
+  document.getElementById("rayTex").addEventListener("click", function () {
+    texOn = !texOn; this.textContent = "TEXTURE: " + (texOn ? "ON" : "OFF");
+    this.classList.toggle("on", texOn);
+  });
+
+  /* ---------- 3. THE FLICKER ---------- */
   var STYLES = [
     { n: 0,  label: "NORMAL",              map: "m" },
     { n: 1,  label: "FLICKER",             map: "mmnmmommommnonmmonqnmmo" },
@@ -210,86 +381,130 @@ passvert:
     { n: 10, label: "FLUORESCENT FLICKER", map: "mmamammmmammamamaaamammma" },
     { n: 11, label: "SLOW PULSE",          map: "abcdefghijklmnopqrrqponmlkjihgfedcba" }
   ];
-  var cur = STYLES[10];
-  var cv = document.getElementById("scene"), cx = cv.getContext("2d");
-  var W = cv.width, H = cv.height;
-
-  var btnWrap = document.getElementById("styleBtns");
-  STYLES.forEach(function (s) {
-    var b = document.createElement("button");
-    b.textContent = s.n;
-    b.title = s.n + " " + s.label;
-    if (s === cur) b.className = "on";
-    b.addEventListener("click", function () {
-      cur = s;
-      Array.prototype.forEach.call(btnWrap.children, function (x) { x.className = ""; });
-      b.className = "on";
+  var torches = [
+    { x: 140, style: STYLES[10] },
+    { x: 320, style: STYLES[3] },
+    { x: 500, style: STYLES[9] }
+  ];
+  var flC = document.getElementById("cvFlick"), fg = flC.getContext("2d");
+  var FW = flC.width, FH = flC.height;
+  var fctl = document.getElementById("flickCtls");
+  torches.forEach(function (t, ti) {
+    var lab = document.createElement("span");
+    lab.className = "lbl"; lab.textContent = "TORCH " + (ti + 1);
+    var sel = document.createElement("select");
+    STYLES.forEach(function (s) {
+      var o = document.createElement("option");
+      o.value = s.n; o.textContent = s.n + " " + s.label;
+      if (s === t.style) o.selected = true;
+      sel.appendChild(o);
     });
-    btnWrap.appendChild(b);
+    sel.addEventListener("change", function () { t.style = STYLES[+sel.value]; });
+    fctl.appendChild(lab); fctl.appendChild(sel);
   });
-
-  var roName = document.getElementById("roName"),
-      roChar = document.getElementById("roChar"),
-      roVal = document.getElementById("roVal"),
-      roLabel = document.getElementById("roLabel"),
-      roStr = document.getElementById("roStr");
-
-  function drawScene(t) {
-    var i = Math.floor(t * 10);                 // (int)(cl.time*10)
-    var k = i % cur.map.length;
-    var ch = cur.map[k];
-    var val = (ch.charCodeAt(0) - 97) * 22;     // (map[k]-'a')*22
-    var b = Math.min(val / 264, 2.2);           // 'm' = normal
-
-    roName.textContent = cur.n;
-    roChar.textContent = ch;
-    roVal.textContent = val;
-    roLabel.textContent = cur.label;
-    roStr.textContent = cur.map;
-
-    // room: dark stone
-    cx.fillStyle = "#0a0a0c"; cx.fillRect(0, 0, W, H);
-    cx.fillStyle = "#131318";
-    for (var ry = 0; ry < 6; ry++) for (var rx = 0; rx < 11; rx++) {
-      if ((rx + ry) % 2) cx.fillRect(rx * 60 + (ry % 2) * 30 - 30, ry * 52, 56, 48);
+  function flickFrame(t) {
+    var i = Math.floor(t * 10);
+    fg.fillStyle = "#0a0a0c"; fg.fillRect(0, 0, FW, FH);
+    fg.fillStyle = "#131318";
+    for (var ry = 0; ry < 5; ry++) for (var rx = 0; rx < 11; rx++) {
+      if ((rx + ry) % 2) fg.fillRect(rx * 60 + (ry % 2) * 30 - 30, ry * 52, 56, 48);
     }
-    // floor
-    cx.fillStyle = "#101014"; cx.fillRect(0, H - 60, W, 60);
-    // torch sconce
-    var tx = W / 2, ty = H - 150;
-    cx.fillStyle = "#3a2c1c"; cx.fillRect(tx - 3, ty, 6, 46);
-    cx.fillStyle = "#241b10"; cx.fillRect(tx - 10, ty + 40, 20, 6);
-    // flame: shape static, brightness from the string
-    var fl = 0.75 + 0.25 * b;
-    cx.fillStyle = "#ff9a2e";
-    cx.fillRect(tx - 7 * fl, ty - 26 * fl, 14 * fl, 26 * fl);
-    cx.fillStyle = "#ffd23e";
-    cx.fillRect(tx - 4 * fl, ty - 18 * fl, 8 * fl, 18 * fl);
-
-    // light: radial glow scaled by the style value
-    var r = 60 + 200 * Math.min(b, 1.4);
-    var g = cx.createRadialGradient(tx, ty - 14, 8, tx, ty - 14, r);
-    var a = Math.max(0, Math.min(0.85, b * 0.42));
-    g.addColorStop(0, "rgba(255,190,90," + a + ")");
-    g.addColorStop(1, "rgba(255,190,90,0)");
-    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
-
-    // darkness overlay: 'a' = pitch black
-    var dark = Math.max(0, Math.min(0.94, 1.02 - b));
-    cx.fillStyle = "rgba(0,0,0," + dark.toFixed(3) + ")";
-    cx.fillRect(0, 0, W, H);
+    fg.fillStyle = "#101014"; fg.fillRect(0, FH - 40, FW, 40);
+    var bs = [];
+    torches.forEach(function (tc) {
+      var k = i % tc.style.map.length;
+      var ch = tc.style.map[k];
+      var val = (ch.charCodeAt(0) - 97) * 22;
+      var b = Math.min(val / 264, 2.2);
+      bs.push(b);
+      var ty = FH - 120;
+      fg.fillStyle = "#3a2c1c"; fg.fillRect(tc.x - 3, ty, 6, 40);
+      var fl = 0.75 + 0.25 * b;
+      fg.fillStyle = "#ff9a2e"; fg.fillRect(tc.x - 7 * fl, ty - 26 * fl, 14 * fl, 26 * fl);
+      fg.fillStyle = "#ffd23e"; fg.fillRect(tc.x - 4 * fl, ty - 18 * fl, 8 * fl, 18 * fl);
+      var r = 60 + 170 * Math.min(b, 1.4);
+      var g = fg.createRadialGradient(tc.x, ty - 14, 8, tc.x, ty - 14, r);
+      var a = Math.max(0, Math.min(0.7, b * 0.38));
+      g.addColorStop(0, "rgba(255,190,90," + a + ")");
+      g.addColorStop(1, "rgba(255,190,90,0)");
+      fg.fillStyle = g; fg.fillRect(0, 0, FW, FH);
+      fg.fillStyle = "#2a8f4e"; fg.font = "10px monospace";
+      fg.fillText(tc.style.n + ":" + ch + "=" + val, tc.x - 34, FH - 14);
+    });
+    var avg = bs.reduce(function (p, q) { return p + q; }, 0) / bs.length;
+    var dark = Math.max(0, Math.min(0.92, 1.0 - avg));
+    fg.fillStyle = "rgba(0,0,0," + dark.toFixed(3) + ")";
+    fg.fillRect(0, 0, FW, FH);
   }
 
-  var t0 = performance.now();
-  (function loop() {
-    drawScene((performance.now() - t0) / 1000);
-    requestAnimationFrame(loop);
-  })();
+  /* ---------- 4. THE TREE ---------- */
+  var trC = document.getElementById("cvTree"), tg = trC.getContext("2d");
+  var TW = trC.width, TH = trC.height;
+  // regions: A1 top-left, A2 bottom-left, B1 top-right, B2 bottom-right
+  var REGIONS = {
+    A1: { x: 40,  y: 20,  w: 260, h: 120 },
+    A2: { x: 40,  y: 150, w: 260, h: 120 },
+    B1: { x: 320, y: 20,  w: 260, h: 120 },
+    B2: { x: 320, y: 150, w: 260, h: 120 }
+  };
+  // tree: root splits x<320 -> A | B ; A splits y<145 -> A1 | A2 ; B splits y<145 -> B1 | B2
+  var view = { x: 180, y: 90 }, dragging = false;
+  function sideOf(px, py, node) {
+    if (node === "root") return px < 320 ? 0 : 1;
+    return py < 145 ? 0 : 1;
+  }
+  function walk(node, order) {
+    if (node === "root") {
+      var s = sideOf(view.x, view.y, "root");
+      walk(s === 0 ? "A" : "B", order);
+      walk(s === 0 ? "B" : "A", order);
+    } else if (node === "A" || node === "B") {
+      var s2 = sideOf(view.x, view.y, node);
+      var kids = node === "A" ? ["A1", "A2"] : ["B1", "B2"];
+      order.push(s2 === 0 ? kids[0] : kids[1]);
+      order.push(s2 === 0 ? kids[1] : kids[0]);
+    }
+  }
+  function treeFrame() {
+    var order = []; walk("root", order);
+    tg.fillStyle = "#000"; tg.fillRect(0, 0, TW, TH);
+    var shades = ["#0e2b18", "#143d22", "#1a4d2c", "#206038"];
+    order.forEach(function (name, idx) {
+      var r = REGIONS[name];
+      tg.fillStyle = shades[idx]; tg.fillRect(r.x, r.y, r.w, r.h);
+      tg.strokeStyle = "#26262e"; tg.strokeRect(r.x + .5, r.y + .5, r.w - 1, r.h - 1);
+      tg.fillStyle = "#4dff7c"; tg.font = "bold 22px monospace";
+      tg.fillText((idx + 1) + "", r.x + 12, r.y + 34);
+      tg.fillStyle = "#2a8f4e"; tg.font = "11px monospace";
+      tg.fillText(name, r.x + 12, r.y + 52);
+    });
+    // partition lines
+    tg.strokeStyle = "#ffb347"; tg.setLineDash([6, 4]); tg.beginPath();
+    tg.moveTo(320, 10); tg.lineTo(320, 280);
+    tg.moveTo(40, 145); tg.lineTo(300, 145);
+    tg.moveTo(340, 145); tg.lineTo(580, 145);
+    tg.stroke(); tg.setLineDash([]);
+    // viewpoint
+    tg.fillStyle = "#ff5f56";
+    tg.beginPath(); tg.arc(view.x, view.y, 7, 0, 7); tg.fill();
+    tg.fillStyle = "#0b0b0e"; tg.font = "bold 9px monospace";
+    tg.fillText("YOU", view.x - 11, view.y + 3);
+    document.getElementById("treeHud").innerHTML =
+      "draw order <b style='color:var(--ph)'>" + order.join(" &rarr; ") + "</b>" +
+      " <span class='dim'>one side test per node; far side drawn only if visible</span>";
+  }
+  function treePos(e) {
+    var r = trC.getBoundingClientRect();
+    view.x = Math.max(40, Math.min(580, (e.clientX - r.left) * (TW / r.width)));
+    view.y = Math.max(20, Math.min(270, (e.clientY - r.top) * (TH / r.height)));
+  }
+  trC.addEventListener("mousedown", function (e) { dragging = true; treePos(e); });
+  window.addEventListener("mousemove", function (e) { if (dragging) treePos(e); });
+  window.addEventListener("mouseup", function () { dragging = false; });
 
-  /* ---------- rsqrt lab: bit-level walkthrough ---------- */
-  var buf = new ArrayBuffer(4), f32 = new Float32Array(buf), u32 = new Uint32Array(buf);
+  /* ---------- 5. THE ROOT ---------- */
+  var rbuf = new ArrayBuffer(4), rf32 = new Float32Array(rbuf), ru32 = new Uint32Array(rbuf);
   function hex(n) { return "0x" + (n >>> 0).toString(16).padStart(8, "0"); }
-
   function runRsqrt() {
     var x = parseFloat(document.getElementById("numIn").value);
     var out = document.getElementById("rsqrtOut");
@@ -297,33 +512,79 @@ passvert:
       out.innerHTML = '<div class="step"><span class="k">needs a positive finite float.</span></div>';
       return;
     }
-    f32[0] = x; var orig = u32[0];
+    rf32[0] = x; var orig = ru32[0];
     var bin = orig.toString(2).padStart(32, "0");
-    var s = bin[0], e = bin.slice(1, 9), m = bin.slice(9);
-    var shifted = orig >>> 1;                       // i >> 1  (logical; original used arithmetic on positive)
-    var hacked = (0x5f3759df - (orig >> 1)) >>> 0;   // the line
-    u32[0] = hacked; var guess = f32[0];
-    var x2 = x * 0.5, th = 1.5;
-    var it1 = guess * (th - x2 * guess * guess);
-    var it2 = it1 * (th - x2 * it1 * it1);
+    var hacked = (0x5f3759df - (orig >> 1)) >>> 0;
+    ru32[0] = hacked; var guess = rf32[0];
+    var x2 = x * 0.5;
+    var it1 = guess * (1.5 - x2 * guess * guess);
+    var it2 = it1 * (1.5 - x2 * it1 * it1);
     var truth = 1 / Math.sqrt(x);
-    function err(v) { return Math.abs(v - truth) / truth; }
-
+    function err(v) { return (Math.abs(v - truth) / truth * 100); }
+    function efmt(v) { return v < 0.0001 ? v.toExponential(1) + "%" : v.toFixed(4) + "%"; }
     out.innerHTML =
-      '<div class="bitline"><span class="s">' + s + '</span> <span class="e">' + e +
-      '</span> <span class="m">' + m + '</span></div>' +
-      '<div class="step"><span class="k">float bits as int:</span> <span class="v">' + hex(orig) + '</span></div>' +
-      '<div class="step"><span class="k">i = 0x5f3759df - (i &gt;&gt; 1):</span> <span class="v">' + hex(hacked) + '</span> <span class="c" style="color:#57523f">// what the fuck?</span></div>' +
-      '<div class="step"><span class="k">reinterpret as float (first guess):</span> <span class="v">' + guess.toPrecision(8) + '</span> <span class="err">err ' + (err(guess) * 100).toFixed(3) + '%</span></div>' +
-      '<div class="step"><span class="k">1st Newton iteration:</span> <span class="v">' + it1.toPrecision(10) + '</span> <span class="err">err ' + (err(it1) * 100).toFixed(5) + '%</span></div>' +
-      '<div class="step"><span class="k">2nd iteration (shipped commented out):</span> <span class="v">' + it2.toPrecision(12) + '</span> <span class="err">err ' + (err(it2) * 100).toFixed(7) + '%</span></div>' +
+      '<div class="bitline"><span class="s">' + bin[0] + '</span> <span class="e">' + bin.slice(1, 9) +
+      '</span> <span class="m">' + bin.slice(9) + '</span> <span class="k" style="color:var(--ph-faint)"> sign exponent mantissa</span></div>' +
+      '<div class="step"><span class="k">bits as int:</span> <span class="v">' + hex(orig) + '</span></div>' +
+      '<div class="step"><span class="k">0x5f3759df - (i &gt;&gt; 1):</span> <span class="v">' + hex(hacked) + '</span></div>' +
+      '<div class="step"><span class="k">first guess:</span> <span class="v">' + guess.toPrecision(8) + '</span> <span class="err">err ' + efmt(err(guess)) + '</span></div>' +
+      '<div class="step"><span class="k">newton 1:</span> <span class="v">' + it1.toPrecision(10) + '</span> <span class="err">err ' + efmt(err(it1)) + '</span></div>' +
+      '<div class="step"><span class="k">newton 2 (shipped commented out):</span> <span class="v">' + it2.toPrecision(12) + '</span> <span class="err">err ' + efmt(err(it2)) + '</span></div>' +
       '<div class="step"><span class="k">true 1/sqrt:</span> <span class="v">' + truth.toPrecision(12) + '</span></div>';
   }
-  document.getElementById("runBtn").addEventListener("click", runRsqrt);
-  document.getElementById("numIn").addEventListener("keydown", function (ev) {
-    if (ev.key === "Enter") runRsqrt();
+  var numIn = document.getElementById("numIn"), numSlide = document.getElementById("numSlide");
+  numSlide.addEventListener("input", function () {
+    numIn.value = Math.pow(10, parseFloat(numSlide.value)).toPrecision(4).replace(/\.?0+$/, function (m, o, s) { return s.indexOf(".") > -1 ? "" : m; });
+    runRsqrt();
   });
+  numIn.addEventListener("keydown", function (ev) { if (ev.key === "Enter") runRsqrt(); });
+  document.getElementById("runBtn").addEventListener("click", runRsqrt);
   runRsqrt();
+
+  /* ---------- keys ---------- */
+  window.addEventListener("keydown", function (e) {
+    var k = e.key;
+    var used = false;
+    if (k === "ArrowLeft") { scKeys.left = true; rayKeys.left = true; used = true; }
+    if (k === "ArrowRight") { scKeys.right = true; rayKeys.right = true; used = true; }
+    if (k === "ArrowUp") { rayKeys.up = true; used = true; }
+    if (k === "ArrowDown") { rayKeys.down = true; used = true; }
+    var lk = k.toLowerCase();
+    if (lk === "a") rayKeys.left = true;
+    if (lk === "d") rayKeys.right = true;
+    if (lk === "w") rayKeys.up = true;
+    if (lk === "s") rayKeys.down = true;
+    if (lk === "r") {
+      showRays = !showRays;
+      var b = document.getElementById("rayRays");
+      b.textContent = "RAYS: " + (showRays ? "ON" : "OFF"); b.classList.toggle("on", showRays);
+    }
+    if (lk === "t") {
+      texOn = !texOn;
+      var b2 = document.getElementById("rayTex");
+      b2.textContent = "TEXTURE: " + (texOn ? "ON" : "OFF"); b2.classList.toggle("on", texOn);
+    }
+    if (used) e.preventDefault();
+  });
+  window.addEventListener("keyup", function (e) {
+    var k = e.key, lk = k.toLowerCase();
+    if (k === "ArrowLeft") { scKeys.left = false; rayKeys.left = false; }
+    if (k === "ArrowRight") { scKeys.right = false; rayKeys.right = false; }
+    if (k === "ArrowUp") rayKeys.up = false;
+    if (k === "ArrowDown") rayKeys.down = false;
+    if (lk === "a") rayKeys.left = false;
+    if (lk === "d") rayKeys.right = false;
+    if (lk === "w") rayKeys.up = false;
+    if (lk === "s") rayKeys.down = false;
+  });
+
+  /* ---------- master loop ---------- */
+  var t0 = performance.now();
+  (function loop() {
+    var t = (performance.now() - t0) / 1000;
+    scFrame(); rayFrame(); flickFrame(t); treeFrame();
+    requestAnimationFrame(loop);
+  })();
 })();
 </script>
 </body>
