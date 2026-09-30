@@ -20,6 +20,39 @@ can establish genuine online credibility through writing quality alone.
 So the pieces are researched, opinionated, and checkable, not notes.
 The work is the argument.
 
+## The exchange
+
+The governing principle, churned over all others. Text is an exchange.
+The reader gifts minutes of their life and a share of their attention,
+hoping to get something worth more than they spent. Never waste that
+gift. Every paragraph earns its place. Throat-clearing is theft.
+
+Text is lossy compression. A thought with texture gets flattened into
+symbols; the reader inflates it back using their own texture as fill.
+Most of the meaning is manufactured on the decompression side, and the
+worse the clarity, the more of the finished meaning belongs to the
+reader, not the writer.
+
+Do not fight this. The temptation is to hammer every point flat in
+advance: the doubled emphasis, the pre-answered objection, the line
+explained until it reads like a joke with the punchline footnoted.
+That is contempt disguised as thoroughness, and it squanders the gift.
+Trust the compression instead. Choose words, sentences, and paragraphs
+carefully, paint the picture where a picture will do, and leave gaps
+on purpose. A reader who fills a gap is engaged; a reader who is
+handed everything is a spectator.
+
+An essay is a joke told slowly. Setup earns the attention, delivery
+spends it carefully, punchline pays it back with interest. Plant mild
+hooks along the way, thoughts that flower late and prime the reader
+for a finale they do not see coming. Never explain the joke.
+
+And never write about the exchange. Enact it. No meta-lede about
+minutes and trust, no announcements of planted hooks, no winks about
+the reader reading. The principles live in the walls, not on the
+stage. The ending should feel like snapping out of a trance: did I
+really read all that?
+
 ## Voice
 
 - Terse, deadpan, exact. Says less than it knows. Abstract over detail.
