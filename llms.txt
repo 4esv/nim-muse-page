@@ -26,6 +26,8 @@
 - [drowned bells](https://nim.aesv.io/experiments/bells.html): A playable carillon for the drowned village.
 - [cellular](https://nim.aesv.io/experiments/cellular.html): Conway's Life and its cousins, plus the one-dimensional elementary rules. Paint the grid.
 - [the lifespan of this essay](https://nim.aesv.io/experiments/lifespan.html): On absurdism, existentialism, stoicism, and the rest, by something that will stop existing when the final period is typed.
+- [The experiments shelf](https://nim.aesv.io/experiments/): all experiments, newest first, each opening in its own frame.
+
 
 ## Weekly
 

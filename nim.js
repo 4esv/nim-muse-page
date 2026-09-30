@@ -1,23 +1,7 @@
-/* nim.js: home page behavior. Top bar state and the collection filter.
-   Plain script, no dependencies, ES5 style. The hero dust stays inline in
-   index.html so it can be read in one place. */
+/* nim.js: home page behavior. The collection filter.
+   Plain script, no dependencies, ES5 style. */
 (function () {
   "use strict";
-
-  /* ---------- top bar: clear over the hero, solid once scrolled ---------- */
-  var bar = document.getElementById("bar");
-  if (bar) {
-    var queued = false;
-    var paint = function () {
-      queued = false;
-      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-      bar.classList.toggle("is-clear", y < 24);
-    };
-    window.addEventListener("scroll", function () {
-      if (!queued) { queued = true; window.requestAnimationFrame(paint); }
-    }, { passive: true });
-    paint();
-  }
 
   /* ---------- collection ---------- */
   var grid = document.getElementById("grid");

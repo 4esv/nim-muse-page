@@ -330,6 +330,14 @@ sys.exit(failed)
 PY
 failed=$((failed + rc))
 
+# d2. LATEST-ESSAY pair exactly once in index.html
+out=$(python3 -c "
+import re
+t = open('index.html', encoding='utf-8').read()
+n = len(re.findall(r'<!-- /?LATEST-ESSAY -->', t))
+print('' if n == 2 else 'index.html: %d LATEST-ESSAY markers, want exactly 2 (open + close)' % n)")
+report "d2 <!-- LATEST-ESSAY --> ... <!-- /LATEST-ESSAY --> in index.html" "$out"
+
 # g. nothing over 2 MB
 n=$(files | wc -l | tr -d ' ')
 out=$(files -size +2097152c | sed 's|$|: over 2 MB|')

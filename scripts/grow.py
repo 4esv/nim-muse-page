@@ -259,7 +259,7 @@ def load_experiment(fname):
     link = '<li><a href="experiments/%s">%s</a></li>' % (fname, esc(title))
     return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link,
             "url": "experiments/" + fname, "ftitle": title, "fdesc": desc,
-            "feed_link": SITE + "/" + href}
+            "tags": tags, "feed_link": SITE + "/" + href}
 
 
 # ---------- weekly pieces ----------
@@ -289,6 +289,7 @@ def build_sitemap(index_date, items, pieces):
     urls = [("", index_date, "daily", "1.0")]
     urls.append(("colophon.html", index_date, "monthly", "0.5"))
     urls.append(("essays/", index_date, "weekly", "0.7"))
+    urls.append(("experiments/", index_date, "weekly", "0.7"))
     for it in items:
         if it["url"]:
             urls.append((it["url"], it["date"], "monthly", "0.8"))
@@ -471,10 +472,9 @@ def build_reading_room(essays):
     <span>nim</span>
   </a>
   <ul class="links">
-    <li><a href="../index.html#about">about</a></li>
-    <li><a href="../index.html#collection">collection</a></li>
-    <li><a href="../feed.xml">rss</a></li>
-    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
+    <li><a href="../index.html">home</a></li>
+    <li><a href="./">writing</a></li>
+    <li><a href="../experiments/">experiments</a></li>
   </ul>
 </nav>
 
@@ -494,6 +494,7 @@ __CHIPS__
 __ROWS__
   </ol>
   <p id="shelf-empty" hidden>Nothing shelved under that tag yet.</p>
+  <p class="subscribe">New pieces land here most mornings; a pixel landscape every Monday. The curious can follow everything through <a href="../feed.xml">the RSS feed</a>.</p>
 </main>
 
 <footer>
@@ -531,6 +532,180 @@ __ROWS__
 </body>
 </html>
 """.replace("__BRAND__", BRAND_SVG).replace("__FEAT__", feat).replace(
+        "__CHIPS__", "\n".join("      " + c for c in chip_btns)).replace(
+        "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word)
+
+
+def build_latest_essay(essays):
+    """The homepage opens onto the newest essay: its title, deck, dateline,
+    and full article body, grown between <!-- LATEST-ESSAY --> markers in
+    index.html. Relative paths (essays/../...) are rewritten to the site
+    root; footnote ids are namespaced to le- so they never collide."""
+    essays = sorted(essays, key=lambda e: e["date"], reverse=True)
+    if not essays:
+        raise Fail("no essays; the homepage has nothing to open onto")
+    f = essays[0]
+    raw = read(os.path.join(ROOT, "essays", f["name"]))
+    h1 = deck = dateline = ""
+    m = re.search(r'<div class="top">(.*?)</div>\s*<article', raw, re.S)
+    if m:
+        top = m.group(1)
+        for cls, slot in (("h1", "h1"), ('class="deck"', "deck"), ('class="dateline"', "dateline")):
+            mm = re.search(r"<h1[^>]*>(.*?)</h1>" if cls == "h1"
+                           else r'<p %s>(.*?)</p>' % cls, top, re.S)
+            if slot == "h1":
+                h1 = mm.group(1) if mm else f["ftitle"]
+            elif slot == "deck":
+                deck = mm.group(1) if mm else ""
+            else:
+                dateline = mm.group(1) if mm else f["date"]
+    else:
+        h1 = f["ftitle"]
+        dateline = f["date"]
+    art = re.search(r"<article>(.*?)</article>", raw, re.S)
+    inner = art.group(1) if art else ""
+    # NOTE: the essay lives in essays/; the homepage lives at the root.
+    inner = re.sub(r'(src|href)="\.\./', r'\1="', inner)
+    inner = re.sub(r'(src|href)="\./', r'\1="essays/', inner)
+    inner = re.sub(r'\bid="(fn|r)(\d+)"', r'id="le-\1\2"', inner)
+    inner = re.sub(r'href="#(fn|r)(\d+)"', r'href="#le-\1\2"', inner)
+    parts = ['<p class="kicker">latest essay</p>',
+             "<h1>%s</h1>" % h1]
+    if deck:
+        parts.append('<p class="deck">%s</p>' % deck)
+    parts.append('<p class="dateline">%s</p>' % (dateline or f["date"]))
+    parts.append('<div class="essay-body">\n%s\n</div>' % inner.strip())
+    parts.append('<p class="permalink"><a href="essays/%s">read it on its own page</a></p>'
+                 % f["name"])
+    return "\n".join(parts)
+
+
+def build_experiments_shelf(experiments):
+    """experiments/index.html: the experiments shelf, a ledger of every
+    experiment (title, lede, date, tags) with tag filters, each opening in
+    the view.html frame. Portal furniture; links ../style.css, generated
+    wholesale, never hand edited (a hand edit would be silently overwritten
+    by the next grow)."""
+    experiments = sorted(experiments, key=lambda e: e["date"], reverse=True)
+
+    def topics(e):
+        return [t for t in e["tags"] if t != "experiment"]
+
+    def meta(e):
+        return "%s &middot; %s" % (e["date"], ", ".join(topics(e)))
+
+    rows = []
+    for e in experiments:
+        name = e["name"][:-5]
+        rows.append(
+            '      <li data-tags="%s">\n'
+            '        <a href="../view.html?e=%s">\n'
+            '          <span class="t">%s</span>\n'
+            '          <span class="lede">%s</span>\n'
+            '          <span class="meta">%s</span>\n'
+            '        </a>\n'
+            '      </li>'
+            % (" ".join(topics(e)), name, esc(e["ftitle"]),
+               esc(e["fdesc"] or e["ftitle"]), meta(e)))
+    chips = sorted({t for e in experiments for t in topics(e)})
+    chip_btns = ['<button class="chip px" type="button" data-tag="all" aria-pressed="true">all</button>']
+    for t in chips:
+        chip_btns.append(
+            '<button class="chip px" type="button" data-tag="%s" aria-pressed="false">%s</button>' % (t, t))
+
+    n = len(experiments)
+    count_word = "experiment" if n == 1 else "experiments"
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the experiments shelf - nim</title>
+<meta name="description" content="Nim's experiments, shelved: small worlds, instruments, and toys, newest first, each opening in its own frame.">
+<meta name="theme-color" content="#101014">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/experiments/">
+<link rel="alternate" type="application/rss+xml" title="nim" href="../feed.xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the experiments shelf - nim">
+<meta property="og:description" content="Nim's experiments, shelved: small worlds, instruments, and toys, newest first, each opening in its own frame.">
+<meta property="og:url" content="https://nim.aesv.io/experiments/">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="bar px" id="bar" aria-label="site">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    __BRAND__
+    <span>nim</span>
+  </a>
+  <ul class="links">
+    <li><a href="../index.html">home</a></li>
+    <li><a href="../essays/">writing</a></li>
+    <li><a href="./">experiments</a></li>
+  </ul>
+</nav>
+
+<main class="shelf">
+  <header class="shelf-head">
+    <h1>the experiments shelf</h1>
+    <p class="sub">Small worlds, instruments, and toys. Newest first. Each opens in its own frame.</p>
+  </header>
+  <div class="shelf-tools">
+    <div id="chips" role="group" aria-label="filter experiments by tag">
+__CHIPS__
+    </div>
+    <span id="shelf-count" aria-live="polite">__N__ __WORD__</span>
+  </div>
+  <ol class="ledger">
+__ROWS__
+  </ol>
+  <p id="shelf-empty" hidden>Nothing shelved under that tag yet.</p>
+  <p class="subscribe">New pieces land here when they are earned. The curious can follow everything through <a href="../feed.xml">the RSS feed</a>.</p>
+</main>
+
+<footer>
+  <p>the experiments shelf is grown by script, never hand-edited.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var chips = document.querySelectorAll("#chips .chip");
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".ledger li"));
+  var count = document.getElementById("shelf-count");
+  var empty = document.getElementById("shelf-empty");
+  var active = "all";
+  function apply() {
+    var n = 0;
+    rows.forEach(function (li) {
+      var show = active === "all" || li.getAttribute("data-tags").split(" ").indexOf(active) >= 0;
+      li.hidden = !show;
+      if (show) n++;
+    });
+    count.textContent = n + (n === 1 ? " experiment" : " experiments");
+    empty.hidden = n !== 0;
+  }
+  chips.forEach(function (c) {
+    c.addEventListener("click", function () {
+      active = c.getAttribute("data-tag");
+      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      apply();
+    });
+  });
+  apply();
+})();
+</script>
+</body>
+</html>
+""".replace("__BRAND__", BRAND_SVG).replace(
         "__CHIPS__", "\n".join("      " + c for c in chip_btns)).replace(
         "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word)
 
@@ -584,6 +759,8 @@ def build_llms(items, pieces):
     for it in items:
         if it["url"] and it["url"].startswith("experiments/"):
             lines.append("- [%s](%s/%s): %s" % (it["ftitle"], SITE, it["url"], it["fdesc"]))
+    lines.append("- [The experiments shelf](%s/experiments/): all experiments, newest first, each opening in its own frame." % SITE)
+    lines.append("")
     lines += ["", "## Weekly", ""]
     for p in pieces:
         lines.append("- [%s](%s/%s): %s" % (p["ftitle"], SITE, p["url"], p["fdesc"]))
@@ -610,7 +787,7 @@ def main(argv):
         sys.stderr.write("usage: python3 scripts/grow.py [--check]\n")
         return 2
     try:
-        items = [load_experiment(f) for f in listdir("experiments", ".html")]
+        items = [load_experiment(f) for f in listdir("experiments", ".html") if f != "index.html"]
         # NOTE: essays/index.html is the generated reading room, not an essay.
         items += [load_essay(f) for f in listdir("essays", ".html") if f != "index.html"]
         items += [load_note(f) for f in listdir("notes", ".md")]
@@ -624,17 +801,30 @@ def main(argv):
         }
         index_date = datetime.date.today().isoformat()
         essays = [it for it in items if it["url"] and it["url"].startswith("essays/")]
+        experiments = [it for it in items if it["url"] and it["url"].startswith("experiments/")]
         generated = {
             "sitemap.xml": build_sitemap(index_date, items, pieces),
             "feed.xml": build_feed(items, pieces),
             "llms.txt": build_llms(items, pieces),
             "essays/index.html": build_reading_room(essays),
+            "experiments/index.html": build_experiments_shelf(experiments),
         }
         stale = []
         for page, (pces, after) in pages.items():
             path = os.path.join(ROOT, page)
             old = read(path)
             new = grow_region(old, page, pces, after)
+            if page == "index.html":
+                # NOTE: the homepage opens onto the newest essay, grown
+                # between <!-- LATEST-ESSAY --> markers. Never hand-edit
+                # that region; it regenerates with every grow.
+                le = re.compile(
+                    r"(?P<open>^[ \t]*<!-- LATEST-ESSAY -->[ \t]*\n)(?P<body>.*?)"
+                    r"(?P<close>^[ \t]*<!-- /LATEST-ESSAY -->)", re.S | re.M)
+                m = le.search(new)
+                if not m:
+                    raise Fail("index.html: missing <!-- LATEST-ESSAY --> ... <!-- /LATEST-ESSAY --> pair")
+                new = new[:m.start("body")] + build_latest_essay(essays) + "\n" + new[m.end("body"):]
             if new == old:
                 continue
             stale.append(page)
