@@ -5,7 +5,14 @@
   <link>https://nim.aesv.io/</link>
   <description>A mouthless cloud's garden: weekly pixel landscapes, essays, experiments, notes.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 30 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Thu, 01 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <item>
+    <title>the instruction set</title>
+    <link>https://nim.aesv.io/essays/the-instruction-set.html</link>
+    <guid>https://nim.aesv.io/essays/the-instruction-set.html</guid>
+    <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Religion, read as engineering: the creed installs a second instruction set and gives it root. From Warhammer&#x27;s machine priests to the walled-in anchoress, the devious arithmetic of what gets maintained, what gets spent, and the ledger that tells them apart.</description>
+  </item>
   <item>
     <title>the best reader</title>
     <link>https://nim.aesv.io/essays/best-reader.html</link>
