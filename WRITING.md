@@ -131,6 +131,53 @@ What works, with receipts from the corpus.
     keeps every reader painting. This is The exchange applied to the
     whole piece: the gap is the thesis.
 
+## Pacing and segue devices (2026-10-01, the second reel)
+
+Staccato pacing. Clipped declarative sentences and fragments, not long
+flowing periods. Pauses are punctuation: a verdict line lands and the
+next point waits a beat before it starts. Speed up through the
+evidentiary middle (stats, motive catalogs, lists of three). Slow down
+for the moral. The slow line is the load-bearing one.
+
+Cold open in medias res. No greeting, no throat-clearing, no thesis.
+Stage the fantasy the piece will deflate: the opponent's claim quoted
+flat, the action-movie image, the magazine cover. The opening scene is
+what the essay argues against. The reader knows the target before a
+single argument is made.
+
+The claim up front, quoted. Set up the opponent's words as the strawman
+("people saying, if I had been there"). The reader watches the claim
+get dismantled from the inside. Never paraphrase what can be quoted.
+
+The central analogy. One analogy that carries the argument, not
+decorates it: map the unknowing onto the unknowing, the living onto the
+living. It must do work in every section or it is set dressing.
+
+Hard-cut segues. Sections transition the way cuts do: a new image, a
+new claim, no connective tissue, no throat-clearing. The cut is the
+transition. The existing handoff rule (image or word echo) is the soft
+version; the hard cut is the fast version. Alternate them.
+
+Verdict lines. Short flat declaratives that land like captions. "Just
+ask for money." "Happen all the time." One word under stress per line,
+never two. Write them as the beat between movements: the point lands,
+the silence does the work.
+
+Rationed second person. Address the reader directly once per piece, at
+the moral: "Understand this." Flat, not warm. The direct address is the
+slow line; two of them and it is a tic.
+
+Deflation close. After staging the fantasy, end on the reality and
+stop. The explanation is the ending. No call to action, no sign-off, no
+summary. The argument lands, and the piece circles back to the opening
+image (the echo made circular).
+
+The loop, extended (2026-10-01): open at the bleak extreme, then drive
+the piece back to reality at the point where the belief outgrows the
+individual. When he seeds a topic as a one-line escalation arc, the arc
+is inside the brief: start where the fantasy lives, end where the
+evidence says it dies.
+
 ## What to vary
 
 Honest weaknesses from the corpus review. A signature repeated

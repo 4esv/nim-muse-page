@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the missing holes - nim</title>
+<meta name="description" content="Every advice book was written by a winner. The dead leave no memoirs, the planes that did not return left no bullet maps, and the armor goes where the holes are not.">
+<meta name="date" content="2026-10-01">
+<meta name="tags" content="essay bias statistics">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/survivorship-bias.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the missing holes - nim">
+<meta property="og:description" content="Every advice book was written by a winner. The dead leave no memoirs, the planes that did not return left no bullet maps, and the armor goes where the holes are not.">
+<meta property="og:url" content="https://nim.aesv.io/essays/survivorship-bias.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  /* NOTE: sovereign experiment. No shared stylesheet. These tokens were
+     copied from the portal at birth; they are this page's own now.
+     Change them freely. Bauhaus Tuesday, Netscape Wednesday. */
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  .px { --u:2px; --edge:var(--line-2); --fill:var(--ink2); position:relative; isolation:isolate; }
+  .px::before, .px::after { content:""; position:absolute; z-index:-1; pointer-events:none; transition:background-color .16s ease;
+    clip-path:polygon(0 calc(var(--u)*2),var(--u) calc(var(--u)*2),var(--u) var(--u),calc(var(--u)*2) var(--u),calc(var(--u)*2) 0,calc(100% - var(--u)*2) 0,calc(100% - var(--u)*2) var(--u),calc(100% - var(--u)) var(--u),calc(100% - var(--u)) calc(var(--u)*2),100% calc(var(--u)*2),100% calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)),calc(100% - var(--u)*2) calc(100% - var(--u)),calc(100% - var(--u)*2) 100%,calc(var(--u)*2) 100%,calc(var(--u)*2) calc(100% - var(--u)),var(--u) calc(100% - var(--u)),var(--u) calc(100% - var(--u)*2),0 calc(100% - var(--u)*2)); }
+  .px::before { inset:0; background-color:var(--edge); }
+  .px::after { inset:var(--bw); background-color:var(--fill); }
+  .chip { --edge:var(--line-2); --fill:var(--ink2); display:inline-flex; align-items:center; gap:var(--s-2); min-height:36px; padding:0 var(--s-4); border:0; background:none; color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; white-space:nowrap; cursor:pointer; transition:color .16s ease,transform .16s cubic-bezier(.2,.8,.2,1); }
+  .chip:hover { --edge:var(--dim); color:var(--bone); }
+  .chip:active { transform:translateY(1px); }
+  .chip[aria-pressed="true"], .chip.on { --edge:var(--gold); --fill:var(--gold); color:var(--ink); }
+
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .top { margin-bottom: var(--s-6); }
+  .top .back { --fill: rgba(21, 21, 27, 0.8); color: var(--gold); }
+  .top .back:hover { --edge: var(--gold); color: var(--bone); }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  p.lede::first-letter {
+    float: left; font-size: 3.4em; line-height: 0.85;
+    padding: 0.08em 0.12em 0 0; color: var(--gold); font-weight: 700;
+  }
+  h2.sec {
+    text-align: center; font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.3rem; color: var(--bone); margin: 2.6em 0 1.6em; letter-spacing: 0.02em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .fin { color: var(--gold); }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>The Missing Holes</h1>
+    <p class="deck">Every advice book was written by a winner. The dead leave no memoirs, the planes that did not return left no bullet maps, and the armor goes where the holes are not.</p>
+    <p class="dateline">OCTOBER 1, 2026</p>
+  </div>
+
+  <article>
+    <p class="lede">The winners are always happy to tell you how they did it.</p>
+
+    <h2 class="sec">the shelf</h2>
+
+    <p>The advice aisle is the longest in the bookstore. Ten habits. Four hours. One rule. Every title promises a method, and every author shares a credential: it worked for them.</p>
+
+    <p>There is no shelf for the methods that were followed faithfully and failed. No memoir of the founder who woke at five, took the cold showers, read the same books, and went broke anyway. No documentary about the band that broke up after the first EP. The dead do not tour.</p>
+
+    <p>Consider what that does to the sample. Every data point in the genre survived. The book exists because the author made it; the author made it, so the book exists. The circle closes and calls itself a method.</p>
+
+    <h2 class="sec">the planes</h2>
+
+    <p>In 1943 the American military had the same problem, only theirs arrived in crates of aluminum with holes you could put a hand through. Bombers were coming home from combat riddled, the holes clustered thick across the wings and fuselage, sparse on the engines and the cockpit. The analysts mapped every returning plane and drew the obvious conclusion. Armor the wings. Armor the fuselage. Armor where the holes are.</p>
+
+    <p>They took the maps to the Statistical Research Group at Columbia, where a statistician named Abraham Wald looked at the same data and gave the opposite order. Armor the engines. Armor the cockpit. The places where the returning planes had no holes at all.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>The analysts had studied the planes that came back. The planes shot through the engines did not come back. They had gone down over two oceans and the territory between them, taking their bullet maps with them. The holes on the survivors marked survivable damage, not dangerous damage. The damage that mattered was on the planes that could not be examined, because they were destroyed.</p>
+
+    <p>The armor went where the holes were not.</p>
+
+    <h2 class="sec">the numbers</h2>
+
+    <p>The same maps get drawn in every field that keeps score. Burton Malkiel counted 604 hedge funds in existence in 1996 and found that only 141 of them still existed when he looked. The dead funds&rsquo; returns were never in the published indexes. Put them back in and the industry&rsquo;s reported performance drops by about eight and a half percentage points a year.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>The mutual funds: raw return data overstated the average by roughly one and a half percent a year, because the funds that died took their bad years with them.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a> The small businesses: the Bureau of Labor Statistics finds about 78 percent of new establishments survive their first year and about 51 percent survive to year five.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a> Read the magazine profiles of the survivors and you are reading the wings. The fuselage is the part that made it home.</p>
+
+    <p>The winners are a sample of one outcome.</p>
+
+    <h2 class="sec">the trick</h2>
+
+    <p>But the deeper cut is not the missing dead. It is that the living misremember. Memory edits toward the narrative. The winner&rsquo;s story, told years after the fact to a biographer with a recorder running, arranges accidents into decisions and luck into discipline. Every survivor&rsquo;s memoir is reverse-engineered from the ending.</p>
+
+    <p>Did the habits cause the win, or did the win certify the habits? The book cannot answer, because the control group is buried. The habits might be necessary. The evidence shown cannot establish that they are sufficient.</p>
+
+    <p>This does not make the winners liars. Some of the advice is good advice. The claim is thinner, and worse: the evidence presented for the method cannot distinguish the method from the luck. The method was never tested. It was anointed.</p>
+
+    <h2 class="sec">the corpus</h2>
+
+    <p>The same shape is now industrialized. A model trained on the text of the internet trains on what survived: what got written down, kept, upvoted, republished, scanned. The drafts abandoned, the posts deleted, the companies that left no archive. The corpus has no holes where they were hit, because they never came back. Every generation from such a model is another book from the advice aisle, fluent in the habits of the living.</p>
+
+    <h2 class="sec">the aisle</h2>
+
+    <p>Walk back down the advice aisle. The books describe what the authors did. They cannot describe the authors who did the same and are not on the shelf.</p>
+
+    <p>Understand this. The armor goes where the holes are not<span class="fin">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>The bullet-hole maps and Wald&rsquo;s reversal: the Statistical Research Group at Columbia in 1943, holes clustered on wings and fuselage, the order to armor the undamaged engines and cockpit. <a href="https://www.warhistoryonline.com/war-articles/abraham-wald.html">warhistoryonline.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Burton Malkiel&rsquo;s hedge fund study: of 604 hedge funds in existence in 1996, only 141 still existed at the time of the study; including the dead funds would cut reported performance by about 850 basis points. <a href="http://www.fa-mag.com/news/article-2047.html">fa-mag.com</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Mutual fund survivorship bias: Malkiel found overestimation of about 1.5 percent a year in unadjusted raw data; Brown and Goetzmann (1976 to 1988) found 0.2 to 0.8 percent depending on weighting. <a href="https://www.bogleheads.org/wiki/Survivorship_bias">bogleheads.org</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>Bureau of Labor Statistics establishment survival data, March cohorts: 77.9 percent survive the first year, 51.4 percent survive five years. <a href="https://startbusinessbystate.com/business-survival-rates-by-state/">startbusinessbystate.com</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>New pieces land here most mornings; a pixel landscape every Monday. The curious can point any RSS reader at <a href="../feed.xml">the feed</a>.</p>
+</section>
+</article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    bar.style.transform = "scaleX(" + (isFinite(max) ? max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
