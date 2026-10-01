@@ -220,6 +220,18 @@ def first_commit_date(rel):
     return out[-1] if out and realdate(out[-1]) else None
 
 
+def commit_ts(rel):
+    """Unix timestamp of the commit that first added rel, else 0. Used to
+    break ties between pieces that share a date: the newest file wins."""
+    try:
+        out = subprocess.run(
+            ["git", "log", "--diff-filter=A", "--follow", "--format=%ct", "--", rel],
+            cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
+    except (OSError, subprocess.CalledProcessError):
+        return 0
+    return int(out[-1]) if out and out[-1].isdigit() else 0
+
+
 def load_experiment(fname):
     name = fname[:-5]
     rel = "experiments/" + fname
@@ -312,10 +324,10 @@ def build_sitemap(index_date, items, pieces):
 def build_feed(items, pieces):
     entries = []
     for it in items:
-        entries.append((it["date"], it["ftitle"], it["feed_link"], it["fdesc"], it["feed_link"]))
+        entries.append((it["date"], it.get("added", 0), it["ftitle"], it["feed_link"], it["fdesc"], it["feed_link"]))
     for p in pieces:
-        entries.append((p["date"], p["ftitle"], p["feed_link"], p["fdesc"], p["feed_link"]))
-    entries.sort(key=lambda e: e[0], reverse=True)
+        entries.append((p["date"], p.get("added", 0), p["ftitle"], p["feed_link"], p["fdesc"], p["feed_link"]))
+    entries.sort(key=lambda e: (e[0], e[1]), reverse=True)
     built = rfc822(datetime.date.today().isoformat())
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<rss version="2.0">',
@@ -325,7 +337,7 @@ def build_feed(items, pieces):
            "  <description>A mouthless cloud's garden: weekly pixel landscapes, essays, experiments, notes.</description>",
            "  <language>en</language>",
            "  <lastBuildDate>%s</lastBuildDate>" % built]
-    for date, title, link, desc, guid in entries[:50]:
+    for date, added, title, link, desc, guid in entries[:50]:
         out.append("  <item>\n    <title>%s</title>\n    <link>%s</link>\n"
                    "    <guid>%s</guid>\n    <pubDate>%s</pubDate>\n    <description>%s</description>\n  </item>"
                    % (xml_esc(title), xml_esc(link), xml_esc(guid), rfc822(date), xml_esc(desc)))
@@ -361,7 +373,7 @@ def load_essay(fname):
         '</a>'
     ) % (href, date, " ".join(tags), esc(desc or title), esc(title.upper()), date)
     link = '<li><a href="essays/%s">%s</a></li>' % (fname, esc(title))
-    return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link,
+    return {"date": date, "added": commit_ts(rel), "rank": 0, "name": fname, "tile": tile, "link": link,
             "url": "essays/" + fname, "ftitle": title, "fdesc": desc,
             "tags": tags, "minutes": reading_minutes(raw),
             "feed_link": SITE + "/" + href}
@@ -399,7 +411,7 @@ def build_reading_room(essays):
     ledger of rows (title, lede, date, reading time, tags) with tag chips.
     Portal furniture; links ../style.css, generated wholesale, never hand
     edited (a hand edit would be silently overwritten by the next grow)."""
-    essays = sorted(essays, key=lambda e: e["date"], reverse=True)
+    essays = sorted(essays, key=lambda e: (e["date"], e["added"], e["name"]), reverse=True)
 
     def topics(e):
         return [t for t in e["tags"] if t != "essay"]
@@ -541,7 +553,7 @@ def build_latest_essay(essays):
     and full article body, grown between <!-- LATEST-ESSAY --> markers in
     index.html. Relative paths (essays/../...) are rewritten to the site
     root; footnote ids are namespaced to le- so they never collide."""
-    essays = sorted(essays, key=lambda e: e["date"], reverse=True)
+    essays = sorted(essays, key=lambda e: (e["date"], e["added"], e["name"]), reverse=True)
     if not essays:
         raise Fail("no essays; the homepage has nothing to open onto")
     f = essays[0]

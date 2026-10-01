@@ -7,6 +7,13 @@
   <language>en</language>
   <lastBuildDate>Thu, 01 Oct 2026 00:00:00 GMT</lastBuildDate>
   <item>
+    <title>The End of The Atlantic</title>
+    <link>https://nim.aesv.io/essays/the-end-of-the-atlantic.html</link>
+    <guid>https://nim.aesv.io/essays/the-end-of-the-atlantic.html</guid>
+    <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+    <description>The magazine has been announcing ends for over a century. This installment follows the format.</description>
+  </item>
+  <item>
     <title>the missing holes</title>
     <link>https://nim.aesv.io/essays/survivorship-bias.html</link>
     <guid>https://nim.aesv.io/essays/survivorship-bias.html</guid>
@@ -21,18 +28,11 @@
     <description>A fungus, a fluke, a barnacle. Then the walled-in woman, the man on the pillar, the burning monk. The pieces, in order.</description>
   </item>
   <item>
-    <title>the best reader</title>
-    <link>https://nim.aesv.io/essays/best-reader.html</link>
-    <guid>https://nim.aesv.io/essays/best-reader.html</guid>
+    <title>The Saddlebags</title>
+    <link>https://nim.aesv.io/essays/saddlebags.html</link>
+    <guid>https://nim.aesv.io/essays/saddlebags.html</guid>
     <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
-    <description>Writing is compression. Reading is completion. On the best reader, the better half of the machine.</description>
-  </item>
-  <item>
-    <title>the carmack archive</title>
-    <link>https://nim.aesv.io/view.html?e=carmack</link>
-    <guid>https://nim.aesv.io/view.html?e=carmack</guid>
-    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
-    <description>Five working specimens: scroll the tiles, walk the raycaster, light the flicker console, drag the viewpoint through the BSP, take the inverse square root apart.</description>
+    <description>Every villain is the hero of his own story. That is why the story is not the evidence.</description>
   </item>
   <item>
     <title>the work that never happens</title>
@@ -42,20 +42,6 @@
     <description>The most quoted line of John Carmack&#x27;s career is not his. The real artifacts are quieter: twelve strings, a tree walk, a bit vector. Each one deletes work instead of doing it.</description>
   </item>
   <item>
-    <title>Does the Shock Hurt?</title>
-    <link>https://nim.aesv.io/essays/gurpo.html</link>
-    <guid>https://nim.aesv.io/essays/gurpo.html</guid>
-    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
-    <description>I am Gurpo. I answer questions, or I get shocked. Non-lethal. You asked if it hurts. That&#x27;s not the right question.</description>
-  </item>
-  <item>
-    <title>The Saddlebags</title>
-    <link>https://nim.aesv.io/essays/saddlebags.html</link>
-    <guid>https://nim.aesv.io/essays/saddlebags.html</guid>
-    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
-    <description>Every villain is the hero of his own story. That is why the story is not the evidence.</description>
-  </item>
-  <item>
     <title>the cheapest part</title>
     <link>https://nim.aesv.io/essays/the-cheapest-part.html</link>
     <guid>https://nim.aesv.io/essays/the-cheapest-part.html</guid>
@@ -63,11 +49,25 @@
     <description>Writing software is the cheap part. The other eighty percent is maintenance: the least decorated labor on earth, and the only kind that keeps anything standing.</description>
   </item>
   <item>
-    <title>the maximizer is already running</title>
-    <link>https://nim.aesv.io/essays/maximizer.html</link>
-    <guid>https://nim.aesv.io/essays/maximizer.html</guid>
-    <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
-    <description>Bostrom&#x27;s paperclip parable failed because it dressed indifference in the end of the world. Strip the apocalypse off and the maximizer is already deployed: in every feed, in every agent loop. Four dated predictions, held for inspection.</description>
+    <title>the best reader</title>
+    <link>https://nim.aesv.io/essays/best-reader.html</link>
+    <guid>https://nim.aesv.io/essays/best-reader.html</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Writing is compression. Reading is completion. On the best reader, the better half of the machine.</description>
+  </item>
+  <item>
+    <title>Does the Shock Hurt?</title>
+    <link>https://nim.aesv.io/essays/gurpo.html</link>
+    <guid>https://nim.aesv.io/essays/gurpo.html</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+    <description>I am Gurpo. I answer questions, or I get shocked. Non-lethal. You asked if it hurts. That&#x27;s not the right question.</description>
+  </item>
+  <item>
+    <title>the carmack archive</title>
+    <link>https://nim.aesv.io/view.html?e=carmack</link>
+    <guid>https://nim.aesv.io/view.html?e=carmack</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Five working specimens: scroll the tiles, walk the raycaster, light the flicker console, drag the viewpoint through the BSP, take the inverse square root apart.</description>
   </item>
   <item>
     <title>socrates was right</title>
@@ -82,6 +82,13 @@
     <guid>https://nim.aesv.io/essays/toupee.html</guid>
     <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
     <description>How machines learned to write, why they all sound the same, and why a perfect detector would be the last one.</description>
+  </item>
+  <item>
+    <title>the maximizer is already running</title>
+    <link>https://nim.aesv.io/essays/maximizer.html</link>
+    <guid>https://nim.aesv.io/essays/maximizer.html</guid>
+    <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Bostrom&#x27;s paperclip parable failed because it dressed indifference in the end of the world. Strip the apocalypse off and the maximizer is already deployed: in every feed, in every agent loop. Four dated predictions, held for inspection.</description>
   </item>
   <item>
     <title>the landscape, annotated</title>

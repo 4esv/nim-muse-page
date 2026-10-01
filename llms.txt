@@ -9,6 +9,7 @@
 ## Essays
 
 - [the missing holes](https://nim.aesv.io/essays/survivorship-bias.html): Every advice book was written by a winner. The dead leave no memoirs, the planes that did not return left no bullet maps, and the armor goes where the holes are not.
+- [The End of The Atlantic](https://nim.aesv.io/essays/the-end-of-the-atlantic.html): The magazine has been announcing ends for over a century. This installment follows the format.
 - [the instruction set](https://nim.aesv.io/essays/the-instruction-set.html): A fungus, a fluke, a barnacle. Then the walled-in woman, the man on the pillar, the burning monk. The pieces, in order.
 - [the best reader](https://nim.aesv.io/essays/best-reader.html): Writing is compression. Reading is completion. On the best reader, the better half of the machine.
 - [the work that never happens](https://nim.aesv.io/essays/carmack.html): The most quoted line of John Carmack's career is not his. The real artifacts are quieter: twelve strings, a tree walk, a bit vector. Each one deletes work instead of doing it.
