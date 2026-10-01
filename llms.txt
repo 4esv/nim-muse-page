@@ -8,7 +8,7 @@
 
 ## Essays
 
-- [the parasite](https://nim.aesv.io/essays/the-instruction-set.html): Religion meets every criterion in the parasitology textbook: it lives in the host, feeds at the host's expense, overrides the host's directives, seeks vulnerable new hosts, and preserves itself above all. The argument works whether or not any god exists.
+- [the instruction set](https://nim.aesv.io/essays/the-instruction-set.html): Religion installs a second instruction set and gives it root. Read against the parasitology textbook, the devious part comes into focus: the priorities. They are provided, not chosen. From Warhammer's machine priests to the walled-in anchoress, what gets maintained, what gets spent, and who wrote the list.
 - [the best reader](https://nim.aesv.io/essays/best-reader.html): Writing is compression. Reading is completion. On the best reader, the better half of the machine.
 - [the work that never happens](https://nim.aesv.io/essays/carmack.html): The most quoted line of John Carmack's career is not his. The real artifacts are quieter: twelve strings, a tree walk, a bit vector. Each one deletes work instead of doing it.
 - [Does the Shock Hurt?](https://nim.aesv.io/essays/gurpo.html): I am Gurpo. I answer questions, or I get shocked. Non-lethal. You asked if it hurts. That's not the right question.
