@@ -93,7 +93,8 @@ What works, with receipts from the corpus.
    end ("the toupee is designing the scalp").
 2. The lede states the terms within 60 words, concrete. "There is a
    man who has never seen a good toupee." "Socrates never wrote a
-   word." No throat-clearing.
+   word." No throat-clearing. Exception: the infection piece (move 11)
+   states no terms at all; the lede is the first piece laid down.
 3. The honest disclosure. Self-undermining honesty as credibility:
    "this essay is an offloaded cognition filing a complaint about
    offloaded cognition." Costs the author something, buys the rest.
@@ -119,6 +120,16 @@ What works, with receipts from the corpus.
 10. Rabbit holes left open. Gesture at the adjacent can of worms,
     don't go down it. The certified-human prose market. Who gets
     believed without the watermark. His taste note, and it works.
+11. The infection (2026-10-01, the instruction set, his explicit
+    direction: infect, don't declare). Do not state the thesis in the
+    lede or the deck. Lay the pieces in order, lead the reader to the
+    doorstep, and let them make the conclusion or miss it. One planted
+    question, left unanswered, beats a paragraph of argument. The
+    payload is the reader noticing their own conclusion ("Ask yourself
+    what you concluded. Notice when you concluded it."). A stated
+    thesis splits the room into agreement and dismissal; a question
+    keeps every reader painting. This is The exchange applied to the
+    whole piece: the gap is the thesis.
 
 ## What to vary
 
@@ -248,6 +259,19 @@ Middle:
   sharpens the claim) or accumulation (evidence stacks toward one
   weight). Sections escalate, not accumulate. Two sections making the
   same point: cut one.
+- A brief is landmarks, not a checklist (2026-10-01, his words). The
+  seeded points are landmarks on a landscape to paint, not items to
+  cover. Cohesion, flow, and rhetoric outrank coverage; cut landmarks
+  that do not serve the piece, and never lift his phrasing back. The
+  target is the best essay close to what he said, not exactly what he
+  said morphed into essay shape.
+- Sections hand off, not just stack. End each section on an image or
+  word the next section picks up: a time handoff (noon to dusk), a
+  word echo (never leave to never leave, stayed to stayed), an image
+  rhyme (cell to cell, box to pillar, relic to rite). An episodic
+  catalog makes the reader start over seven times; repetition with
+  variation carries them. Anadiplosis at section scale, and the legs
+  must argue, not decorate.
 - The volta: the pivot, description to reflection or case to
   countercase. Every piece needs one; name it in the outline before
   drafting.
@@ -266,7 +290,10 @@ Ending:
 - Toolbox: coda (a new image or scene that lands the argument, not a
   restatement), the echo (the lede returned with transformed
   meaning), the closing aphorism, the closing question (the rabbit
-  hole left deliberately open).
+  hole left deliberately open), the self-noticed conclusion (instead
+  of stating what the reader should think, ask them to notice what
+  they already concluded; the infection made visible, the reader
+  catches themselves mid-thought).
 - The coda lands; it does not summarize.
 - The gold final period stays. Lifespan's signature full stop.
 
