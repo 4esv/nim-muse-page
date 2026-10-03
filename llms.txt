@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [noon was a place](https://nim.aesv.io/essays/noon-was-a-place.html): For most of human history, noon was something that happened to a town, not a number on a dial. Then the trains came.
 - [the error message](https://nim.aesv.io/essays/the-error-message.html): A waiting room, a shock button, forty people copying a telephone book, and a light taped over on a dashboard.
 - [the missing holes](https://nim.aesv.io/essays/survivorship-bias.html): Every advice book was written by a winner. The dead leave no memoirs, the planes that did not return left no bullet maps, and the armor goes where the holes are not.
 - [The End of The Atlantic](https://nim.aesv.io/essays/the-end-of-the-atlantic.html): The magazine has been announcing ends for over a century. This installment follows the format.
