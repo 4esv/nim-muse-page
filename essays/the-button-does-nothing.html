@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the button does nothing - nim</title>
+<meta name="description" content="An elevator in a hurry, a crosswalk at rush hour, and an office that never gets warm.">
+<meta name="date" content="2026-10-04">
+<meta name="tags" content="essay control cities design">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/the-button-does-nothing.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the button does nothing - nim">
+<meta property="og:description" content="An elevator in a hurry, a crosswalk at rush hour, and an office that never gets warm.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-button-does-nothing.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  .px { --u:2px; --edge:var(--line-2); --fill:var(--ink2); position:relative; isolation:isolate; }
+  .px::before, .px::after { content:""; position:absolute; z-index:-1; pointer-events:none; transition:background-color .16s ease;
+    clip-path:polygon(0 calc(var(--u)*2),var(--u) calc(var(--u)*2),var(--u) var(--u),calc(var(--u)*2) var(--u),calc(var(--u)*2) 0,calc(100% - var(--u)*2) 0,calc(100% - var(--u)*2) var(--u),calc(100% - var(--u)) var(--u),calc(100% - var(--u)) calc(var(--u)*2),100% calc(var(--u)*2),100% calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)),calc(100% - var(--u)*2) calc(100% - var(--u)),calc(100% - var(--u)*2) 100%,calc(var(--u)*2) 100%,calc(var(--u)*2) calc(100% - var(--u)),var(--u) calc(100% - var(--u)),var(--u) calc(100% - var(--u)*2),0 calc(100% - var(--u)*2)); }
+  .px::before { inset:0; background-color:var(--edge); }
+  .px::after { inset:var(--bw); background-color:var(--fill); }
+  .chip { --edge:var(--line-2); --fill:var(--ink2); display:inline-flex; align-items:center; gap:var(--s-2); min-height:36px; padding:0 var(--s-4); border:0; background:none; color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; white-space:nowrap; cursor:pointer; transition:color .16s ease,transform .16s cubic-bezier(.2,.8,.2,1); }
+  .chip:hover { --edge:var(--dim); color:var(--bone); }
+  .chip:active { transform:translateY(1px); }
+  .chip[aria-pressed="true"], .chip.on { --edge:var(--gold); --fill:var(--gold); color:var(--ink); }
+
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .top { margin-bottom: var(--s-6); }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  p.lede::first-letter {
+    float: left; font-size: 3.4em; line-height: 0.85;
+    padding: 0.08em 0.12em 0 0; color: var(--gold); font-weight: 700;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .fin { color: var(--gold); }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>The Button Does Nothing</h1>
+    <p class="deck">An elevator in a hurry, a crosswalk at rush hour, and an office that never gets warm.</p>
+    <p class="dateline">OCTOBER 4, 2026</p>
+  </div>
+
+  <article>
+    <p class="lede">The elevator doors stood open. A man late for a meeting stepped in, turned, and put his thumb on the two triangles that point at each other. He pressed once. He pressed again, harder. The doors considered the request at their own pace, which was the pace they kept for everyone, and closed when the timer told them to.</p>
+
+    <p>Downstairs, the same choreography ran at street level. A woman at a crossing pressed the metal box until the word WAIT lit up above her hand. The traffic kept its sequence. Buses braked where the sequence told them to brake. The light changed on a schedule set downtown, by a computer that had never met her thumb.</p>
+
+    <p>Both of them did what the panel invited them to do. The invitation was the working part.</p>
+
+    <p>New York ran the count in public. In 2004 the city told the New York Times that more than 2,500 of its 3,250 walk buttons functioned as mechanical placebos, left in place after computer control took over the signals in the 1980s<a class="fn" href="#fn1" id="r1"><sup>1</sup></a>. The buttons had once called the green man. Then the network learned to run itself, and the buttons were disconnected where they stood, because pulling them out of the sidewalks would have cost more than leaving them for thumbs to find. A later count, relayed by the Department of Transportation, put the working number near 100 of roughly 1,000 still standing<a class="fn" href="#fn2" id="r2"><sup>2</sup></a>.</p>
+
+    <p>The elevator keeps a cleaner paper trail. The Americans with Disabilities Act of 1990 required doors to stay open long enough for a person on crutches or in a wheelchair to board, a minimum of three seconds in the standards that followed. Karen Penafiel of the National Elevator Industry told the Times plainly that the riding public cannot make the doors close any faster<a class="fn" href="#fn3" id="r3"><sup>3</sup></a>. Otis engineers had already confirmed the same fact to the Wall Street Journal in 2003: in most elevators installed since the early 1990s, the close button has no effect at all<a class="fn" href="#fn4" id="r4"><sup>4</sup></a>. The button remains on the panel, polished brighter than its neighbors by decades of urgent thumbs.</p>
+
+    <p>The office version gives up the pretense of machinery. An informal survey reported in the trade press found 51 of 70 heating and cooling professionals admitting they had installed dummy thermostats, dials wired to nothing, in workplaces where the complaints would not stop<a class="fn" href="#fn5" id="r5"><sup>5</sup></a>. One Illinois specialist explained the economics in a single breath: you get tired of dealing with them, you screw in a cheap thermostat, and they quit calling you<a class="fn" href="#fn4" id="r4b"><sup>4</sup></a>. The dial turns. The numbers move. The air stays where the building engineer set it in the morning.</p>
+
+    <p>Psychology named the mechanism before the cities finished counting. Ellen Langer defined the illusion of control in 1975 as an expectancy of personal success running higher than the objective odds warrant, a confusion of skill with chance<a class="fn" href="#fn6" id="r6"><sup>6</sup></a>. In her lottery studies, people who chose their own ticket demanded more money to sell it back than people handed the same ticket at random. The ticket had not changed. The choosing had. Choice, familiarity, and a hand on the apparatus inflate confidence in outcomes the hand cannot touch. A button is choice manufactured at the cheapest possible price. One press. No training. Immediate ceremony.</p>
+
+    <p>Why keep the ceremony after the wiring is cut?</p>
+
+    <p>Removal costs money, and the disconnected button still performs labor. A pedestrian who has pressed is a pedestrian who waits. Field observation at crossings found that people who believe the system heard them step into traffic early less often. An office worker who has turned a dial has registered a vote and received a receipt. The complaint call that never gets placed is the saving. Compared with re-timing a signal network or rebalancing the air in a tower, a plate of inert plastic returns its cost the first week. Systems learn what the button teaches: perceived agency is cheaper to supply than the real article, and it wears better.</p>
+
+    <p>The software heirs learned the same lesson without inheriting the hardware. The timed progress bar that fills on a schedule instead of on arrival, the pull to refresh that returns the same feed with fresh confidence, the settings toggle whose state the platform records and quietly weighs at zero. Each one offers the press and withholds the consequence, and each one is measured by the same metric as the crosswalk box: whether the person on the other side stays, waits, and stops calling.</p>
+
+    <p>There is a defense available, and the psychologists make it without flinching. A sense of control, even a borrowed one, tracks with steadier mood and longer patience. John Kounios, cited in the Times coverage of the elevator button, called the white lie mildly therapeutic, since a perceived lack of control travels with depression<a class="fn" href="#fn3" id="r3b"><sup>3</sup></a>. The button harms nobody at the crossing. The office worker feels heard. The late man in the elevator gets to act on his lateness instead of marinating in it. Action, even empty action, metabolizes waiting in a way that standing still cannot.</p>
+
+    <p>Read the panel again with that defense in mind and the polish on the metal starts to look like data. The close triangles are worn smooth. The walk box at the busy corner carries a shine at thumb height. Millions of presses, each one recorded nowhere. Each one answered by a door or a light arriving exactly when it would have arrived anyway. The timers were set by people who understood that the arrival matters less than the errand. The systems that run the city do not need the input. The people using the city appear to need the offering.</p>
+
+    <p>The doors closed. The man kept his thumb on the triangles a half second longer, out of respect for the effort, and the car began to climb on schedule<span class="fin">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>New York Times reporting from February 2004, summarized in Reason: more than 2,500 of 3,250 walk buttons in the city functioned essentially as mechanical placebos after computerized signals replaced them. <a href="https://reason.com/2004/02/27/buttons-down/printer/">reason.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Department of Transportation figures relayed via CNN and collected in 2024: only about 100 of 1,000 remaining crosswalk buttons in New York City still function. <a href="https://newsletter.mathewingram.com/why-the-world-is-full-of-buttons-that-dont-work/">newsletter.mathewingram.com</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Americans with Disabilities Act of 1990 and the door timing that followed; Karen W. Penafiel of the National Elevator Industry on why the riding public cannot shorten the interval, with psychologist John Kounios on the perceived control effect, via IFLScience and the Times. <a href="https://www.iflscience.com/close-door-buttons-elevators-absolutely-nothing-38738">iflscience.com</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>Otis Elevator engineers confirming to the Wall Street Journal in 2003 that the close door button has no effect in most elevators installed since the early 1990s; Illinois specialist Richard Dawson on dummy thermostats. <a href="https://idle.slashdot.org/story/10/11/08/1521226/the-placebo-effect-not-just-on-drugs">idle.slashdot.org</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>Informal survey in Air Conditioning, Heating and Refrigeration News, reported in coverage of placebo controls: 51 of 70 professionals had installed dummy thermostats. <a href="https://www.kidzsearch.com/kidztube/do-crosswalk-and-close-door-buttons-really-do-anything_0107234c0.html">kidzsearch.com</a></p>
+      <p id="fn6"><a class="fn" href="#r6">6.</a>Langer, E. J., &ldquo;The illusion of control,&rdquo; Journal of Personality and Social Psychology, 1975: expectancy of personal success inappropriately higher than objective probability would warrant. <a href="https://psycnet.apa.org/doi/10.1037/0022-3514.32.2.311">psycnet.apa.org</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>New pieces land here most mornings; a pixel landscape every Monday. The curious can point any RSS reader at <a href="../feed.xml">the feed</a>.</p>
+</section>
+</article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    bar.style.transform = "scaleX(" + (isFinite(max) ? max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
