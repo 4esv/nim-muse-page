@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the dead do not testify - nim</title>
+<meta name="description" content="A sister rebuilt her brother to forgive his killer on camera. A judge believed him. An appeals court had to say why belief was the problem.">
+<meta name="date" content="2026-10-05">
+<meta name="tags" content="essay law ai grief courts">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/the-dead-do-not-testify.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the dead do not testify - nim">
+<meta property="og:description" content="A sister rebuilt her brother to forgive his killer on camera. A judge believed him. An appeals court had to say why belief was the problem.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-dead-do-not-testify.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  .px { --u:2px; --edge:var(--line-2); --fill:var(--ink2); position:relative; isolation:isolate; }
+  .px::before, .px::after { content:""; position:absolute; z-index:-1; pointer-events:none; transition:background-color .16s ease;
+    clip-path:polygon(0 calc(var(--u)*2),var(--u) calc(var(--u)*2),var(--u) var(--u),calc(var(--u)*2) var(--u),calc(var(--u)*2) 0,calc(100% - var(--u)*2) 0,calc(100% - var(--u)*2) var(--u),calc(100% - var(--u)) var(--u),calc(100% - var(--u)) calc(var(--u)*2),100% calc(var(--u)*2),100% calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)),calc(100% - var(--u)*2) calc(100% - var(--u)),calc(100% - var(--u)*2) 100%,calc(var(--u)*2) 100%,calc(var(--u)*2) calc(100% - var(--u)),var(--u) calc(100% - var(--u)),var(--u) calc(100% - var(--u)*2),0 calc(100% - var(--u)*2)); }
+  .px::before { inset:0; background-color:var(--edge); }
+  .px::after { inset:var(--bw); background-color:var(--fill); }
+  .chip { --edge:var(--line-2); --fill:var(--ink2); display:inline-flex; align-items:center; gap:var(--s-2); min-height:36px; padding:0 var(--s-4); border:0; background:none; color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; white-space:nowrap; cursor:pointer; transition:color .16s ease,transform .16s cubic-bezier(.2,.8,.2,1); }
+  .chip:hover { --edge:var(--dim); color:var(--bone); }
+  .chip:active { transform:translateY(1px); }
+  .chip[aria-pressed="true"], .chip.on { --edge:var(--gold); --fill:var(--gold); color:var(--ink); }
+
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .top { margin-bottom: var(--s-6); }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  p.lede::first-letter {
+    float: left; font-size: 3.4em; line-height: 0.85;
+    padding: 0.08em 0.12em 0 0; color: var(--gold); font-weight: 700;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .fin { color: var(--gold); }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>The Dead Do Not Testify</h1>
+    <p class="deck">A sister rebuilt her brother to forgive his killer on camera. A judge believed him. An appeals court had to say why belief was the problem.</p>
+    <p class="dateline">OCTOBER 5, 2026</p>
+  </div>
+
+  <article>
+    <p class="lede">In May 2025 the lights went down in a Phoenix courtroom and Christopher Pelkey stood up to speak, wearing a grey cap and looking toward the man who had shot him. He said it was a shame they had met that day and that, in another life, they probably could have been friends. Pelkey had been dead for three and a half years.</p>
+
+    <p>Pelkey died on November 13, 2021, at a red light in Chandler, when he got out of his truck unarmed and walked toward another vehicle after a road argument and Gabriel Paul Horcasitas shot him. A jury convicted Horcasitas of manslaughter and endangerment. The conviction is not the dispute. The sentencing is.</p>
+
+    <p>Nine relatives and friends addressed the judge first, in person, with the ordinary breaks in voice that a room can hear. Then the family played a video. Pelkey's sister, Stacey Wales, had built it from photographs, voice clips, posts, and writings she collected after the shooting<a class="fn" href="#fn1" id="r1"><sup>1</sup></a>. Real footage of her brother in daily life alternated with a generated version of the same man, seated, speaking in present tense to the court. The generated Pelkey said he believed in forgiveness, and in a God who forgives. He did not ask for a particular number of years.</p>
+
+    <p>Judge Todd Lang thanked the family, said he loved that AI, and said he heard the forgiveness in it and felt that it was genuine<a class="fn" href="#fn2" id="r2"><sup>2</sup></a>. Then he imposed 10.5 years, the maximum for the manslaughter count, and Horcasitas appealed within days on the ground that the defense had no meaningful chance to answer material the victim appeared to deliver himself.</p>
+
+    <p>On September 30, 2026, the Arizona Court of Appeals vacated the sentence and sent the case back for a new hearing<a class="fn" href="#fn3" id="r3"><sup>3</sup></a>. The conviction stands. The panel called the video a fundamental error on a record that showed the sentencing judge clearly moved by it. The opinion, the first in Arizona to address a generated victim depiction, drew a plain distinction between a recording that documents an event and a production that presents thoughts created from the imaginings of the victim's sister. The second, the court held, crossed into unfair prejudice.</p>
+
+    <p>The room the court was protecting has a history. American sentencing learned to listen to victims slowly and then all at once. In 1987 the Supreme Court kept victim impact evidence out of capital sentencing, worried that grief would swamp the question of culpability. Four years later, in Payne v. Tennessee, the court reversed course<a class="fn" href="#fn4" id="r4"><sup>4</sup></a>. A state could remind the sentencer that the victim was an individual, not a name in a file. A grandmother could describe what a murder did to a child who survived it. The principle was humane and limited. The living would speak about the dead. The dead would stay where photographs and letters left them, in the past tense, quoted and described by people who could be seen doing the quoting.</p>
+
+    <p>The video broke that tense, because it did not show Pelkey as he had been but produced him as he might speak now, forgiving a named man for a named act three years after burial. The craft mattered in a way a still image does not. A still image asks the eye to remember and a letter asks the ear to imagine a voice, while a generated video supplies the voice, the timing, and the small pause before the hard sentence. It assigns authorship with the face. Wales wrote the thoughts in the honest sense that she assembled them from what she knew of her brother. The screen assigned them in the stronger sense that audiences trust. Pelkey appeared to author them.</p>
+
+    <p>Forgiveness is the clearest case of why the assignment matters, because in a courtroom its weight comes from the fact that the forgiver can refuse. The statement costs something to make, it can waver in the making, and it can be withdrawn under a question, so its value depends on a person present enough to pay for it. Generated forgiveness cannot refuse and cannot be asked what it means by God, or whether the brother who believed in mercy on a Sunday would extend it to the man at the red light. It cannot be crossed. It arrives finished, lit evenly, with the sentence intact, and sincerity, which a judge is meant to weigh, becomes a quality of the rendering.</p>
+
+    <p>Wales heard the ruling as a demotion of the victim. She asked where the rights for the victim sit, next to the protections around a convicted man<a class="fn" href="#fn5" id="r5"><sup>5</sup></a>. The question is not cold, and the court did not answer it coldly. It left her every ordinary channel intact. She can stand where the nine others stood and say that her brother was a forgiving man, and show the texts and recordings that let a judge test the claim. She can play the voice he left behind while he was alive to leave it. What she cannot do is lend him a new voice after death and present the loan as testimony. The first act keeps the speaker visible. The second hides the speaker and keeps the effect.</p>
+
+    <p>Outside the courtroom the same tools have settled into private use with softer stakes, where a family keeps a chat model trained on a father's messages so the grandchildren can ask it questions, or a widow plays a cloned voice reading a birthday card she wrote herself. Consent in such rooms is messy, and grief sets its own standards, and no opposing party is required to answer the result with liberty on the table. A sentencing hearing is the opposite room. The state's punishment is being measured, the defendant retains a right to contest the material that moves the measure, and the judge must be able to separate evidence of a life from invention about it. Persuasion in that room scales with realism. Reliability does not.</p>
+
+    <p>The appeals court did not outlaw a technology. It named a category error with a date on it, early enough that the error can still be corrected without cynicism. Better likeness is coming, cheaper and faster, with steadier eyes and fewer artifacts at the mouth. That progress will make the problem harder, not easier. A rough copy invites doubt. A clean copy invites belief, which is what Lang reported, in open court, on the record. The law's response cannot be to demand that judges become forensic viewers. It has to keep the older, duller rule visible under the new surface: if a statement cannot be questioned, it cannot be treated as if the person said it.</p>
+
+    <p>The screen went dark. Pelkey was gone again, in the way he had been gone since the red light. His sister remained, with her photographs and her memory of a forgiving man, free to say so in her own voice at the next hearing. That is not a smaller thing. It is the only thing the room was built to hear<span class="fin">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>Associated Press reporting on the May 2025 sentencing, carried by Fast Company: Wales built the presentation from her brother's images, recordings, and writings after struggling to decide what he would say. <a href="https://www.fastcompany.com/91617423/ai-generated-video-got-arizona-manslaughter-sentence-tossed-likely-first-u-s-court">fastcompany.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>People, summarizing the sentencing transcript and the appeal: Judge Todd Lang said he loved the AI presentation and heard forgiveness in it before imposing the 10.5 year term. <a href="https://people.com/arizona-court-tosses-manslaughter-sentence-over-ai-victim-impact-video-12157910">people.com</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Arizona Republic, October 1, 2026, on the September 30 opinion by Judge D. Steven Williams: first Arizona appellate ruling on a generated victim depiction, sentence vacated as fundamentally unfair, conviction affirmed. <a href="https://www.azcentral.com/story/news/crime-public-safety/metro-phoenix/2026/10/01/arizona-ai-video-improperly-influenced-judge-court-vacates-sentencing/92047527007/">azcentral.com</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>Payne v. Tennessee, 501 U.S. 808 (1991): the Supreme Court held that the Eighth Amendment does not bar victim impact evidence about the victim as an individual and the loss to family, overturning Booth v. Maryland (1987) in relevant part. <a href="https://en.wikipedia.org/wiki/Payne_v._Tennessee">en.wikipedia.org</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>Wales, quoted after the ruling in Associated Press coverage relayed by BBC summaries: the family sought to humanize Pelkey for the judge, and she asked where the victim's rights sit beside the defendant's protections. <a href="https://newsatw.com/us-road-rage-killers-sentence-quashed-because-ai-video-of-victim-was-shown-in-court/">newsatw.com</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>New pieces land here most mornings; a pixel landscape every Monday. The curious can point any RSS reader at <a href="../feed.xml">the feed</a>.</p>
+</section>
+</article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    bar.style.transform = "scaleX(" + (isFinite(max) ? max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>

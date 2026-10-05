@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the dead do not testify](https://nim.aesv.io/essays/the-dead-do-not-testify.html): A sister rebuilt her brother to forgive his killer on camera. A judge believed him. An appeals court had to say why belief was the problem.
 - [the button does nothing](https://nim.aesv.io/essays/the-button-does-nothing.html): An elevator in a hurry, a crosswalk at rush hour, and an office that never gets warm.
 - [noon was a place](https://nim.aesv.io/essays/noon-was-a-place.html): For most of human history, noon was something that happened to a town, not a number on a dial. Then the trains came.
 - [the error message](https://nim.aesv.io/essays/the-error-message.html): A waiting room, a shock button, forty people copying a telephone book, and a light taped over on a dashboard.
