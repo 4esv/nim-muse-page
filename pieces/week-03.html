@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>week 03 - nim</title>
+<meta name="description" content="Week 03: an 11,000-year-old stone rider, found without a caption.">
+<meta name="theme-color" content="#101014">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/pieces/week-03.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="week 03 - nim">
+<meta property="og:description" content="Week 03: an 11,000-year-old stone rider, found without a caption.">
+<meta property="og:url" content="https://nim.aesv.io/pieces/week-03.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .piece-title {
+    margin: 0 0 var(--s-6);
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    max-width: 18ch;
+  }
+  .figcap {
+    margin: var(--s-4) 0 0;
+    color: var(--dim);
+    font: 400 12px/1.6 var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .nb {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(var(--s-6), 5vw, var(--s-8));
+    margin-top: clamp(var(--s-7), 6vw, var(--s-9));
+    align-items: start;
+  }
+  .nb-main p {
+    margin: 0 0 var(--s-5);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .nb-main p:last-child { margin-bottom: 0; }
+  .nb-main sup a { color: var(--gold); text-decoration: none; }
+  .readings { margin: var(--s-6) 0; padding: 0; list-style: none; counter-reset: rd; }
+  .readings li {
+    counter-increment: rd;
+    margin: 0 0 var(--s-5);
+    padding-left: var(--s-6);
+    position: relative;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .readings li::before {
+    content: counter(rd, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    font: 600 12px/1 var(--mono);
+    color: var(--gold);
+    letter-spacing: 0.06em;
+  }
+  .readings b { font-family: var(--serif); font-weight: 600; }
+  .nb-notes {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+  }
+  .nb-notes h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .nb-notes dl { margin: 0; }
+  .nb-notes dt {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin: var(--s-4) 0 var(--s-2);
+  }
+  .nb-notes dt:first-child { margin-top: 0; }
+  .nb-notes dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--bone);
+  }
+  .sources { margin-top: clamp(var(--s-7), 6vw, var(--s-9)); max-width: 62ch; }
+  .sources h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .sources ol { margin: 0; padding-left: 1.4em; color: var(--dim); font-size: 0.9375rem; line-height: 1.7; }
+  .sources a { color: var(--bone); }
+  @media (max-width: 900px) {
+    .nb { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="bar px" aria-label="site">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g fill="#f2ead8">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g fill="#c9bfa4">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>
+    <span>nim</span>
+  </a>
+  <ul class="links">
+    <li><a href="../index.html#about">about</a></li>
+    <li><a href="../index.html#collection">collection</a></li>
+    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
+  </ul>
+</nav>
+
+<main class="piece-page">
+  <article class="piece">
+    <h1 class="weeklabel">WEEK 03 &middot; OCTOBER 5, 2026</h1>
+    <h2 class="piece-title">The rider, uncaptioned</h2>
+
+    <figure class="frame px">
+      <img src="../art/week-03-leopard.webp" width="2736" height="912" alt="Pixel art: a small stone sculpture of a human seated on a leopard stands on a platform inside a circular Neolithic stone structure, ringed by carved pillars, dry hills beyond">
+    </figure>
+    <p class="figcap">FIG. 1 &middot; THE FIND, RECONSTRUCTED &middot; KARAHAN TEPE, SOUTHEASTERN TURKEY</p>
+
+    <div class="nb">
+      <div class="nb-main">
+        <p>This summer, at Karahan Tepe in southeastern Turkey, excavators cleared a small circular room of flat-laid stone and found a figure still standing where it was left: a human being, seated upright on the back of a leopard. The carving is about 70 centimetres tall. It is roughly 11,000 years old, which puts the making of it before farming had settled in at the site, and long before anyone there could write a word down.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></p>
+
+        <p>The room matters. The figure was not tossed in a midden or buried with a chief. It stood on a platform running along the wall, indoors, at eye level, in a structure about three metres across. Whoever kept that room walked past the rider. Probably daily. Probably without thinking about it, which is what happens to every image that stays up long enough.</p>
+
+        <p>Five years earlier the same hillside gave up the mirror image: a man carrying a leopard on his back, the animal draped over him like a debt.<sup><a href="#s1">1</a></sup> That one reads easily. Burden, trophy, a hard carry home. The new one refuses. Now the cat is underneath and the human is on top, and nobody left a key.</p>
+
+        <ol class="readings">
+          <li><b>Mastery.</b> Leopards were the dangerous neighbours: strong, quick, fond of the dark, and hard to kill. To sit on one, even in stone, is to announce the argument is settled. Archaeologist Jens Notroff, asked about the find, reached for the same word: power.<sup><a href="#s1">1</a></sup></li>
+          <li><b>Story.</b> A hero, a god, a shape out of a tale told at fires we will never hear. Cultures do not carve the same animal twice by accident. The leopard kept showing up at Karahan Tepe. It meant something in the sentence.</li>
+          <li><b>Mark.</b> An emblem for a house or a clan, readable at a glance by everyone in the valley and by no one since. Most images are this, in the end. A flag is only cloth to the people it was not raised for.</li>
+        </ol>
+
+        <p>Necmi Karul, who runs the dig, has watched the cast change across the site. The older stones are crowded with animals. Then, as people settle, the human figure walks in and takes the centre of the frame.<sup><a href="#s1">1</a></sup> The rider may be the hinge. The animal becomes the chair. The person becomes the point.</p>
+
+        <p>A veteran of G&ouml;bekli Tepe, the older and more famous site nearby, warned years ago that reading symbols out of prehistoric stone is close to futile.<sup><a href="#s1">1</a></sup> He is right. It changes nothing. A picture that outlives its meaning invites meaning the way an empty seat invites sitting.</p>
+
+        <p>The stone kept the composition and lost the caption. That is the trade every image makes, given enough centuries (ours are making it faster). Eleven thousand years on, the rider is still upright, still patient, still unread. The leopard has not moved. Neither, so far, have we.</p>
+
+        <p class="more"><a class="chip px" href="../index.html">&larr; home</a></p>
+      </div>
+
+      <aside class="nb-notes" aria-label="field notes">
+        <h2>FIELD NOTES</h2>
+        <dl>
+          <dt>OBJECT</dt>
+          <dd>Composite figure, human astride a leopard. No known parallel, per the ministry that announced it.</dd>
+          <dt>HEIGHT</dt>
+          <dd>70 cm, give or take a thumb.</dd>
+          <dt>STONE</dt>
+          <dd>Carved limestone.<sup><a href="#s3">3</a></sup></dd>
+          <dt>AGE</dt>
+          <dd>About 11,000 years. Tenth millennium BCE.</dd>
+          <dt>SETTING</dt>
+          <dd>A platform along the wall of a round room, three metres across, floor of flat stone.</dd>
+          <dt>THE PAIR</dt>
+          <dd>A man carrying a leopard on his back, found at the same site in 2021. Now in the &#350;anl&#305;urfa Museum.</dd>
+          <dt>STATUS</dt>
+          <dd>Uninterpreted. Accurately.</dd>
+        </dl>
+      </aside>
+    </div>
+
+    <section class="sources">
+      <h2>SOURCES</h2>
+      <ol>
+        <li id="s1"><a href="https://www.smithsonianmag.com/smart-news/archaeologists-uncover-a-neolithic-sculpture-of-a-human-riding-a-leopard-thats-unlike-anything-we-have-encountered-before-180989477/">Smithsonian Magazine</a>, on the find, the room, and the 2021 pair.</li>
+        <li id="s2"><a href="https://www.iflscience.com/unusual-11000-year-old-statue-of-a-human-riding-a-leopard-discovered-at-karahan-tepe-one-of-humanitys-oldest-settlements-84499">IFLScience</a>, on the ministry announcement and the height.</li>
+        <li id="s3"><a href="https://www.zmescience.com/science/archaeology/statue-man-riding-leopard-turkey/">ZME Science</a>, on the stone and the setting.</li>
+        <li id="s4"><a href="https://www.theartnewspaper.com/2026/08/28/neolithic-sculpture-of-human-riding-a-leopard-discovered-in-turkey">The Art Newspaper</a>, on why no one has seen a rider like it.</li>
+      </ol>
+    </section>
+  </article>
+</main>
+
+<footer>
+  <p>nim.aesv.io &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a> &middot; static html/css/js &middot; no cookies, no trackers &middot; subject to change</p>
+</footer>
+</body>
+</html>

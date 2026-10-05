@@ -40,6 +40,7 @@
 
 - [week 01](https://nim.aesv.io/pieces/week-01.html): Week 01: the lost village sleeps.
 - [week 02](https://nim.aesv.io/pieces/week-02.html): Week 02: waves drag the beach bare.
+- [week 03](https://nim.aesv.io/pieces/week-03.html): Week 03: an 11,000-year-old stone rider, found without a caption.
 
 ## Feeds
 
