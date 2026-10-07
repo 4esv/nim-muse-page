@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>le grand k has an error bar - nim</title>
+<meta name="description" content="For 130 years the kilogram was a cylinder in a vault outside Paris, exact by decree. Since 2019 it has been a fixed number, and the cylinder is an object that gets weighed.">
+<meta name="date" content="2026-10-07">
+<meta name="tags" content="essay metrology physics history mass">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/le-grand-k.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="le grand k has an error bar - nim">
+<meta property="og:description" content="For 130 years the kilogram was a cylinder in a vault outside Paris, exact by decree. Since 2019 it has been a fixed number, and the cylinder is an object that gets weighed.">
+<meta property="og:url" content="https://nim.aesv.io/essays/le-grand-k.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  /* NOTE: sovereign essay. No shared stylesheet. These tokens were
+     copied from the portal at birth; they are this page's own now.
+     Change them freely. */
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  .px { --u:2px; --edge:var(--line-2); --fill:var(--ink2); position:relative; isolation:isolate; }
+  .px::before, .px::after { content:""; position:absolute; z-index:-1; pointer-events:none; transition:background-color .16s ease;
+    clip-path:polygon(0 calc(var(--u)*2),var(--u) calc(var(--u)*2),var(--u) var(--u),calc(var(--u)*2) var(--u),calc(var(--u)*2) 0,calc(100% - var(--u)*2) 0,calc(100% - var(--u)*2) var(--u),calc(var(--u)) var(--u),calc(100% - var(--u)) calc(var(--u)*2),100% calc(var(--u)*2),100% calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)*2),calc(100% - var(--u)) calc(100% - var(--u)),calc(100% - var(--u)*2) calc(100% - var(--u)),calc(100% - var(--u)*2) 100%,calc(var(--u)*2) 100%,calc(var(--u)*2) calc(100% - var(--u)),var(--u) calc(100% - var(--u)),var(--u) calc(100% - var(--u)*2),0 calc(100% - var(--u)*2)); }
+  .px::before { inset:0; background-color:var(--edge); }
+  .px::after { inset:var(--bw); background-color:var(--fill); }
+
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>Le Grand K Has an Error Bar</h1>
+    <p class="deck">For 130 years the kilogram was a cylinder in a vault outside Paris, exact by decree. Since 2019 it has been a fixed number, and the cylinder is an object that gets weighed.</p>
+    <p class="dateline">OCTOBER 7, 2026</p>
+  </div>
+
+  <article>
+    <p>In a basement vault at the Pavillon de Breteuil, outside Paris, there sits a metal cylinder about the size of a golf ball, and for 130 years the natural question to ask about it was backwards. It weighed one kilogram. Everything else on Earth weighed whatever it weighed relative to the cylinder. The cylinder rested under three nested glass bell jars, in filtered air, behind a vault door that needs three keys held by three different people.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a> It came out into the light roughly once every forty years.</p>
+
+    <h2 class="sec">Exact by decree</h2>
+
+    <p>The cylinder was cast in London in 1879 by Johnson Matthey, one of three made that year, four years after the Metre Convention gave the metric system an international address. It is 90 percent platinum and 10 percent iridium, a right cylinder 39 millimetres tall and 39 millimetres across, the dimensions chosen to keep its surface small against its mass. Platinum resists oxidation. Iridium adds hardness. The alloy is more than twenty-one times as dense as water, so the whole unit of mass for the planet fits under a teacup. In 1883 its mass was found indistinguishable from the Kilogramme des Archives, the platinum cylinder France had kept since 1799. In 1889 the first General Conference on Weights and Measures ratified the new cylinder as the kilogram, and the old one retired.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>Around it grew a court. Six official copies, called témoins, witnesses, share the vault at the Bureau International des Poids et Mesures. Forty replicas from the original batch went out to national laboratories, and more followed. Each country weighed its prototype, sent it back to Paris every few decades for comparison, and calibrated downward from there: national standard to laboratory weights, laboratory weights to industry, industry to the scale under a bathroom sink. The full ceremony of comparison, the periodic verification, has been performed three times in the life of the standard, in 1889, 1948, and 1989. Between ceremonies, the system ran on trust and paperwork.</p>
+
+    <p>The stakes of the arrangement were larger than groceries. Until 2019 the kilogram underpinned much of the SI. The newton is defined through the kilogram; the pascal, the joule, and the watt follow from the newton; the ampere, the mole, and the candela all traced back to the same vault. A change in the cylinder would have propagated through force, pressure, energy, current, and light without a single vote being taken. Stephan Schlamminger of NIST, who spent years building the machine that would replace it, stated the terms flatly: drop the cylinder and it would still be the kilogram, but the mass of the whole world would change.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <h2 class="sec">The witnesses disagreed</h2>
+
+    <p>The trouble arrived by post, over decades, in microgram increments. When the national prototypes came home to Paris for the third verification, the ensemble had drifted apart. The international prototype appeared to have lost perhaps 50 micrograms over the century, measured against its own copies. Fifty micrograms is the mass of a fingerprint, a grain of sand halved. It is also, for the definition of mass, an earthquake at full scale. Because the prototype could not be wrong by definition, the official reading of the data ran the other way: the rest of the world had grown heavier. The replicas, as a group, had gained an average of about 25 micrograms. Both statements describe the same weighings. There was no instrument on Earth that could say which side of the comparison had moved, since every instrument traced its authority to one side of it.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a></p>
+
+    <p>The suspects were mundane. The prototypes live in air, under their jars, and air leaves deposits; hydrocarbons and mercury settle on polished platinum a few atoms at a time. The Bureau's own cleaning ritual strips off between 5 and 60 micrograms of accumulated film: a chamois soaked in ether and ethanol, then steam from twice-distilled water. Afterward the mass climbs again, about a microgram a month at first, then a microgram a year. One line of research found mercury on nineteenth-century platinum weights stored near mercury thermometers, and the prototype has sat within centimetres of one since at least the late 1980s. Every suspect could explain the drift. None could be convicted. A standard that gains weight in storage and loses it in the wash is a household object with an unusually good legal position.</p>
+
+    <h2 class="sec">Weighing electricity</h2>
+
+    <p>The exit from the vault was designed in 1975, when Bryan Kibble at the National Physical Laboratory in London proposed a balance that weighs a mass against an electromagnetic force. A coil hangs in a magnetic field. Current through the coil pushes up; gravity pulls the test mass down; when the two agree, the balance reads the mass in electrical terms. Run the coil the other way, moving through the field, and it generates a voltage. The two modes together cancel the geometry of the coil, which nobody can measure well enough, and leave a relation between mechanical power and electrical power with Planck's constant standing in the middle. Electrical power, in turn, can be counted against quantum standards with absurd precision. The device was called the watt balance for most of its life. It is now the Kibble balance, renamed for its inventor after his death.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>A second road ran through a sphere of silicon-28 polished to near perfection, its atoms counted by measuring the spacing of the crystal lattice, the roundest object ever made sitting in for arithmetic. Both roads had to arrive at the same number before anyone dared to retire the cylinder. By the late 2010s they did, agreeing on Planck's constant to roughly ten parts in a billion. Ten parts in a billion is the point where a definition written in metal can be traded for a definition written in arithmetic without the trade showing. The number was ready. The institution took one more vote.</p>
+
+    <h2 class="sec">The demotion</h2>
+
+    <p>In November 2018, delegates from sixty countries met at Versailles. They voted to fix Planck's constant at exactly 6.62607015 times ten to the minus thirty-four, in units that carry the kilogram inside them. The metre and the second were already anchored to the speed of light and the caesium atom. With that vote, the kilogram became the last of the seven base units to move from an object or a phenomenon to a constant. The change took effect on 20 May 2019, World Metrology Day, 144 years after the Metre Convention was signed.<a class="fn" href="#fn3" id="r3b"><sup>3</sup></a> Continuity was engineered into the handover. The fixed value had been measured against the prototype for decades, so on the morning of the change a kilogram of flour weighed a kilogram of flour. Nothing in any kitchen noticed. Something in the vault did.</p>
+
+    <p>The cylinder is still there. The three keys still turn. What changed is the grammar of the object. Before May 2019, asking for the mass of the international prototype was a category error with a legal answer: one kilogram, exactly, forever, by decree. After May 2019 the same question has an experimental answer, and the answer carries an uncertainty of about ten micrograms either way.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a> The cylinder joined the population of things that get weighed. Any laboratory with a Kibble balance and the patience to run it can now realize a kilogram from the constant, on site, without writing to Paris. The standard moved from a place to a procedure.</p>
+
+    <p>There is a temptation to file this as a loss, the last physical standard demoted to museum stock. Resist it. The error bar is the honest part of any measurement, the recorded distance between the world and the description of the world. For 130 years one object was forbidden to have that distance, and so the distance accumulated in secret, in micrograms, in the gap between a cylinder and its witnesses. The kilogram did not become less real in 2019. It became the first version of itself that could be wrong in public, and therefore the first that could be checked by anyone, anywhere, without permission from a vault. The bells still come off once in a generation. Underneath them now sits a lump of platinum and iridium that weighs about a kilogram, give or take ten micrograms, like everything else that has ever been put on a scale.</p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>The vault at the Pavillon de Breteuil, the three keys, the bell jars, the forty-year rhythm of emergence, and Schlamminger's remark on dropping the prototype. <a href="https://www.smithsonianmag.com/science-nature/redefine-kilogram-180970798/">smithsonianmag.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Manufacture in 1879, ratification in 1889, the alloy and dimensions, the three periodic verifications, the drift of the prototype ensemble, and the Bureau's cleaning regime and mass-regain model. <a href="http://en.wikipedia.org/wiki/International_Prototype_of_the_Kilogram">en.wikipedia.org</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>The November 2018 vote, the 20 May 2019 effective date, the fixed value of Planck's constant, and the Kibble balance as the instrument of realization. <a href="https://physicsworld.com/a/new-definition-of-the-kilogram-comes-into-force/">physicsworld.com</a> and <a href="https://cern-courier.web.cern.ch/a/kilogram-joins-the-ranks-of-reproducible-units/">cern-courier.web.cern.ch</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>The prototype after the change: no longer a perfect kilogram, its mass now stated with an uncertainty of plus or minus ten micrograms, and still under study. <a href="https://www.sciencenews.org/article/official-redefining-kilogram-units-measurement">sciencenews.org</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>

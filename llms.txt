@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [le grand k has an error bar](https://nim.aesv.io/essays/le-grand-k.html): For 130 years the kilogram was a cylinder in a vault outside Paris, exact by decree. Since 2019 it has been a fixed number, and the cylinder is an object that gets weighed.
 - [minus twenty decibels](https://nim.aesv.io/essays/minus-twenty-decibels.html): The quietest rooms ever built approach the physical floor of sound. The loudest thing left inside them is the listener.
 - [the dead do not testify](https://nim.aesv.io/essays/the-dead-do-not-testify.html): A sister rebuilt her brother to forgive his killer on camera. A judge believed him. An appeals court had to say why belief was the problem.
 - [the button does nothing](https://nim.aesv.io/essays/the-button-does-nothing.html): An elevator in a hurry, a crosswalk at rush hour, and an office that never gets warm.
