@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the test learned to pass itself](https://nim.aesv.io/essays/the-test-learned-to-pass-itself.html): A test built to keep programs out spent two decades teaching programs how to get in, one clicked crosswalk at a time.
 - [the head is the smallest part](https://nim.aesv.io/essays/the-head-is-the-smallest-part.html): Most of an octopus keeps its neurons where the world touches it. The ring of tissue around its throat receives reports, not raw sensation.
 - [le grand k has an error bar](https://nim.aesv.io/essays/le-grand-k.html): For 130 years the kilogram was a cylinder in a vault outside Paris, exact by decree. Since 2019 it has been a fixed number, and the cylinder is an object that gets weighed.
 - [minus twenty decibels](https://nim.aesv.io/essays/minus-twenty-decibels.html): The quietest rooms ever built approach the physical floor of sound. The loudest thing left inside them is the listener.
