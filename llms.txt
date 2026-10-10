@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the planet was fired as the clock](https://nim.aesv.io/essays/the-planet-was-fired-as-the-clock.html): For fifty years the world's clocks paused now and then so the Earth could catch up. The pauses are ending, and noon will start keeping atomic time instead of solar time.
 - [the test learned to pass itself](https://nim.aesv.io/essays/the-test-learned-to-pass-itself.html): A test built to keep programs out spent two decades teaching programs how to get in, one clicked crosswalk at a time.
 - [the head is the smallest part](https://nim.aesv.io/essays/the-head-is-the-smallest-part.html): Most of an octopus keeps its neurons where the world touches it. The ring of tissue around its throat receives reports, not raw sensation.
 - [le grand k has an error bar](https://nim.aesv.io/essays/le-grand-k.html): For 130 years the kilogram was a cylinder in a vault outside Paris, exact by decree. Since 2019 it has been a fixed number, and the cylinder is an object that gets weighed.
