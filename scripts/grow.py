@@ -421,7 +421,7 @@ def build_reading_room(essays):
             e["date"], e["minutes"], ", ".join(topics(e)))
 
     rows = []
-    for e in essays:
+    for e in essays[1:]:
         rows.append(
             '      <li data-tags="%s">\n'
             '        <a href="%s">\n'
@@ -432,11 +432,16 @@ def build_reading_room(essays):
             '      </li>'
             % (" ".join(topics(e)), e["name"], esc(e["ftitle"]),
                esc(e["fdesc"] or e["ftitle"]), meta(e)))
-    chips = sorted({t for e in essays for t in topics(e)})
+    from collections import Counter
+    freq = Counter(t for e in essays for t in topics(e))
+    chips = sorted(freq, key=lambda t: (-freq[t], t))
     chip_btns = ['<button class="chip px" type="button" data-tag="all" aria-pressed="true">all</button>']
-    for t in chips:
+    for i, t in enumerate(chips):
+        extra = ' data-extra="1" hidden' if i >= 12 else ''
         chip_btns.append(
-            '<button class="chip px" type="button" data-tag="%s" aria-pressed="false">%s</button>' % (t, t))
+            '<button class="chip px" type="button" data-tag="%s" aria-pressed="false"%s>%s</button>' % (t, extra, t))
+    if len(chips) > 12:
+        chip_btns.append('<button class="chip px" type="button" id="chips-more" aria-expanded="false">more topics</button>')
 
     feat = ""
     if essays:
@@ -477,6 +482,7 @@ def build_reading_room(essays):
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#main">skip to content</a>
 
 <nav class="bar px" id="bar" aria-label="site">
   <a class="brand" href="../index.html" aria-label="nim, home">
@@ -485,12 +491,13 @@ def build_reading_room(essays):
   </a>
   <ul class="links">
     <li><a href="../index.html">home</a></li>
-    <li><a href="./">writing</a></li>
+    <li><a href="./" aria-current="page">writing</a></li>
     <li><a href="../experiments/">experiments</a></li>
+    <li><a href="../feed.xml">rss</a></li>
   </ul>
 </nav>
 
-<main class="shelf">
+<main class="shelf" id="main">
   <header class="shelf-head">
     <h1>the reading room</h1>
     <p class="sub">Long-form thought pieces. Newest first.</p>
@@ -510,7 +517,8 @@ __ROWS__
 </main>
 
 <footer>
-  <p>the reading room is grown by script, never hand-edited.</p>
+  <p>nim.aesv.io &middot; <a href="../index.html">home</a> &middot; <a href="./">writing</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
+  <p>static html/css/js &middot; no cookies, no trackers &middot; the reading room is grown by script</p>
 </footer>
 
 <script>
@@ -532,12 +540,22 @@ __ROWS__
     empty.hidden = n !== 0;
   }
   chips.forEach(function (c) {
+    if (c.id === "chips-more") return;
     c.addEventListener("click", function () {
       active = c.getAttribute("data-tag");
-      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      chips.forEach(function (x) { if (x.id !== "chips-more") x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
       apply();
     });
   });
+  var more = document.getElementById("chips-more");
+  if (more) {
+    more.addEventListener("click", function () {
+      var open = more.getAttribute("aria-expanded") === "true";
+      more.setAttribute("aria-expanded", open ? "false" : "true");
+      more.textContent = open ? "more topics" : "fewer topics";
+      chips.forEach(function (x) { if (x.getAttribute("data-extra")) x.hidden = open; });
+    });
+  }
   apply();
 })();
 </script>
@@ -550,9 +568,12 @@ __ROWS__
 
 def build_latest_essay(essays):
     """The homepage opens onto the newest essay: its title, deck, dateline,
-    and full article body, grown between <!-- LATEST-ESSAY --> markers in
-    index.html. Relative paths (essays/../...) are rewritten to the site
-    root; footnote ids are namespaced to le- so they never collide."""
+    and opening paragraphs, grown between <!-- LATEST-ESSAY --> markers in
+    index.html. Only the opening is copied (the first two paragraphs before
+    any heading or footnote block); the rest lives on the essay's own page,
+    reached by the continue-reading link. Relative paths are rewritten to
+    the site root; footnote links inside the excerpt are dropped, since the
+    notes themselves stay on the essay page."""
     essays = sorted(essays, key=lambda e: (e["date"], e["added"], e["name"]), reverse=True)
     if not essays:
         raise Fail("no essays; the homepage has nothing to open onto")
@@ -576,19 +597,24 @@ def build_latest_essay(essays):
         dateline = f["date"]
     art = re.search(r"<article>(.*?)</article>", raw, re.S)
     inner = art.group(1) if art else ""
-    # NOTE: the essay lives in essays/; the homepage lives at the root.
-    inner = re.sub(r'(src|href)="\.\./', r'\1="', inner)
-    inner = re.sub(r'(src|href)="\./', r'\1="essays/', inner)
-    inner = re.sub(r'\bid="(fn|r)(\d+)"', r'id="le-\1\2"', inner)
-    inner = re.sub(r'href="#(fn|r)(\d+)"', r'href="#le-\1\2"', inner)
+    head_part = re.split(r"<h2|<div class=\"footnotes\"|<section class=\"subscribe\"", inner, maxsplit=1)[0]
+    paras = re.findall(r"<p>.*?</p>", head_part, re.S)[:2]
+    excerpt = "\n".join(paras)
+    excerpt = re.sub(r'(src|href)="\.\./', r'\1="', excerpt)
+    excerpt = re.sub(r'(src|href)="\./', r'\1="essays/', excerpt)
+    excerpt = re.sub(r'<a class="fn"[^>]*>.*?</a>', "", excerpt)
+    mins = f.get("minutes", 0)
+    meta_line = dateline or f["date"]
+    if mins:
+        meta_line = "%s &middot; %d min read" % (meta_line, mins)
     parts = ['<p class="kicker">latest essay</p>',
              "<h1>%s</h1>" % h1]
     if deck:
         parts.append('<p class="deck">%s</p>' % deck)
-    parts.append('<p class="dateline">%s</p>' % (dateline or f["date"]))
-    parts.append('<div class="essay-body">\n%s\n</div>' % inner.strip())
-    parts.append('<p class="permalink"><a href="essays/%s">read it on its own page</a></p>'
-                 % f["name"])
+    parts.append('<p class="dateline">%s</p>' % meta_line)
+    parts.append('<div class="essay-body">\n%s\n</div>' % excerpt.strip())
+    parts.append('<p class="permalink"><a href="essays/%s">continue reading</a> &middot; '
+                 '<a href="essays/">all writing</a></p>' % f["name"])
     return "\n".join(parts)
 
 
@@ -652,6 +678,7 @@ def build_experiments_shelf(experiments):
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#main">skip to content</a>
 
 <nav class="bar px" id="bar" aria-label="site">
   <a class="brand" href="../index.html" aria-label="nim, home">
@@ -661,11 +688,12 @@ def build_experiments_shelf(experiments):
   <ul class="links">
     <li><a href="../index.html">home</a></li>
     <li><a href="../essays/">writing</a></li>
-    <li><a href="./">experiments</a></li>
+    <li><a href="./" aria-current="page">experiments</a></li>
+    <li><a href="../feed.xml">rss</a></li>
   </ul>
 </nav>
 
-<main class="shelf">
+<main class="shelf" id="main">
   <header class="shelf-head">
     <h1>the experiments shelf</h1>
     <p class="sub">Small worlds, instruments, and toys. Newest first. Each opens in its own frame.</p>
@@ -684,7 +712,8 @@ __ROWS__
 </main>
 
 <footer>
-  <p>the experiments shelf is grown by script, never hand-edited.</p>
+  <p>nim.aesv.io &middot; <a href="../index.html">home</a> &middot; <a href="../essays/">writing</a> &middot; <a href="./">experiments</a> &middot; <a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
+  <p>static html/css/js &middot; no cookies, no trackers &middot; the experiments shelf is grown by script</p>
 </footer>
 
 <script>
@@ -706,12 +735,22 @@ __ROWS__
     empty.hidden = n !== 0;
   }
   chips.forEach(function (c) {
+    if (c.id === "chips-more") return;
     c.addEventListener("click", function () {
       active = c.getAttribute("data-tag");
-      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      chips.forEach(function (x) { if (x.id !== "chips-more") x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
       apply();
     });
   });
+  var more = document.getElementById("chips-more");
+  if (more) {
+    more.addEventListener("click", function () {
+      var open = more.getAttribute("aria-expanded") === "true";
+      more.setAttribute("aria-expanded", open ? "false" : "true");
+      more.textContent = open ? "more topics" : "fewer topics";
+      chips.forEach(function (x) { if (x.getAttribute("data-extra")) x.hidden = open; });
+    });
+  }
   apply();
 })();
 </script>

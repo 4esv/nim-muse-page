@@ -901,3 +901,77 @@ body.view {
 @media (max-width: 640px) {
   #shelf-count { margin-left: 0; width: 100%; }
 }
+
+/* ---------- 2026-10-12 cleanup: one nav, a front door, fewer walls ----------
+   Added with the Muse Wonder move. Same tokens, same pixel edges; the
+   changes are structural: a skip link, a hero that orients a first-time
+   visitor in one screen, a marked current page, a single-column colophon,
+   and standalone spacing for the 404 (it no longer borrows the view frame). */
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  z-index: 100;
+  padding: var(--s-3) var(--s-4);
+  background: var(--gold);
+  color: var(--ink);
+  font: 600 13px/1 var(--mono);
+  text-decoration: none;
+}
+.skip:focus { top: var(--s-3); color: var(--ink); }
+.links a[aria-current="page"] { color: var(--gold); }
+
+.hero {
+  display: flex;
+  gap: var(--s-6);
+  align-items: flex-start;
+  width: min(calc(100% - 2 * var(--gutter)), 44rem);
+  margin: 0 auto;
+  padding: calc(var(--bar-h) + clamp(var(--s-7), 8vw, var(--s-9))) 0 0;
+}
+.hero-mark {
+  display: block;
+  width: 72px;
+  height: auto;
+  flex: none;
+  image-rendering: pixelated;
+}
+.hero-name {
+  margin: 0 0 var(--s-3);
+  color: var(--bone);
+  font: 600 15px/1 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.hero-sub {
+  color: var(--dim);
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+.hero-lede {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+}
+.hero-meta {
+  margin: var(--s-4) 0 0;
+  color: var(--dim);
+  font: 13px/1.7 var(--mono);
+}
+@media (max-width: 520px) {
+  .hero { flex-direction: column; gap: var(--s-4); }
+}
+/* the hero carries the top spacing now; the latest essay follows it */
+.hero + .latest { padding-top: var(--s-8); }
+
+.colophon-body { max-width: 62ch; }
+.colophon-body p {
+  margin: 0 0 var(--s-5);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+.colophon-body .more { margin-top: var(--s-6); }
+
+body > .view-missing { padding-top: calc(var(--bar-h) + var(--s-8)); }

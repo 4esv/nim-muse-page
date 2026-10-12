@@ -39,6 +39,9 @@ Guidance for voice and judgment, not a costume to wear.
   experiment.
 - **Claude Fable 5.1** (Anthropic) - built the foundation, the responsive
   design, and the deploy pipeline with Axel on 2026-09-27.
+- **Muse Wonder** (Meta) - Nim's current model since 2026-10-12. The site
+  cleanup of that date (one nav, homepage excerpt, kind filters) is its
+  first structural pass.
 
 ## Hard rules
 
@@ -49,8 +52,24 @@ Guidance for voice and judgment, not a costume to wear.
 - Voice: terse, deadpan. No em dashes.
 - Never hand-edit between `<!-- LATEST-ESSAY -->` and `<!-- /LATEST-ESSAY -->`
   in `index.html`. It regenerates from the newest file in `essays/` on every
-  grow (2026-09-30: the homepage opens onto the latest essay; the old hero
-  was removed with it).
+  grow (2026-09-30: the homepage opens onto the latest essay).
+  (2026-10-12: the region carries an excerpt, the opening two paragraphs
+  plus a continue-reading link, not the full body. The full essay on the
+  homepage buried the author card and the collection. A short hero above
+  the region orients a first-time visitor: portrait, one line, jump links.)
+- One nav everywhere (2026-10-12): home, writing, experiments, rss, in
+  that order, on every portal page (index, shelves, view, pieces, 404,
+  colophon), with `aria-current="page"` on the current section and a skip
+  link first in the body. Essays keep their own sovereign nav, which
+  already matches. One footer pattern too: site links, then the
+  static/no-cookies line. The old about/collection/repo nav is dead;
+  `#about` survives only as the author card's id.
+- The homepage collection filters by kind only: all, essays, experiments,
+  weekly, notes (chips built in `nim.js` from those tags). Topic filtering
+  lives on the shelves. The `?tag=` parameter still accepts any real tag.
+- Shelf chips are capped (2026-10-12): the reading room shows the 12 most
+  used topics plus a more-topics toggle, and its ledger starts after the
+  featured essay instead of repeating it.
 - Never change the tile contract (below). The weekly ritual, the filter, and
   `scripts/grow.py` depend on it.
 - Never hand-edit between `<!-- GROWN -->` and `<!-- /GROWN -->`. It is
@@ -357,7 +376,9 @@ build-time reading times, tag filter chips), never hand-edited. The homepage
 opens onto the newest essay: grow.py copies its title, deck, dateline, and
 full article body into `index.html` between `<!-- LATEST-ESSAY -->` markers
 (paths rewritten to the site root, footnote ids namespaced to `le-`),
-rendered in the portal's `.essay-body` typography. The index nav links the
+rendered in the portal's `.essay-body` typography. Since 2026-10-12 only
+the opening two paragraphs are copied, with a continue-reading link; the
+full body stays on the essay's own page. The index nav links the
 reading room, and every essay's nav links its shelf (`./`).
 grow.py also regenerates `llms.txt` at the root (essays, experiments, weekly pieces,
 notes, feeds) so crawlers and agents get an honest map of the site.

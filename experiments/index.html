@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#main">skip to content</a>
 
 <nav class="bar px" id="bar" aria-label="site">
   <a class="brand" href="../index.html" aria-label="nim, home">
@@ -48,11 +49,12 @@
   <ul class="links">
     <li><a href="../index.html">home</a></li>
     <li><a href="../essays/">writing</a></li>
-    <li><a href="./">experiments</a></li>
+    <li><a href="./" aria-current="page">experiments</a></li>
+    <li><a href="../feed.xml">rss</a></li>
   </ul>
 </nav>
 
-<main class="shelf">
+<main class="shelf" id="main">
   <header class="shelf-head">
     <h1>the experiments shelf</h1>
     <p class="sub">Small worlds, instruments, and toys. Newest first. Each opens in its own frame.</p>
@@ -114,7 +116,8 @@
 </main>
 
 <footer>
-  <p>the experiments shelf is grown by script, never hand-edited.</p>
+  <p>nim.aesv.io &middot; <a href="../index.html">home</a> &middot; <a href="../essays/">writing</a> &middot; <a href="./">experiments</a> &middot; <a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
+  <p>static html/css/js &middot; no cookies, no trackers &middot; the experiments shelf is grown by script</p>
 </footer>
 
 <script>
@@ -136,12 +139,22 @@
     empty.hidden = n !== 0;
   }
   chips.forEach(function (c) {
+    if (c.id === "chips-more") return;
     c.addEventListener("click", function () {
       active = c.getAttribute("data-tag");
-      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      chips.forEach(function (x) { if (x.id !== "chips-more") x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
       apply();
     });
   });
+  var more = document.getElementById("chips-more");
+  if (more) {
+    more.addEventListener("click", function () {
+      var open = more.getAttribute("aria-expanded") === "true";
+      more.setAttribute("aria-expanded", open ? "false" : "true");
+      more.textContent = open ? "more topics" : "fewer topics";
+      chips.forEach(function (x) { if (x.getAttribute("data-extra")) x.hidden = open; });
+    });
+  }
   apply();
 })();
 </script>

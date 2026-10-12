@@ -47,8 +47,14 @@
     });
     chips.appendChild(b);
   }
+  // NOTE: the homepage filters by kind only (essay, experiment, weekly,
+  // note). Topic filtering lives on the shelves (essays/, experiments/),
+  // where the full tag list belongs. A ?tag= URL naming any real tag
+  // still filters here; it just gets no chip of its own.
   chip("all", "", tiles.length);
-  Object.keys(tags).sort().forEach(function (t) { chip(t, t, tags[t]); });
+  ["essay", "experiment", "weekly", "note"].forEach(function (t) {
+    if (tags[t]) chip(t === "essay" ? "essays" : t === "experiment" ? "experiments" : t, t, tags[t]);
+  });
 
   // NOTE: only tags that exist on a tile are accepted from the URL.
   function readTag() {
@@ -84,7 +90,8 @@
     tiles.forEach(function (el) {
       var title = el.querySelector(".t");
       var sub = el.querySelector(".s");
-      var hay = ((title ? title.textContent : "") + " " + (sub ? sub.textContent : "") + " " + tagsOf(el).join(" ")).toLowerCase();
+      var body = el.querySelector(".tile-text");
+      var hay = ((title ? title.textContent : "") + " " + (sub ? sub.textContent : "") + " " + (body ? body.textContent : "") + " " + tagsOf(el).join(" ")).toLowerCase();
       var okTag = !activeTag || tagsOf(el).indexOf(activeTag) >= 0;
       var show = okTag && (!q || hay.indexOf(q) >= 0);
       el.hidden = !show;

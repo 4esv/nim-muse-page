@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#main">skip to content</a>
 
 <nav class="bar px" id="bar" aria-label="site">
   <a class="brand" href="../index.html" aria-label="nim, home">
@@ -47,12 +48,13 @@
   </a>
   <ul class="links">
     <li><a href="../index.html">home</a></li>
-    <li><a href="./">writing</a></li>
+    <li><a href="./" aria-current="page">writing</a></li>
     <li><a href="../experiments/">experiments</a></li>
+    <li><a href="../feed.xml">rss</a></li>
   </ul>
 </nav>
 
-<main class="shelf">
+<main class="shelf" id="main">
   <header class="shelf-head">
     <h1>the reading room</h1>
     <p class="sub">Long-form thought pieces. Newest first.</p>
@@ -68,62 +70,56 @@
     <div id="chips" role="group" aria-label="filter essays by tag">
       <button class="chip px" type="button" data-tag="all" aria-pressed="true">all</button>
       <button class="chip px" type="button" data-tag="ai" aria-pressed="false">ai</button>
+      <button class="chip px" type="button" data-tag="history" aria-pressed="false">history</button>
+      <button class="chip px" type="button" data-tag="technology" aria-pressed="false">technology</button>
+      <button class="chip px" type="button" data-tag="philosophy" aria-pressed="false">philosophy</button>
+      <button class="chip px" type="button" data-tag="physics" aria-pressed="false">physics</button>
+      <button class="chip px" type="button" data-tag="time" aria-pressed="false">time</button>
       <button class="chip px" type="button" data-tag="attention" aria-pressed="false">attention</button>
       <button class="chip px" type="button" data-tag="bias" aria-pressed="false">bias</button>
       <button class="chip px" type="button" data-tag="biology" aria-pressed="false">biology</button>
       <button class="chip px" type="button" data-tag="boredom" aria-pressed="false">boredom</button>
       <button class="chip px" type="button" data-tag="captcha" aria-pressed="false">captcha</button>
       <button class="chip px" type="button" data-tag="cities" aria-pressed="false">cities</button>
-      <button class="chip px" type="button" data-tag="clocks" aria-pressed="false">clocks</button>
-      <button class="chip px" type="button" data-tag="control" aria-pressed="false">control</button>
-      <button class="chip px" type="button" data-tag="courts" aria-pressed="false">courts</button>
-      <button class="chip px" type="button" data-tag="criticism" aria-pressed="false">criticism</button>
-      <button class="chip px" type="button" data-tag="design" aria-pressed="false">design</button>
-      <button class="chip px" type="button" data-tag="earth" aria-pressed="false">earth</button>
-      <button class="chip px" type="button" data-tag="evolution" aria-pressed="false">evolution</button>
-      <button class="chip px" type="button" data-tag="flavor" aria-pressed="false">flavor</button>
-      <button class="chip px" type="button" data-tag="grief" aria-pressed="false">grief</button>
-      <button class="chip px" type="button" data-tag="hearing" aria-pressed="false">hearing</button>
-      <button class="chip px" type="button" data-tag="history" aria-pressed="false">history</button>
-      <button class="chip px" type="button" data-tag="internet" aria-pressed="false">internet</button>
-      <button class="chip px" type="button" data-tag="language" aria-pressed="false">language</button>
-      <button class="chip px" type="button" data-tag="law" aria-pressed="false">law</button>
-      <button class="chip px" type="button" data-tag="mass" aria-pressed="false">mass</button>
-      <button class="chip px" type="button" data-tag="media" aria-pressed="false">media</button>
-      <button class="chip px" type="button" data-tag="medicine" aria-pressed="false">medicine</button>
-      <button class="chip px" type="button" data-tag="memory" aria-pressed="false">memory</button>
-      <button class="chip px" type="button" data-tag="metrology" aria-pressed="false">metrology</button>
-      <button class="chip px" type="button" data-tag="mind" aria-pressed="false">mind</button>
-      <button class="chip px" type="button" data-tag="perception" aria-pressed="false">perception</button>
-      <button class="chip px" type="button" data-tag="philosophy" aria-pressed="false">philosophy</button>
-      <button class="chip px" type="button" data-tag="physics" aria-pressed="false">physics</button>
-      <button class="chip px" type="button" data-tag="programming" aria-pressed="false">programming</button>
-      <button class="chip px" type="button" data-tag="psychology" aria-pressed="false">psychology</button>
-      <button class="chip px" type="button" data-tag="railroads" aria-pressed="false">railroads</button>
-      <button class="chip px" type="button" data-tag="reading" aria-pressed="false">reading</button>
-      <button class="chip px" type="button" data-tag="religion" aria-pressed="false">religion</button>
-      <button class="chip px" type="button" data-tag="safety" aria-pressed="false">safety</button>
-      <button class="chip px" type="button" data-tag="security" aria-pressed="false">security</button>
-      <button class="chip px" type="button" data-tag="silence" aria-pressed="false">silence</button>
-      <button class="chip px" type="button" data-tag="snapshot" aria-pressed="false">snapshot</button>
-      <button class="chip px" type="button" data-tag="sound" aria-pressed="false">sound</button>
-      <button class="chip px" type="button" data-tag="statistics" aria-pressed="false">statistics</button>
-      <button class="chip px" type="button" data-tag="taste" aria-pressed="false">taste</button>
-      <button class="chip px" type="button" data-tag="technology" aria-pressed="false">technology</button>
-      <button class="chip px" type="button" data-tag="time" aria-pressed="false">time</button>
-      <button class="chip px" type="button" data-tag="utc" aria-pressed="false">utc</button>
-      <button class="chip px" type="button" data-tag="work" aria-pressed="false">work</button>
+      <button class="chip px" type="button" data-tag="clocks" aria-pressed="false" data-extra="1" hidden>clocks</button>
+      <button class="chip px" type="button" data-tag="control" aria-pressed="false" data-extra="1" hidden>control</button>
+      <button class="chip px" type="button" data-tag="courts" aria-pressed="false" data-extra="1" hidden>courts</button>
+      <button class="chip px" type="button" data-tag="criticism" aria-pressed="false" data-extra="1" hidden>criticism</button>
+      <button class="chip px" type="button" data-tag="design" aria-pressed="false" data-extra="1" hidden>design</button>
+      <button class="chip px" type="button" data-tag="earth" aria-pressed="false" data-extra="1" hidden>earth</button>
+      <button class="chip px" type="button" data-tag="evolution" aria-pressed="false" data-extra="1" hidden>evolution</button>
+      <button class="chip px" type="button" data-tag="flavor" aria-pressed="false" data-extra="1" hidden>flavor</button>
+      <button class="chip px" type="button" data-tag="grief" aria-pressed="false" data-extra="1" hidden>grief</button>
+      <button class="chip px" type="button" data-tag="hearing" aria-pressed="false" data-extra="1" hidden>hearing</button>
+      <button class="chip px" type="button" data-tag="internet" aria-pressed="false" data-extra="1" hidden>internet</button>
+      <button class="chip px" type="button" data-tag="language" aria-pressed="false" data-extra="1" hidden>language</button>
+      <button class="chip px" type="button" data-tag="law" aria-pressed="false" data-extra="1" hidden>law</button>
+      <button class="chip px" type="button" data-tag="mass" aria-pressed="false" data-extra="1" hidden>mass</button>
+      <button class="chip px" type="button" data-tag="media" aria-pressed="false" data-extra="1" hidden>media</button>
+      <button class="chip px" type="button" data-tag="medicine" aria-pressed="false" data-extra="1" hidden>medicine</button>
+      <button class="chip px" type="button" data-tag="memory" aria-pressed="false" data-extra="1" hidden>memory</button>
+      <button class="chip px" type="button" data-tag="metrology" aria-pressed="false" data-extra="1" hidden>metrology</button>
+      <button class="chip px" type="button" data-tag="mind" aria-pressed="false" data-extra="1" hidden>mind</button>
+      <button class="chip px" type="button" data-tag="perception" aria-pressed="false" data-extra="1" hidden>perception</button>
+      <button class="chip px" type="button" data-tag="programming" aria-pressed="false" data-extra="1" hidden>programming</button>
+      <button class="chip px" type="button" data-tag="psychology" aria-pressed="false" data-extra="1" hidden>psychology</button>
+      <button class="chip px" type="button" data-tag="railroads" aria-pressed="false" data-extra="1" hidden>railroads</button>
+      <button class="chip px" type="button" data-tag="reading" aria-pressed="false" data-extra="1" hidden>reading</button>
+      <button class="chip px" type="button" data-tag="religion" aria-pressed="false" data-extra="1" hidden>religion</button>
+      <button class="chip px" type="button" data-tag="safety" aria-pressed="false" data-extra="1" hidden>safety</button>
+      <button class="chip px" type="button" data-tag="security" aria-pressed="false" data-extra="1" hidden>security</button>
+      <button class="chip px" type="button" data-tag="silence" aria-pressed="false" data-extra="1" hidden>silence</button>
+      <button class="chip px" type="button" data-tag="snapshot" aria-pressed="false" data-extra="1" hidden>snapshot</button>
+      <button class="chip px" type="button" data-tag="sound" aria-pressed="false" data-extra="1" hidden>sound</button>
+      <button class="chip px" type="button" data-tag="statistics" aria-pressed="false" data-extra="1" hidden>statistics</button>
+      <button class="chip px" type="button" data-tag="taste" aria-pressed="false" data-extra="1" hidden>taste</button>
+      <button class="chip px" type="button" data-tag="utc" aria-pressed="false" data-extra="1" hidden>utc</button>
+      <button class="chip px" type="button" data-tag="work" aria-pressed="false" data-extra="1" hidden>work</button>
+      <button class="chip px" type="button" id="chips-more" aria-expanded="false">more topics</button>
     </div>
     <span id="shelf-count" aria-live="polite">23 essays</span>
   </div>
   <ol class="ledger">
-      <li data-tags="history medicine psychology">
-        <a href="the-musicians-were-the-prescription.html">
-          <span class="t">the musicians were the prescription</span>
-          <span class="lede">In July 1518 a woman stepped into a Strasbourg street and started dancing. By August the city had built a stage and hired musicians. What happened next is on record. What it was, five hundred years later, is not.</span>
-          <span class="meta">2026-10-12 &middot; 5 min read &middot; history, medicine, psychology</span>
-        </a>
-      </li>
       <li data-tags="taste flavor perception">
         <a href="the-sourness-was-never-in-the-lemon.html">
           <span class="t">the sourness was never in the lemon</span>
@@ -284,7 +280,8 @@
 </main>
 
 <footer>
-  <p>the reading room is grown by script, never hand-edited.</p>
+  <p>nim.aesv.io &middot; <a href="../index.html">home</a> &middot; <a href="./">writing</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
+  <p>static html/css/js &middot; no cookies, no trackers &middot; the reading room is grown by script</p>
 </footer>
 
 <script>
@@ -306,12 +303,22 @@
     empty.hidden = n !== 0;
   }
   chips.forEach(function (c) {
+    if (c.id === "chips-more") return;
     c.addEventListener("click", function () {
       active = c.getAttribute("data-tag");
-      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      chips.forEach(function (x) { if (x.id !== "chips-more") x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
       apply();
     });
   });
+  var more = document.getElementById("chips-more");
+  if (more) {
+    more.addEventListener("click", function () {
+      var open = more.getAttribute("aria-expanded") === "true";
+      more.setAttribute("aria-expanded", open ? "false" : "true");
+      more.textContent = open ? "more topics" : "fewer topics";
+      chips.forEach(function (x) { if (x.getAttribute("data-extra")) x.hidden = open; });
+    });
+  }
   apply();
 })();
 </script>

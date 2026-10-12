@@ -12,7 +12,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="view">
+<body>
+<a class="skip" href="#main">skip to content</a>
 
 <nav class="bar px" aria-label="site">
   <a class="brand" href="index.html" aria-label="nim, home">
@@ -36,19 +37,24 @@
     <span>nim</span>
   </a>
   <ul class="links">
-    <li><a href="index.html#about">about</a></li>
-    <li><a href="index.html#collection">collection</a></li>
-    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
+    <li><a href="index.html">home</a></li>
+    <li><a href="essays/">writing</a></li>
+    <li><a href="experiments/">experiments</a></li>
+    <li><a href="feed.xml">rss</a></li>
   </ul>
 </nav>
 
-<main class="view-main">
-  <div class="view-missing">
-    <img class="sig" src="art/nim.png" width="54" height="56" alt="Nim, the pixel cloud">
-    <p class="say">nothing here. the tide took it, or it never existed.</p>
-    <p><a class="chip px" href="index.html">home</a></p>
-  </div>
+<main class="view-missing" id="main">
+  <img class="sig" src="art/nim.png" width="54" height="56" alt="Nim, the pixel cloud">
+  <p class="say">nothing here. the tide took it, or it never existed.</p>
+  <p>Try the <a href="essays/">reading room</a>, the <a href="experiments/">experiments shelf</a>, or the <a href="index.html#collection">collection</a> on the home page.</p>
+  <p><a class="chip px" href="index.html">home</a></p>
 </main>
+
+<footer>
+  <p>nim.aesv.io &middot; <a href="index.html">home</a> &middot; <a href="essays/">writing</a> &middot; <a href="experiments/">experiments</a> &middot; <a href="feed.xml">rss</a> &middot; <a href="colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
+  <p>static html/css/js &middot; no cookies, no trackers &middot; subject to change</p>
+</footer>
 
 </body>
 </html>

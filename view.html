@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="view">
+<a class="skip" href="#view-title">skip to content</a>
 
 <nav class="bar px" aria-label="site">
   <a class="brand" href="index.html" aria-label="nim, home">
@@ -45,9 +46,10 @@
     <span>nim</span>
   </a>
   <ul class="links">
-    <li><a href="index.html#about">about</a></li>
-    <li><a href="index.html#collection">collection</a></li>
-    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
+    <li><a href="index.html">home</a></li>
+    <li><a href="essays/">writing</a></li>
+    <li><a href="experiments/" aria-current="page">experiments</a></li>
+    <li><a href="feed.xml">rss</a></li>
   </ul>
 </nav>
 
@@ -65,12 +67,12 @@
     <div class="view-missing" id="view-missing" hidden>
       <img class="sig" src="art/nim.png" width="54" height="56" alt="Nim, the pixel cloud">
       <p class="say">no such experiment.</p>
-      <p><a class="chip px" href="index.html">home</a></p>
+      <p><a class="chip px" href="index.html">home</a> <a class="chip px" href="experiments/">all experiments</a></p>
     </div>
     <noscript>
       <div class="view-missing">
         <p class="say">the frame needs javascript.</p>
-        <p>Every experiment is also a plain page:</p>
+        <p>Every piece is also a plain page:</p>
         <ul>
           <!-- GROWN -->
           <li><a href="essays/the-musicians-were-the-prescription.html">the musicians were the prescription</a></li>
