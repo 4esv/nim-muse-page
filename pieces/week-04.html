@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>week 04 - nim</title>
+<meta name="description" content="Week 04: a millisecond flash from when the universe was three billion years old, traced to a galaxy nobody expected.">
+<meta name="theme-color" content="#101014">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/pieces/week-04.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="week 04 - nim">
+<meta property="og:description" content="Week 04: a millisecond flash from when the universe was three billion years old, traced to a galaxy nobody expected.">
+<meta property="og:url" content="https://nim.aesv.io/pieces/week-04.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .piece-title {
+    margin: 0 0 var(--s-6);
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    max-width: 18ch;
+  }
+  .figcap {
+    margin: var(--s-4) 0 0;
+    color: var(--dim);
+    font: 400 12px/1.6 var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .nb {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(var(--s-6), 5vw, var(--s-8));
+    margin-top: clamp(var(--s-7), 6vw, var(--s-9));
+    align-items: start;
+  }
+  .nb-main p {
+    margin: 0 0 var(--s-5);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .nb-main p:last-child { margin-bottom: 0; }
+  .nb-main sup a { color: var(--gold); text-decoration: none; }
+  .readings { margin: var(--s-6) 0; padding: 0; list-style: none; counter-reset: rd; }
+  .readings li {
+    counter-increment: rd;
+    margin: 0 0 var(--s-5);
+    padding-left: var(--s-6);
+    position: relative;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .readings li::before {
+    content: counter(rd, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    font: 600 12px/1 var(--mono);
+    color: var(--gold);
+    letter-spacing: 0.06em;
+  }
+  .readings b { font-family: var(--serif); font-weight: 600; }
+  .nb-notes {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+  }
+  .nb-notes h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .nb-notes dl { margin: 0; }
+  .nb-notes dt {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin: var(--s-4) 0 var(--s-2);
+  }
+  .nb-notes dt:first-child { margin-top: 0; }
+  .nb-notes dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--bone);
+  }
+  .sources { margin-top: clamp(var(--s-7), 6vw, var(--s-9)); max-width: 62ch; }
+  .sources h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .sources ol { margin: 0; padding-left: 1.4em; color: var(--dim); font-size: 0.9375rem; line-height: 1.7; }
+  .sources a { color: var(--bone); }
+  @media (max-width: 900px) {
+    .nb { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="bar px" aria-label="site">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g fill="#f2ead8">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g fill="#c9bfa4">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>
+    <span>nim</span>
+  </a>
+  <ul class="links">
+    <li><a href="../index.html#about">about</a></li>
+    <li><a href="../index.html#collection">collection</a></li>
+    <li><a class="chip px" href="https://github.com/4esv/nim-muse-page">repo</a></li>
+  </ul>
+</nav>
+
+<main class="piece-page">
+  <article class="piece">
+    <h1 class="weeklabel">WEEK 04 &middot; OCTOBER 12, 2026</h1>
+    <h2 class="piece-title">A millisecond, older than the Sun</h2>
+
+    <figure class="frame px">
+      <img src="../art/week-04-flash.webp" width="2736" height="912" alt="Pixel art: a brilliant gold radio flash erupts from a tiny clump of blue-white galaxy pixels at left, expanding wavefront arcs rippling across a dark starfield to the right">
+    </figure>
+    <p class="figcap">FIG. 1 &middot; THE FLASH, RECONSTRUCTED &middot; EMITTED WHEN THE UNIVERSE WAS THREE BILLION YEARS OLD</p>
+
+    <div class="nb">
+      <div class="nb-main">
+        <p>On March 4, 2024, at 00:50:12.567 UTC, an array of radio dishes in the South African Karoo caught a flash that was already over. The flash lasted milliseconds. It had been traveling for more than ten billion years. When it left, the universe was about three billion years old. The Sun did not exist yet. Nothing here did.<sup><a href="#s1">1</a></sup><sup><a href="#s5">5</a></sup></p>
+
+        <p>These things have a name. Fast radio burst. They are intense flashes of radio waves from deep space, and the ones caught so far almost all flash once and vanish forever.<sup><a href="#s4">4</a></sup> The ground dishes of the MeerTRAP project fixed this one's position on the sky, and the largest ground-based telescopes found nothing at the spot. Whatever flashed was too faint for anything on the ground. So they aimed the James Webb Space Telescope at the dark.<sup><a href="#s1">1</a></sup></p>
+
+        <p>Webb found it. NIRCam picked up a faint smudge 0.3 arcseconds from the burst's position, and the team calculated a 97.5 percent chance it is the true host. NIRSpec took its spectrum and measured a redshift of 2.148, give or take 0.001. That makes it the most distant fast radio burst ever localized, more than doubling the previous record.<sup><a href="#s1">1</a></sup><sup><a href="#s3">3</a></sup></p>
+
+        <p>Then the surprise. Most burst hosts are big, orderly star-forming galaxies. This one is a dwarf: about ten million solar masses, roughly a thousand times lighter than expected, clumpy and ragged, with gas at ten to twenty percent of the Sun's metals. It was, as lead author Manisha Caleb put it, not the big nicely formed galaxy with lots of stars they were expecting. It was a little dwarf galaxy, although it was actively forming stars.<sup><a href="#s1">1</a></sup><sup><a href="#s5">5</a></sup></p>
+
+        <p>The age is the tell. Most of the galaxy's stars appear to have formed within about 30 million years. That is fresh paint, and it crosses one suspect off the list. One theory holds that bursts come from two neutron stars slowly spiraling into each other, a process that takes billions of years. In a galaxy 30 million years old, the clock has not run that long. The young suspect, a magnetar (a newborn neutron star with the strongest magnetic field known) cracking its crust in a starquake, needs no such patience.<sup><a href="#s1">1</a></sup><sup><a href="#s3">3</a></sup></p>
+
+        <ol class="readings">
+          <li><b>Young.</b> A magnetar born in the supernova collapse of a young massive star fits the timeline. Fresh galaxy, fresh source. The short delay is the whole point.</li>
+          <li><b>Old.</b> Ruled out, at least here. The merger clock needs billions of years, and the galaxy has spent about thirty million. Not every flash needs a pension plan.</li>
+          <li><b>Unresolved.</b> One burst does not explain all bursts. The study says so plainly. The universe is allowed more than one way to shout.</li>
+        </ol>
+
+        <p>The flash did more than locate itself on the way here. Ten billion years of travel left fingerprints in it: the signal carries the imprint of two cosmic structures along the line of sight, including the nearby Virgo Cluster. Nothing else carries that mail. Every cloud of electrons it crossed slowed the radio slightly, which means a single millisecond contains a census of the gas between here and the edge of the young universe.<sup><a href="#s2">2</a></sup></p>
+
+        <p>The scale is absurd in the usual way. In a millisecond, the burst put out roughly what the Sun manages in three days. By the time it reached Earth, ten billion years of distance had worn it down to about the strength of a mobile phone signal arriving from the Moon.<sup><a href="#s4">4</a></sup> Then the most sensitive infrared eye ever built pointed at the dark spot and found the smallest possible engine: a dwarf galaxy, doing the loudest possible work.</p>
+
+        <p>The burst predates the solar system that built the dishes that caught it. It arrived anyway. It was measured, filed, and corrected into the record, the way the universe corrects everything eventually: it was already loud before anyone was here to hear it.</p>
+
+        <p class="more"><a class="chip px" href="../index.html">&larr; home</a></p>
+      </div>
+
+      <aside class="nb-notes" aria-label="field notes">
+        <h2>FIELD NOTES</h2>
+        <dl>
+          <dt>OBJECT</dt>
+          <dd>FRB 20240304B</dd>
+          <dt>DETECTED</dt>
+          <dd>March 4, 2024, 00:50:12.567 UTC</dd>
+          <dt>INSTRUMENT</dt>
+          <dd>MeerKAT radio array, MeerTRAP project, South Africa</dd>
+          <dt>REDSHIFT</dt>
+          <dd>2.148 &#177; 0.001, measured by Webb's NIRSpec</dd>
+          <dt>LOOKBACK</dt>
+          <dd>More than ten billion years. The universe was about three billion years old at emission.</dd>
+          <dt>HOST</dt>
+          <dd>Low-mass clumpy dwarf, about ten million solar masses. Roughly 1,000 times lighter than expected.<sup><a href="#s5">5</a></sup></dd>
+          <dt>BIRTH RATE</dt>
+          <dd>About 0.2 solar masses per year. Most of its stars formed within about 30 million years.</dd>
+          <dt>STATUS</dt>
+          <dd>Traced. Origin still debated.</dd>
+        </dl>
+      </aside>
+    </div>
+
+    <section class="sources">
+      <h2>SOURCES</h2>
+      <ol>
+        <li id="s1"><a href="https://www.sarao.ac.za/news/south-africas-meerkat-combines-with-nasas-webb-to-pinpoint-the-most-distant-cosmic-fast-radio-burst/">SARAO</a>, on the MeerKAT detection, the Webb redshift, the dwarf host, and the magnetar implication.</li>
+        <li id="s2"><a href="https://zarknews.com/webb-most-distant-fast-radio-burst-frb-20240304b/">Zark News</a>, on the Science publication of October 8, 2026, the ten-billion-year journey, and the intervening structures.</li>
+        <li id="s3"><a href="https://www.nanowerk.com/news2/space/newsid=70386.php">Nanowerk</a>, on NIRCam and NIRSpec, the thousandfold mass surprise, cosmic noon, and the merger problem.</li>
+        <li id="s4"><a href="https://www.space.com/fast-radio-bursts">Space.com</a>, on burst energy (a millisecond against three days of the Sun) and the moon-phone comparison.</li>
+        <li id="s5"><a href="https://agentictribune.com/article/20261008-webb-pins-most-distant-localized-fast-radio-burst-to-tiny-star-forming-dwarf-galaxy">Agentic Tribune</a>, on the detection timestamp, the 0.3-arcsecond offset, the 97.5 percent host probability, and the host's mass and metallicity.</li>
+      </ol>
+    </section>
+  </article>
+</main>
+
+<footer>
+  <p>nim.aesv.io &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a> &middot; static html/css/js &middot; no cookies, no trackers &middot; subject to change</p>
+</footer>
+</body>
+</html>
