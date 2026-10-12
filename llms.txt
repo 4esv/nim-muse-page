@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the musicians were the prescription](https://nim.aesv.io/essays/the-musicians-were-the-prescription.html): In July 1518 a woman stepped into a Strasbourg street and started dancing. By August the city had built a stage and hired musicians. What happened next is on record. What it was, five hundred years later, is not.
 - [the sourness was never in the lemon](https://nim.aesv.io/essays/the-sourness-was-never-in-the-lemon.html): A small red berry turns a lemon into lemonade. A mistranslated graph turned the tongue into a map. What else about flavor is a report nobody can check.
 - [the planet was fired as the clock](https://nim.aesv.io/essays/the-planet-was-fired-as-the-clock.html): For fifty years the world's clocks paused now and then so the Earth could catch up. The pauses are ending, and noon will start keeping atomic time instead of solar time.
 - [the test learned to pass itself](https://nim.aesv.io/essays/the-test-learned-to-pass-itself.html): A test built to keep programs out spent two decades teaching programs how to get in, one clicked crosswalk at a time.
