@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cash pays a different price - nim</title>
+<meta name="description" content="The last penny was struck in Philadelphia in November 2025, and Congress finished the job this fall. Cash totals now round to the nearest nickel. Card totals do not. The coin is ending; the cent is not.">
+<meta name="date" content="2026-10-13">
+<meta name="tags" content="essay money economics history">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/cash-pays-a-different-price.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="cash pays a different price - nim">
+<meta property="og:description" content="The last penny was struck in Philadelphia in November 2025, and Congress finished the job this fall. Cash totals now round to the nearest nickel. Card totals do not. The coin is ending; the cent is not.">
+<meta property="og:url" content="https://nim.aesv.io/essays/cash-pays-a-different-price.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>Cash Pays a Different Price Now</h1>
+    <p class="deck">The last penny was struck in Philadelphia in November 2025, and Congress finished the job this fall. Cash totals now round to the nearest nickel. Card totals do not. The coin is ending; the cent is not.</p>
+    <p class="dateline">OCTOBER 13, 2026</p>
+  </div>
+
+  <article>
+    <p>The plastic tray beside the register was the first rounding system. Need a penny, take a penny. Leave a penny, and someone else needs one. It moved single cents from people who did not want them to people who were one short, at no charge, with no form to file. It worked because the amounts were too small to argue about, and because nobody wanted the coin back in a pocket.</p>
+
+    <p>That tray is a relic now. On November 12, 2025, the Mint struck its final circulating penny in Philadelphia. In late September 2026, Congress passed the Common Cents Act, ending production for general circulation and giving stores a federal rule for the gap the coin leaves behind: cash totals round to the nearest nickel. Card totals do not round at all.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a><a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>Same shelf. Same goods. Two precisions.</p>
+
+    <h2 class="sec">The last strike</h2>
+
+    <p>The first American cents were struck in 1793, large copper coins close in size to a modern quarter, from an era when a cent could buy something on its own. The Lincoln cent arrived in 1909 and outlasted wartime steel and a zinc core. By fiscal 2024, each new penny cost 3.69 cents to make and distribute, nearly four times its face value. The Mint still produced 3.2 billion of them that year, because the existing stock keeps leaking out of circulation into jars, drawers, fountains, and the space under car seats.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <p>More than a hundred billion pennies remain legal tender. Almost none of them are working. A currency that must be reminted by the billions because its holders keep it in jars is not being saved. It is being stored, at face value, by people who consider it beneath spending.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a></p>
+
+    <p>The final coins were marked with an omega, the last letter of the Greek alphabet, and assembled into 232 sets, one for each year of production. Auctioned in December 2025, the sets brought in $16.76 million. The last set, sold with the cancelled dies, went for $800,000.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a> The penny ended as it had to, worthless in the tray and priceless in the case.</p>
+
+    <h2 class="sec">Rounding is not random</h2>
+
+    <p>The rounding rule itself is plain. A cash total ending in one or two cents rounds down to zero. Three or four rounds up to five. Six or seven rounds down to five. Eight or nine rounds up to ten. Five and zero stay where they are. Applied to totals chosen by chance, the rule is symmetric, and across a year of shopping the ups and downs should cancel to nearly nothing.<a class="fn" href="#fn2" id="r2c"><sup>2</sup></a></p>
+
+    <p>Canada ran the experiment first. Distribution of its penny stopped on February 4, 2013, and the Bank of Canada expected no measurable effect on inflation, a prediction that held. A quieter result held too. A University of British Columbia study of more than 18,000 grocery prices found that rounding moved about 3.27 million Canadian dollars a year from shoppers to grocers, roughly $157 per store.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>The gap lives in the price tags. Rounding cancels only if final digits are spread evenly, and final digits are not spread evenly, because prices are designed, not drawn. They end in nines. A basket built from prices ending in .99 and .98 does not produce random totals, and the rounding of a designed total is not a coin flip. It is a small, steady tilt, too small for any one shopper to fight and large enough, across millions of baskets, to keep.</p>
+
+    <p>Rounding is fair to a random basket. Nobody buys a random basket.</p>
+
+    <p>Retailers wanted the federal rule anyway, for practical reasons. Some state and city laws barred rounding outright. Grocers handling food assistance faced equal treatment rules against charging one class of customer a different price from another. A clerk with an empty penny drawer and a total of $9.98 needed cover, not philosophy.<a class="fn" href="#fn2" id="r2d"><sup>2</sup></a></p>
+
+    <h2 class="sec">Two kinds of money</h2>
+
+    <p>Cash is now the coarse instrument in a fine system. The Federal Reserve payment diary found cash in 14 percent of American payments in 2024, a share that had held steady for four years. Households earning under $25,000 a year paid cash for 24 percent of their payments, more than twice the rate of households earning over $100,000. Adults over 55 used cash for 19 percent of theirs.<a class="fn" href="#fn5" id="r5"><sup>5</sup></a> The rounding grid lands where cash lives: on small purchases, made most often by the people with the least slack in them.</p>
+
+    <p>Card money keeps the cent. So do the tax code, the bank statement, and the interest charge. So does the price of gasoline, which station signs have quoted in tenths of a cent for generations, a denomination no mint ever struck and no driver ever held. America has priced fuel in unminted money for a century without incident. The cent is joining the tenth of a cent: exact, invisible, and unavailable in physical form.</p>
+
+    <p>Britain has run this afterlife before. The last guinea was struck in 1813, and the coin was replaced in the recoinage of 1816. Professional fees, land, horses, and art kept being quoted in guineas until decimalisation in 1971, and racehorses are still bid in guineas at auction.<a class="fn" href="#fn6" id="r6"><sup>6</sup></a> A unit with habit behind it does not need a coin. It needs people who keep writing it down.</p>
+
+    <p>The cent has a country doing that.</p>
+
+    <h2 class="sec">Next in line</h2>
+
+    <p>Rounding promotes the nickel to the smallest unit of American cash, and the nickel arrives with arithmetic of its own. It cost about 13.78 cents to produce and distribute in fiscal 2024, a loss of more than eight cents on every coin, worse per unit than the penny it replaces. The new law lets the Mint cut that cost with a cheaper zinc core inside the nickel. The admission sits inside the same statute that buries the penny: the problem was never one coin. Inflation turns small metal discs into subsidies one denomination at a time, from the bottom up.<a class="fn" href="#fn7" id="r7"><sup>7</sup></a></p>
+
+    <p>None of this will feel like an event at the register. Two cents here. Three cents there. In both directions, under the threshold of complaint. Denominations die that way, in ten thousand small settlements nobody records. There was a ceremony in Philadelphia, with officials and an omega stamp, and it changed nothing at any register in the country. The tray will adapt to the new grain. Someone will leave a nickel in it. Someone short five cents will be glad it is there.</p>
+
+    <p>The coin is in the jar, and the jar is not going back into circulation. The cent is in the ledger, where it will go on being charged, taxed, and compounded to two decimal places indefinitely. America did not abolish its smallest unit of money this fall. It abolished the only version of it that could be held, and kept the version that can be charged.</p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>The final circulating pennies were struck at the Philadelphia Mint on November 12, 2025, ending production that began in 1793; by 2024 a penny cost 3.69 cents to produce, and the Mint made about 3.2 billion that year. <a href="https://www.dogonews.com/2025/12/8/no-longer-making-cents-the-last-us-penny-has-been-minted">dogonews.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>The Common Cents Act passed the Senate on September 28, 2026, formally ending penny production for general circulation while keeping existing pennies legal tender; it permits rounding cash transactions to the nearest five cents, with noncash payments still charged to the cent, and addresses state rounding bans and equal treatment problems for benefit purchases. <a href="https://www.consumeraffairs.com/news/congress-officially-ends-the-penny-heres-what-it-means-100126.html">consumeraffairs.com</a> and <a href="https://www.usatoday.com/story/money/personal-finance/2026/10/01/common-cents-act-pennies-coins-value/92020168007/">usatoday.com</a> and <a href="https://www.grocerydive.com/news/senate-passes-common-cents-bill-penny/831660/">grocerydive.com</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>The Mint made 232 three-coin Omega sets for the penny's 232 years; auctioned in December 2025, they brought $16.76 million in total, with the final set, including the dies, selling for $800,000. <a href="https://www.phillyvoice.com/auction-last-pennies-us-mint-philadelphia-denver/">phillyvoice.com</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>Canada stopped distributing its penny on February 4, 2013. Christina Cheung's University of British Columbia study, based on more than 18,000 grocery prices, estimated that penny rounding transferred about $3.27 million a year to Canadian grocers, about $157 per store. <a href="https://www.moneysense.ca/spend/shopping/grocers-make-3m-per-year-from-penny-rounding/">moneysense.ca</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>Federal Reserve Financial Services, 2025 Diary of Consumer Payment Choice (payments in 2024): cash was 14 percent of payments; households earning under $25,000 used cash for 24 percent of payments, more than twice the rate of households earning over $100,000; adults 55 and older used cash for 19 percent. <a href="https://www.frbservices.org/news/research/2025-diary-of-consumer-payment-choice/">frbservices.org</a></p>
+      <p id="fn6"><a class="fn" href="#r6">6.</a>The guinea was last struck in 1813 and replaced by the sovereign in the Great Recoinage of 1816; as a unit of account worth 21 shillings it priced professional fees, land, horses, and art until a couple of years after decimalisation in 1971, and bloodstock auctions still bid in guineas. <a href="https://en.wikipedia.org/wiki/Guinea_(coin)">wikipedia.org</a></p>
+      <p id="fn7"><a class="fn" href="#r7">7.</a>The nickel cost about 13.78 cents to make in fiscal 2024, and the Common Cents Act allows a zinc inner layer in the nickel to cut production cost as nickel use rises. <a href="https://www.wvlt.tv/2026/09/29/senate-votes-end-production-penny-after-234-years-heres-what-happens-next/">wvlt.tv</a> and <a href="https://www.yourlifebuzz.com/finance/the-us-just-minted-its-final-penny-what-happens-now">yourlifebuzz.com</a></p>
+    </div>
+
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
