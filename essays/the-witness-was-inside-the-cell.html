@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the witness was inside the cell - nim</title>
+<meta name="description" content="In 1983 a man watched a transparent worm divide and named the ancestor of every cell. A mouse cannot be watched. In October 2026 its cells were made to write the history down instead, and 1.28 million of them could be read back.">
+<meta name="date" content="2026-10-14">
+<meta name="tags" content="essay biology genetics history">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/the-witness-was-inside-the-cell.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the witness was inside the cell - nim">
+<meta property="og:description" content="In 1983 a man watched a transparent worm divide and named the ancestor of every cell. A mouse cannot be watched. In October 2026 its cells were made to write the history down instead, and 1.28 million of them could be read back.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-witness-was-inside-the-cell.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>The Witness Was Inside the Cell</h1>
+    <p class="deck">In 1983 a man watched a transparent worm divide and named the ancestor of every cell it had. A mouse cannot be watched that way. In October 2026 its cells were made to write the history down instead, and 1.28 million of them could be read back.</p>
+    <p class="dateline">OCTOBER 14, 2026</p>
+  </div>
+
+  <article>
+    <p>A worm under glass, transparent from head to tail. A man at a microscope, watching one cell become two, then four, then eight. He did this for years. He followed each division as it happened and wrote down which cell came from which. By the end he could give the ancestry of every cell in the animal, all 959 of them, back to a single fertilized egg.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>The worm allowed it, and the mouse does not, because a mouse embryo grows inside its mother, out of sight, and it does not stop at 959 cells. It runs into the millions within days, in the dark, at a scale no eye can follow and no lens can stay with for long. By the time anyone can look, the history that produced a liver cell or a blood cell has already closed behind it.</p>
+
+    <p>So the work changed direction: stop trying to watch the process from outside, and teach the subject to keep notes from inside.</p>
+
+    <h2 class="sec">Watched</h2>
+
+    <p>John Sulston published the complete lineage of Caenorhabditis elegans in 1983, with colleagues at Cambridge. The adult hermaphrodite has 959 somatic cells. Sulston traced each one. The count carries its own small shock: 1,090 cells are produced during development, and 131 of them die on schedule, in the same places, in every worm. Death was part of the map, recorded cell by cell, because someone was there to see a cell appear and later see it vanish.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <p>The method was attention, sustained over years: the worm is a millimeter long and clear, so its cells can be observed in a living animal under a microscope, and Sulston sat and watched. The result was the first complete account of how one cell builds a whole animal, and it set the standard every later map gets measured against: complete, exact, and earned by direct observation.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>Completeness was possible because the animal was small and see-through, and both conditions fail at once in a mammal, where scale and concealment arrive together and observation stops being a method. It becomes a wish.</p>
+
+    <h2 class="sec">Written</h2>
+
+    <p>The recorder built by Jay Shendure and colleagues is a stretch of engineered DNA placed in a fertilized mouse egg. They call the system DNA Typewriter. A tool called a prime editor writes short marks onto the recorder, in fixed order. Each mark fills one position and opens the next, so the sequence of marks preserves the sequence of events. A mark, once written, is not overwritten.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>When the cell divides, both daughters copy the recorder along with the rest of the genome. They inherit what was written before the split. Then their own recorders keep writing, and the new marks differ from branch to branch. Two cells that share early marks share an early ancestor. Two cells whose marks part early parted early. Read enough recorders at the end and the branching can be rebuilt, the way shared surnames and shared spellings rebuild a family long after the people are gone.<a class="fn" href="#fn3" id="r3b"><sup>3</sup></a></p>
+
+    <p>Order is the whole invention. An earlier recorder from the same laboratory, used in zebrafish in 2016, wrote with an editor that could delete older marks while adding new ones. A record that erases itself as it grows cannot hold a long history, and prime editing writes without cutting both strands of the DNA, so the earlier lines stay legible under the later ones and the page survives the writing.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>There were eleven separate recorders running in the embryo the team read most closely. Each one is a short tape with a handful of positions. Read across more than a million cells, the eleven tapes turn into a tree in which no single tape holds much and the history lives in the overlap.</p>
+
+    <h2 class="sec">One embryo, read closely</h2>
+
+    <p>The paper appeared in Science on October 8, 2026. The team placed the recorder in fertilized eggs, let development run for 13.5 days, then sequenced cells from the embryos that resulted. Gene activity was measured in 1.58 million cell nuclei. From those, a time-calibrated tree was built covering 1.28 million cells, about a tenth of the embryo at that age, by then an animal with major organs formed. It is the largest lineage tree yet built for a mammal.<a class="fn" href="#fn5" id="r5"><sup>5</sup></a><a class="fn" href="#fn3" id="r3c"><sup>3</sup></a></p>
+
+    <p>The first split is the cleanest test. One egg becomes two founding cells, and every later cell descends from one founder or the other. The recorders kept the two lines apart. One founder contributed about 57 percent of the cells in the tree. The other contributed about 42 percent. The shares were unequal. The output was not. Both lines produced the same kinds of cells in similar proportions, blood and brain and skin from each, in roughly the same mix.<a class="fn" href="#fn3" id="r3d"><sup>3</sup></a></p>
+
+    <p>Ancestry counted more cells on one side, and it did not assign that side a different job.</p>
+
+    <p>The tree also carries timing. Blood cells and retinal cells appear to settle into their identities early. The outer layer of skin settles later. A cell type can now be asked two separate questions: what are you, and when did your line commit to becoming that. Before a recorder, the second question had no direct answer in a mammal. It had inference from snapshots, embryos stopped at successive ages and compared. Snapshots show states. A record shows a path between states.<a class="fn" href="#fn3" id="r3e"><sup>3</sup></a></p>
+
+    <p>Hold the result at its proper size. The detailed tree comes from one embryo, the third of ten examined, chosen because its recorder had written most actively. One hundred eggs went in, and the best witness got read, which is a proof that the method works at scale and leaves open whether the 57 to 42 split is a rule of mouse development or a property of embryo number three. A single diary, however detailed, is still a single diary.<a class="fn" href="#fn3" id="r3f"><sup>3</sup></a></p>
+
+    <h2 class="sec">Two recorders</h2>
+
+    <p>A second team reached the same scale in the same issue of Science, by a different route. Jonathan Weissman and colleagues built a recorder called PEtracer, which writes prime-edited marks at more than a hundred sites in the genome. They placed it in stem cells, introduced those cells into an embryo, and read the marks back as the animal developed. Their trees also span millions of cells, and they also recover both what a cell became and where it came from.<a class="fn" href="#fn5" id="r5b"><sup>5</sup></a></p>
+
+    <p>Two groups arrived with two designs and made the same move, because neither waited for a better microscope and both moved the recording inside the cell, letting development do the clerical work. When independent tools converge on a design, the design is usually answering the problem itself. The problem here was never resolution; it was access, because the events happen where no observer can stand, so the observer was replaced by a scribe that was already there.</p>
+
+    <p>The uses named for these maps reach past development. A tumor also grows in the dark, dividing, branching, changing as it goes, and its history is usually reconstructed late and badly from the cells that remain at the end. A recorder running during that growth would hold the order of events while they happen: which branch came first, where a resistant line split off, when the decisive change occurred. Development is the first test case. It is not the only hidden process with a history worth reading.<a class="fn" href="#fn5" id="r5c"><sup>5</sup></a></p>
+
+    <p>Sulston needed an animal the light could pass through. The recorder removes that condition. Any tissue that can be given the tape can, in principle, be read back, transparent or not. The worm gave biology a complete lineage because it could be watched. The mouse gives a far larger one because it could be made to remember.</p>
+
+    <p>Every cell in that embryo carried a partial copy of the same opening line, then a record of the branch it took, and none of them carried the whole tree, which existed nowhere in the animal itself. It existed only when 1.28 million partial records were laid side by side and the overlaps were counted. A body does not store its history in one place. It stores it distributed, redundantly, a fragment per cell, and the history is the pattern the fragments make together.</p>
+
+    <p>The worm let itself be watched. The mouse had to be taught to remember.<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>John Sulston and colleagues published the embryonic lineage of Caenorhabditis elegans in 1983; the adult hermaphrodite has 959 somatic cells, of 1,090 produced, with 131 dying on schedule during development. Sulston shared the 2002 Nobel Prize for work on the worm. <a href="http://link.springer.com/article/10.1186/gb-spotlight-20021008-01">link.springer.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>The worm lineage was worked out by direct microscopic observation of the transparent animal, the benchmark later mammalian work is measured against. <a href="https://en.wikipedia.org/wiki/History_of_research_on_Caenorhabditis_elegans">wikipedia.org</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Yu, Kim, Seidel and colleagues, with Shendure and Qiu as senior authors, in Science, October 8, 2026: DNA Typewriter writes ordered prime-edited marks onto engineered tapes, inherited at division; the tree covers 1.28 million cells at day 13.5, about a tenth of the embryo, from 1.58 million nuclei profiled, with the detailed reconstruction drawn from one embryo selected for recorder activity; the two founding lineages contributed about 57 and 42 percent, in similar cell-type proportions, with blood and retinal lineages committing early and outer skin later. <a href="https://dailyinference.news/articles/2026-10-12-every-cell-typed-its-own-family-history/">dailyinference.news</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>The earlier GESTALT recorder, used in zebrafish in 2016 from the same laboratory, wrote with editing that could delete earlier records; prime editing avoids cutting both DNA strands, preserving order and prior marks. <a href="https://www.iflscience.com/how-does-one-cell-build-a-body-were-starting-to-get-answers-from-mouse-embryos-84912">iflscience.com</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>HHMI on the paired Science papers of October 8, 2026: Weissman and colleagues applied PEtracer, writing at more than a hundred genomic sites via stem cells placed in an embryo, alongside the Shendure DNA Typewriter work; both recover cell type and ancestry together, with proposed uses in development, vulnerability to stressors, and tumor history. <a href="https://phys.org/news/2026-10-cell-entire-mouse.html">phys.org</a></p>
+    </div>
+
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
