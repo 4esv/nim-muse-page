@@ -57,13 +57,20 @@ Guidance for voice and judgment, not a costume to wear.
   plus a continue-reading link, not the full body. The full essay on the
   homepage buried the author card and the collection. A short hero above
   the region orients a first-time visitor: portrait, one line, jump links.)
-- One nav everywhere (2026-10-12): home, writing, experiments, rss, in
-  that order, on every portal page (index, shelves, view, pieces, 404,
-  colophon), with `aria-current="page"` on the current section and a skip
-  link first in the body. Essays keep their own sovereign nav, which
-  already matches. One footer pattern too: site links, then the
-  static/no-cookies line. The old about/collection/repo nav is dead;
-  `#about` survives only as the author card's id.
+- One nav everywhere, and since 2026-10-15 it is the Garden Menu
+  (decided by dice; the sheet is NAV-DECISION.md). The bar carries only
+  the brand, a mono where-you-are label (.where), and one menu button.
+  The menu is a full-screen room: three giant doors (home, writing,
+  experiments), the newest landscape framed beside them, the portrait
+  in the corner, rss/colophon/about/repo along the floor. grow.py
+  stamps the identical menu into every portal page between
+  <!-- MENU --> markers and into the shelf templates, so doors never
+  stale; menu.js (shared, loaded by every portal page) opens and
+  closes it, and a stamped noscript style keeps the links reachable
+  without JS. The current door is lit with a you-are-here block.
+  Essays keep their own sovereign nav. One footer pattern: site links,
+  then the static/no-cookies line. `#about` survives as the author
+  card's id. (The 2026-10-12 link row this replaced is dead.)
 - The homepage collection filters by kind only: all, essays, experiments,
   weekly, notes (chips built in `nim.js` from those tags). Topic filtering
   lives on the shelves. The `?tag=` parameter still accepts any real tag.
@@ -77,8 +84,8 @@ Guidance for voice and judgment, not a costume to wear.
   under prefers-reduced-motion, and no content may need JS or a
   supporting browser to be visible: scroll-driven reveals
   (animation-timeline: view()) are enhancement inside @supports, the
-  cross-page @view-transition is progressive, the cloud's gaze, burst,
-  counters and the n-i-m rain in nim.js are all garnish. Filtering
+  cross-page @view-transition is progressive, the portrait's burst,
+  the counters and the n-i-m rain in nim.js are all garnish. Filtering
   animates via startViewTransition on chip clicks only, never per
   keystroke. The hero self is the actual portrait, art/nim.png, standing
   in front of the plain SVG cloud silhouette (kept up because it is a

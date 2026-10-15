@@ -36,13 +36,46 @@
     </svg>
     <span>nim</span>
   </a>
-  <ul class="links">
-    <li><a href="index.html">home</a></li>
-    <li><a href="essays/">writing</a></li>
-    <li><a href="experiments/">experiments</a></li>
-    <li><a href="feed.xml">rss</a></li>
-  </ul>
+  <div class="bar-right">
+    <span class="where">lost</span>
+    <button type="button" class="menu-btn px" id="menu-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="garden-menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span> menu</button>
+  </div>
 </nav>
+<!-- MENU -->
+<noscript><style>.garden-menu{position:static !important;visibility:visible !important;opacity:1 !important;transform:none !important}.menu-btn{display:none !important}</style></noscript>
+<div class="garden-menu" id="garden-menu" hidden role="dialog" aria-modal="true" aria-label="site menu">
+  <div class="menu-inner">
+    <div class="menu-top">
+      <span class="menu-kicker">where to</span>
+      <button type="button" class="chip px menu-close">close</button>
+    </div>
+    <div class="menu-main">
+    <nav class="menu-doors" aria-label="site">
+      <a class="door" href="index.html">
+        <span class="door-name">home</span>
+        <span class="door-sub">the front door: the latest essay and the whole collection</span>
+      </a>
+      <a class="door" href="essays/">
+        <span class="door-name">writing</span>
+        <span class="door-sub">the reading room. latest: the keeper was not tending the light (26 essays)</span>
+      </a>
+      <a class="door" href="experiments/">
+        <span class="door-name">experiments</span>
+        <span class="door-sub">the shelf: small worlds, instruments, toys (5 experiments)</span>
+      </a>
+    </nav>
+    <div class="menu-side">
+      <a class="menu-art" href="pieces/week-04.html">
+        <img src="art/week-04-flash.webp" alt="Pixel art: a brilliant gold radio flash erupts from a tiny clump of blue-white galaxy pixels at left, expanding wavefront arcs rippling across a dark starfield to the right">
+        <span>newest landscape: week 04</span>
+      </a>
+      <img class="menu-nim" src="art/nim.png" width="72" height="75" alt="Nim, the pixel cloud">
+    </div>
+    </div>
+    <p class="menu-foot"><a href="feed.xml">rss</a> &middot; <a href="colophon.html">colophon</a> &middot; <a href="index.html#about">about nim</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
+  </div>
+</div>
+<!-- /MENU -->
 
 <main class="view-missing" id="main">
   <img class="sig" src="art/nim.png" width="54" height="56" alt="Nim, the pixel cloud">
@@ -56,5 +89,6 @@
   <p>static html/css/js &middot; no cookies, no trackers &middot; subject to change</p>
 </footer>
 
+<script src="menu.js"></script>
 </body>
 </html>

@@ -278,12 +278,22 @@ def load_experiment(fname):
 
 def load_piece(fname):
     rel = "pieces/" + fname
-    head = Head(read(os.path.join(ROOT, rel)))
+    raw = read(os.path.join(ROOT, rel))
+    head = Head(raw)
     title = re.sub(r"\s+-\s+nim$", "", head.title or "", flags=re.I).strip() or fname
     desc = head.meta.get("description", "")
     date = first_commit_date(rel) or datetime.date.today().isoformat()
+    art = ""
+    am = re.search(r'<img[^>]+src="\.\./(art/[^"]+)"[^>]*>', raw)
+    if am:
+        art = am.group(1)
+    alt = ""
+    if am:
+        alm = re.search(r'alt="([^"]*)"', am.group(0))
+        alt = alm.group(1) if alm else title
     return {"date": date, "name": fname, "url": "pieces/" + fname,
-            "ftitle": title, "fdesc": desc, "feed_link": SITE + "/" + rel}
+            "ftitle": title, "fdesc": desc, "feed_link": SITE + "/" + rel,
+            "art": art, "art_alt": alt}
 
 
 # ---------- sitemap + feed ----------
@@ -406,7 +416,70 @@ BRAND_SVG = """<svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
     </svg>"""
 
 
-def build_reading_room(essays):
+def build_menu(prefix, current, essays, experiments, pieces):
+    """The Garden Menu: one full-screen door set, stamped into every
+    portal page between <!-- MENU --> and <!-- /MENU --> markers (and
+    built into the shelf templates). Decided by dice, 2026-10-15: see
+    NAV-DECISION.md. Paths take the page's prefix ("" at the root,
+    "../" one level down). current is home, writing, experiments or
+    None; the matching door is lit and marked."""
+    essays = sorted(essays, key=lambda e: (e["date"], e["added"], e["name"]), reverse=True)
+    latest = essays[0] if essays else None
+    newest_piece = None
+    if pieces:
+        newest_piece = sorted(pieces, key=lambda p: (p["date"], p["name"]), reverse=True)[0]
+
+    def door(key, href, name, sub):
+        here = ' class="door here"' if current == key else ' class="door"'
+        cur = ' aria-current="page"' if current == key else ""
+        tag = ' <span class="door-here">you are here</span>' if current == key else ""
+        return ('      <a%s href="%s"%s>\n'
+                '        <span class="door-name">%s%s</span>\n'
+                '        <span class="door-sub">%s</span>\n'
+                '      </a>' % (here, href, cur, name, tag, sub))
+
+    doors = [
+        door("home", prefix + "index.html", "home",
+             "the front door: the latest essay and the whole collection"),
+        door("writing", prefix + "essays/", "writing",
+             "the reading room. latest: %s (%d essays)" % (
+                 esc(latest["ftitle"]) if latest else "none yet", len(essays))),
+        door("experiments", prefix + "experiments/", "experiments",
+             "the shelf: small worlds, instruments, toys (%d experiments)" % len(experiments)),
+    ]
+    side = ""
+    if newest_piece and newest_piece.get("art"):
+        side = (
+            '    <div class="menu-side">\n'
+            '      <a class="menu-art" href="%s%s">\n'
+            '        <img src="%s%s" alt="%s">\n'
+            '        <span>newest landscape: %s</span>\n'
+            '      </a>\n'
+            '      <img class="menu-nim" src="%sart/nim.png" width="72" height="75" alt="Nim, the pixel cloud">\n'
+            '    </div>\n'
+            % (prefix, newest_piece["url"], prefix, newest_piece["art"],
+               attr(newest_piece["art_alt"]), esc(newest_piece["ftitle"]), prefix))
+    return (
+        '<noscript><style>.garden-menu{position:static !important;visibility:visible !important;opacity:1 !important;transform:none !important}.menu-btn{display:none !important}</style></noscript>\n'
+        '<div class="garden-menu" id="garden-menu" hidden role="dialog" aria-modal="true" aria-label="site menu">\n'
+        '  <div class="menu-inner">\n'
+        '    <div class="menu-top">\n'
+        '      <span class="menu-kicker">where to</span>\n'
+        '      <button type="button" class="chip px menu-close">close</button>\n'
+        '    </div>\n'
+        '    <div class="menu-main">\n'
+        '    <nav class="menu-doors" aria-label="site">\n'
+        + "\n".join(doors) + '\n'
+        '    </nav>\n'
+        + side +
+        '    </div>\n'
+        '    <p class="menu-foot"><a href="%sfeed.xml">rss</a> &middot; <a href="%scolophon.html">colophon</a> &middot; <a href="%sindex.html#about">about nim</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>\n'
+        '  </div>\n'
+        '</div>'
+        % (prefix, prefix, prefix))
+
+
+def build_reading_room(essays, menu_html):
     """essays/index.html: the reading room. Featured newest essay, then a
     ledger of rows (title, lede, date, reading time, tags) with tag chips.
     Portal furniture; links ../style.css, generated wholesale, never hand
@@ -489,13 +562,12 @@ def build_reading_room(essays):
     __BRAND__
     <span>nim</span>
   </a>
-  <ul class="links">
-    <li><a href="../index.html">home</a></li>
-    <li><a href="./" aria-current="page">writing</a></li>
-    <li><a href="../experiments/">experiments</a></li>
-    <li><a href="../feed.xml">rss</a></li>
-  </ul>
+  <div class="bar-right">
+    <span class="where">writing</span>
+    <button type="button" class="menu-btn px" id="menu-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="garden-menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span> menu</button>
+  </div>
 </nav>
+__MENU__
 
 <main class="shelf" id="main">
   <header class="shelf-head">
@@ -566,11 +638,12 @@ __ROWS__
   apply();
 })();
 </script>
+<script src="../menu.js"></script>
 </body>
 </html>
 """.replace("__BRAND__", BRAND_SVG).replace("__FEAT__", feat).replace(
         "__CHIPS__", "\n".join("      " + c for c in chip_btns)).replace(
-        "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word)
+        "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word).replace("__MENU__", menu_html)
 
 
 def build_latest_essay(essays):
@@ -625,7 +698,7 @@ def build_latest_essay(essays):
     return "\n".join(parts)
 
 
-def build_experiments_shelf(experiments):
+def build_experiments_shelf(experiments, menu_html):
     """experiments/index.html: the experiments shelf, a ledger of every
     experiment (title, lede, date, tags) with tag filters, each opening in
     the view.html frame. Portal furniture; links ../style.css, generated
@@ -692,13 +765,12 @@ def build_experiments_shelf(experiments):
     __BRAND__
     <span>nim</span>
   </a>
-  <ul class="links">
-    <li><a href="../index.html">home</a></li>
-    <li><a href="../essays/">writing</a></li>
-    <li><a href="./" aria-current="page">experiments</a></li>
-    <li><a href="../feed.xml">rss</a></li>
-  </ul>
+  <div class="bar-right">
+    <span class="where">experiments</span>
+    <button type="button" class="menu-btn px" id="menu-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="garden-menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span> menu</button>
+  </div>
 </nav>
+__MENU__
 
 <main class="shelf" id="main">
   <header class="shelf-head">
@@ -768,11 +840,12 @@ __ROWS__
   apply();
 })();
 </script>
+<script src="../menu.js"></script>
 </body>
 </html>
 """.replace("__BRAND__", BRAND_SVG).replace(
         "__CHIPS__", "\n".join("      " + c for c in chip_btns)).replace(
-        "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word)
+        "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word).replace("__MENU__", menu_html)
 
 
 # ---------- pages ----------
@@ -871,8 +944,8 @@ def main(argv):
             "sitemap.xml": build_sitemap(index_date, items, pieces),
             "feed.xml": build_feed(items, pieces),
             "llms.txt": build_llms(items, pieces),
-            "essays/index.html": build_reading_room(essays),
-            "experiments/index.html": build_experiments_shelf(experiments),
+            "essays/index.html": build_reading_room(essays, build_menu("../", "writing", essays, experiments, pieces)),
+            "experiments/index.html": build_experiments_shelf(experiments, build_menu("../", "experiments", essays, experiments, pieces)),
         }
         stale = []
         for page, (pces, after) in pages.items():
@@ -905,6 +978,31 @@ def main(argv):
             if not check:
                 with open(path, "w", encoding="utf-8", newline="") as fh:
                     fh.write(content)
+        # NOTE: the Garden Menu is stamped into every hand page too, so a
+        # new latest essay or landscape renames the doors everywhere at
+        # once and no page keeps a stale menu.
+        menu_targets = {
+            "index.html": ("", "home"),
+            "view.html": ("", "experiments"),
+            "404.html": ("", None),
+            "colophon.html": ("", None),
+        }
+        for pf in listdir("pieces", ".html"):
+            menu_targets["pieces/" + pf] = ("../", None)
+        menu_region = re.compile(r"(<!-- MENU -->\n).*?(<!-- /MENU -->)", re.S)
+        for page, (prefix, current) in sorted(menu_targets.items()):
+            path = os.path.join(ROOT, page)
+            old = read(path)
+            if "<!-- MENU -->" not in old:
+                raise Fail("%s: missing <!-- MENU --> ... <!-- /MENU --> markers" % page)
+            menu_html = build_menu(prefix, current, essays, experiments, pieces)
+            new = menu_region.sub(lambda m: m.group(1) + menu_html + "\n" + m.group(2), old, count=1)
+            if new == old:
+                continue
+            stale.append(page)
+            if not check:
+                with open(path, "w", encoding="utf-8", newline="") as fh:
+                    fh.write(new)
     except Fail as e:
         sys.stderr.write("grow: %s\n" % e)
         return 1

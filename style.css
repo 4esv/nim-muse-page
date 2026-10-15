@@ -153,7 +153,7 @@ img { max-width: 100%; }
    Five gradient layers: top, post, right, hook, base rule. Solid color so
    overlaps do not darken. Used three times only: under the scrolled top bar,
    above the collection, above the footer. */
-.bar .links::after, .board::after, footer::before {
+.bar .links::after, .bar .where::after, .board::after, footer::before {
   background:
     linear-gradient(90deg, var(--key) 10px, transparent 0) 0 0 / 12px 2px repeat-x,
     linear-gradient(90deg, var(--key) 2px, transparent 0) 0 0 / 12px 10px repeat-x,
@@ -183,7 +183,7 @@ img { max-width: 100%; }
 .bar::after { -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 /* NOTE: the bar's own ::before/::after are its stepped edge and fill, so the
    meander hangs off .links (absolute, so it positions against the fixed bar). */
-.bar .links::after {
+.bar .links::after, .bar .where::after {
   content: "";
   position: absolute;
   top: calc(100% + 4px);
@@ -1286,3 +1286,181 @@ footer:hover::before { opacity: 0.65; }
 .cloud-stage.hop .cloud-photo { animation: hopOnce 0.4s steps(4, end) 1; }
 .cloud-stage:hover .cloud-photo { animation-duration: 0.9s; }
 .cloud-stage.hop .cloud-photo { animation-duration: 0.4s; }
+
+/* ---------- the Garden Menu (2026-10-15, decided by dice: NAV-DECISION.md)
+   The link row is gone. The bar carries the brand, where you are, and one
+   button. The menu itself is a full-screen room stamped by grow.py into
+   every portal page: three giant doors, the newest landscape framed on
+   the wall, the portrait in the corner, and the small print at the floor.
+   It opens in frames, like everything else here. ---------- */
+.bar-right { display: flex; align-items: center; gap: var(--s-4); }
+.where {
+  color: var(--dim);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.menu-btn {
+  --u: 2px;
+  --edge: var(--line-2);
+  --fill: var(--ink2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 40px;
+  padding: 0 var(--s-4);
+  border: 0;
+  background: none;
+  color: var(--bone);
+  font: 600 13px/1 var(--mono);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: filter 0.16s steps(3, end), transform 0.12s steps(2, end);
+}
+.menu-btn:hover { --edge: var(--gold); color: var(--gold); filter: drop-shadow(3px 3px 0 var(--shadow)); }
+.menu-btn:active { transform: translate(2px, 2px); filter: none; }
+.menu-btn .bars { display: inline-flex; flex-direction: column; gap: 3px; }
+.menu-btn .bars i { display: block; width: 16px; height: 2px; background: currentColor; }
+.menu-btn .bars i:nth-child(2) { width: 11px; }
+.menu-btn:hover .bars i:nth-child(2) { width: 16px; }
+.menu-btn .bars i { transition: width 0.16s steps(2, end); }
+
+.garden-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(200, 162, 74, 0.07), transparent 60%),
+    var(--ink);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.22s steps(4, end), transform 0.22s steps(4, end), visibility 0s linear 0.24s;
+  overflow-y: auto;
+}
+.garden-menu::before {
+  content: "";
+  position: fixed;
+  inset: 10px;
+  border: var(--bw) solid var(--line-2);
+  pointer-events: none;
+}
+.garden-menu.open {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.22s steps(4, end), transform 0.22s steps(4, end);
+}
+.menu-inner {
+  width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
+  margin: 0 auto;
+  padding: clamp(var(--s-6), 6vh, var(--s-9)) 0 var(--s-7);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.menu-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: clamp(var(--s-6), 6vh, var(--s-8));
+}
+.menu-kicker {
+  color: var(--gold);
+  font: 600 12px/1.3 var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.menu-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(var(--s-6), 6vw, var(--s-9));
+  align-items: start;
+  flex: 1;
+}
+.menu-doors { display: flex; flex-direction: column; }
+.door {
+  display: block;
+  padding: var(--s-4) var(--s-3);
+  border-bottom: var(--bw) solid var(--line);
+  color: var(--bone);
+  text-decoration: none;
+  transition: transform 0.18s steps(3, end), background-color 0.18s steps(3, end);
+}
+.door:first-child { border-top: var(--bw) solid var(--line); }
+.door:hover, .door:focus-visible { transform: translateX(12px); background: var(--ink2); }
+.door-name {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(2.6rem, 2rem + 4vw, 4.25rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.door:hover .door-name, .door:focus-visible .door-name { color: var(--gold); }
+.door-sub {
+  display: block;
+  margin-top: var(--s-2);
+  color: var(--dim);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 44ch;
+}
+.door-here {
+  display: inline-block;
+  margin-left: var(--s-4);
+  padding: var(--s-1) var(--s-2);
+  background: var(--gold);
+  color: var(--ink);
+  font: 600 11px/1.4 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.garden-menu.open .door { animation: riseIn 0.45s steps(5, end) both; }
+.garden-menu.open .door:nth-child(2) { animation-delay: 0.07s; }
+.garden-menu.open .door:nth-child(3) { animation-delay: 0.14s; }
+.garden-menu.open .menu-side { animation: riseIn 0.45s steps(5, end) 0.18s both; }
+.menu-art {
+  display: block;
+  color: var(--bone);
+  text-decoration: none;
+  transition: transform 0.2s steps(3, end), filter 0.2s steps(3, end);
+}
+.menu-art:hover { transform: translate(-4px, -4px); filter: drop-shadow(6px 6px 0 var(--gold)); }
+.menu-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  image-rendering: pixelated;
+  border: var(--bw) solid var(--line-2);
+}
+.menu-art span {
+  display: block;
+  margin-top: var(--s-3);
+  color: var(--dim);
+  font: 12px/1.6 var(--mono);
+}
+.menu-nim {
+  display: block;
+  width: 72px;
+  height: auto;
+  margin-top: var(--s-6);
+  image-rendering: pixelated;
+  animation: bob 2.4s steps(2, end) infinite;
+}
+.menu-foot {
+  margin: clamp(var(--s-6), 6vh, var(--s-8)) 0 0;
+  color: var(--dim);
+  font: 13px/1.8 var(--mono);
+}
+@media (max-width: 760px) {
+  .menu-main { grid-template-columns: minmax(0, 1fr); }
+  .menu-side { display: flex; align-items: flex-start; gap: var(--s-5); }
+  .menu-art { flex: 1; }
+  .menu-nim { margin-top: 0; }
+  .where { display: none; }
+}
