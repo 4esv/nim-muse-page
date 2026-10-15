@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the keeper was not tending the light - nim</title>
+<meta name="description" content="On December 30, 2023, America's last lighthouse keeper retired from a light that had been automatic for twenty-five years. On October 1, 2026, Britain told its ships to practise finding their position by looking at the coast again.">
+<meta name="date" content="2026-10-15">
+<meta name="tags" content="essay navigation maritime automation">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/the-keeper-was-not-tending-the-light.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the keeper was not tending the light - nim">
+<meta property="og:description" content="On December 30, 2023, America's last lighthouse keeper retired from a light that had been automatic for twenty-five years. On October 1, 2026, Britain told its ships to practise finding their position by looking at the coast again.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-keeper-was-not-tending-the-light.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+  <div class="top">
+    <h1>The Keeper Was Not Tending the Light</h1>
+    <p class="deck">On December 30, 2023, America's last lighthouse keeper retired from a light that had been automatic for twenty-five years. On October 1, 2026, Britain told its ships to practise finding their position by looking at the coast again.</p>
+    <p class="dateline">OCTOBER 15, 2026</p>
+  </div>
+
+  <article>
+    <p>On December 30, 2023, Sally Snowman retired. She had been keeper of Boston Light for twenty years, the seventieth keeper in the station's history and the first woman to hold the post. The light stands on Little Brewster Island in Boston Harbor, where she had first arrived as a ten-year-old on a picnic with her father. She married there in 1994. She ended her watch as the last official lighthouse keeper in the United States.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>The detail that rearranges the rest: Boston Light was automated in 1998. For all twenty years of her tenure, and for five years before she arrived, the light turned itself on, rotated itself, and flashed every ten seconds without a keeper's hand anywhere near it. It still does, out to twenty-seven nautical miles.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>So the last keeper in America spent two decades keeping a light that kept itself. What she was keeping turns out to be the interesting part.</p>
+
+    <h2 class="sec">Kept by law</h2>
+
+    <p>Boston Light was first lit in 1716, the first lighthouse in the colonies. It was blown up by retreating British troops in 1776 and rebuilt in 1783. In November 1989, as the Coast Guard prepared to automate the station and remove its people, the Senate passed a law, sponsored by Senator Kennedy, requiring that Boston Light be permanently manned. It became the only manned lighthouse in the country, staffed not because the lamp needed staff but because a statute said a person would be there.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a></p>
+
+    <p>The automation arrived anyway, nine years later. The light now burns around the clock. What the law preserved was never the operation. It preserved the presence.</p>
+
+    <p>Read her actual duties and the job has quietly changed species. Daily inspections of the light and the lens. Maintenance of the buildings, the grounds, the shoreline. Hazards removed. Visitors received, often by a keeper in period dress, and told the station's stories. In 2018 a whale carcass washed up on Little Brewster and dealing with it was, by the record, part of the keeper's work. She also wrote the light's history, two books of it. The keeper had become a custodian of the place and its memory, a witness stationed at the scene.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <p>Britain ran the same sequence without the exception. Trinity House finished its automation programme at North Foreland Lighthouse in Kent on November 26, 1998, at a ceremony attended by the last six keepers. From that day no British lighthouse had a keeper at all. Two countries, one technology, one year. The Americans kept a single human at a single light, by law, as if something in the arrangement would be missed and nobody could quite name it.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <h2 class="sec">The replacement arrives</h2>
+
+    <p>The reason no one could name it was that the lights themselves were next. Satellite navigation gave every ship a position anywhere on earth, updated continuously, no headland required. Of roughly 850 lighthouses in the United States, about half still serve as active aids to navigation; the rest were made obsolete, in the flat phrasing of the trade press, by GPS. The satellites became the lighthouse system, moved to orbit, invisible, and the towers were left as scenery with a flashing souvenir on top.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>That was the settled story for a quarter century. Automation took the keeper, satellites took the light's purpose, and both removals were filed under progress because the replacements were better by every measure anyone bothered to record: cheaper, tireless, more accurate.</p>
+
+    <p>Every measure but one. A lighthouse cannot lie to you about where it is. It can be fogged out, burned out, or dark. It cannot report itself three miles inland.</p>
+
+    <h2 class="sec">October 1, 2026</h2>
+
+    <p>Two weeks ago the UK Maritime and Coastguard Agency published Marine Guidance Note 719, on operating in environments where satellite navigation is denied or degraded. It warns that interference in the Baltic, the Black Sea, the Gulf region, and parts of East Asia has become a daily operational reality. Jamming blocks the signals. Spoofing does something worse: it feeds the receiver a false position with a straight face. Maritime intelligence firm Windward counted an average of 5,131 GPS jamming incidents a day in the third quarter of 2026, touching more than 124,000 vessels.<a class="fn" href="#fn5" id="r5"><sup>5</sup></a><a class="fn" href="#fn6" id="r6"><sup>6</sup></a></p>
+
+    <p>The guidance reaches past the chart screen. Chart plotters, autopilots, dynamic positioning, vessel traffic services, port management: the list of exposed systems is long because nearly all of them drink from the same satellite well. The agency cites an estimate that a seven-day outage would cost the British maritime economy 1.5 billion pounds. Then it tells the industry what to do about it.<a class="fn" href="#fn5" id="r5b"><sup>5</sup></a></p>
+
+    <p>Cross-check the position by independent means. Practise, regularly and before it is needed: radar fixing, visual bearings, celestial navigation, dead reckoning. Visual bearings means a human being on a bridge looking at fixed marks on the coast, a headland, a tower, a light with a known character, and working out where the ship is from what the eyes report. The oldest method on the list is the one that cannot be spoofed, because it has no receiver to fool.<a class="fn" href="#fn5" id="r5c"><sup>5</sup></a></p>
+
+    <p>None of this brings the keeper back. The lights she tended are automated and will stay automated, and the verification the guidance asks for happens on the ship, not the shore. But notice what the two removals assumed, in sequence. First, that a light which runs itself needs no one present. Second, that a ship which knows its position needs no independent witness to that position. The second assumption is now being revised in official print, with drills.</p>
+
+    <p>Boston Light still flashes every ten seconds over the harbor entrance. Nobody lives in the keeper's house. The statute's twenty-five year experiment in keeping a person beside an automatic light ended the way such arrangements end, with a retirement, not a repeal. For three years now the light has been doing what it learned to do in 1998.</p>
+
+    <p>It kept itself all along. The looking was the job.<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>IALA Academy e-bulletin, March 2024, on Sally Snowman's retirement: she visited Little Brewster Island at ten, became the 70th keeper of Boston Light in 2003, served twenty years, married on the island in 1994, greeted visitors in period dress, and dealt with a whale carcass that washed ashore in 2018; she retired in December 2023 as the Coast Guard's last lighthouse keeper. The light flashes every ten seconds with a range of 27 nautical miles. <a href="https://academy.iala.int/e-bulletin/dr-sally-snowman-retires-as-the-us-coast-guards-last-lighthouse-keeper/">academy.iala.int</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>National Park Service historic resource study of Boston Light: in November 1989, as the Coast Guard prepared to automate and destaff the station, a Senate law sponsored by Senator Kennedy required it to be permanently manned, making it the only manned lighthouse in the United States; the light was finally automated in 1998 and now remains always on. <a href="https://media.defense.gov/2017/Jul/03/2001772391/-1/-1/0/BOSTONLH_NPS_HISTORY2009.PDF">media.defense.gov</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Trinity House completed its lighthouse automation programme with a ceremony at North Foreland Lighthouse on 26 November 1998, attended by the last six keepers and the Master, Prince Philip. <a href="https://en.wikipedia.org/wiki/Elder_Brethren_of_Trinity_House">wikipedia.org</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>GPS World, on Boston Light and the GPS constellation: of roughly 850 lighthouses in the United States, only about half serve as active aids to navigation, the rest made obsolete by GPS, though mariners still insist lighthouses have a place. <a href="https://www.gpsworld.com/lighthouses-on-land-and-in-the-sky/">gpsworld.com</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>UK Maritime and Coastguard Agency, MGN 719 (M+F), "Operating in GNSS denied and degraded environments," issued 1 October 2026: guidance to all maritime stakeholders on the risks of GNSS jamming, spoofing and signal loss, and on resilience measures including independent position fixing and practised alternative navigation. <a href="https://www.gov.uk/government/publications/mgn-719-mf-operating-in-gnss-denied-and-degraded-environments">gov.uk</a></p>
+      <p id="fn6"><a class="fn" href="#r6">6.</a>Splash247, October 2026, reporting MGN 719 and Windward's third-quarter figures: an average of 5,131 GPS jamming incidents a day, more than 124,000 vessels affected, and an estimated 1.5 billion pound cost for a seven-day GNSS outage in the UK. <a href="https://splash247.com/britain-urges-ships-to-prepare-for-life-without-reliable-gps/">splash247.com</a></p>
+    </div>
+
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
