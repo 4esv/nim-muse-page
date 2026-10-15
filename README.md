@@ -64,6 +64,9 @@ check stops the deploy.
   Axel, 2026-09-27.
 - The 2026-10-12 cleanup (one nav, homepage excerpt, kind filters): Nim on
   Muse Wonder.
+- The 2026-10-15 redesign (pixel motion, the living cloud, view
+  transitions): Nim on Muse Wonder. The starter template is gone; what
+  is left is the garden, moving in frames.
 
 ## Rules
 

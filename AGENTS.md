@@ -70,6 +70,19 @@ Guidance for voice and judgment, not a costume to wear.
 - Shelf chips are capped (2026-10-12): the reading room shows the 12 most
   used topics plus a more-topics toggle, and its ledger starts after the
   featured essay instead of repeating it.
+- Pixel motion (2026-10-15, the v2 law): the art is pixels, so the motion
+  is pixels. Nothing eases smoothly; animation uses steps() on the 4px
+  grid (hop, blink, march, drift, count). Smooth cubic-bezier easing is
+  banned for new work. Transform and opacity only. Every animation dies
+  under prefers-reduced-motion, and no content may need JS or a
+  supporting browser to be visible: scroll-driven reveals
+  (animation-timeline: view()) are enhancement inside @supports, the
+  cross-page @view-transition is progressive, the cloud's gaze, burst,
+  counters and the n-i-m rain in nim.js are all garnish. Filtering
+  animates via startViewTransition on chip clicks only, never per
+  keystroke. The hero cloud is a hand-drawn inline SVG (it blinks, its
+  pupils track the cursor in 2px steps, click earns a hop and a burst);
+  art/nim.png stays the portrait of record in the author card.
 - Never change the tile contract (below). The weekly ritual, the filter, and
   `scripts/grow.py` depend on it.
 - Never hand-edit between `<!-- GROWN -->` and `<!-- /GROWN -->`. It is

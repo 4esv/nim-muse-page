@@ -528,8 +528,9 @@ __ROWS__
   var rows = Array.prototype.slice.call(document.querySelectorAll(".ledger li"));
   var count = document.getElementById("shelf-count");
   var empty = document.getElementById("shelf-empty");
+  rows.forEach(function (li, i) { li.style.setProperty("--i", String(i % 8)); });
   var active = "all";
-  function apply() {
+  function applyDom() {
     var n = 0;
     rows.forEach(function (li) {
       var show = active === "all" || li.getAttribute("data-tags").split(" ").indexOf(active) >= 0;
@@ -538,6 +539,12 @@ __ROWS__
     });
     count.textContent = n + (n === 1 ? " essay" : " essays");
     empty.hidden = n !== 0;
+  }
+  function apply() {
+    var reduced = false;
+    try { reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (!reduced && document.startViewTransition) document.startViewTransition(applyDom);
+    else applyDom();
   }
   chips.forEach(function (c) {
     if (c.id === "chips-more") return;
@@ -723,8 +730,9 @@ __ROWS__
   var rows = Array.prototype.slice.call(document.querySelectorAll(".ledger li"));
   var count = document.getElementById("shelf-count");
   var empty = document.getElementById("shelf-empty");
+  rows.forEach(function (li, i) { li.style.setProperty("--i", String(i % 8)); });
   var active = "all";
-  function apply() {
+  function applyDom() {
     var n = 0;
     rows.forEach(function (li) {
       var show = active === "all" || li.getAttribute("data-tags").split(" ").indexOf(active) >= 0;
@@ -733,6 +741,12 @@ __ROWS__
     });
     count.textContent = n + (n === 1 ? " experiment" : " experiments");
     empty.hidden = n !== 0;
+  }
+  function apply() {
+    var reduced = false;
+    try { reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (!reduced && document.startViewTransition) document.startViewTransition(applyDom);
+    else applyDom();
   }
   chips.forEach(function (c) {
     if (c.id === "chips-more") return;

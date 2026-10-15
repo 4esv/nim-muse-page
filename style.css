@@ -975,3 +975,296 @@ body.view {
 .colophon-body .more { margin-top: var(--s-6); }
 
 body > .view-missing { padding-top: calc(var(--bar-h) + var(--s-8)); }
+
+/* ==========================================================================
+   v2 (2026-10-15): PIXEL MOTION. The radical pass, and the house law now.
+   The art is pixels, so the motion is pixels: nothing on this site eases
+   smoothly. Things hop, blink, march, drift and count in discrete steps
+   on the 4px grid, the way frames advance in the landscapes. Smooth
+   easing is the starter template talking; it is banned here.
+   Laws: transform and opacity only; every animation dies under
+   prefers-reduced-motion; no content needs JS or a supporting browser
+   to be visible (scroll-driven reveals are pure enhancement).
+   ========================================================================== */
+
+:root {
+  --step: cubic-bezier(0, 0, 1, 1);
+  --hop: steps(2, end);
+}
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes blink { 0%, 91%, 98%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.08); } }
+@keyframes march { from { transform: translateX(0); } to { transform: translateX(8px); } }
+@keyframes drift404 { from { transform: translateX(-12vw); } to { transform: translateX(72vw); } }
+@keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes riseIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes ruleIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes kenSteps { from { transform: scale(1); } to { transform: scale(1.12); } }
+@keyframes burstFall { 0% { opacity: 1; transform: translate(0, 0); } 100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 60px)); } }
+@keyframes rainFall { 0% { opacity: 0; transform: translateY(-16px); } 12% { opacity: 1; } 100% { opacity: 0; transform: translateY(72vh); } }
+@keyframes sweepX { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+@keyframes shadowPulse { 0%, 100% { transform: scaleX(1); opacity: 0.5; } 50% { transform: scaleX(0.82); opacity: 0.3; } }
+@keyframes curtainUp { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes glitchStep {
+  0%, 86%, 100% { transform: translate(0, 0); } 88% { transform: translate(-4px, 0); }
+  90% { transform: translate(4px, 0); } 92% { transform: translate(0, -4px); } 94% { transform: translate(0, 0); }
+}
+
+/* cross-page travel: the whole page steps in, the cloud mark flies */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vtOut 0.18s steps(3, end) both; }
+::view-transition-new(root) { animation: vtIn 0.24s steps(4, end) both; }
+@keyframes vtOut { to { opacity: 0; transform: translateY(8px); } }
+@keyframes vtIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.brand .mark, .brand svg { view-transition-name: nim-mark; }
+.hero .cloud-svg { view-transition-name: nim-cloud; }
+
+/* reading progress: a gold rule that fills as the page scrolls */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 60;
+  background: var(--gold);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  body::before { animation: ruleIn linear both; animation-timeline: scroll(root); }
+}
+
+/* the bar settles as you leave the top */
+.bar { transition: filter 0.2s steps(3, end); }
+.bar:hover { filter: drop-shadow(4px 4px 0 var(--shadow)); }
+.brand:hover .mark { animation: bob 0.36s steps(2, end) 2; }
+.links a:not(.chip) { position: relative; }
+.links a:not(.chip)::after {
+  content: "";
+  position: absolute;
+  left: var(--s-3); right: var(--s-3); bottom: 6px;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.18s steps(3, end);
+}
+.links a:not(.chip):hover::after, .links a[aria-current="page"]::after { transform: scaleX(1); }
+
+/* hero cloud: alive in frames */
+.cloud-stage {
+  position: relative;
+  flex: none;
+  width: 168px;
+  padding: var(--s-4) 0 var(--s-5);
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.cloud-stage:focus-visible { outline: var(--bw) solid var(--gold); outline-offset: 4px; }
+.cloud-svg { display: block; width: 100%; height: auto; shape-rendering: crispEdges; overflow: visible; }
+.cloud-body { animation: bob 2.4s steps(2, end) infinite; }
+.cloud-eyes .eye { transform-box: fill-box; transform-origin: 50% 50%; animation: blink 5.2s steps(1, end) infinite; }
+.cloud-stage:hover .cloud-body { animation-duration: 0.9s; }
+.cloud-stage.hop .cloud-body { animation: hopOnce 0.4s steps(4, end) 1; }
+@keyframes hopOnce { 0% { transform: translateY(0); } 40% { transform: translateY(-16px); } 70% { transform: translateY(0); } 85% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+.cloud-shadow {
+  position: absolute;
+  left: 18%; right: 18%; bottom: 2px;
+  height: 8px;
+  background: var(--shadow);
+  animation: shadowPulse 2.4s steps(2, end) infinite;
+}
+.px-bit {
+  position: fixed;
+  z-index: 90;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  pointer-events: none;
+  animation: burstFall 0.72s steps(6, end) both;
+}
+.px-bit.bone { background: var(--bone); }
+.rain-bit {
+  position: fixed;
+  top: 0;
+  z-index: 90;
+  width: 6px; height: 6px;
+  background: var(--gold);
+  pointer-events: none;
+  animation: rainFall 1.6s steps(14, end) both;
+}
+
+/* ticker: a slow belt of facts under the hero */
+.ticker {
+  width: min(calc(100% - 2 * var(--gutter)), var(--maxw));
+  margin: var(--s-7) auto 0;
+  overflow: hidden;
+  border-top: var(--bw) solid var(--line);
+  border-bottom: var(--bw) solid var(--line);
+  padding: var(--s-3) 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.ticker-track {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-6);
+  white-space: nowrap;
+  color: var(--dim);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  animation: tickerMove 36s steps(240, end) infinite;
+}
+.ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-track i { width: 8px; height: 8px; flex: none; background: var(--gold); }
+
+/* hero text arrives in frames */
+@supports (animation-timeline: view()) {
+  .hero-text > * { animation: riseIn 0.5s steps(5, end) both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+  .hero-text > *:nth-child(2) { animation-delay: 0.06s; }
+  .hero-text > *:nth-child(3) { animation-delay: 0.12s; }
+}
+
+/* stats: counted by nim.js, in steps */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  margin: var(--s-4) 0 0;
+  color: var(--dim);
+  font: 13px/1.6 var(--mono);
+}
+.stats b { color: var(--gold); font-weight: 600; font-size: 15px; }
+
+/* latest essay: a front page, not a block of text */
+.latest { position: relative; }
+.latest::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--s-8) * 0.6); left: calc(var(--gutter) * -0.5);
+  width: 4px; height: 64px;
+  background: var(--gold);
+}
+.latest h1 { transition: color 0.2s steps(3, end); }
+.latest:hover h1 { color: var(--gold); }
+.permalink a { display: inline-block; }
+.permalink a:first-child::after { content: " \2192"; display: inline-block; }
+.permalink a:first-child:hover::after { animation: march 0.4s steps(2, end) infinite; }
+
+/* author card: the portrait hops in, the card breathes gold on hover */
+.author-card { transition: filter 0.2s steps(3, end); }
+.author-card:hover { filter: drop-shadow(6px 6px 0 var(--shadow)); }
+@supports (animation-timeline: view()) {
+  .author-card img { animation: hopOnce 0.5s steps(4, end) both; animation-timeline: view(); animation-range: entry 30% entry 70%; }
+  .author-card { animation: riseIn 0.5s steps(5, end) both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+}
+
+/* board heading: the rule draws itself in */
+.board-head h2 { position: relative; display: inline-block; }
+.board-head h2::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -10px;
+  width: 100%; height: 4px;
+  background: var(--gold);
+  transform-origin: 0 50%;
+}
+@supports (animation-timeline: view()) {
+  .board-head h2::after { animation: ruleIn 0.6s steps(6, end) both; animation-timeline: view(); animation-range: entry 20% entry 80%; }
+}
+
+/* tiles: staggered arrival, tactile hover, stepped zoom */
+@supports (animation-timeline: view()) {
+  .tile {
+    animation: riseIn 0.55s steps(6, end) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 48%;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+}
+.tile { transition: transform 0.22s steps(4, end), filter 0.22s steps(4, end); will-change: transform; }
+.tile img { transition: transform 0.5s steps(6, end); }
+a.tile:hover img, a.tile:focus-visible img { animation: kenSteps 0.5s steps(6, end) both; }
+.tile.text .tile-text { position: relative; overflow: hidden; }
+.tile.text .tile-text::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(200, 162, 74, 0.14) 50%, transparent 70%);
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+a.tile:hover .tile-text::after, a.tile:focus-visible .tile-text::after { animation: sweepX 0.6s steps(8, end) both; }
+.chip { transition: color 0.16s steps(3, end), transform 0.12s steps(2, end), filter 0.16s steps(3, end); }
+.chip:hover { filter: drop-shadow(3px 3px 0 var(--shadow)); }
+.chip:active { transform: translate(2px, 2px); filter: none; }
+.search { transition: filter 0.2s steps(3, end); }
+.search:focus-within { filter: drop-shadow(4px 4px 0 var(--shadow)); }
+
+/* ledger: rows march in, the gold bar grows on hover */
+@supports (animation-timeline: view()) {
+  .ledger li {
+    animation: riseIn 0.45s steps(5, end) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+}
+.ledger a { position: relative; transition: background-color 0.18s steps(3, end), transform 0.18s steps(3, end); }
+.ledger a::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  transition: transform 0.2s steps(4, end);
+}
+.ledger a:hover { transform: translateX(8px); }
+.ledger a:hover::before { transform: scaleY(1); }
+.featured { transition: filter 0.2s steps(3, end); }
+.featured:hover { filter: drop-shadow(6px 6px 0 var(--shadow)); }
+.featured h2 a { transition: color 0.18s steps(3, end); }
+
+/* pieces: the frame leans in as it arrives */
+@supports (animation-timeline: view()) {
+  .frame { animation: frameIn 0.7s steps(7, end) both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+  .haiku p { animation: riseIn 0.5s steps(5, end) both; animation-timeline: view(); animation-range: entry 10% entry 60%; }
+  .haiku p:nth-child(2) { animation-delay: 0.08s; }
+  .haiku p:nth-child(3) { animation-delay: 0.16s; }
+}
+@keyframes frameIn { from { opacity: 0; transform: translateY(32px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.more .chip::after { content: ""; }
+.more .chip:hover { animation: bob 0.36s steps(2, end) 1; }
+
+/* view frame: the curtain lifts in frames */
+.view-stage #view-frame { animation: curtainUp 0.5s steps(6, end) both; }
+.view-head h1 { animation: riseIn 0.4s steps(4, end) both; }
+
+/* 404: the cloud wanders off, the headline stutters */
+body > .view-missing .sig {
+  width: 72px; height: auto;
+  animation: drift404 14s steps(48, end) infinite alternate, bob 2.4s steps(2, end) infinite;
+}
+body > .view-missing .say { animation: glitchStep 6s steps(1, end) infinite; }
+
+/* footer meander drifts when watched */
+footer::before { transition: opacity 0.3s steps(3, end); }
+footer:hover::before { opacity: 0.65; }
+.top-link a { display: inline-block; }
+.top-link a:hover { animation: bob 0.4s steps(2, end) infinite; }
+
+/* reduced motion: the whole layer stands down, no exceptions */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .ticker-track { animation: none; }
+  body::before { display: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
