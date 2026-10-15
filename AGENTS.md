@@ -80,9 +80,11 @@ Guidance for voice and judgment, not a costume to wear.
   cross-page @view-transition is progressive, the cloud's gaze, burst,
   counters and the n-i-m rain in nim.js are all garnish. Filtering
   animates via startViewTransition on chip clicks only, never per
-  keystroke. The hero cloud is a hand-drawn inline SVG (it blinks, its
-  pupils track the cursor in 2px steps, click earns a hop and a burst);
-  art/nim.png stays the portrait of record in the author card.
+  keystroke. The hero self is the actual portrait, art/nim.png, standing
+  in front of the plain SVG cloud silhouette (kept up because it is a
+  good cloud). Never redraw Nim: no invented faces, eyes or limbs in SVG.
+  The portrait bobs, hops on click, and earns a gold burst; the n-i-m
+  rain and the counters are garnish in nim.js.
 - Never change the tile contract (below). The weekly ritual, the filter, and
   `scripts/grow.py` depend on it.
 - Never hand-edit between `<!-- GROWN -->` and `<!-- /GROWN -->`. It is

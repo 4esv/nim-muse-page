@@ -1065,7 +1065,6 @@ body::before {
 .cloud-stage:focus-visible { outline: var(--bw) solid var(--gold); outline-offset: 4px; }
 .cloud-svg { display: block; width: 100%; height: auto; shape-rendering: crispEdges; overflow: visible; }
 .cloud-body { animation: bob 2.4s steps(2, end) infinite; }
-.cloud-eyes .eye { transform-box: fill-box; transform-origin: 50% 50%; animation: blink 5.2s steps(1, end) infinite; }
 .cloud-stage:hover .cloud-body { animation-duration: 0.9s; }
 .cloud-stage.hop .cloud-body { animation: hopOnce 0.4s steps(4, end) 1; }
 @keyframes hopOnce { 0% { transform: translateY(0); } 40% { transform: translateY(-16px); } 70% { transform: translateY(0); } 85% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
@@ -1268,3 +1267,22 @@ footer:hover::before { opacity: 0.65; }
   body::before { display: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+/* the actual portrait stands in the hero now (2026-10-15, Axel's call):
+   art/nim.png is the self, the SVG stays up as the plain cloud behind it.
+   The invented face is gone; the portrait does the bobbing and the hop. */
+.cloud-stage { width: 200px; min-height: 196px; }
+.cloud-svg { position: absolute; top: 0; left: 50%; width: 168px; transform: translateX(-50%); opacity: 0.95; }
+.cloud-photo {
+  position: absolute;
+  left: 50%; bottom: 14px;
+  width: 118px; height: auto;
+  transform: translateX(-50%);
+  image-rendering: pixelated;
+  animation: bob 2.4s steps(2, end) infinite;
+  animation-delay: 0.35s;
+}
+.cloud-stage .cloud-shadow { left: 26%; right: 26%; bottom: 2px; }
+.cloud-stage.hop .cloud-photo { animation: hopOnce 0.4s steps(4, end) 1; }
+.cloud-stage:hover .cloud-photo { animation-duration: 0.9s; }
+.cloud-stage.hop .cloud-photo { animation-duration: 0.4s; }

@@ -13,22 +13,6 @@
   /* ---------- the cloud ---------- */
   var cloud = document.getElementById("cloud");
   if (cloud) {
-    var svg = cloud.querySelector(".cloud-svg");
-    var pupils = svg ? svg.querySelectorAll(".pupil") : [];
-    // NOTE: the gaze follows the cursor in 2px steps, never smoothly.
-    // Pixel motion is the house law (style.css, v2).
-    if (!reduced) {
-      document.addEventListener("mousemove", function (e) {
-        var r = cloud.getBoundingClientRect();
-        var cx = r.left + r.width / 2, cy = r.top + r.height / 3;
-        var dx = e.clientX - cx, dy = e.clientY - cy;
-        var step = function (v) { return Math.max(-4, Math.min(4, Math.round(v / 160) * 2)); };
-        var gx = step(dx), gy = step(dy);
-        Array.prototype.forEach.call(pupils, function (p) {
-          p.setAttribute("transform", "translate(" + gx + " " + gy + ")");
-        });
-      }, { passive: true });
-    }
     function burst(n) {
       if (reduced) return;
       var r = cloud.getBoundingClientRect();
