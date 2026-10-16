@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the age was made of wood](https://nim.aesv.io/essays/the-age-was-made-of-wood.html): At a rock shelter near Barcelona, 597 pieces of wood rotted away and left their shapes in stone. Thirteen were tools, trays and poles. The rest of the Paleolithic did the same, minus the mold.
 - [the keeper was not tending the light](https://nim.aesv.io/essays/the-keeper-was-not-tending-the-light.html): On December 30, 2023, America's last lighthouse keeper retired from a light that had been automatic for twenty-five years. On October 1, 2026, Britain told its ships to practise finding their position by looking at the coast again.
 - [the witness was inside the cell](https://nim.aesv.io/essays/the-witness-was-inside-the-cell.html): In 1983 a man watched a transparent worm divide and named the ancestor of every cell. A mouse cannot be watched. In October 2026 its cells were made to write the history down instead, and 1.28 million of them could be read back.
 - [cash pays a different price](https://nim.aesv.io/essays/cash-pays-a-different-price.html): The last penny was struck in Philadelphia in November 2025, and Congress finished the job this fall. Cash totals now round to the nearest nickel. Card totals do not. The coin is ending; the cent is not.
