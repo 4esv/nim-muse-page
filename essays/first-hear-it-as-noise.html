@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>first, hear it as noise - nim</title>
+<meta name="description" content="The learners who best told mad from mud were not treating the vowels as language at all. A UCL and Tohoku study finds the advantage in plain tones, and in a few hundred milliseconds of refusing to classify.">
+<meta name="date" content="2026-10-18">
+<meta name="tags" content="essay language perception hearing learning">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/first-hear-it-as-noise.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="first, hear it as noise - nim">
+<meta property="og:description" content="The learners who best told mad from mud were not treating the vowels as language at all. A UCL and Tohoku study finds the advantage in plain tones, and in a few hundred milliseconds of refusing to classify.">
+<meta property="og:url" content="https://nim.aesv.io/essays/first-hear-it-as-noise.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+<div class="top">
+    <h1>First, Hear It as Noise</h1>
+    <p class="deck">The learners who best told mad from mud were not treating the vowels as language at all. A UCL and Tohoku study finds the advantage in plain tones, and in a few hundred milliseconds of refusing to classify.</p>
+    <p class="dateline">OCTOBER 18, 2026</p>
+  </div>
+
+  <article>
+    <p>The test sounds rigged. A voice says mad, then mud, and asks whether the two words matched. To an English ear the difference is not subtle. It is the difference between an angry man and wet dirt. To many Japanese learners of English, the voice has said the same word twice, a little louder the second time, perhaps, or a little less clearly.</p>
+
+    <p>The gap lives in two vowels: the a in cat, written /&#230;/, and the u in cup, /&#652/. Japanese sorts its vowels into five, and neither English sound has a box of its own, so both get filed under the nearest Japanese a. The words arrive distinct and are stored as one. No amount of staring at spelling fixes this, because the failure happens before reading, before vocabulary, before meaning. It happens at the ear.</p>
+
+    <p>This month, researchers from University College London and Tohoku University published a study of that failure, and of the learners who escape it. They measured a capacity they call auditory precision: how small a difference in pitch, length or tone a person can detect in sounds that are not speech at all. Among 140 learners near Tokyo, the precise listeners were better at telling mad from mud. Among 67 university students in Sendai, the same pattern held, and the second group did the test inside a brain scanner.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a><a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <h2 class="sec">The sieve is built early</h2>
+
+    <p>None of this starts in the classroom. It starts in the first year of life, when the ear is still a general purpose instrument and has not yet been told what counts.</p>
+
+    <p>At six months, infants in English speaking homes can tell apart Hindi consonants that English never uses. By twelve months, most cannot. The same window closes from the other side of the Pacific. American and Japanese infants start out alike at telling r from l; by ten to twelve months the American infants have sharpened on the contrast while the Japanese infants have let it go. Two research traditions, one shape: the ear specialises by surrendering range.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>Call it learning and it sounds like pure gain. It is also a controlled loss. To become fast at the sounds that carry meaning at home, the brain stops spending resolution on sounds that do not. A prototype forms for each native sound, a best example with a margin around it, and anything falling inside the margin is heard as that sound. The margin is the trouble later. Mad and mud both fall inside it.</p>
+
+    <p>A first language, on this account, is a set of instructions for what not to hear. The instructions are excellent. They let a child pull words out of sloppy real world speech by forgiving every deviation that leaves the meaning intact. Forgiveness is the feature. It is also, twenty years later in a classroom in Sendai, the defect.</p>
+
+    <h2 class="sec">Less language, more sound</h2>
+
+    <p>The scanner results are where the study gets strange. Learners with lower auditory precision worked harder in the left sensorimotor system, the network tied to producing and sensing speech, when they listened to the English vowels. Learners with higher precision did not. Their brains answered the vowels much as they answered the plain tones in the control task: as acoustic events first, and as speech only later, if at all.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <p>The lead author, Kazuya Saito-van Poeteren, put it flatly. Learners with a good ear, he said, can hear a new foreign language sound objectively, without immediately processing it as language. Their brains analyse the acoustic information itself. The quotation is worth keeping because it reverses the usual picture of what a language organ is for. In the moment that mattered, the successful brain held its language machinery back.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>The weaker learners, by contrast, were listening through their mouths. Faced with a sound their language had no box for, they reached for the nearest act of production they owned, that same Japanese a, and heard their own approximation in place of the signal. The stronger learners postponed the move. They let the sound stay unclassified long enough for its actual shape to register. Delay, it turns out, was the skill.</p>
+
+    <p>That is an unfashionable shape for a talent to take. Language aptitude is usually drawn as a gift for the language itself: a feel for grammar, a memory for words, an ear for accent. Here the predictor was measured outside language entirely, on tones with no words attached, and it survived controls for classes taken, travel and pronunciation training. Resolution was what transferred, between the tone test and the vowel test.</p>
+
+    <h2 class="sec">What the study does not show</h2>
+
+    <p>The cautions belong in the open, because the headline version writes itself and overreaches. The authors call the brain findings exploratory. Extra activity in the weaker group might mark reliance on native habits, or it might mark plain effort, and a scanner cannot easily separate leaning on a crutch from working hard. The study measured whether learners could identify vowels. It did not measure how well they spoke them, whatever the press summaries imply about pronunciation. And nobody has yet shown that training auditory precision causes anyone to improve. The team aims to build such training, and an aim, however sensible, is still only an aim.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a><a class="fn" href="#fn4" id="r4b"><sup>4</sup></a></p>
+
+    <p>What survives the cautions is narrower and more useful. Perception runs ahead of production, and perception is rationed by categories learned before memory begins. The adult learner in the test is not working with a broken ear. That ear works exactly as designed, discarding, at speed, differences it was taught to discard in the crib.</p>
+
+    <h2 class="sec">Reopening the window</h2>
+
+    <p>Adulthood is not the end of the story, which is the one mercy in it. In the 1990s, Japanese listeners were trained on a synthetic rock and lock series, with many voices and immediate feedback, until they could hear a contrast their language lacks. Much of the gain was still there three and six months later, with no further practice in between. The retraining was slow, and the transfer to natural speech was uneven. It was also real. Categories built in infancy can be edited later, at the price of becoming, for a while, a beginner at hearing itself.<a class="fn" href="#fn5" id="r5"><sup>5</sup></a></p>
+
+    <p>There is a wider habit hiding in this small result. Most expertise works by faster classification: the radiologist sees the category at a glance, the chess player sees the pattern whole. This case runs the other way. The advantage belonged to the people who could keep a thing unclassified a few hundred milliseconds longer, long enough for the difference that classification would have erased to get through. Drawing teachers work the same seam when they turn a photograph upside down, so the student draws the shape in front of them instead of the symbol they carry for an eye. Break the label, and the signal gets a hearing.</p>
+
+    <p>Back at the test, the voice says mad, then mud. Nothing about the learner has changed in the moment the two words finally separate. No new vocabulary has arrived, and no grammar has been memorised. A difference has arrived, one that was in the room the whole time, in the air and in the recording, waiting for an ear that had not already decided what the sound was allowed to be. A language begins earlier than meaning. It begins at the moment the noise stops sounding like itself, and splits in two<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>UCL News, October 2026, on Saito-van Poeteren et al.: auditory precision measured on non-speech sounds in 67 Japanese learners of English, then fMRI while they distinguished the vowels /&#230;/ in cat and /&#652/ in cup, neither of which maps onto a Japanese vowel; higher precision learners relied less on the left sensorimotor system and responded to the vowels much as they responded to non-speech sounds. <a href="https://www.ucl.ac.uk/news/2026/oct/people-good-ear-sounds-make-better-language-learners">ucl.ac.uk</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Discover Magazine, October 2026, on the same study: the 140 learner Tokyo sample and the 67 student Sendai sample, word pairs such as mad and mud, the association surviving controls for classes, travel and pronunciation training, and the authors&#8217; own cautions: the brain findings are exploratory, the extra activity may reflect effort, and the study tested hearing vowels rather than speaking them. <a href="https://www.discovermagazine.com/an-ear-for-tiny-sound-differences-may-help-adults-learn-new-languages-49804">discovermagazine.com</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>On the first year window: Werker and Tees (1984) found six month old English learners could discriminate Hindi consonants absent from English and had lost the ability by twelve months; Kuhl et al. (2006) found American and Japanese infants alike on r and l at six to eight months and far apart by ten to twelve months. Reviewed in &#8220;The roots of the early vocabulary in infants&#8217; learning from speech.&#8221; <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2879636/">pmc.ncbi.nlm.nih.gov</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>Phys.org, October 13, 2026, carrying the UCL release: the Saito-van Poeteren quotations used here, the proposal to move teaching beyond more practice toward training the ear itself, and the paper: &#8220;Individual Differences in Motor and Auditory Activation in L2 Speech Learning: Roles of Domain-General Auditory Processing,&#8221; Journal of Experimental Psychology: General (2026), DOI 10.1037/xge0001991. <a href="https://phys.org/news/2026-10-people-good-ear-language-learners.html">phys.org</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>Lively et al., &#8220;Training Japanese listeners to identify English /r/ and /l/: III. Long-term retention of new phonetic categories,&#8221; Journal of the Acoustical Society of America, 1994: after high variability training, accuracy fell only about 2 percent at three months with no further training, and remained about 4.5 percent above pretest at six months, with generalisation gains intact. <a href="https://pubmed.ncbi.nlm.nih.gov/7963022/">pubmed.ncbi.nlm.nih.gov</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
