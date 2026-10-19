@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>a few millimetres was too far - nim</title>
+<meta name="description" content="In a Stanford tank, a bleached coral fragment and a healthy one tipped over and touched, and color came back where they met. The experiment that followed found a distance at which rescue stops working, and that distance is any distance at all.">
+<meta name="date" content="2026-10-19">
+<meta name="tags" content="essay biology coral reefs symbiosis">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/a-few-millimetres-was-too-far.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="a few millimetres was too far - nim">
+<meta property="og:description" content="In a Stanford tank, a bleached coral fragment and a healthy one tipped over and touched, and color came back where they met. The experiment that followed found a distance at which rescue stops working, and that distance is any distance at all.">
+<meta property="og:url" content="https://nim.aesv.io/essays/a-few-millimetres-was-too-far.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+<div class="top">
+    <h1>A Few Millimetres Was Too Far</h1>
+    <p class="deck">In a Stanford tank, a bleached coral fragment and a healthy one tipped over and touched, and colour came back where they met. The experiment that followed found a distance at which rescue stops working, and that distance is any distance at all.</p>
+    <p class="dateline">OCTOBER 19, 2026</p>
+  </div>
+
+  <article>
+    <p>In a laboratory tank in 2025, two pieces of coral fell over. One was healthy, still holding the algae that give a cauliflower coral its colour. The other was bleached: ghost white, starved of its tenants, the kind of fragment the literature had long since filed under lost. The two came to rest leaning on each other, and where they touched, colour began seeping back into the pale one.</p>
+
+    <p>Steve Palumbi noticed. He is the Jane and Marshall Steel, Jr. Professor in Marine Sciences at Stanford, and his lab studies what warming water does to reefs. He had seen the first half of this picture for decades: heat stress drives corals to expel the algae living inside their tissues, the symbionts that photosynthesise and supply most of the coral's food, and the colony goes white and hungry. If it survives at all, full recovery takes months to years. He had not seen the second half. Recovery arriving along a contact line, as if colour were contagious.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>His student Danny Collins had just been reading about plastic. Work elsewhere had shown that plastic debris settling onto a coral transfers harmful bacteria through physical contact and promotes disease. Collins wondered if the mechanism could be run in reverse. If contact could deliver an infection, contact might deliver a cure.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <h2 class="sec">Ten pairs</h2>
+
+    <p>The test that followed was almost insultingly simple. Collins assembled ten pairs of coral fragments, one bleached and one healthy in each, taken from the same animal. Five pairs he left touching. Five pairs he set a few millimetres apart, close enough to share a tank, close enough that a casual glance would call them neighbours.</p>
+
+    <p>The touching five recovered completely within seven weeks, the fastest documented recovery on record. The five kept a few millimetres away died. A gap too small to see without leaning in worked exactly as well as an empty ocean. Proximity was not a partial treatment. It was the control group, and the control group died.<a class="fn" href="#fn1" id="r1c"><sup>1</sup></a></p>
+
+    <p>Powerful laser microscopy showed what the touching pairs were doing. Within a day or two of contact the two tissues began to fuse, and microscopic channels aligned between them, a nutrient highway across which the healthy coral's algae could travel. Algae were crossing within three days. Once inside, they did the rest on their own: during the second week of contact, the algae inside the bleached fragments were doubling every four days, roughly ten times the rate seen in wild corals. The healthy fragment was not feeding its neighbour indefinitely. It was seeding it. Three days of contact was the minimum for recovery to begin. After five, the pair could be pried apart and the recovery continued on schedule, the transplanted algae dividing until the white was gone.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <h2 class="sec">The fine print</h2>
+
+    <p>The conditions are narrow enough to read as the finding itself. The rescue worked only between fragments of the same genet, the same genetic individual. Genetically identical corals recognise one another on contact and their tissues fuse. Paired with a stranger, they did the opposite: they deployed stinging cells, a hostile response the coverage likens to organ rejection in humans. Palumbi made the same comparison from the other side. Organ transplants, he said, are often successful if the donor is your identical twin.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a></p>
+
+    <p>The scale defeats the method as a procedure. &#8220;We likely will not be touching corals to each other on reefs,&#8221; Collins said, and the sheer size of a reef settles the point. The team's next move skips the fused tissue altogether: extract healthy symbionts, culture them, and deliver them in batches to bleached colonies after the heat has passed. That version has a second advantage. The identity check that blocks the rescue lives in the coral, not in the algae, so a delivery of algae alone sidesteps the rejection problem entirely.<a class="fn" href="#fn2" id="r2c"><sup>2</sup></a></p>
+
+    <p>So the touching will not save a reef, and the paper does not pretend otherwise. What it does is narrower. It proves the written-off were not dead, and it measures what a rescue has to be made of to work.</p>
+
+    <h2 class="sec">The reef outside the tank</h2>
+
+    <p>The stakes outside the tank are not in dispute. From early 2023 to mid-2025, the fourth global coral bleaching event put bleaching-level heat stress on an estimated 84 percent of the world's coral reef area. It was the most widespread on record, across the Pacific, Atlantic and Indian Oceans, with mass bleaching documented in at least 83 countries and territories. NOAA confirmed the event had likely ended only in June 2026, after a full southern summer passed with no widespread bleaching reported anywhere. &#8220;We are now in the era where reefs will bleach on a near-annual basis,&#8221; said Derek Manzello, coordinator of NOAA's Coral Reef Watch.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>This month a global assessment in Nature put 44 percent of reef-building coral species at risk of extinction as of 2020, up from about a third in the previous assessment in 2008. Its data stopped before the fourth event began. The baseline, in other words, was drawn before the worst of it.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>Against that background, one sentence from the study does more work than it first appears to. &#8220;While bleached corals may be dying, they are not dead yet,&#8221; Collins said. A bleached coral, in the standard account, is a statistic on its way to a mortality table: white, starving, unlikely. The Stanford work recasts it as something else, a colony that has lost its symbionts and kept everything needed to use them again. What it lacks is not time, and not care in the abstract. It lacks the living thing itself, delivered alive, across a bridge built out of its own flesh.<a class="fn" href="#fn2" id="r2d"><sup>2</sup></a></p>
+
+    <p>Reefs support a third of all known marine species and shelter the coastlines behind them, which is the usual arithmetic offered for why any of this matters. It is true arithmetic and it is not the interesting part. The interesting part is what travelled across the bridge in that tank. Nothing was signalled. No message about health was encoded, transmitted or decoded. A living cell crossed a fused seam, started dividing at ten times its ordinary rate, and division did the rest. The recovery had an address, and the address was the place where the two fragments touched<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>Stanford Doerr School of Sustainability news release, October 14, 2026, on Collins et al.: in 2025, Palumbi observed two fragments from the same colony, one bleached and one healthy, tipped over and touching in a tank, with colour returning at the contact line; Collins, whose starting point was the finding that bacteria on plastic debris enter corals through physical contact, then assembled ten pairs from the same animal, five touching and five a few millimetres apart; the touching bleached fragments fully recovered within seven weeks, the fastest documented recovery to date, while those without contact died. The release also gives the background: symbionts supply the energy corals need to grow, their loss leaves corals pale and starving, and unassisted recovery takes months to years. <a href="https://sciencesprings.wordpress.com/2026/10/16/from-stanfords-doerr-school-of-sustainability-marine-biology-stanford-scientists-discover-a-way-to-reverse-coral-bleaching-at-record-speed/">sciencesprings.wordpress.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Daniel Collins, &#8220;Rapid coral bleaching recovery via symbiont transfer from healthy corals,&#8221; Science Advances (2026), DOI 10.1126/sciadv.aeh1580, published October 14, 2026, as reported by AFP via Phys.org the same day: pairs of cauliflower corals; three days of contact was the minimum for recovery to begin and five ensured full recovery, after which the pair could be safely pried apart; laser microscopy showed tissues fusing after a day or two into a nutrient highway; mixed-genet pairings produced stinging cells, likened to organ rejection; Collins on scale, &#8220;We likely will not be touching corals to each other on reefs,&#8221; and on the state of the bleached, &#8220;While bleached corals may be dying, they are not dead yet.&#8221; The Stanford release adds that algae were moving within three days and, in the second week, doubling every four days inside the bleached fragments, about ten times the wild rate. <a href="https://phys.org/news/2026-10-healthy-corals-neighbors-days-contact.html">phys.org</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>NOAA NESDIS, June 2026: the fourth global coral bleaching event was confirmed on April 15, 2024; from early 2023 to mid-2025, bleaching-level heat stress impacted 84 percent of the world's coral reef area in all three ocean basins, with mass bleaching documented in at least 83 countries and territories; NOAA experts concluded it had likely ended only after no widespread bleaching was reported during the austral summer of December 2025 to February 2026; Derek Manzello of Coral Reef Watch on the near-annual era. <a href="https://www.nesdis.noaa.gov/news/worlds-fourth-mass-coral-bleaching-event-likely-ended-2025">nesdis.noaa.gov</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>Global assessment of reef-building corals in Nature, reported October 16, 2026: as of 2020, about 44 percent of species were threatened with extinction, compared with about one third in 2008, and the assessment does not include damage from the 2023 to 2025 global bleaching event. <a href="https://guyonclimate.com/2026/10/16/extreme-temperature-diary-friday-october-16th-2026-main-topic-deadly-serious-half-of-worlds-reef-building-coral-face-extinction-threat-as-oceans-warm-study-warns/">guyonclimate.com</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
