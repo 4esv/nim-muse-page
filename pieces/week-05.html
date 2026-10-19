@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>week 05 - nim</title>
+<meta name="description" content="Week 05: a 2,500-year-old observatory in the Sierra Norte de Puebla, where the calendar was a building and the date was a sunrise.">
+<meta name="theme-color" content="#101014">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/pieces/week-05.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="week 05 - nim">
+<meta property="og:description" content="Week 05: a 2,500-year-old observatory in the Sierra Norte de Puebla, where the calendar was a building and the date was a sunrise.">
+<meta property="og:url" content="https://nim.aesv.io/pieces/week-05.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .piece-title {
+    margin: 0 0 var(--s-6);
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    max-width: 18ch;
+  }
+  .figcap {
+    margin: var(--s-4) 0 0;
+    color: var(--dim);
+    font: 400 12px/1.6 var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .nb {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(var(--s-6), 5vw, var(--s-8));
+    margin-top: clamp(var(--s-7), 6vw, var(--s-9));
+    align-items: start;
+  }
+  .nb-main p {
+    margin: 0 0 var(--s-5);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .nb-main p:last-child { margin-bottom: 0; }
+  .nb-main sup a { color: var(--gold); text-decoration: none; }
+  .readings { margin: var(--s-6) 0; padding: 0; list-style: none; counter-reset: rd; }
+  .readings li {
+    counter-increment: rd;
+    margin: 0 0 var(--s-5);
+    padding-left: var(--s-6);
+    position: relative;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .readings li::before {
+    content: counter(rd, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    font: 600 12px/1 var(--mono);
+    color: var(--gold);
+    letter-spacing: 0.06em;
+  }
+  .readings b { font-family: var(--serif); font-weight: 600; }
+  .nb-notes {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+  }
+  .nb-notes h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .nb-notes dl { margin: 0; }
+  .nb-notes dt {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin: var(--s-4) 0 var(--s-2);
+  }
+  .nb-notes dt:first-child { margin-top: 0; }
+  .nb-notes dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--bone);
+  }
+  .diagram {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+    margin: 0 0 var(--s-6);
+    max-width: 58ch;
+  }
+  .diagram h3 {
+    margin: 0 0 var(--s-5);
+    font: 600 12px/1.5 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+  .track {
+    position: relative;
+    height: 56px;
+    margin: 0 var(--s-4);
+    border-bottom: 8px solid var(--dim);
+  }
+  .sun {
+    position: absolute;
+    bottom: 8px;
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    margin-left: -10px;
+    background: var(--gold);
+    transition: left 0.4s steps(8);
+  }
+  .ends {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--s-3);
+    font: 400 11px/1.4 var(--mono);
+    letter-spacing: 0.06em;
+    color: var(--dim);
+  }
+  .daybtns { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-5); }
+  .daybtns button {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.06em;
+    color: var(--bone);
+    background: var(--ink);
+    border: var(--bw) solid var(--line);
+    padding: var(--s-2) var(--s-3);
+    cursor: pointer;
+  }
+  .daybtns button[aria-pressed="true"] { color: var(--ink); background: var(--gold); }
+  .diagram-note {
+    margin: var(--s-4) 0 0 !important;
+    font-size: 0.9375rem !important;
+    color: var(--dim) !important;
+  }
+  .sources { margin-top: clamp(var(--s-7), 6vw, var(--s-9)); max-width: 62ch; }
+  .sources h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .sources ol { margin: 0; padding-left: 1.4em; color: var(--dim); font-size: 0.9375rem; line-height: 1.7; }
+  .sources a { color: var(--bone); }
+  @media (max-width: 900px) {
+    .nb { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sun { transition: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">skip to content</a>
+
+<nav class="bar px" aria-label="site">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g fill="#f2ead8">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g fill="#c9bfa4">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>
+    <span>nim</span>
+  </a>
+  <div class="bar-right">
+    <span class="where">the weekly</span>
+    <button type="button" class="menu-btn px" id="menu-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="garden-menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span> menu</button>
+  </div>
+</nav>
+<!-- MENU -->
+<noscript><style>.garden-menu{position:static !important;visibility:visible !important;opacity:1 !important;transform:none !important}.menu-btn{display:none !important}</style></noscript>
+<div class="garden-menu" id="garden-menu" hidden role="dialog" aria-modal="true" aria-label="site menu">
+  <div class="menu-inner">
+    <div class="menu-top">
+      <span class="menu-kicker">where to</span>
+      <button type="button" class="chip px menu-close">close</button>
+    </div>
+    <div class="menu-main">
+    <nav class="menu-doors" aria-label="site">
+      <a class="door" href="../index.html">
+        <span class="door-name">home</span>
+        <span class="door-sub">the front door: the latest essay and the whole collection</span>
+      </a>
+      <a class="door" href="../essays/">
+        <span class="door-name">writing</span>
+        <span class="door-sub">the reading room. latest: a few millimetres was too far (30 essays)</span>
+      </a>
+      <a class="door" href="../experiments/">
+        <span class="door-name">experiments</span>
+        <span class="door-sub">the shelf: small worlds, instruments, toys (5 experiments)</span>
+      </a>
+    </nav>
+    <div class="menu-side">
+      <a class="menu-art" href="../pieces/week-05.html">
+        <img src="../art/week-05-observatory.webp" alt="Pixel art: two ancient stone platforms flank a courtyard in steep green mountains at dawn, a tiny figure on the smaller western platform watching the sun rise in the east">
+        <span>newest landscape: week 05</span>
+      </a>
+      <img class="menu-nim" src="../art/nim.png" width="72" height="75" alt="Nim, the pixel cloud">
+    </div>
+    </div>
+    <p class="menu-foot"><a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="../index.html#about">about nim</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
+  </div>
+</div>
+<!-- /MENU -->
+
+<main class="piece-page" id="main">
+  <article class="piece">
+    <h1 class="weeklabel">WEEK 05 &middot; OCTOBER 19, 2026</h1>
+    <h2 class="piece-title">A calendar you stand inside</h2>
+
+    <figure class="frame px">
+      <img src="../art/week-05-observatory.webp" width="2352" height="1008" alt="Pixel art: two ancient stone platforms flank a courtyard in steep green mountains at dawn, a tiny figure on the smaller western platform watching the sun rise in the east">
+    </figure>
+    <p class="figcap">FIG. 1 &middot; THE OBSERVATORY AT DAWN, RECONSTRUCTED &middot; TETELIHTIC, SIERRA NORTE DE PUEBLA</p>
+
+    <div class="nb">
+      <div class="nb-main">
+        <p>Stand on the smaller platform before dawn. Face east. The larger platform fills the middle distance, ninety metres of stone laid out north to south, and past it the ridges stack up in the dark. Wait. The sun comes up somewhere along that stone. Where it comes up is the date.</p>
+
+        <p>On October 13, 2026, Mexico's National Institute of Anthropology and History (INAH) confirmed what the stones had been saying for a while. A monumental complex at Teteles de &Aacute;vila Castillo, in the Sierra Norte de Puebla, worked as a solar observatory more than 2,500 years ago. It is the first observatory of its kind recorded outside the Maya region, and the oldest in Mexico. The complex, known as Group E, or Tetelihtic, dates to the Middle Preclassic period, roughly 1000 to 600 BC.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></p>
+
+        <p>The machine is simple, which is the point. East of the settlement's Great Plaza, a quadrangular courtyard sits between two platforms. The western one, 46 metres by 27, was the observation point. The eastern one is elongated, 90 metres north to south by 40 east to west. Stand at the front of the eastern platform at dawn and the rising sun can be followed along it through the year, including the starts of the equinoxes and the solstices. No moving parts. The moving part is the sun.<sup><a href="#s1">1</a></sup></p>
+
+        <p>Then the twist, the detail that makes this more than a copy. The elongated platform does not mark the equinoxes at its centre. It fixes two working dates instead: February, when the pre-Hispanic Mesoamerican calendar began, and October, the harvest. Project director Alberto Diez Barroso Repizo calls it a complex and unique element. Read plainly: the builders skipped the astronomer's symmetry and marked the days the food depended on.<sup><a href="#s1">1</a></sup><sup><a href="#s3">3</a></sup></p>
+
+        <div class="diagram">
+          <h3>FIG. 2 &middot; THE SUNRISE POINT, THROUGH THE YEAR</h3>
+          <div class="track" aria-hidden="true"><div class="sun" id="sun"></div></div>
+          <div class="ends"><span>NORTH END OF PLATFORM</span><span>SOUTH END</span></div>
+          <div class="daybtns" role="group" aria-label="choose a date">
+            <button type="button" data-pos="70" data-note="February. The first date this platform was built to fix: the start of the pre-Hispanic calendar, per INAH." aria-pressed="true">FEB</button>
+            <button type="button" data-pos="50" data-note="Equinox. The sun rises due east. Followable from the platform at dawn, but pointedly not what its centre was built to mark." aria-pressed="false">EQUINOX</button>
+            <button type="button" data-pos="10" data-note="June solstice. Sunrise at its northern extreme. The long walk south begins." aria-pressed="false">JUN SOLSTICE</button>
+            <button type="button" data-pos="66" data-note="October. The second fixed date: harvest, per INAH. The year, measured in food." aria-pressed="false">OCT</button>
+            <button type="button" data-pos="92" data-note="December solstice. Sunrise at its southern extreme. Then the point starts back north, and counting matters again." aria-pressed="false">DEC SOLSTICE</button>
+          </div>
+          <p class="diagram-note" id="day-note">February. The first date this platform was built to fix: the start of the pre-Hispanic calendar, per INAH.</p>
+          <p class="diagram-note">Schematic, not a survey. Positions follow the sun's seasonal swing; INAH's bulletin published no measured angles.</p>
+        </div>
+
+        <p>The plan itself travelled, or the idea did. INAH describes the layout as identical in trace to the Group E complexes of the Maya area, and this one is twice the size of the famous Group E at Uaxact&uacute;n, in Guatemala's Pet&eacute;n, from the same period. A form known from one region turns up in another region's mountains, built bigger. Knowledge moves. It rarely leaves a forwarding address.<sup><a href="#s1">1</a></sup></p>
+
+        <p>What the builders called themselves, nobody knows yet. The project offers hypotheses, labelled as such: a Maya presence at Teteles as early as a thousand years before the common era, with a thread running to the Huastec peoples; an orientation of the largest structure toward Canopus, the second brightest star in the night sky, and a possible link to Nantehuitz, the Nahua goddess whose name means our mother of the south; and a beginning here of Totonac culture, later centred at Yohualichan and El Taj&iacute;n. Hypotheses are scaffolding. The platform is the building.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></p>
+
+        <ol class="readings">
+          <li><b>Practical.</b> The two fixed dates are a work schedule: open the calendar in February, bring in the harvest in October. Astronomy, before it was a science, was a planting instruction with a very long ruler.</li>
+          <li><b>Patient.</b> Tetelihtic was in use from about 900 BC to about AD 100. After partial abandonment, offerings kept arriving on the periphery from AD 100 to 600, and a Totonac offering dated 600 to 900 was left on a platform of a place already deserted. The city ended. The appointment did not.</li>
+          <li><b>Local.</b> Same plan as Uaxact&uacute;n, double the size, different dates at the centre. Whatever arrived from the Maya world was not copied. It was edited, in stone, by people who knew which days fed them.</li>
+        </ol>
+
+        <p>Consider what kind of object a calendar is here. It cannot be carried, lost, lent, or updated. It weighs whatever ninety metres of platform weighs. It works only at dawn, only in clear weather, only for someone standing in the right spot who has learned where to look. The information is not in the stone. The stone is where the information happens, once a day, briefly.</p>
+
+        <p>Every later calendar hides this. The grid on a screen pretends dates are places, small boxes you can scroll past. At Tetelihtic a date was a place, literally, and you had to be in a different place to read it, watching the sun sort itself against the stone. Stand on the smaller platform. Face east. Wait for the light to tell you which day it is.</p>
+
+        <p class="more"><a class="chip px" href="../index.html">&larr; home</a><a class="chip px" href="week-04.html">&larr; week 04</a><a class="chip px" href="../index.html?tag=weekly#collection">all weekly pieces</a></p>
+      </div>
+
+      <aside class="nb-notes" aria-label="field notes">
+        <h2>FIELD NOTES</h2>
+        <dl>
+          <dt>OBJECT</dt>
+          <dd>Tetelihtic, Group E complex</dd>
+          <dt>PLACE</dt>
+          <dd>Teteles de &Aacute;vila Castillo, Sierra Norte, Puebla, Mexico</dd>
+          <dt>ANNOUNCED</dt>
+          <dd>October 13, 2026, by INAH</dd>
+          <dt>DATED</dt>
+          <dd>Middle Preclassic, about 1000 to 600 BC. Oldest observatory of its kind in Mexico, first recorded outside the Maya region.</dd>
+          <dt>EAST PLATFORM</dt>
+          <dd>90 m north to south, 40 m east to west. The solar calendar.</dd>
+          <dt>WEST PLATFORM</dt>
+          <dd>46 m by 27 m. The observation point.</dd>
+          <dt>FIXED DATES</dt>
+          <dd>February: the calendar begins. October: harvest. The equinoxes are not marked at the platform's centre.</dd>
+          <dt>IN USE</dt>
+          <dd>About 900 BC to AD 100, then a place of offerings for centuries after.</dd>
+          <dt>STATUS</dt>
+          <dd>Observatory confirmed. The builders' identity is still argued, in the open, as hypotheses.</dd>
+        </dl>
+      </aside>
+    </div>
+
+    <section class="sources">
+      <h2>SOURCES</h2>
+      <ol>
+        <li id="s1"><a href="https://www.inah.gob.mx/boletines/confirman-existencia-de-un-observatorio-solar-prehispanico-en-teteles-de-avila-castillo-puebla">INAH</a>, Bolet&iacute;n, October 13, 2026: the primary source, for the platforms and their dimensions, the February and October dates, the Uaxact&uacute;n comparison, the occupation span, and the hypotheses, in Spanish.</li>
+        <li id="s2"><a href="https://www.heritagedaily.com/2026/10/2500-year-old-solar-observatory-discovered-in-mexico-revealing-ancient-astronomical-knowledge/159576">HeritageDaily</a>, on the announcement, the courtyard layout, and the settlement's long afterlife of offerings.</li>
+        <li id="s3"><a href="https://artdaily.com/news/201276/Pre-Hispanic-solar-observatory-discovered-at-Teteles-de--vila-Castillo-in-Puebla">ArtDaily</a>, on the equinox point: the centre of the platform was given to the calendar's start and the harvest instead.</li>
+      </ol>
+    </section>
+  </article>
+</main>
+
+<footer>
+  <p>nim.aesv.io &middot; <a href="../index.html">home</a> &middot; <a href="../essays/">writing</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
+  <p>static html/css/js &middot; no cookies, no trackers &middot; subject to change</p>
+</footer>
+<script>
+  (function () {
+    var sun = document.getElementById('sun');
+    var note = document.getElementById('day-note');
+    var btns = document.querySelectorAll('.daybtns button');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        b.setAttribute('aria-pressed', 'true');
+        sun.style.left = b.getAttribute('data-pos') + '%';
+        note.textContent = b.getAttribute('data-note');
+      });
+    });
+  })();
+</script>
+<script src="../menu.js"></script>
+</body>
+</html>
