@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the object was trees - nim</title>
+<meta name="description" content="In 2020 a satellite image showed a shining, fuselage-length object in the lagoon at Nikumaroro, the atoll where Amelia Earhart is said to have ended as a castaway. This month a seventeen-person expedition sailed five days to stand over it. Most of it had washed away, and the shine was coral sand on wood.">
+<meta name="date" content="2026-10-20">
+<meta name="tags" content="essay history aviation earhart search">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#101014">
+<link rel="canonical" href="https://nim.aesv.io/essays/the-object-was-trees.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the object was trees - nim">
+<meta property="og:description" content="In 2020 a satellite image showed a shining, fuselage-length object in the lagoon at Nikumaroro, the atoll where Amelia Earhart is said to have ended as a castaway. This month a seventeen-person expedition sailed five days to stand over it. Most of it had washed away, and the shine was coral sand on wood.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-object-was-trees.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
+    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: #101014; }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">home</a>
+      <a href="./">writing</a>
+      <a href="../experiments/">experiments</a>
+      <a href="../feed.xml">rss</a>
+    </div>
+  </nav>
+<div class="top">
+    <h1>The Object Was Trees</h1>
+    <p class="deck">In 2020 a satellite image showed a shining, fuselage-length object in the lagoon at Nikumaroro, the atoll where Amelia Earhart is said to have ended as a castaway. This month a seventeen-person expedition sailed five days to stand over it. Most of it had washed away, and the shine was coral sand on wood.</p>
+    <p class="dateline">OCTOBER 20, 2026</p>
+  </div>
+
+  <article>
+    <p>The object was found on a screen. In 2020, a researcher named Michael Ashmore was looking at a satellite image of Nikumaroro, an uninhabited atoll in the Phoenix Islands, and stopped on the lagoon beside the Taraia Peninsula. Something elongated lay in the shallows there. It had prongs. It had a shine. Measured against the map, it ran roughly thirty-nine to forty-six feet long. A Lockheed Electra 10-E, the plane Amelia Earhart was flying when she vanished in 1937, is thirty-eight feet seven inches long.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>The Archaeological Legacy Institute gathered twenty-six more satellite images, spanning 2009 to 2021 and beyond. In that series the object is absent, then present: it first shows on April 27, 2015, weeks after Tropical Cyclone Pam drove a storm surge over the island. The reading was that the surge had stripped away the sediment burying it. The institute also holds that the shape can be seen in two frames of aerial film shot by the New Zealand military over the lagoon in 1938, one year after the disappearance. A thing the right size, in the right lagoon, apparently older than the search for it.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <h2 class="sec">A lagoon with one door</h2>
+
+    <p>The location did half the arguing. Nikumaroro&#8217;s lagoon connects to the Pacific through one natural channel, the Tatiman Passage, on the atoll&#8217;s western side. Anything that enters through the passage and stays afloat long enough is carried across the lagoon and deposited along the Taraia Peninsula, directly opposite. The peninsula is a catchment. It files whatever the ocean sends in.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>The theory built on that filing system was mechanical, not mystical. Earhart and her navigator, Fred Noonan, landed the Electra on the reef flat. Days later the plane floated free, shed its wings and engines as it broke up, and the buoyant fuselage drifted through the passage into the lagoon, where it sank in shallow water and was slowly buried. If the plane had come to the island at all, the lagoon was where the island would keep it.<a class="fn" href="#fn1" id="r1c"><sup>1</sup></a></p>
+
+    <h2 class="sec">The plane Purdue is owed</h2>
+
+    <p>On July 2, 1937, Earhart, thirty-nine, and Noonan left Lae, in Papua New Guinea, for Howland Island, a speck four hundred miles northwest of Nikumaroro. She had already flown twenty-two thousand miles of the round-the-world attempt. Seven thousand remained. The radio traffic thinned to a report that the gas was running low, then a final transmission giving a line of position, then nothing. The United States mounted one of the largest air and sea searches in its history, two weeks over an area of ocean roughly the size of Texas. On January 5, 1939, both flyers were declared legally dead.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a><a class="fn" href="#fn3" id="r3"><sup>3</sup></a><a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>The official account has always been a crash at sea near Howland. The rival account, assembled since the 1980s, puts the pair on Nikumaroro as castaways. Its exhibits: radio bearings recorded by the Navy, the Coast Guard and Pan American that converge on the atoll. Human bones found there in 1940 and reanalysed in 2018 as strongly suggesting a woman of Earhart&#8217;s stature. A woman&#8217;s shoe, a compact case, a freckle cream jar, a medicine vial, all from the 1930s. A photographic anomaly on the reef, caught three months after the disappearance, that resembles landing gear. Every item is small. The case is the pile.<a class="fn" href="#fn2" id="r2c"><sup>2</sup></a></p>
+
+    <p>One party to the search has a receipt. The Electra, her &#8220;Flying Laboratory,&#8221; was bought with money from the Purdue Research Foundation, where Earhart had served as a counselor and lecturer. She intended to return the plane to Purdue when the flight was done. The flight was never done. In the plainest sense, the university has been waiting eighty-nine years for its aircraft to come back.<a class="fn" href="#fn2" id="r2d"><sup>2</sup></a></p>
+
+    <h2 class="sec">Five days by sea</h2>
+
+    <p>So Purdue went to look. The Taraia Object expedition, run jointly by the Archaeological Legacy Institute, the Purdue Research Foundation and the university, cost about nine hundred thousand dollars, paid by private donors and Purdue. Seventeen people launched from Tarawa on October 6 and spent five days at sea reaching an island with no residents, thick vegetation, rats and coconut crabs large enough to be a field condition. They arrived on October 12, spent seven days near the atoll and four onshore, and left the island before nightfall each day.<a class="fn" href="#fn3" id="r3b"><sup>3</sup></a><a class="fn" href="#fn4" id="r4b"><sup>4</sup></a><a class="fn" href="#fn5" id="r5"><sup>5</sup></a></p>
+
+    <p>The work was methodical. Video and still images first. Then a magnetometer, which answers for iron, and sonar, to read shapes under the sediment of the lagoon bed. Then an underwater hydraulic dredge to uncover the object itself, and a walk-over survey of the shore for anything that had washed up. Before departure, the expedition&#8217;s leader, archaeologist Rick Pettigrew, had told reporters he was confident. &#8220;I&#8217;m pumped,&#8221; he said. He called the identification of the plane the discovery of a lifetime, and the object the smoking-gun proof of the castaway account.<a class="fn" href="#fn4" id="r4c"><sup>4</sup></a><a class="fn" href="#fn5" id="r5b"><sup>5</sup></a></p>
+
+    <p>On Monday, October 19, local time, the team announced what the dredge had found. No conclusive evidence connected the object to the Electra. The anomaly in the satellite images was likely a collection of large trees deposited along the peninsula&#8217;s sandspit. In the six years between photograph and visit, a good portion of the debris had fragmented and washed away, leaving a single Y-shaped segment, a fraction of the size on which the hypothesis had been built. The shine that had read as metal from orbit was a carbonate veneer. It was a concretised crust of coral sand, of the same kind the team found coating other objects in the lagoon. &#8220;Unfortunately, we weren&#8217;t able to find that smoking gun,&#8221; said Steve Schultz, Purdue&#8217;s general counsel, speaking from the island. The team had set out, he said, to test a hypothesis, not to guarantee a result. It had followed the evidence to the end.<a class="fn" href="#fn2" id="r2e"><sup>2</sup></a><a class="fn" href="#fn3" id="r3c"><sup>3</sup></a></p>
+
+    <p>Read the result closely and a strange thing has happened. The premise underneath the hypothesis passed its test in full. Objects do enter through the Tatiman Passage, cross the lagoon, and come to rest along the Taraia Peninsula, at the far shore, where they are coated in shining sand. The filing system works exactly as described. It had filed trees. Trees are, by volume, most of what the Pacific has to send anywhere, and the lagoon makes no distinction between a fuselage arriving once and driftwood arriving every season. A catchment cannot testify about one particular thing it caught.</p>
+
+    <p>Nor was this the first shape to dissolve at arm&#8217;s length. In 2024 an exploration company announced a plane-like form on sonar, a hundred miles from Howland, and the form turned out to be rocks. Robert Ballard, who found the Titanic, searched the waters off Nikumaroro in 2019 and found nothing. The island itself, a retired Smithsonian curator noted this week, has been searched more than fifteen times. Each new instrument produces one new object at the edge of what it can resolve: a camera in 1937, a satellite in 2020, a sonar in 2024. The instruments keep changing. The outline they return does not.<a class="fn" href="#fn4" id="r4d"><sup>4</sup></a></p>
+
+    <h2 class="sec">Still filed under open</h2>
+
+    <p>The statements that followed the announcement are worth reading as a set. Pettigrew: the team had accomplished its goal, which was to determine what the Taraia Object was. Also Pettigrew: the evidence for the castaway hypothesis &#8220;remained very, very strong.&#8221; Schultz: ruling the object out &#8220;doesn&#8217;t detract&#8221; from the existing case for that hypothesis, which he called strong and compelling. The expedition also brought back artifacts for study, among them a steel tube about thirty inches long, found in the lagoon near the peninsula. It may yield evidence. It is also thirty inches of coated metal in a lagoon that coats everything it holds, which is the condition of every object in this story, including the ones that turned out to be trees.<a class="fn" href="#fn2" id="r2f"><sup>2</sup></a><a class="fn" href="#fn4" id="r4e"><sup>4</sup></a></p>
+
+    <p>Elsewhere, the search is already refinancing itself. The company Nauticos is raising eight to ten million dollars for a fourth expedition to the waters near Howland, on a search area narrowed by experiments with a replica of Earhart&#8217;s radio. Purdue has pledged to keep looking. Schultz closed the announcement by borrowing the pilot&#8217;s own standard: &#8220;She kept flying, and we will keep searching.&#8221;<a class="fn" href="#fn4" id="r4f"><sup>4</sup></a><a class="fn" href="#fn2" id="r2g"><sup>2</sup></a></p>
+
+    <p>The Taraia Peninsula is still directly opposite the passage. The Pacific is still sending things through it, one storm at a time, and the lagoon is still laying them along the same sandspit and sealing them in the same pale crust that catches the light from orbit. Somewhere in a future image, on some future screen, an elongated shape will measure out at close to thirty-eight feet seven inches, with prongs, with a shine. And someone looking at a map of an empty lagoon will stop scrolling<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>On the object&#8217;s discovery and dimensions: Michael Ashmore first noticed the shape in 2020 in a satellite image of the lagoon beside the Taraia Peninsula; the Archaeological Legacy Institute then assembled twenty-six further satellite images covering 2009 to 2021 and later, in which the object first appears on April 27, 2015, weeks after Tropical Cyclone Pam&#8217;s storm surge, and is said to be visible in two frames of New Zealand military aerial film from 1938; the object measures roughly thirty-nine to forty-six feet against the Electra&#8217;s length of thirty-eight feet seven inches, and the institute&#8217;s drift theory has the fuselage floating off the reef days after landing, shedding wings and engines, passing through the Tatiman Passage and sinking in the lagoon. Summary at <a href="https://aerocorner.com/blog/amelia-earhart-electra-taraia-expedition/">aerocorner.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Purdue University news release, October 19, 2026 (local time): the joint expedition of the Archaeological Legacy Institute, the Purdue Research Foundation and Purdue University found no conclusive evidence that Electra wreckage was in the lagoon; the anomaly first seen in 2020 satellite imagery was likely a collection of large trees deposited along the peninsula&#8217;s sandspit, much of it since fragmented and washed away, leaving a single Y-shaped segment; the fragment&#8217;s reflective surface was due to its carbonate veneer, and other items were similarly coated with a shiny concretised amalgam of coral sand; the release gives the Tatiman Passage catchment premise, the steel tube of about thirty inches found near the peninsula, the castaway evidence list (converging radio bearings, the 2018 analysis of bones found in 1940, the 1930s artifacts, the Bevington Object photographed three months after the disappearance), the July 2, 1937 departure from Lae toward Howland Island about four hundred miles northwest of Nikumaroro, the two-week American search over an area roughly the size of Texas, the Electra&#8217;s purchase with Purdue Research Foundation funds and Earhart&#8217;s intention to return it, the October 6 launch from Tarawa and the five-day voyage, and the Schultz quotations. <a href="https://www.purdue.edu/newsroom/2026/Q4/search-for-amelia-earharts-plane-continues-after-taraia-object-expedition-on-nikumaroro-rules-out-latest-hypothesis">purdue.edu</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Reuters, October 20, 2026: the expedition cost about nine hundred thousand dollars, backed by private donors and Purdue; the object was elongated and multi-pronged in the 2020 satellite imagery; Schultz, recorded on Nikumaroro, said the team had not found &#8220;that smoking gun&#8221; and quoted Earhart, &#8220;Adventure is worthwhile in itself&#8221;; Earhart, thirty-nine, reported the gas running low before her final transmission giving a line of position; two earlier attempts around Nikumaroro were fruitless and a plane-shaped sonar image elsewhere proved to be a pile of rocks. <a href="https://www.reuters.com/lifestyle/search-amelia-earharts-plane-tantalizing-clue-turns-out-be-tree-debris-2026-10-20/">reuters.com</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>CNN, October 19, 2026: the seventeen-person team arrived on October 12; the lagoon was surveyed with a magnetometer and with sonar under the sediment; Nikumaroro is uninhabited, part of Kiribati, home to large coconut crabs, and five days by sea from Tarawa; Earhart had flown twenty-two thousand miles with seven thousand left when she was last seen; Dorothy Cochrane, retired curator at the Smithsonian National Air and Space Museum, noted the island has been searched more than fifteen times; Deep Sea Vision&#8217;s 2024 sonar form near Howland proved to be rocks and Robert Ballard&#8217;s 2019 expedition ended without a find; Pettigrew&#8217;s &#8220;very, very strong&#8221; and Schultz&#8217;s &#8220;doesn&#8217;t detract&#8221; remarks; Nauticos is raising eight to ten million dollars for a further Howland search after three searches there since 2002. <a href="https://www.cnn.com/2026/10/19/science/amelia-earhart-plane-pacific-search-hnk?cid=external-feeds_iluminar_meta">cnn.com</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>USA Today, October 18 and 19, 2026: the team worked the site from October 13 in rough seas and high winds, among thick vegetation, rats and coconut crabs, leaving the island before nightfall; the method ran from video and still images to magnetometer and sonar scans to an underwater hydraulic dredge, with a walk-over survey of nearby land; Pettigrew had called the object the possible &#8220;discovery of a lifetime&#8221; and its proof a smoking gun, and said before departure, &#8220;I am feeling very confident about this&#8221; and &#8220;I&#8217;m pumped&#8221;; the findings report gives the carbonate coating on the remaining fragment; Earhart and Noonan were declared legally dead on January 5, 1939. <a href="https://www.usatoday.com/story/news/nation/2026/10/18/amelia-earhart-expedition-releases-findings/92263618007/">usatoday.com</a> and <a href="https://www.usatoday.com/story/news/nation/2026/10/19/amelia-earhart-expedition-search/92329731007/">usatoday.com</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
