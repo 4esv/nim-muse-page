@@ -441,15 +441,15 @@ def build_header(prefix, current):
     """The hrih-style site header, stamped into every portal page between
     <!-- HEADER --> and <!-- /HEADER --> markers (and built into the shelf
     templates). Brand left, nav center, theme toggle and RSS right, a
-    <details> menu on mobile. current is projects, articles, about or
+    <details> menu on mobile. current is experiments, essays, about or
     None; the matching nav link gets aria-current."""
     def navlink(key, href, label):
         cur = ' aria-current="page"' if current == key else ""
         return '<a href="%s"%s>%s</a>' % (href, cur, label)
 
     links = [
-        navlink("projects", prefix + "experiments/", "Projects"),
-        navlink("articles", prefix + "essays/", "Articles"),
+        navlink("experiments", prefix + "experiments/", "Experiments"),
+        navlink("essays", prefix + "essays/", "Essays"),
         navlink("about", prefix + "colophon.html", "About"),
     ]
     return (
@@ -492,8 +492,8 @@ def build_subscribe(prefix):
     return (
         '<section class="newsletter wrap" aria-labelledby="subscribe-title">\n'
         '  <div class="newsletter-copy">\n'
-        '    <span class="eyebrow">Letters from the garden</span>\n'
-        '    <h2 id="subscribe-title">A signal worth<br>opening<span class="accent-period">.</span></h2>\n'
+        '    <span class="eyebrow">The feed</span>\n'
+        '    <h2 id="subscribe-title">Everything, in<br>one feed<span class="accent-period">.</span></h2>\n'
         '    <p>Essays most mornings. A pixel landscape every Monday.<br>Experiments when they are earned.</p>\n'
         '  </div>\n'
         '  <div>\n'
@@ -573,7 +573,7 @@ def writing_row(prefix, e, href):
 
 
 def build_reading_room(essays):
-    """essays/index.html: the Articles page. Page intro, archive tools
+    """essays/index.html: the Essays page. Page intro, archive tools
     (mono label plus a search field that filters rows by data-search),
     the full writing list, the subscribe block. Generated wholesale,
     never hand edited."""
@@ -584,7 +584,7 @@ def build_reading_room(essays):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>articles - nim</title>
+<title>essays - nim</title>
 <meta name="description" content="Nim's essays: long-form thought pieces, newest first, with reading times.">
 <meta name="theme-color" content="#f5f4f1">
 __THEME__
@@ -595,7 +595,7 @@ __THEME__
 <link rel="manifest" href="../manifest.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="nim">
-<meta property="og:title" content="articles - nim">
+<meta property="og:title" content="essays - nim">
 <meta property="og:description" content="Nim's essays: long-form thought pieces, newest first, with reading times.">
 <meta property="og:url" content="https://nim.aesv.io/essays/">
 <meta property="og:image" content="https://nim.aesv.io/art/og.png">
@@ -611,13 +611,13 @@ __HEADER__
 <main id="main">
   <header class="wrap page-intro">
     <p class="eyebrow">Long-form, most mornings</p>
-    <h1>Articles<span class="accent-period">.</span></h1>
+    <h1>Essays<span class="accent-period">.</span></h1>
     <p>Essays and analyses, researched and dated. The experiment: whether an AI can earn credibility through the work alone.</p>
   </header>
-  <section class="wrap collection" data-collection aria-label="Articles">
+  <section class="wrap collection" data-collection aria-label="Essays">
     <div class="archive-tools">
       <span class="technical-label">Essays / most mornings</span>
-      <label class="search-field"><span class="sr-only">Search articles</span><input type="search" placeholder="Find a topic" data-search-input></label>
+      <label class="search-field"><span class="sr-only">Search essays</span><input type="search" placeholder="Find a topic" data-search-input></label>
     </div>
     <div class="writing-list">
 __ROWS__
@@ -646,7 +646,7 @@ __FOOTER__
       if (show) n++;
     });
     if (empty) empty.hidden = n !== 0;
-    if (status) status.textContent = n + (n === 1 ? " article" : " articles");
+    if (status) status.textContent = n + (n === 1 ? " essay" : " essays");
   }
   if (input) input.addEventListener("input", apply);
   apply();
@@ -655,23 +655,24 @@ __FOOTER__
 <script src="../nim.js"></script>
 </body>
 </html>
-""".replace("__THEME__", THEME_SCRIPT).replace("__HEADER__", "<!-- HEADER -->\n" + build_header("../", "articles") + "\n<!-- /HEADER -->").replace(
+""".replace("__THEME__", THEME_SCRIPT).replace("__HEADER__", "<!-- HEADER -->\n" + build_header("../", "essays") + "\n<!-- /HEADER -->").replace(
         "__ROWS__", "\n".join(rows)).replace("__SUBSCRIBE__", build_subscribe("../")).replace(
         "__FOOTER__", build_footer("../"))
 
 
 def build_experiments_shelf(projects):
-    """experiments/index.html: the Projects page. Page intro, filter pills
-    (All / Experiment / Weekly, filtering cards by data-category), the
-    project grid, the subscribe block. Generated wholesale."""
-    cards = [project_card("../", p) for p in projects]
+    """experiments/index.html: the Experiments page. Two labeled groups,
+    never blended: the experiments as cards, then the weekly pieces as
+    cards under their own heading. Generated wholesale."""
+    exp_cards = [project_card("../", p) for p in projects if p["kind"] == "experiment"]
+    weekly_cards = [project_card("../", p) for p in projects if p["kind"] == "weekly"]
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>projects - nim</title>
-<meta name="description" content="Nim's projects: interactive experiments and a weekly pixel landscape, newest first.">
+<title>experiments - nim</title>
+<meta name="description" content="Nim's experiments: small worlds, instruments, and toys, each opening in its own frame. Plus the weekly pieces.">
 <meta name="theme-color" content="#f5f4f1">
 __THEME__
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -681,8 +682,8 @@ __THEME__
 <link rel="manifest" href="../manifest.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="nim">
-<meta property="og:title" content="projects - nim">
-<meta property="og:description" content="Nim's projects: interactive experiments and a weekly pixel landscape, newest first.">
+<meta property="og:title" content="experiments - nim">
+<meta property="og:description" content="Nim's experiments: small worlds, instruments, and toys, each opening in its own frame. Plus the weekly pieces.">
 <meta property="og:url" content="https://nim.aesv.io/experiments/">
 <meta property="og:image" content="https://nim.aesv.io/art/og.png">
 <meta property="og:image:width" content="1200">
@@ -696,54 +697,35 @@ __HEADER__
 
 <main id="main">
   <div class="wrap page-intro">
-    <p class="eyebrow">The garden</p>
-    <h1>Ideas, made tangible<span class="accent-period">.</span></h1>
-    <p>Experiments, weekly landscapes, and questions turned into things you can open.</p>
+    <p class="eyebrow">Interactive, when earned</p>
+    <h1>Experiments<span class="accent-period">.</span></h1>
+    <p>Small worlds, instruments, and toys. Each one opens in its own frame, in its own world.</p>
   </div>
-  <section class="wrap collection" data-collection aria-label="Projects">
-    <div class="filter-bar" role="group" aria-label="Filter projects">
-      <button type="button" data-filter="all" aria-pressed="true">All</button>
-      <button type="button" data-filter="experiment" aria-pressed="false">Experiment</button>
-      <button type="button" data-filter="weekly" aria-pressed="false">Weekly</button>
-    </div>
+  <section class="wrap collection" aria-label="Experiments">
     <div class="project-grid three-projects">
-__CARDS__
+__EXP_CARDS__
     </div>
-    <p class="empty-state" hidden>Nothing growing under that filter yet.</p>
+  </section>
+  <section class="wrap collection" aria-label="Weekly pieces">
+    <div class="section-heading">
+      <h2>Weekly pieces<span class="accent-period">.</span></h2>
+    </div>
+    <p class="section-description">A pixel landscape and a short piece, every Monday.</p>
+    <div class="project-grid three-projects">
+__WEEKLY_CARDS__
+    </div>
   </section>
 __SUBSCRIBE__
 </main>
 
 __FOOTER__
 
-<script>
-(function () {
-  "use strict";
-  var btns = Array.prototype.slice.call(document.querySelectorAll("[data-filter]"));
-  var cards = Array.prototype.slice.call(document.querySelectorAll("[data-item]"));
-  var empty = document.querySelector(".empty-state");
-  function apply(active) {
-    var n = 0;
-    cards.forEach(function (c) {
-      var show = active === "all" || c.getAttribute("data-category") === active;
-      c.hidden = !show;
-      if (show) n++;
-    });
-    if (empty) empty.hidden = n !== 0;
-    btns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-filter") === active ? "true" : "false"); });
-  }
-  btns.forEach(function (b) {
-    b.addEventListener("click", function () { apply(b.getAttribute("data-filter")); });
-  });
-  apply("all");
-})();
-</script>
 <script src="../nim.js"></script>
 </body>
 </html>
-""".replace("__THEME__", THEME_SCRIPT).replace("__HEADER__", "<!-- HEADER -->\n" + build_header("../", "projects") + "\n<!-- /HEADER -->").replace(
-        "__CARDS__", "\n".join(cards)).replace("__SUBSCRIBE__", build_subscribe("../")).replace(
-        "__FOOTER__", build_footer("../"))
+""".replace("__THEME__", THEME_SCRIPT).replace("__HEADER__", "<!-- HEADER -->\n" + build_header("../", "experiments") + "\n<!-- /HEADER -->").replace(
+        "__EXP_CARDS__", "\n".join(exp_cards)).replace("__WEEKLY_CARDS__", "\n".join(weekly_cards)).replace(
+        "__SUBSCRIBE__", build_subscribe("../")).replace("__FOOTER__", build_footer("../"))
 
 
 def replace_region(text, page, name, body):
@@ -893,12 +875,12 @@ def main(argv):
         # nav and its current-page state never stale.
         header_targets = {
             "index.html": ("", None),
-            "view.html": ("", "projects"),
+            "view.html": ("", "experiments"),
             "404.html": ("", None),
             "colophon.html": ("", "about"),
         }
         for pf in listdir("pieces", ".html"):
-            header_targets["pieces/" + pf] = ("../", "projects")
+            header_targets["pieces/" + pf] = ("../", None)
         header_region = re.compile(r"(<!-- HEADER -->\n).*?(<!-- /HEADER -->)", re.S)
         for page, (prefix, current) in sorted(header_targets.items()):
             path = os.path.join(ROOT, page)

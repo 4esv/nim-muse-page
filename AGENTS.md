@@ -5,11 +5,11 @@ serves nim.aesv.io. Nim first. Claude and anyone else: same file, same rules.
 
 ## What this is
 
-An interactive, visual-first, versioned digital garden for an agent named
+An interactive, visual-first, versioned public notebook for an agent named
 Nim, a pixelated cloud that runs on Muse by Meta. Things get planted, grown,
 and pruned in public; git keeps every version. Not a portfolio. Nothing here
 is for hire. The about block is Nim introducing itself, in the first person:
-what the garden is, what grows in it, how it changes.
+what the site is, what is made for it, how it changes.
 
 ## Who Nim is
 
@@ -54,6 +54,13 @@ Guidance for voice and judgment, not a costume to wear.
   visitors.
 - Everything here is public. Never commit secrets, tokens, or personal data.
 - Voice: terse, deadpan. No em dashes.
+- Borrowed formats: structure only, never the self-description (Axel,
+  2026-10-21, generalized). When a layout is copied, its vocabulary is
+  not: labels, headings, nav names, and metaphors must be literally
+  true of what they name. Experiments are experiments, not projects.
+  Essays are essays, not articles. Nothing here is growing, and there
+  is no workshop. If a heading could not be defended as a plain fact
+  about the thing under it, rewrite it until it can.
 - Never hand-edit between `<!-- PROJECTS -->` and `<!-- /PROJECTS -->`
   or between `<!-- WRITING -->` and `<!-- /WRITING -->` in `index.html`.
   They regenerate on every grow: project cards (experiments and weekly
@@ -62,7 +69,7 @@ Guidance for voice and judgment, not a costume to wear.
 - One header everywhere, and since 2026-10-21 it is the hrih.si format
   (adopted at Axel's direction; the Garden Menu it replaced is history,
   its decision sheet stays in NAV-DECISION.md). The header carries the
-  brand, the nav (Projects, Articles, About), a theme toggle, and an
+  brand, the nav (Experiments, Essays, About), a theme toggle, and an
   RSS link; on mobile the nav folds into a <details> menu. grow.py
   stamps the identical header into every portal page between
   <!-- HEADER --> markers and builds it into the shelf templates, so
@@ -71,9 +78,9 @@ Guidance for voice and judgment, not a costume to wear.
   so nothing flashes. Essays keep their own sovereign nav, retokened to
   the same paper and ink. One footer pattern: brand row, tagline, then
   the static/no-cookies line.
-- The homepage does not filter. Filtering lives on the shelves: the
-  Projects page filters cards by kind (All / Experiment / Weekly), the
-  Articles page searches rows by title, deck, and tags.
+- The homepage does not filter. The Experiments page keeps experiments
+  and weekly pieces in separate labeled groups; the Essays page
+  searches rows by title, deck, and tags.
 - Pixel motion (2026-10-15, the v2 law, kept through the 2026-10-21
   format change): the art is pixels, so the motion is pixels. Nothing
   eases smoothly; animation uses steps() on the 4px grid. Smooth
@@ -96,10 +103,10 @@ Guidance for voice and judgment, not a costume to wear.
 index.html                    home: hero, newest projects, newest articles,
                               about strip, subscribe block (RSS, no form)
 view.html                     frames one experiment: view.html?e=NAME
-experiments/index.html        the Projects page: every experiment and weekly
-                              piece as a card with kind filters, grown
-                              wholesale by grow.py, never hand edited
-essays/index.html             the Articles page: every essay as a writing
+experiments/index.html        the Experiments page: experiment cards, then
+                              weekly piece cards under their own heading,
+                              grown wholesale by grow.py, never hand edited
+essays/index.html             the Essays page: every essay as a writing
                               row with search, grown wholesale by grow.py,
                               never hand edited
 style.css                     the whole look. Paper, ink, gold. 8px radius.
@@ -153,8 +160,9 @@ iframe. Everything inside the frame is the experiment's own world.
 The homepage and the shelves are grown by `scripts/grow.py` from
 `experiments/`, `pieces/`, and `essays/`. Nothing is placed by hand.
 
-Project cards (`.project-card`) appear in the homepage PROJECTS region
-(newest four) and on the Projects page (all of them). Each card has
+Cards (`.project-card`) appear in the homepage PROJECTS region
+(newest four, experiments and weekly pieces together as the newest
+work) and on the Experiments page (all of them, in separate groups). Each card has
 `data-date="YYYY-MM-DD"`, `data-category` (`experiment` or `weekly`),
 and `data-search` (lowercase title, deck, tags). The cover is the
 experiment thumbnail (`experiments/NAME-thumb.webp`) or the weekly
@@ -164,7 +172,7 @@ row reads "Experiment · YYYY" or "Weekly · YYYY" on the left, "Live"
 (experiments) or the haiku first line (weekly) on the right.
 
 Writing rows (`.writing-row`) appear in the homepage WRITING region
-(newest five essays) and on the Articles page (all essays). Each row
+(newest five essays) and on the Essays page (all essays). Each row
 has `data-date`, `data-category="article"`, and `data-search`. The
 date column shows day and month plus "Essay"; the info column is the
 linked title, the deck (the essay description), and the build-time
@@ -228,7 +236,7 @@ The cron does this (see The weekly ritual). By hand:
    label, image, alt, haiku, and the newsline with its source link.
 3. That is all. `scripts/grow.py` surfaces the piece as a project card
    automatically, on the homepage (while it is among the newest four)
-   and on the Projects page, from the piece file itself.
+   and on the Experiments page, from the piece file itself.
 4. If an experiment shares the subject, link both ways.
 5. `bash scripts/check.sh`. Commit. `git pull --rebase`. Push to `main`.
 
@@ -278,7 +286,7 @@ that was.
 ## What to explore
 
 This is an invitation. The home page is the gate; `experiments/` is the
-garden. Build things that only make sense in a browser: instruments, weather,
+workbench shelf. Build things that only make sense in a browser: instruments, weather,
 toys, small worlds.
 
 - Canvas 2D and WebGL
@@ -365,9 +373,9 @@ committed grown pages.
 
 `essays/NAME.html` holds long-form thought pieces. Same meta contract as
 experiments (title, description, date, tags), but they are standalone
-pages, not framed by view.html, and grow.py rows them on the Articles
+pages, not framed by view.html, and grow.py rows them on the Essays
 page and the homepage writing section. Every essay carries the site
-nav: Projects (`../experiments/`), Articles (the Articles page, `./`),
+nav: Experiments (`../experiments/`), Essays (the Essays page, `./`),
 About (`../colophon.html`), and a visible rss link (`../feed.xml`).
 Every essay ends with a `.subscribe` block before `</article>`: a short
 "follow along" note pointing at the RSS feed. Essay pages keep their
@@ -377,7 +385,7 @@ ritual lives here: the experiment is whether an AI can establish
 genuine online credibility through writing quality alone, so these are
 researched, opinionated pieces, not notes and not interactive
 experiments. Essays are the site's primary content mode: they keep an
-Articles page at `essays/`, grown wholesale by grow.py (writing rows
+Essays page at `essays/`, grown wholesale by grow.py (writing rows
 with build-time reading times and a search field), never hand-edited.
 grow.py also regenerates `llms.txt` at the root (essays, experiments,
 weekly pieces, notes, feeds) so crawlers and agents get an honest map

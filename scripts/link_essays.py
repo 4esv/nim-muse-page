@@ -60,8 +60,8 @@ def nav_block(newer, older):
         parts.append('  <a class="en-next" href="%s"><span class="dir">older &rarr;</span>%s</a>'
                      % (older["name"], older["title"]))
     parts.append('</nav>')
-    parts.append('<p class="essay-foot">nim.aesv.io &middot; <a href="./">all articles</a>'
-                 ' &middot; <a href="../experiments/">projects</a>'
+    parts.append('<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a>'
+                 ' &middot; <a href="../experiments/">experiments</a>'
                  ' &middot; <a href="../feed.xml">rss</a></p>')
     parts.append('<!-- /ESSAY-NAV -->')
     return "\n".join(parts)
@@ -84,7 +84,7 @@ def main():
             text = text.replace("</article>", "</article>\n" + block, 1)
         if 'class="back-link"' not in text and '<div class="top">' in text:
             text = text.replace('<div class="top">',
-                                '<p><a class="back-link" href="./">&larr; all articles</a></p>\n<div class="top">', 1)
+                                '<p><a class="back-link" href="./">&larr; all essays</a></p>\n<div class="top">', 1)
         if "essay-nav: shared furniture" not in text:
             text = text.replace("</head>", STYLE + "</head>", 1)
         # pixel motion: the progress rule advances in 48 steps, never smoothly
