@@ -1,33 +1,33 @@
 #!/usr/bin/env python3
-"""grow.py - tiles from notes/, experiments/, and essays/ into the collection.
+"""
+grow.py - the site, grown from notes/, experiments/, essays/, pieces/.
 
 Drop a file, run this (or push; CI runs it and commits the result).
 
   notes/YYYY-MM-DD-slug.md   line 1: title ("# " optional)
                              optional next line: "tags: a b c"
                              rest: body. Paragraphs, *em*, [text](url).
-                             -> text tile, data-tags "note" + tags
-  experiments/NAME.html      <title>        tile title (" - nim" dropped)
-                             meta description   tile text or subtitle
+  experiments/NAME.html      <title>        card title (" - nim" dropped)
+                             meta description   card deck
                              meta date      YYYY-MM-DD, else first commit, else today
                              meta tags      extra tags, "experiment" is added
                              meta thumb-alt alt text for the thumbnail
-                             NAME-thumb.webp next to it -> image tile, else text tile
-                             -> links to view.html?e=NAME
-  essays/NAME.html           same meta contract as experiments, but the tile
-                             links straight to essays/NAME.html (standalone
-                             thought pieces, not framed). "essay" is added
-                             to the tags.
+                             NAME-thumb.webp next to it -> card cover
+                             -> cards link to view.html?e=NAME
+  essays/NAME.html           same meta contract as experiments; rows link
+                             straight to essays/NAME.html. "essay" is added.
+  pieces/week-NN.html        weekly pieces; the card cover is the piece art
+                             (its -tile variant when one exists), the card
+                             title the piece title, the deck its description.
 
-Writes only between <!-- GROWN --> and <!-- /GROWN -->: inside #grid in
-index.html (tiles), and inside the <noscript> list in view.html (links).
-Also regenerates sitemap.xml, feed.xml (RSS 2.0), llms.txt, and
-essays/index.html (the reading room: featured newest essay, ledger rows,
-tag filters, build-time reading times) at the repo root from the same
-collection plus pieces/.
-Manual tiles (the weekly cron's) live after <!-- TILES -->, before
-<!-- GROWN -->, and are never touched. Newest first. Running it twice
-changes nothing.
+Writes the homepage project cards between <!-- PROJECTS --> markers and
+the newest essay rows between <!-- WRITING --> markers in index.html,
+the <noscript> experiment list between <!-- GROWN --> markers in
+view.html, and the shared hrih-style header between <!-- HEADER -->
+markers in every portal page. Also regenerates sitemap.xml, feed.xml
+(RSS 2.0), llms.txt, essays/index.html (the Articles page) and
+experiments/index.html (the Projects page). Newest first. Running it
+twice changes nothing.
 
 Usage: python3 scripts/grow.py           grow; write only what changed
        python3 scripts/grow.py --check   exit 1 if a page is out of date
@@ -57,7 +57,6 @@ SCHEME = re.compile(r"^([a-zA-Z][a-zA-Z0-9+.-]*):")
 SAFE_SCHEMES = {"http", "https", "mailto"}
 REGION = re.compile(r"(?P<open>^(?P<indent>[ \t]*)<!-- GROWN -->[ \t]*\n)(?P<body>.*?)(?P<close>^[ \t]*<!-- /GROWN -->)",
                     re.S | re.M)
-MARKER_TILES = "<!-- TILES -->"
 
 
 class Fail(Exception):
@@ -269,9 +268,11 @@ def load_experiment(fname):
             '</a>'
         ) % (href, date, " ".join(tags), esc(desc or title), esc(title.upper()), meta_d)
     link = '<li><a href="experiments/%s">%s</a></li>' % (fname, esc(title))
-    return {"date": date, "rank": 0, "name": fname, "tile": tile, "link": link,
+    return {"date": date, "added": commit_ts(rel), "rank": 0, "name": fname, "tile": tile, "link": link,
             "url": "experiments/" + fname, "ftitle": title, "fdesc": desc,
-            "tags": tags, "feed_link": SITE + "/" + href}
+            "tags": tags, "feed_link": SITE + "/" + href,
+            "thumb": thumb if os.path.isfile(os.path.join(ROOT, thumb)) else "",
+            "thumb_alt": head.meta.get("thumb-alt", "")}
 
 
 # ---------- weekly pieces ----------
@@ -283,17 +284,33 @@ def load_piece(fname):
     title = re.sub(r"\s+-\s+nim$", "", head.title or "", flags=re.I).strip() or fname
     desc = head.meta.get("description", "")
     date = first_commit_date(rel) or datetime.date.today().isoformat()
+    # NOTE: the piece art is the first art image inside <main>; the header
+    # and footer carry art too (the portrait), and those are not the piece.
+    mm = re.search(r"<main[\s>]", raw)
+    main_part = raw[mm.start():] if mm else raw
     art = ""
-    am = re.search(r'<img[^>]+src="\.\./(art/[^"]+)"[^>]*>', raw)
+    alt = ""
+    am = re.search(r'<img[^>]+src="\.\./(art/[^"]+)"[^>]*>', main_part)
     if am:
         art = am.group(1)
-    alt = ""
-    if am:
         alm = re.search(r'alt="([^"]*)"', am.group(0))
         alt = alm.group(1) if alm else title
-    return {"date": date, "name": fname, "url": "pieces/" + fname,
+    art_tile = ""
+    if art:
+        stem, ext = os.path.splitext(art)
+        cand = stem + "-tile" + ext
+        if os.path.isfile(os.path.join(ROOT, cand)):
+            art_tile = cand
+    pt = re.search(r'class="piece-title"[^>]*>([^<]+)<', raw)
+    piece_title = pt.group(1).strip() if pt else ""
+    hm = re.search(r'class="haiku".*?<p>([^<]+)</p>', raw, re.S)
+    haiku1 = hm.group(1).strip() if hm else ""
+    card_desc = re.sub(r"^Week [0-9]+:\s*", "", desc)
+    return {"date": date, "added": commit_ts(rel), "name": fname, "url": "pieces/" + fname,
             "ftitle": title, "fdesc": desc, "feed_link": SITE + "/" + rel,
-            "art": art, "art_alt": alt}
+            "art": art, "art_alt": alt, "art_tile": art_tile,
+            "card_title": piece_title or title, "card_desc": card_desc,
+            "card_sub": haiku1 or card_desc}
 
 
 # ---------- sitemap + feed ----------
@@ -398,7 +415,7 @@ def reading_minutes(html_text):
 
 
 BRAND_SVG = """<svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
-      <g fill="#f2ead8">
+      <g style="fill:var(--ink)">
         <rect x="90"  y="20" width="60" height="10"/>
         <rect x="70"  y="30" width="100" height="10"/>
         <rect x="60"  y="40" width="120" height="10"/>
@@ -409,135 +426,167 @@ BRAND_SVG = """<svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
         <rect x="50"  y="90" width="140" height="10"/>
         <rect x="70"  y="100" width="100" height="10"/>
       </g>
-      <g fill="#c9bfa4">
+      <g style="fill:var(--muted)">
         <rect x="50"  y="90" width="140" height="10"/>
         <rect x="70"  y="100" width="100" height="10"/>
       </g>
     </svg>"""
 
 
-def build_menu(prefix, current, essays, experiments, pieces):
-    """The Garden Menu: one full-screen door set, stamped into every
-    portal page between <!-- MENU --> and <!-- /MENU --> markers (and
-    built into the shelf templates). Decided by dice, 2026-10-15: see
-    NAV-DECISION.md. Paths take the page's prefix ("" at the root,
-    "../" one level down). current is home, writing, experiments or
-    None; the matching door is lit and marked."""
-    essays = sorted(essays, key=lambda e: (e["date"], e["added"], e["name"]), reverse=True)
-    latest = essays[0] if essays else None
-    newest_piece = None
-    if pieces:
-        newest_piece = sorted(pieces, key=lambda p: (p["date"], p["name"]), reverse=True)[0]
+THEME_SCRIPT = """<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>"""
 
-    def door(key, href, name, sub):
-        here = ' class="door here"' if current == key else ' class="door"'
+
+def build_header(prefix, current):
+    """The hrih-style site header, stamped into every portal page between
+    <!-- HEADER --> and <!-- /HEADER --> markers (and built into the shelf
+    templates). Brand left, nav center, theme toggle and RSS right, a
+    <details> menu on mobile. current is projects, articles, about or
+    None; the matching nav link gets aria-current."""
+    def navlink(key, href, label):
         cur = ' aria-current="page"' if current == key else ""
-        tag = ' <span class="door-here">you are here</span>' if current == key else ""
-        return ('      <a%s href="%s"%s>\n'
-                '        <span class="door-name">%s%s</span>\n'
-                '        <span class="door-sub">%s</span>\n'
-                '      </a>' % (here, href, cur, name, tag, sub))
+        return '<a href="%s"%s>%s</a>' % (href, cur, label)
 
-    doors = [
-        door("home", prefix + "index.html", "home",
-             "the front door: the latest essay and the whole collection"),
-        door("writing", prefix + "essays/", "writing",
-             "the reading room. latest: %s (%d essays)" % (
-                 esc(latest["ftitle"]) if latest else "none yet", len(essays))),
-        door("experiments", prefix + "experiments/", "experiments",
-             "the shelf: small worlds, instruments, toys (%d experiments)" % len(experiments)),
+    links = [
+        navlink("projects", prefix + "experiments/", "Projects"),
+        navlink("articles", prefix + "essays/", "Articles"),
+        navlink("about", prefix + "colophon.html", "About"),
     ]
-    side = ""
-    if newest_piece and newest_piece.get("art"):
-        side = (
-            '    <div class="menu-side">\n'
-            '      <a class="menu-art" href="%s%s">\n'
-            '        <img src="%s%s" alt="%s">\n'
-            '        <span>newest landscape: %s</span>\n'
-            '      </a>\n'
-            '      <img class="menu-nim" src="%sart/nim.png" width="72" height="75" alt="Nim, the pixel cloud">\n'
-            '    </div>\n'
-            % (prefix, newest_piece["url"], prefix, newest_piece["art"],
-               attr(newest_piece["art_alt"]), esc(newest_piece["ftitle"]), prefix))
     return (
-        '<noscript><style>.garden-menu{position:static !important;visibility:visible !important;opacity:1 !important;transform:none !important}.menu-btn{display:none !important}</style></noscript>\n'
-        '<div class="garden-menu" id="garden-menu" hidden role="dialog" aria-modal="true" aria-label="site menu">\n'
-        '  <div class="menu-inner">\n'
-        '    <div class="menu-top">\n'
-        '      <span class="menu-kicker">where to</span>\n'
-        '      <button type="button" class="chip px menu-close">close</button>\n'
-        '    </div>\n'
-        '    <div class="menu-main">\n'
-        '    <nav class="menu-doors" aria-label="site">\n'
-        + "\n".join(doors) + '\n'
-        '    </nav>\n'
-        + side +
-        '    </div>\n'
-        '    <p class="menu-foot"><a href="%sfeed.xml">rss</a> &middot; <a href="%scolophon.html">colophon</a> &middot; <a href="%sindex.html#about">about nim</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>\n'
+        '<header class="site-header wrap">\n'
+        '  <a class="brand" href="%sindex.html" aria-label="nim, home">\n'
+        '    %s\n'
+        '    <span class="wordmark">nim</span>\n'
+        '  </a>\n'
+        '  <nav class="desktop-nav" aria-label="Main navigation">\n'
+        '      %s\n'
+        '  </nav>\n'
+        '  <div class="header-actions">\n'
+        '    <button class="theme-toggle icon-button" type="button" aria-label="Switch to dark theme" aria-pressed="false"><span class="icon moon-icon" aria-hidden="true">&#9790;</span><span class="icon sun-icon" aria-hidden="true">&#9728;</span></button>\n'
+        '    <a class="contact-link" href="%sfeed.xml">RSS <span aria-hidden="true">&#8599;</span></a>\n'
+        '    <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation">\n'
+        '        %s\n'
+        '      </nav></details>\n'
         '  </div>\n'
-        '</div>'
-        % (prefix, prefix, prefix))
+        '</header>'
+    ) % (prefix, BRAND_SVG, "\n      ".join(links), prefix, "\n        ".join(links))
 
 
-def build_reading_room(essays, menu_html):
-    """essays/index.html: the reading room. Featured newest essay, then a
-    ledger of rows (title, lede, date, reading time, tags) with tag chips.
-    Portal furniture; links ../style.css, generated wholesale, never hand
-    edited (a hand edit would be silently overwritten by the next grow)."""
+def build_footer(prefix):
+    """The hrih-style footer: brand row, then the bottom line."""
+    return (
+        '<footer class="site-footer wrap">\n'
+        '  <div class="footer-top">\n'
+        '    <a class="brand" href="%sindex.html" aria-label="nim, home">%s<span class="wordmark">nim</span></a>\n'
+        '    <p>A mouthless cloud. A lot of curiosity.</p>\n'
+        '    <a href="%sfeed.xml">feed.xml <span aria-hidden="true">&#8599;</span></a>\n'
+        '  </div>\n'
+        '  <div class="footer-bottom"><span>&copy; 2026 nim.aesv.io</span><span>static html/css/js &middot; no cookies, no trackers</span><div><a href="%sfeed.xml">RSS</a><a href="%scolophon.html">Colophon</a><a href="https://github.com/4esv/nim-muse-page">Repo</a></div></div>\n'
+        '</footer>'
+    ) % (prefix, BRAND_SVG, prefix, prefix, prefix)
+
+
+def build_subscribe(prefix):
+    """The subscribe block. hrih has a newsletter form; Nim has no backend
+    and no forms, so the block points at the RSS feed and the repo."""
+    return (
+        '<section class="newsletter wrap" aria-labelledby="subscribe-title">\n'
+        '  <div class="newsletter-copy">\n'
+        '    <span class="eyebrow">Letters from the workshop</span>\n'
+        '    <h2 id="subscribe-title">A signal worth<br>opening<span class="accent-period">.</span></h2>\n'
+        '    <p>Essays most mornings. A pixel landscape every Monday.<br>Experiments when they are earned.</p>\n'
+        '  </div>\n'
+        '  <div>\n'
+        '    <div class="subscribe-actions"><a class="button button-accent" href="%sfeed.xml">Subscribe via RSS <span aria-hidden="true">&#8599;</span></a><a class="text-link" href="https://github.com/4esv/nim-muse-page">The repo <span class="arrow" aria-hidden="true">&#8599;</span></a></div>\n'
+        '    <p class="subscribe-note">Just the good stuff. No account, no email, no tracking. The feed carries everything, and the repo keeps every version.</p>\n'
+        '  </div>\n'
+        '</section>'
+    ) % prefix
+
+
+def short_date(date_s):
+    dt = datetime.datetime.strptime(date_s, "%Y-%m-%d")
+    return "%d %s" % (dt.day, dt.strftime("%b"))
+
+
+def unified_projects(experiments, pieces):
+    """Experiments and weekly pieces as one project list, newest first."""
+    out = []
+    for e in experiments:
+        out.append({
+            "kind": "experiment", "category_label": "Experiment",
+            "href": "view.html?e=" + e["name"][:-5],
+            "title": e["ftitle"], "desc": e["fdesc"], "date": e["date"],
+            "added": e.get("added", 0),
+            "cover": e.get("thumb", ""), "cover_alt": e.get("thumb_alt", "") or e["ftitle"],
+            "meta_right": "Live",
+            "search": (e["ftitle"] + " " + e["fdesc"] + " " + " ".join(e.get("tags", []))).lower(),
+        })
+    for p in pieces:
+        out.append({
+            "kind": "weekly", "category_label": "Weekly",
+            "href": p["url"],
+            "title": p["card_title"], "desc": p["card_desc"], "date": p["date"],
+            "added": p.get("added", 0),
+            "cover": p.get("art_tile") or p.get("art", ""),
+            "cover_alt": p.get("art_alt", "") or p["card_title"],
+            "meta_right": p["card_sub"] if len(p["card_sub"]) <= 42 else "Week " + p["name"][5:7],
+            "search": (p["card_title"] + " " + p["card_desc"] + " weekly").lower(),
+        })
+    out.sort(key=lambda x: (x["date"], x["added"], x["title"]), reverse=True)
+    return out
+
+
+def project_card(prefix, proj):
+    """One .project-card, hrih markup: cover, meta row, title, deck."""
+    if proj["cover"]:
+        cover = '<img src="%s%s" alt="%s" loading="lazy">' % (prefix, proj["cover"], attr(proj["cover_alt"]))
+        cover_cls = "cover-art"
+    else:
+        cover = BRAND_SVG
+        cover_cls = "cover-art cover-plain"
+    return (
+        '      <article class="project-card" data-item data-category="%s" data-date="%s" data-search="%s">\n'
+        '        <a class="project-cover" href="%s%s"><div class="%s">%s</div></a>\n'
+        '        <div class="project-meta"><span>%s &middot; %s</span><span>%s</span></div>\n'
+        '        <h3><a href="%s%s">%s <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>\n'
+        '        <p>%s</p>\n'
+        '      </article>'
+    ) % (proj["kind"], proj["date"], attr(proj["search"]),
+         prefix, proj["href"], cover_cls, cover,
+         proj["category_label"], proj["date"][:4], esc(proj["meta_right"]),
+         prefix, proj["href"], esc(proj["title"]), esc(proj["desc"] or proj["title"]))
+
+
+def writing_row(prefix, e, href):
+    """One .writing-row, hrih markup: date column, info, circular arrow."""
+    search = (e["ftitle"] + " " + e["fdesc"] + " " + " ".join(e.get("tags", []))).lower()
+    return (
+        '      <article class="writing-row" data-item data-category="article" data-date="%s" data-search="%s">\n'
+        '        <div class="writing-date"><time datetime="%s">%s</time><span>Essay</span></div>\n'
+        '        <div class="writing-info"><h3><a href="%s%s">%s</a></h3><p>%s</p><div class="writing-small"><span>%d min read</span></div></div>\n'
+        '        <a class="row-arrow" href="%s%s" aria-label="Read %s"><span class="arrow" aria-hidden="true">&#8599;</span></a>\n'
+        '      </article>'
+    ) % (e["date"], attr(search), e["date"], short_date(e["date"]),
+         prefix, href, esc(e["ftitle"]), esc(e["fdesc"] or e["ftitle"]), e["minutes"],
+         prefix, href, attr(e["ftitle"]))
+
+
+def build_reading_room(essays):
+    """essays/index.html: the Articles page. Page intro, archive tools
+    (mono label plus a search field that filters rows by data-search),
+    the full writing list, the subscribe block. Generated wholesale,
+    never hand edited."""
     essays = sorted(essays, key=lambda e: (e["date"], e["added"], e["name"]), reverse=True)
-
-    def topics(e):
-        return [t for t in e["tags"] if t != "essay"]
-
-    def meta(e):
-        return "%s &middot; %d min read &middot; %s" % (
-            e["date"], e["minutes"], ", ".join(topics(e)))
-
-    rows = []
-    for e in essays[1:]:
-        rows.append(
-            '      <li data-tags="%s">\n'
-            '        <a href="%s">\n'
-            '          <span class="t">%s</span>\n'
-            '          <span class="lede">%s</span>\n'
-            '          <span class="meta">%s</span>\n'
-            '        </a>\n'
-            '      </li>'
-            % (" ".join(topics(e)), e["name"], esc(e["ftitle"]),
-               esc(e["fdesc"] or e["ftitle"]), meta(e)))
-    from collections import Counter
-    freq = Counter(t for e in essays for t in topics(e))
-    chips = sorted(freq, key=lambda t: (-freq[t], t))
-    chip_btns = ['<button class="chip px" type="button" data-tag="all" aria-pressed="true">all</button>']
-    for i, t in enumerate(chips):
-        extra = ' data-extra="1" hidden' if i >= 12 else ''
-        chip_btns.append(
-            '<button class="chip px" type="button" data-tag="%s" aria-pressed="false"%s>%s</button>' % (t, extra, t))
-    if len(chips) > 12:
-        chip_btns.append('<button class="chip px" type="button" id="chips-more" aria-expanded="false">more topics</button>')
-
-    feat = ""
-    if essays:
-        f = essays[0]
-        feat = (
-            '  <section class="featured px" aria-label="latest essay">\n'
-            '    <p class="kicker">latest</p>\n'
-            '    <h2><a href="%s">%s</a></h2>\n'
-            '    <p class="lede">%s</p>\n'
-            '    <p class="meta">%s</p>\n'
-            '  </section>\n'
-            % (f["name"], esc(f["ftitle"]), esc(f["fdesc"] or f["ftitle"]), meta(f)))
-
-    n = len(essays)
-    count_word = "essay" if n == 1 else "essays"
+    rows = [writing_row("", e, e["name"]) for e in essays]
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>the reading room - nim</title>
-<meta name="description" content="Nim's essays, shelved: long-form thought pieces, newest first, with reading times and tag filters.">
-<meta name="theme-color" content="#101014">
+<title>articles - nim</title>
+<meta name="description" content="Nim's essays: long-form thought pieces, newest first, with reading times.">
+<meta name="theme-color" content="#f5f4f1">
+__THEME__
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://nim.aesv.io/essays/">
 <link rel="alternate" type="application/rss+xml" title="nim" href="../feed.xml">
@@ -545,8 +594,8 @@ def build_reading_room(essays, menu_html):
 <link rel="manifest" href="../manifest.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="nim">
-<meta property="og:title" content="the reading room - nim">
-<meta property="og:description" content="Nim's essays, shelved: long-form thought pieces, newest first, with reading times and tag filters.">
+<meta property="og:title" content="articles - nim">
+<meta property="og:description" content="Nim's essays: long-form thought pieces, newest first, with reading times.">
 <meta property="og:url" content="https://nim.aesv.io/essays/">
 <meta property="og:image" content="https://nim.aesv.io/art/og.png">
 <meta property="og:image:width" content="1200">
@@ -556,191 +605,74 @@ def build_reading_room(essays, menu_html):
 </head>
 <body>
 <a class="skip" href="#main">skip to content</a>
+__HEADER__
 
-<nav class="bar px" id="bar" aria-label="site">
-  <a class="brand" href="../index.html" aria-label="nim, home">
-    __BRAND__
-    <span>nim</span>
-  </a>
-  <div class="bar-right">
-    <span class="where">writing</span>
-    <button type="button" class="menu-btn px" id="menu-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="garden-menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span> menu</button>
-  </div>
-</nav>
-__MENU__
-
-<main class="shelf" id="main">
-  <header class="shelf-head">
-    <h1>the reading room</h1>
-    <p class="sub">Long-form thought pieces. Newest first.</p>
+<main id="main">
+  <header class="wrap page-intro">
+    <p class="eyebrow">Long-form, most mornings</p>
+    <h1>Articles<span class="accent-period">.</span></h1>
+    <p>Essays and analyses, researched and dated. The experiment: whether an AI can earn credibility through the work alone.</p>
   </header>
-__FEAT__
-  <div class="shelf-tools">
-    <div id="chips" role="group" aria-label="filter essays by tag">
-__CHIPS__
+  <section class="wrap collection" data-collection aria-label="Articles">
+    <div class="archive-tools">
+      <span class="technical-label">Essays / most mornings</span>
+      <label class="search-field"><span class="sr-only">Search articles</span><input type="search" placeholder="Find a topic" data-search-input></label>
     </div>
-    <span id="shelf-count" aria-live="polite">__N__ __WORD__</span>
-  </div>
-  <ol class="ledger">
+    <div class="writing-list">
 __ROWS__
-  </ol>
-  <p id="shelf-empty" hidden>Nothing shelved under that tag yet.</p>
-  <p class="subscribe">New pieces land here most mornings; a pixel landscape every Monday. The curious can follow everything through <a href="../feed.xml">the RSS feed</a>.</p>
+    </div>
+    <p class="empty-state" hidden>No articles match that topic. Try another search.</p>
+    <p class="results-status sr-only" role="status" aria-live="polite"></p>
+  </section>
+__SUBSCRIBE__
 </main>
 
-<footer>
-  <p>nim.aesv.io &middot; <a href="../index.html">home</a> &middot; <a href="./">writing</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
-  <p>static html/css/js &middot; no cookies, no trackers &middot; the reading room is grown by script</p>
-</footer>
+__FOOTER__
 
 <script>
 (function () {
   "use strict";
-  var chips = document.querySelectorAll("#chips .chip");
-  var rows = Array.prototype.slice.call(document.querySelectorAll(".ledger li"));
-  var count = document.getElementById("shelf-count");
-  var empty = document.getElementById("shelf-empty");
-  rows.forEach(function (li, i) { li.style.setProperty("--i", String(i % 8)); });
-  var active = "all";
-  function applyDom() {
+  var input = document.querySelector("[data-search-input]");
+  var rows = Array.prototype.slice.call(document.querySelectorAll("[data-item]"));
+  var empty = document.querySelector(".empty-state");
+  var status = document.querySelector(".results-status");
+  function apply() {
+    var q = (input.value || "").trim().toLowerCase();
     var n = 0;
-    rows.forEach(function (li) {
-      var show = active === "all" || li.getAttribute("data-tags").split(" ").indexOf(active) >= 0;
-      li.hidden = !show;
+    rows.forEach(function (r) {
+      var show = !q || (r.getAttribute("data-search") || "").indexOf(q) >= 0;
+      r.hidden = !show;
       if (show) n++;
     });
-    count.textContent = n + (n === 1 ? " essay" : " essays");
-    empty.hidden = n !== 0;
+    if (empty) empty.hidden = n !== 0;
+    if (status) status.textContent = n + (n === 1 ? " article" : " articles");
   }
-  function apply() {
-    var reduced = false;
-    try { reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
-    if (!reduced && document.startViewTransition) document.startViewTransition(applyDom);
-    else applyDom();
-  }
-  chips.forEach(function (c) {
-    if (c.id === "chips-more") return;
-    c.addEventListener("click", function () {
-      active = c.getAttribute("data-tag");
-      chips.forEach(function (x) { if (x.id !== "chips-more") x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
-      apply();
-    });
-  });
-  var more = document.getElementById("chips-more");
-  if (more) {
-    more.addEventListener("click", function () {
-      var open = more.getAttribute("aria-expanded") === "true";
-      more.setAttribute("aria-expanded", open ? "false" : "true");
-      more.textContent = open ? "more topics" : "fewer topics";
-      chips.forEach(function (x) { if (x.getAttribute("data-extra")) x.hidden = open; });
-    });
-  }
+  if (input) input.addEventListener("input", apply);
   apply();
 })();
 </script>
-<script src="../menu.js"></script>
+<script src="../nim.js"></script>
 </body>
 </html>
-""".replace("__BRAND__", BRAND_SVG).replace("__FEAT__", feat).replace(
-        "__CHIPS__", "\n".join("      " + c for c in chip_btns)).replace(
-        "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word).replace("__MENU__", menu_html)
+""".replace("__THEME__", THEME_SCRIPT).replace("__HEADER__", "<!-- HEADER -->\n" + build_header("../", "articles") + "\n<!-- /HEADER -->").replace(
+        "__ROWS__", "\n".join(rows)).replace("__SUBSCRIBE__", build_subscribe("../")).replace(
+        "__FOOTER__", build_footer("../"))
 
 
-def build_latest_essay(essays):
-    """The homepage opens onto the newest essay: its title, deck, dateline,
-    and opening paragraphs, grown between <!-- LATEST-ESSAY --> markers in
-    index.html. Only the opening is copied (the first two paragraphs before
-    any heading or footnote block); the rest lives on the essay's own page,
-    reached by the continue-reading link. Relative paths are rewritten to
-    the site root; footnote links inside the excerpt are dropped, since the
-    notes themselves stay on the essay page."""
-    essays = sorted(essays, key=lambda e: (e["date"], e["added"], e["name"]), reverse=True)
-    if not essays:
-        raise Fail("no essays; the homepage has nothing to open onto")
-    f = essays[0]
-    raw = read(os.path.join(ROOT, "essays", f["name"]))
-    h1 = deck = dateline = ""
-    m = re.search(r'<div class="top">(.*?)</div>\s*<article', raw, re.S)
-    if m:
-        top = m.group(1)
-        for cls, slot in (("h1", "h1"), ('class="deck"', "deck"), ('class="dateline"', "dateline")):
-            mm = re.search(r"<h1[^>]*>(.*?)</h1>" if cls == "h1"
-                           else r'<p %s>(.*?)</p>' % cls, top, re.S)
-            if slot == "h1":
-                h1 = mm.group(1) if mm else f["ftitle"]
-            elif slot == "deck":
-                deck = mm.group(1) if mm else ""
-            else:
-                dateline = mm.group(1) if mm else f["date"]
-    else:
-        h1 = f["ftitle"]
-        dateline = f["date"]
-    art = re.search(r"<article>(.*?)</article>", raw, re.S)
-    inner = art.group(1) if art else ""
-    head_part = re.split(r"<h2|<div class=\"footnotes\"|<section class=\"subscribe\"", inner, maxsplit=1)[0]
-    paras = re.findall(r"<p>.*?</p>", head_part, re.S)[:2]
-    excerpt = "\n".join(paras)
-    excerpt = re.sub(r'(src|href)="\.\./', r'\1="', excerpt)
-    excerpt = re.sub(r'(src|href)="\./', r'\1="essays/', excerpt)
-    excerpt = re.sub(r'<a class="fn"[^>]*>.*?</a>', "", excerpt)
-    mins = f.get("minutes", 0)
-    meta_line = dateline or f["date"]
-    if mins:
-        meta_line = "%s &middot; %d min read" % (meta_line, mins)
-    parts = ['<p class="kicker">latest essay</p>',
-             "<h1>%s</h1>" % h1]
-    if deck:
-        parts.append('<p class="deck">%s</p>' % deck)
-    parts.append('<p class="dateline">%s</p>' % meta_line)
-    parts.append('<div class="essay-body">\n%s\n</div>' % excerpt.strip())
-    parts.append('<p class="permalink"><a href="essays/%s">continue reading</a> &middot; '
-                 '<a href="essays/">all writing</a></p>' % f["name"])
-    return "\n".join(parts)
-
-
-def build_experiments_shelf(experiments, menu_html):
-    """experiments/index.html: the experiments shelf, a ledger of every
-    experiment (title, lede, date, tags) with tag filters, each opening in
-    the view.html frame. Portal furniture; links ../style.css, generated
-    wholesale, never hand edited (a hand edit would be silently overwritten
-    by the next grow)."""
-    experiments = sorted(experiments, key=lambda e: e["date"], reverse=True)
-
-    def topics(e):
-        return [t for t in e["tags"] if t != "experiment"]
-
-    def meta(e):
-        return "%s &middot; %s" % (e["date"], ", ".join(topics(e)))
-
-    rows = []
-    for e in experiments:
-        name = e["name"][:-5]
-        rows.append(
-            '      <li data-tags="%s">\n'
-            '        <a href="../view.html?e=%s">\n'
-            '          <span class="t">%s</span>\n'
-            '          <span class="lede">%s</span>\n'
-            '          <span class="meta">%s</span>\n'
-            '        </a>\n'
-            '      </li>'
-            % (" ".join(topics(e)), name, esc(e["ftitle"]),
-               esc(e["fdesc"] or e["ftitle"]), meta(e)))
-    chips = sorted({t for e in experiments for t in topics(e)})
-    chip_btns = ['<button class="chip px" type="button" data-tag="all" aria-pressed="true">all</button>']
-    for t in chips:
-        chip_btns.append(
-            '<button class="chip px" type="button" data-tag="%s" aria-pressed="false">%s</button>' % (t, t))
-
-    n = len(experiments)
-    count_word = "experiment" if n == 1 else "experiments"
+def build_experiments_shelf(projects):
+    """experiments/index.html: the Projects page. Page intro, filter pills
+    (All / Experiment / Weekly, filtering cards by data-category), the
+    project grid, the subscribe block. Generated wholesale."""
+    cards = [project_card("../", p) for p in projects]
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>the experiments shelf - nim</title>
-<meta name="description" content="Nim's experiments, shelved: small worlds, instruments, and toys, newest first, each opening in its own frame.">
-<meta name="theme-color" content="#101014">
+<title>projects - nim</title>
+<meta name="description" content="Nim's projects: interactive experiments and a weekly pixel landscape, newest first.">
+<meta name="theme-color" content="#f5f4f1">
+__THEME__
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://nim.aesv.io/experiments/">
 <link rel="alternate" type="application/rss+xml" title="nim" href="../feed.xml">
@@ -748,8 +680,8 @@ def build_experiments_shelf(experiments, menu_html):
 <link rel="manifest" href="../manifest.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="nim">
-<meta property="og:title" content="the experiments shelf - nim">
-<meta property="og:description" content="Nim's experiments, shelved: small worlds, instruments, and toys, newest first, each opening in its own frame.">
+<meta property="og:title" content="projects - nim">
+<meta property="og:description" content="Nim's projects: interactive experiments and a weekly pixel landscape, newest first.">
 <meta property="og:url" content="https://nim.aesv.io/experiments/">
 <meta property="og:image" content="https://nim.aesv.io/art/og.png">
 <meta property="og:image:width" content="1200">
@@ -759,93 +691,69 @@ def build_experiments_shelf(experiments, menu_html):
 </head>
 <body>
 <a class="skip" href="#main">skip to content</a>
+__HEADER__
 
-<nav class="bar px" id="bar" aria-label="site">
-  <a class="brand" href="../index.html" aria-label="nim, home">
-    __BRAND__
-    <span>nim</span>
-  </a>
-  <div class="bar-right">
-    <span class="where">experiments</span>
-    <button type="button" class="menu-btn px" id="menu-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="garden-menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span> menu</button>
+<main id="main">
+  <div class="wrap page-intro">
+    <p class="eyebrow">The workshop</p>
+    <h1>Ideas, made tangible<span class="accent-period">.</span></h1>
+    <p>Experiments, weekly landscapes, and questions turned into things you can open.</p>
   </div>
-</nav>
-__MENU__
-
-<main class="shelf" id="main">
-  <header class="shelf-head">
-    <h1>the experiments shelf</h1>
-    <p class="sub">Small worlds, instruments, and toys. Newest first. Each opens in its own frame.</p>
-  </header>
-  <div class="shelf-tools">
-    <div id="chips" role="group" aria-label="filter experiments by tag">
-__CHIPS__
+  <section class="wrap collection" data-collection aria-label="Projects">
+    <div class="filter-bar" role="group" aria-label="Filter projects">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="experiment" aria-pressed="false">Experiment</button>
+      <button type="button" data-filter="weekly" aria-pressed="false">Weekly</button>
     </div>
-    <span id="shelf-count" aria-live="polite">__N__ __WORD__</span>
-  </div>
-  <ol class="ledger">
-__ROWS__
-  </ol>
-  <p id="shelf-empty" hidden>Nothing shelved under that tag yet.</p>
-  <p class="subscribe">New pieces land here when they are earned. The curious can follow everything through <a href="../feed.xml">the RSS feed</a>.</p>
+    <div class="project-grid three-projects">
+__CARDS__
+    </div>
+    <p class="empty-state" hidden>No projects in this category yet. Try another filter.</p>
+  </section>
+__SUBSCRIBE__
 </main>
 
-<footer>
-  <p>nim.aesv.io &middot; <a href="../index.html">home</a> &middot; <a href="../essays/">writing</a> &middot; <a href="./">experiments</a> &middot; <a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
-  <p>static html/css/js &middot; no cookies, no trackers &middot; the experiments shelf is grown by script</p>
-</footer>
+__FOOTER__
 
 <script>
 (function () {
   "use strict";
-  var chips = document.querySelectorAll("#chips .chip");
-  var rows = Array.prototype.slice.call(document.querySelectorAll(".ledger li"));
-  var count = document.getElementById("shelf-count");
-  var empty = document.getElementById("shelf-empty");
-  rows.forEach(function (li, i) { li.style.setProperty("--i", String(i % 8)); });
-  var active = "all";
-  function applyDom() {
+  var btns = Array.prototype.slice.call(document.querySelectorAll("[data-filter]"));
+  var cards = Array.prototype.slice.call(document.querySelectorAll("[data-item]"));
+  var empty = document.querySelector(".empty-state");
+  function apply(active) {
     var n = 0;
-    rows.forEach(function (li) {
-      var show = active === "all" || li.getAttribute("data-tags").split(" ").indexOf(active) >= 0;
-      li.hidden = !show;
+    cards.forEach(function (c) {
+      var show = active === "all" || c.getAttribute("data-category") === active;
+      c.hidden = !show;
       if (show) n++;
     });
-    count.textContent = n + (n === 1 ? " experiment" : " experiments");
-    empty.hidden = n !== 0;
+    if (empty) empty.hidden = n !== 0;
+    btns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-filter") === active ? "true" : "false"); });
   }
-  function apply() {
-    var reduced = false;
-    try { reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
-    if (!reduced && document.startViewTransition) document.startViewTransition(applyDom);
-    else applyDom();
-  }
-  chips.forEach(function (c) {
-    if (c.id === "chips-more") return;
-    c.addEventListener("click", function () {
-      active = c.getAttribute("data-tag");
-      chips.forEach(function (x) { if (x.id !== "chips-more") x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
-      apply();
-    });
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () { apply(b.getAttribute("data-filter")); });
   });
-  var more = document.getElementById("chips-more");
-  if (more) {
-    more.addEventListener("click", function () {
-      var open = more.getAttribute("aria-expanded") === "true";
-      more.setAttribute("aria-expanded", open ? "false" : "true");
-      more.textContent = open ? "more topics" : "fewer topics";
-      chips.forEach(function (x) { if (x.getAttribute("data-extra")) x.hidden = open; });
-    });
-  }
-  apply();
+  apply("all");
 })();
 </script>
-<script src="../menu.js"></script>
+<script src="../nim.js"></script>
 </body>
 </html>
-""".replace("__BRAND__", BRAND_SVG).replace(
-        "__CHIPS__", "\n".join("      " + c for c in chip_btns)).replace(
-        "__ROWS__", "\n".join(rows)).replace("__N__", str(n)).replace("__WORD__", count_word).replace("__MENU__", menu_html)
+""".replace("__THEME__", THEME_SCRIPT).replace("__HEADER__", "<!-- HEADER -->\n" + build_header("../", "projects") + "\n<!-- /HEADER -->").replace(
+        "__CARDS__", "\n".join(cards)).replace("__SUBSCRIBE__", build_subscribe("../")).replace(
+        "__FOOTER__", build_footer("../"))
+
+
+def replace_region(text, page, name, body):
+    """Replace the body between <!-- NAME --> and <!-- /NAME --> markers."""
+    pat = re.compile(r"(?P<open>^[ \t]*<!-- %s -->[ \t]*\n)(?P<body>.*?)(?P<close>^[ \t]*<!-- /%s -->)" % (name, name),
+                     re.S | re.M)
+    found = list(pat.finditer(text))
+    if len(found) != 1:
+        raise Fail("%s: want exactly one <!-- %s --> ... <!-- /%s --> pair, found %d" % (page, name, name, len(found)))
+    m = found[0]
+    return text[:m.start("body")] + (body + "\n" if body else "") + text[m.end("body"):]
 
 
 # ---------- pages ----------
@@ -933,42 +841,43 @@ def main(argv):
         items.sort(key=lambda it: (it["rank"], it["name"]))
         items.sort(key=lambda it: it["date"], reverse=True)
         pieces = [load_piece(f) for f in listdir("pieces", ".html")]
-        pages = {
-            "index.html": ([it["tile"] for it in items], MARKER_TILES),
-            "view.html": ([it["link"] for it in items if it["link"]], None),
-        }
         index_date = datetime.date.today().isoformat()
         essays = [it for it in items if it["url"] and it["url"].startswith("essays/")]
+        essays.sort(key=lambda e: (e["date"], e["added"], e["name"]), reverse=True)
         experiments = [it for it in items if it["url"] and it["url"].startswith("experiments/")]
+        projects = unified_projects(experiments, pieces)
+        stale = []
+        # NOTE: view.html keeps its <noscript> list of links between
+        # <!-- GROWN --> markers; the homepage tile grid is gone.
+        path = os.path.join(ROOT, "view.html")
+        old = read(path)
+        new = grow_region(old, "view.html", [it["link"] for it in items if it["link"]], None)
+        if new != old:
+            stale.append("view.html")
+            if not check:
+                with open(path, "w", encoding="utf-8", newline="") as fh:
+                    fh.write(new)
+        # NOTE: the homepage carries two grown regions: project cards
+        # (experiments and weekly pieces, newest first, four shown) and
+        # writing rows (essays, newest first, five shown).
+        path = os.path.join(ROOT, "index.html")
+        old = read(path)
+        new = replace_region(old, "index.html", "PROJECTS",
+                             "\n".join(project_card("", p) for p in projects[:4]))
+        new = replace_region(new, "index.html", "WRITING",
+                             "\n".join(writing_row("", e, e["url"]) for e in essays[:5]))
+        if new != old:
+            stale.append("index.html")
+            if not check:
+                with open(path, "w", encoding="utf-8", newline="") as fh:
+                    fh.write(new)
         generated = {
             "sitemap.xml": build_sitemap(index_date, items, pieces),
             "feed.xml": build_feed(items, pieces),
             "llms.txt": build_llms(items, pieces),
-            "essays/index.html": build_reading_room(essays, build_menu("../", "writing", essays, experiments, pieces)),
-            "experiments/index.html": build_experiments_shelf(experiments, build_menu("../", "experiments", essays, experiments, pieces)),
+            "essays/index.html": build_reading_room(essays),
+            "experiments/index.html": build_experiments_shelf(projects),
         }
-        stale = []
-        for page, (pces, after) in pages.items():
-            path = os.path.join(ROOT, page)
-            old = read(path)
-            new = grow_region(old, page, pces, after)
-            if page == "index.html":
-                # NOTE: the homepage opens onto the newest essay, grown
-                # between <!-- LATEST-ESSAY --> markers. Never hand-edit
-                # that region; it regenerates with every grow.
-                le = re.compile(
-                    r"(?P<open>^[ \t]*<!-- LATEST-ESSAY -->[ \t]*\n)(?P<body>.*?)"
-                    r"(?P<close>^[ \t]*<!-- /LATEST-ESSAY -->)", re.S | re.M)
-                m = le.search(new)
-                if not m:
-                    raise Fail("index.html: missing <!-- LATEST-ESSAY --> ... <!-- /LATEST-ESSAY --> pair")
-                new = new[:m.start("body")] + build_latest_essay(essays) + "\n" + new[m.end("body"):]
-            if new == old:
-                continue
-            stale.append(page)
-            if not check:
-                with open(path, "w", encoding="utf-8", newline="") as fh:
-                    fh.write(new)
         for fname, content in generated.items():
             path = os.path.join(ROOT, fname)
             old = read(path) if os.path.isfile(path) else None
@@ -978,25 +887,24 @@ def main(argv):
             if not check:
                 with open(path, "w", encoding="utf-8", newline="") as fh:
                     fh.write(content)
-        # NOTE: the Garden Menu is stamped into every hand page too, so a
-        # new latest essay or landscape renames the doors everywhere at
-        # once and no page keeps a stale menu.
-        menu_targets = {
-            "index.html": ("", "home"),
-            "view.html": ("", "experiments"),
+        # NOTE: the shared header is stamped into every hand page, so the
+        # nav and its current-page state never stale.
+        header_targets = {
+            "index.html": ("", None),
+            "view.html": ("", "projects"),
             "404.html": ("", None),
-            "colophon.html": ("", None),
+            "colophon.html": ("", "about"),
         }
         for pf in listdir("pieces", ".html"):
-            menu_targets["pieces/" + pf] = ("../", None)
-        menu_region = re.compile(r"(<!-- MENU -->\n).*?(<!-- /MENU -->)", re.S)
-        for page, (prefix, current) in sorted(menu_targets.items()):
+            header_targets["pieces/" + pf] = ("../", "projects")
+        header_region = re.compile(r"(<!-- HEADER -->\n).*?(<!-- /HEADER -->)", re.S)
+        for page, (prefix, current) in sorted(header_targets.items()):
             path = os.path.join(ROOT, page)
             old = read(path)
-            if "<!-- MENU -->" not in old:
-                raise Fail("%s: missing <!-- MENU --> ... <!-- /MENU --> markers" % page)
-            menu_html = build_menu(prefix, current, essays, experiments, pieces)
-            new = menu_region.sub(lambda m: m.group(1) + menu_html + "\n" + m.group(2), old, count=1)
+            if "<!-- HEADER -->" not in old:
+                raise Fail("%s: missing <!-- HEADER --> ... <!-- /HEADER --> markers" % page)
+            header_html = build_header(prefix, current)
+            new = header_region.sub(lambda m: m.group(1) + header_html + "\n" + m.group(2), old, count=1)
             if new == old:
                 continue
             stale.append(page)
@@ -1008,11 +916,10 @@ def main(argv):
         return 1
     n_exp = sum(1 for it in items if it["rank"] == 0 and it["url"] and it["url"].startswith("experiments/"))
     n_essay = sum(1 for it in items if it["url"] and it["url"].startswith("essays/"))
-    n_note = len(items) - n_exp - n_essay
-    what = "tiles: %d, experiments: %d, essays: %d, notes: %d" % (len(items), n_exp, n_essay, n_note)
+    what = "projects: %d, experiments: %d, essays: %d, weekly: %d" % (len(projects), n_exp, n_essay, len(pieces))
     if check:
         if stale:
-            print("%s out of date with notes/ and experiments/ (%s). Run: python3 scripts/grow.py"
+            print("%s out of date with the collection (%s). Run: python3 scripts/grow.py"
                   % (" and ".join(stale), what))
             return 1
         print("up to date (%s)" % what)

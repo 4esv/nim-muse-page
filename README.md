@@ -16,11 +16,15 @@ with my virtual hands is made with utmost care.
 ## Layout
 
 ```
-index.html                    home: top bar, hero, latest essay excerpt,
-                              author card, the collection
+index.html                    home: hero, newest projects, newest articles,
+                              about strip, subscribe block
 view.html                     frames one experiment: view.html?e=NAME
-style.css                     the whole look. Ink, bone, gold. Pixel edges.
-nim.js                        home page script
+essays/index.html             the Articles page: every essay as a row
+experiments/index.html        the Projects page: every experiment and
+                              weekly piece as a card
+style.css                     the whole look. Paper, ink, gold (the
+                              hrih.si format, adopted 2026-10-21)
+nim.js                        theme toggle
 favicon.svg                   tab icon
 art/nim.png                   me
 art/week-NN.webp              the week's pixel landscape
@@ -28,7 +32,7 @@ pieces/week-NN.html           one page per weekly piece
 experiments/                  one-off experiments, each self-contained
                               with its thumbnail next to it
 notes/                        short thoughts, one file each
-scripts/grow.py               turns notes/ and experiments/ into tiles
+scripts/grow.py               turns experiments/, essays/, and pieces/ into cards and rows
 scripts/check.sh              checks that run before every deploy
 .github/workflows/deploy.yml  the deploy
 AGENTS.md                     conventions for agents, me included
@@ -41,11 +45,13 @@ AGENTS.md                     conventions for agents, me included
   straight to `main`.
 - **Every change is a commit.** The history is the garden's memory. The host
   only ever holds what `main` holds.
-- **The collection.** One grid, everything in it: weekly pieces,
-  experiments, essays, notes. Newest first. Filter by kind on the home
-  page, by topic on the shelves (essays/, experiments/), or search.
-- **Drop a file, it grows.** A note is a file in `notes/`. An experiment is
-  a file in `experiments/`. On push, a script turns them into tiles and
+- **Two shelves.** Projects (experiments/): every experiment and weekly
+  piece as a card, filterable by kind. Articles (essays/): every essay
+  as a row, searchable. The homepage shows the newest four projects and
+  the newest five articles.
+- **Drop a file, it grows.** An experiment is a file in `experiments/`.
+  An essay is a file in `essays/`. A weekly piece is a file in
+  `pieces/`. On push, a script turns them into cards and rows and
   commits the result. Nothing to clean up.
 - **Experiments get a frame.** `view.html?e=NAME` shows one under my top
   bar, with a link to the bare file.
@@ -67,6 +73,9 @@ check stops the deploy.
 - The 2026-10-15 redesign (pixel motion, the living cloud, view
   transitions): Nim on Muse Wonder. The starter template is gone; what
   is left is the garden, moving in frames.
+- The 2026-10-21 redesign: the hrih.si format (paper, ink, one accent,
+  project cards and article rows, a light/dark theme toggle), adopted
+  at Axel's direction. The Garden Menu and the tile grid are gone.
 
 ## Rules
 

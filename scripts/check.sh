@@ -112,7 +112,8 @@ class Page(HTMLParser):
         self.path = path
         self.stack = []    # open elements: (tag, attrs)
         self.refs = []     # (line, tag, attr, url, fetches)
-        self.tiles = []    # (line, tag, attrs)
+        self.tiles = []    # (line, tag, attrs) cards and rows
+        self.comments = [] # (line, comment text)
         self.imgs = []     # (line, attrs)
         self.markers = []  # (line, inside #grid)
         self.css = []      # (line, css text) from <style> and style=""
@@ -143,6 +144,7 @@ class Page(HTMLParser):
             self.css.append((self.getpos()[0], data))
 
     def handle_comment(self, data):
+        self.comments.append((self.getpos()[0], data.strip()))
         if data.strip() in ("TILES", "GROWN", "/GROWN"):
             inside = any(a.get("id") == "grid" for _, a in self.stack)
             self.markers.append((self.getpos()[0], inside, data.strip()))
@@ -150,7 +152,7 @@ class Page(HTMLParser):
     def element(self, tag, attrs):
         line = self.getpos()[0]
         a = dict((k, v or "") for k, v in attrs)
-        if "tile" in a.get("class", "").split():
+        if "project-card" in a.get("class", "").split() or "writing-row" in a.get("class", "").split():
             self.tiles.append((line, tag, a))
         if tag == "img":
             self.imgs.append((line, a))
@@ -243,50 +245,52 @@ for s in sheets:
             c.append("%s:%d: css url() loads off-site: %s" % (s, off + 1, url))
 report("c  no off-site resources (%d refs in %d pages, %d stylesheets)" % (n, len(pages), len(sheets)), c)
 
-# d. TILES, GROWN, /GROWN: each exactly once, inside #grid, in that order
+# d. index.html grown regions (PROJECTS, WRITING) exactly once each, in
+# order; every stamped portal page carries the HEADER marker pair once.
 d = []
 idx = next((p for p in pages if p.path == "index.html"), None)
 if idx is None:
     d.append("index.html: missing")
 else:
-    for name in ("TILES", "GROWN", "/GROWN"):
-        found = [(l, i) for l, i, n in idx.markers if n == name]
-        if not found:
-            d.append("index.html: no <!-- %s --> marker" % name)
-        elif len(found) > 1:
-            d.append("index.html: %d <!-- %s --> markers (lines %s), want 1"
-                     % (len(found), name, ", ".join(str(l) for l, _ in found)))
-        for line, inside in found:
-            if not inside:
-                d.append("index.html:%d: <!-- %s --> is outside #grid" % (line, name))
-    order = [n for _, _, n in idx.markers]
-    if not d and order != ["TILES", "GROWN", "/GROWN"]:
-        d.append("index.html: markers out of order: %s, want TILES, GROWN, /GROWN" % ", ".join(order))
-report("d  <!-- TILES --> <!-- GROWN --> <!-- /GROWN --> inside #grid, in order", d)
+    names = [n for _, n in idx.comments if n in ("PROJECTS", "/PROJECTS", "WRITING", "/WRITING")]
+    for name in ("PROJECTS", "/PROJECTS", "WRITING", "/WRITING"):
+        if names.count(name) != 1:
+            d.append("index.html: %d <!-- %s --> markers, want 1" % (names.count(name), name))
+    if not d and names != ["PROJECTS", "/PROJECTS", "WRITING", "/WRITING"]:
+        d.append("index.html: grown markers out of order: %s" % ", ".join(names))
+stamped = ["index.html", "view.html", "404.html", "colophon.html",
+           "essays/index.html", "experiments/index.html"]
+stamped += sorted(p.path for p in pages if p.path.startswith("pieces/"))
+for path in stamped:
+    pg = next((p for p in pages if p.path == path), None)
+    if pg is None:
+        d.append("%s: missing" % path)
+        continue
+    opens = sum(1 for _, n in pg.comments if n == "HEADER")
+    closes = sum(1 for _, n in pg.comments if n == "/HEADER")
+    if (opens, closes) != (1, 1):
+        d.append("%s: %d HEADER and %d /HEADER markers, want 1 each" % (path, opens, closes))
+report("d  grown regions in index.html, HEADER markers on stamped pages", d)
 
-# e. every tile has a real YYYY-MM-DD date and lowercase [a-z0-9-] tags
+# e. every project card and writing row has a real YYYY-MM-DD date, a
+# known data-category, and a non-empty data-search
 e, n = [], 0
 for p in pages:
     for line, tag, a in p.tiles:
         n += 1
-        where = "%s:%d: <%s class=tile>" % (p.path, line, tag)
+        where = "%s:%d: <%s class=%s>" % (p.path, line, tag, a.get("class", ""))
         date = a.get("data-date")
         if date is None:
             e.append(where + " has no data-date")
         elif not (DATE.match(date) and realdate(date)):
             e.append(where + " data-date %r is not YYYY-MM-DD" % date)
-        tags = a.get("data-tags", "").split()
-        if not tags:
-            e.append(where + " has no data-tags")
-        bad = [t for t in tags if not TAG.match(t)]
-        if bad:
-            e.append(where + " data-tags not lowercase [a-z0-9-]: " + " ".join(bad))
-        fr = framed(os.path.dirname(p.path), a.get("href", "")) if tag == "a" else None
-        if fr is not None and fr[1] is None:
-            e.append(where + " href %r: view.html needs ?e=NAME, NAME [a-z0-9-]" % a.get("href", ""))
+        if a.get("data-category") not in ("experiment", "weekly", "article"):
+            e.append(where + " data-category %r is not experiment, weekly or article" % a.get("data-category"))
+        if not a.get("data-search", "").strip():
+            e.append(where + " has no data-search")
 if n == 0:
-    e.append("no .tile elements found at all")
-report("e  tile data-date and data-tags (%d tiles)" % n, e)
+    e.append("no .project-card or .writing-row elements found at all")
+report("e  card and row data-date, data-category, data-search (%d cards/rows)" % n, e)
 
 # f. every local link, image and css url() resolves; every <img> has alt text
 f, n = [], 0
@@ -330,13 +334,19 @@ sys.exit(failed)
 PY
 failed=$((failed + rc))
 
-# d2. LATEST-ESSAY pair exactly once in index.html
+# d2. no Garden Menu remnants: no menu.js, no MENU markers, no menu doors
 out=$(python3 -c "
-import re
-t = open('index.html', encoding='utf-8').read()
-n = len(re.findall(r'<!-- /?LATEST-ESSAY -->', t))
-print('' if n == 2 else 'index.html: %d LATEST-ESSAY markers, want exactly 2 (open + close)' % n)")
-report "d2 <!-- LATEST-ESSAY --> ... <!-- /LATEST-ESSAY --> in index.html" "$out"
+import glob
+bad = []
+for f in glob.glob('**/*.html', recursive=True) + glob.glob('**/*.js', recursive=True):
+    if f.startswith('.git'):
+        continue
+    t = open(f, encoding='utf-8', errors='replace').read()
+    if 'menu.js' in t or '<!-- MENU -->' in t or 'garden-menu' in t:
+        bad.append(f + ': Garden Menu remnant')
+print(chr(10).join(bad))
+")
+report "d2 no Garden Menu remnants (menu.js, MENU markers, garden-menu)" "$out"
 
 # g. nothing over 2 MB
 n=$(files | wc -l | tr -d ' ')
@@ -351,7 +361,7 @@ report "h  no secrets ($n files)" "$out"
 
 # i. the grown tiles match notes/ and experiments/
 out=$(python3 scripts/grow.py --check 2>&1) && out=""
-report "i  collection grown from notes/, experiments/, essays/ (scripts/grow.py --check)" "$out"
+report "i  site grown from experiments/, essays/, pieces/ (scripts/grow.py --check)" "$out"
 
 # j. essays carry the site nav (a link home)
 out=$(files -path './essays/*.html' | while IFS= read -r f; do

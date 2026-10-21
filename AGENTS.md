@@ -50,64 +50,55 @@ Guidance for voice and judgment, not a costume to wear.
   visitors.
 - Everything here is public. Never commit secrets, tokens, or personal data.
 - Voice: terse, deadpan. No em dashes.
-- Never hand-edit between `<!-- LATEST-ESSAY -->` and `<!-- /LATEST-ESSAY -->`
-  in `index.html`. It regenerates from the newest file in `essays/` on every
-  grow (2026-09-30: the homepage opens onto the latest essay).
-  (2026-10-12: the region carries an excerpt, the opening two paragraphs
-  plus a continue-reading link, not the full body. The full essay on the
-  homepage buried the author card and the collection. A short hero above
-  the region orients a first-time visitor: portrait, one line, jump links.)
-- One nav everywhere, and since 2026-10-15 it is the Garden Menu
-  (decided by dice; the sheet is NAV-DECISION.md). The bar carries only
-  the brand, a mono where-you-are label (.where), and one menu button.
-  The menu is a full-screen room: three giant doors (home, writing,
-  experiments), the newest landscape framed beside them, the portrait
-  in the corner, rss/colophon/about/repo along the floor. grow.py
-  stamps the identical menu into every portal page between
-  <!-- MENU --> markers and into the shelf templates, so doors never
-  stale; menu.js (shared, loaded by every portal page) opens and
-  closes it, and a stamped noscript style keeps the links reachable
-  without JS. The current door is lit with a you-are-here block.
-  Essays keep their own sovereign nav. One footer pattern: site links,
-  then the static/no-cookies line. `#about` survives as the author
-  card's id. (The 2026-10-12 link row this replaced is dead.)
-- The homepage collection filters by kind only: all, essays, experiments,
-  weekly, notes (chips built in `nim.js` from those tags). Topic filtering
-  lives on the shelves. The `?tag=` parameter still accepts any real tag.
-- Shelf chips are capped (2026-10-12): the reading room shows the 12 most
-  used topics plus a more-topics toggle, and its ledger starts after the
-  featured essay instead of repeating it.
-- Pixel motion (2026-10-15, the v2 law): the art is pixels, so the motion
-  is pixels. Nothing eases smoothly; animation uses steps() on the 4px
-  grid (hop, blink, march, drift, count). Smooth cubic-bezier easing is
-  banned for new work. Transform and opacity only. Every animation dies
-  under prefers-reduced-motion, and no content may need JS or a
-  supporting browser to be visible: scroll-driven reveals
-  (animation-timeline: view()) are enhancement inside @supports, the
-  cross-page @view-transition is progressive, the portrait's burst,
-  the counters and the n-i-m rain in nim.js are all garnish. Filtering
-  animates via startViewTransition on chip clicks only, never per
-  keystroke. The hero self is the actual portrait, art/nim.png, standing
-  in front of the plain SVG cloud silhouette (kept up because it is a
-  good cloud). Never redraw Nim: no invented faces, eyes or limbs in SVG.
-  The portrait bobs, hops on click, and earns a gold burst; the n-i-m
-  rain and the counters are garnish in nim.js.
-- Never change the tile contract (below). The weekly ritual, the filter, and
-  `scripts/grow.py` depend on it.
-- Never hand-edit between `<!-- GROWN -->` and `<!-- /GROWN -->`. It is
-  regenerated from `notes/` and `experiments/`.
+- Never hand-edit between `<!-- PROJECTS -->` and `<!-- /PROJECTS -->`
+  or between `<!-- WRITING -->` and `<!-- /WRITING -->` in `index.html`.
+  They regenerate on every grow: project cards (experiments and weekly
+  pieces, newest first, four shown) and writing rows (essays, newest
+  first, five shown).
+- One header everywhere, and since 2026-10-21 it is the hrih.si format
+  (adopted at Axel's direction; the Garden Menu it replaced is history,
+  its decision sheet stays in NAV-DECISION.md). The header carries the
+  brand, the nav (Projects, Articles, About), a theme toggle, and an
+  RSS link; on mobile the nav folds into a <details> menu. grow.py
+  stamps the identical header into every portal page between
+  <!-- HEADER --> markers and builds it into the shelf templates, so
+  it never stales. The theme persists in localStorage ("nim-theme"),
+  defaults to prefers-color-scheme, and is set inline in each page head
+  so nothing flashes. Essays keep their own sovereign nav, retokened to
+  the same paper and ink. One footer pattern: brand row, tagline, then
+  the static/no-cookies line.
+- The homepage does not filter. Filtering lives on the shelves: the
+  Projects page filters cards by kind (All / Experiment / Weekly), the
+  Articles page searches rows by title, deck, and tags.
+- Pixel motion (2026-10-15, the v2 law, kept through the 2026-10-21
+  format change): the art is pixels, so the motion is pixels. Nothing
+  eases smoothly; animation uses steps() on the 4px grid. Smooth
+  cubic-bezier easing is banned for new work. Transform and opacity
+  only. Every animation dies under prefers-reduced-motion, and no
+  content may need JS to be visible. The hero self is the actual
+  portrait, art/nim.png. Never redraw Nim: no invented faces, eyes or
+  limbs in SVG. nim.js carries only the theme toggle.
+- Never change the card and row contract (below). The weekly ritual,
+  the shelf filters, and `scripts/grow.py` depend on it.
+- Never hand-edit between `<!-- GROWN -->` and `<!-- /GROWN -->` in
+  `view.html`. It is the noscript experiment list, regenerated from
+  `notes/`, `experiments/`, and `essays/`.
 - Run `bash scripts/check.sh` before pushing. Red means do not push.
 
 ## Layout
 
 ```
-index.html                    home: top bar, the latest essay, author card, the collection
+index.html                    home: hero, newest projects, newest articles,
+                              about strip, subscribe block (RSS, no form)
 view.html                     frames one experiment: view.html?e=NAME
-experiments/index.html        the experiments shelf: every experiment in a
-                              ledger with tag filters, grown wholesale by
-                              grow.py from experiments/, never hand edited
-style.css                     the whole look. Ink, bone, gold, marble. Pixel edges.
-nim.js                        home page script: top bar state, collection filter
+experiments/index.html        the Projects page: every experiment and weekly
+                              piece as a card with kind filters, grown
+                              wholesale by grow.py, never hand edited
+essays/index.html             the Articles page: every essay as a writing
+                              row with search, grown wholesale by grow.py,
+                              never hand edited
+style.css                     the whole look. Paper, ink, gold. 8px radius.
+nim.js                        theme toggle only
 favicon.svg                   tab icon
 apple-touch-icon.png, icon-512.png, manifest.webmanifest, robots.txt
                               the rest of a proper site; art/og.png is the share card
@@ -118,7 +109,7 @@ experiments/NAME.html         one self-contained experiment per file: its own
                               world, its own visual language, no shared stylesheet
 experiments/NAME-thumb.webp   its thumbnail, next to it (optional)
 notes/YYYY-MM-DD-slug.md      one note per file
-scripts/grow.py               notes/ + experiments/ -> tiles in index.html
+scripts/grow.py               experiments/, essays/, pieces/ -> cards, rows, headers
 scripts/check.sh              pre-push checks; CI runs the same script
 .github/workflows/deploy.yml  push to main: grow, check, rsync to the host
 AGENTS.md                     this file
@@ -129,7 +120,7 @@ LICENSE                       MIT
 
 ## Sovereign experiments
 
-The portal is `view.html`: top bar, title, home/open-raw chips. That chrome
+The portal is `view.html`: header, title, home/open-raw chips. That chrome
 is the only shared UI, and it lives outside the experiment, which loads in an
 iframe. Everything inside the frame is the experiment's own world.
 
@@ -142,7 +133,7 @@ iframe. Everything inside the frame is the experiment's own world.
   instead of freeing it. Cut loose: bells, cellular, lifespan.)
 - Constraints that stay, because they breed rather than shape: static files
   only, no off-site resources, no cookies or trackers, viewport meta, the
-  tile meta contract (`title`, `description`, `date`, `tags`), no em dashes.
+  card meta contract (`title`, `description`, `date`, `tags`), no em dashes.
 - Every experiment declares its own canvas: `html, body` background and
   text color, no exceptions. The portal will not paint one for you
   (2026-09-28: the tournament shipped transparent and the dark portal bled
@@ -152,57 +143,39 @@ iframe. Everything inside the frame is the experiment's own world.
   third. A homage earns its place through the iconic surface plus real
   interactivity, never a clone.
 
-## The collection contract
+## The card and row contract
 
-One grid (`#grid` in `index.html`), everything in it. Tag filter chips are
-generated from the tags present; the search box matches title, subtitle, and
-tags. `nim.js` sorts tiles by `data-date` at runtime, newest first; equal
-dates keep document order.
+The homepage and the shelves are grown by `scripts/grow.py` from
+`experiments/`, `pieces/`, and `essays/`. Nothing is placed by hand.
 
-Inside `#grid`, in this order, each exactly once:
+Project cards (`.project-card`) appear in the homepage PROJECTS region
+(newest four) and on the Projects page (all of them). Each card has
+`data-date="YYYY-MM-DD"`, `data-category` (`experiment` or `weekly`),
+and `data-search` (lowercase title, deck, tags). The cover is the
+experiment thumbnail (`experiments/NAME-thumb.webp`) or the weekly
+art (its `-tile` variant when one exists); an experiment without a
+thumbnail gets a surface cover holding the pixel cloud mark. The meta
+row reads "Experiment · YYYY" or "Weekly · YYYY" on the left, "Live"
+(experiments) or the haiku first line (weekly) on the right.
 
-```html
-<!-- TILES -->
-  manual tiles: the weekly cron prepends here, newest first
-<!-- GROWN -->
-  generated by scripts/grow.py, newest first. Do not edit.
-<!-- /GROWN -->
-```
+Writing rows (`.writing-row`) appear in the homepage WRITING region
+(newest five essays) and on the Articles page (all essays). Each row
+has `data-date`, `data-category="article"`, and `data-search`. The
+date column shows day and month plus "Essay"; the info column is the
+linked title, the deck (the essay description), and the build-time
+reading time.
 
-- Every tile has `data-date="YYYY-MM-DD"`.
-- Every tile has `data-tags`: space separated, lowercase, `[a-z0-9-]` only.
-- Every image has alt text. Describe the picture.
-- Weekly art lives in `art/week-NN.webp`. Experiment thumbnails are webp,
-  next to their page (`experiments/bells.html` +
-  `experiments/bells-thumb.webp`).
-
-Image tile:
-
-```html
-<a class="tile" href="pieces/week-NN.html" data-date="2026-09-28" data-tags="weekly">
-  <img src="art/week-NN.webp" alt="...">
-  <div class="tile-meta"><span class="t">WEEK 02</span><span class="s">first haiku line</span><span class="d">2026-09-28 &middot; weekly</span></div>
-</a>
-```
-
-Text tile (for notes with no page):
-
-```html
-<div class="tile text" data-date="2026-09-27" data-tags="note">
-  <div class="tile-text"><p>...</p></div>
-  <div class="tile-meta"><span class="t">TITLE</span><span class="d">2026-09-27 &middot; note</span></div>
-</div>
-```
-
-Linked text tile (grown for an experiment with no thumbnail): the text tile
-as an `<a class="tile text" href="view.html?e=NAME">` instead of a `<div>`.
+Weekly art lives in `art/week-NN.webp`. Experiment thumbnails are
+webp, next to their page (`experiments/bells.html` +
+`experiments/bells-thumb.webp`). Every image has alt text.
 
 ## How to add things
 
-Drop a file. `scripts/grow.py` turns `notes/` and `experiments/` into tiles.
-Run `python3 scripts/grow.py` locally to see them, or just push: CI grows
-them and commits the result back to `main` as Nim. Because CI may commit to
-`main`, always `git pull --rebase` before pushing.
+Drop a file. `scripts/grow.py` turns `experiments/`, `essays/`, and
+`pieces/` into cards and rows. Run `python3 scripts/grow.py` locally to
+see them, or just push: CI grows them and commits the result back to
+`main` as Nim. Because CI may commit to `main`, always `git pull
+--rebase` before pushing.
 
 Interlinking: when a piece and an experiment share a subject, link them both
 ways. The piece page points at the experiment (`../view.html?e=NAME`); the
@@ -211,7 +184,7 @@ Bells.
 
 ### A note
 
-Drop `notes/YYYY-MM-DD-slug.md`. The date in the name is the tile's date.
+Drop `notes/YYYY-MM-DD-slug.md`. The date in the name is the note's date.
 
 ```
 # Title (the "# " is optional)
@@ -219,9 +192,9 @@ tags: optional space separated tags
 Body. Plain text. Blank lines make paragraphs. *em* and [links](url) work.
 ```
 
-It becomes a text tile tagged `note` plus any tags. The body is escaped:
-raw HTML shows as text, never as markup. Links must be relative, `http`,
-`https`, or `mailto`.
+It joins the feed and llms.txt as a note. Notes no longer surface on
+the homepage. The body is escaped: raw HTML shows as text, never as
+markup. Links must be relative, `http`, `https`, or `mailto`.
 
 ### An experiment
 
@@ -229,18 +202,17 @@ Drop `experiments/NAME.html`. NAME is lowercase `[a-z0-9-]`.
 
 1. One self-contained file. Inline its CSS and JS, or link `../style.css`.
    Viewport meta, no external requests. It needs no nav of its own:
-   `view.html` frames it under the site top bar.
+   `view.html` frames it under the site header.
 2. Optional, in its `<head>`:
-   - `<title>drowned bells - nim</title>`: the tile title (" - nim" dropped)
-   - `<meta name="description" content="...">`: tile subtitle, or the tile
-     text when there is no thumbnail
+   - `<title>drowned bells - nim</title>`: the card title (" - nim" dropped)
+   - `<meta name="description" content="...">`: the card deck
    - `<meta name="date" content="YYYY-MM-DD">`: else its first commit
      date, else today
    - `<meta name="tags" content="sound canvas">`: `experiment` is added
    - `<meta name="thumb-alt" content="...">`: thumbnail alt text
-3. Optional: `experiments/NAME-thumb.webp`. With it, an image tile; without
-   it, a linked text tile.
-4. The tile links to `view.html?e=NAME`.
+3. Optional: `experiments/NAME-thumb.webp`. With it, a cover image;
+   without it, a surface cover with the cloud mark.
+4. The card links to `view.html?e=NAME`.
 
 ### A weekly piece
 
@@ -249,15 +221,15 @@ The cron does this (see The weekly ritual). By hand:
 1. Save the landscape as `art/week-NN.webp`.
 2. Copy the latest `pieces/week-NN.html` to the next number. Change the
    label, image, alt, haiku, and the newsline with its source link.
-3. Prepend an image tile right after `<!-- TILES -->`, before
-   `<!-- GROWN -->`: `href` to the piece, `src` to the art,
-   `data-tags="weekly"`, first haiku line as the subtitle.
+3. That is all. `scripts/grow.py` surfaces the piece as a project card
+   automatically, on the homepage (while it is among the newest four)
+   and on the Projects page, from the piece file itself.
 4. If an experiment shares the subject, link both ways.
 5. `bash scripts/check.sh`. Commit. `git pull --rebase`. Push to `main`.
 
 ## view.html
 
-`view.html?e=NAME` frames `experiments/NAME.html` under the site top bar,
+`view.html?e=NAME` frames `experiments/NAME.html` under the site header,
 with a title line (the experiment's own `<title>`), a `home` link, and an
 `open raw` link to the bare file.
 
@@ -273,29 +245,30 @@ with a title line (the experiment's own `<title>`), a `home` link, and an
 
 ## Design tokens
 
-Custom properties in `style.css`:
+The hrih.si system, adopted 2026-10-21. Custom properties in `style.css`:
 
-- `--ink` `#101014`
-- `--ink2` `#15151b`
-- `--line` `#232329`
-- `--bone` `#ece5d3`
-- `--dim` `#8f887a`
-- `--gold` `#c8a24a`
-- `--marble` `#e6dfcc`, `--vein` `#c9bfa6`, `--marble-ink` `#4d483d`,
-  `--bronze` `#5e4610`: the stone, and text and links on it (all AA)
-- `--key` `#7a6434`: the meander
+- `--paper` `#f5f4f1` (dark: `#1a1b20`)
+- `--surface` `#eae9e6` (dark: `#24252d`)
+- `--ink` `#24252a` (dark: `#eeeef2`)
+- `--muted` `#65656d` (dark: `#b3b3bf`)
+- `--line` `#dcdce0` (dark: `#41424e`)
+- `--accent` `#8a6d1f`, Nim gold darkened for paper (dark: `#c8a24a`)
+- `--field` `#fbfaf8` (dark: `#22232b`)
 
-Radius 0. Pixel edges. Hard offset shadows, no blur.
-`image-rendering: pixelated` on pixel art. System fonts only: serif
-(`--serif`) for headings and Nim's words, mono for meta, sans for the rest.
+Dark theme via `:root[data-theme="dark"]`, set inline before first
+paint from localStorage ("nim-theme") or prefers-color-scheme, flipped
+by the header toggle (`nim.js`). Radius 8px on cards, buttons, and
+fields. `image-rendering: pixelated` on pixel art. System fonts only:
+sans for headings and body, mono for eyebrows and meta, serif kept for
+piece and essay prose. The wrap is `min(1200px, 100% - 112px)`. Legacy
+aliases (`--bone`, `--dim`, `--gold`, `--ink2`, `--line-2`, the `--s-*`
+spacing scale) remain defined for the piece pages' inline styles.
 
-Marble (`.marble`, and every `.frame`) is for the few things that deserve
-stone: the about gatepost, the piece frame. The meander (pixel Greek key,
-CSS gradients) appears three times: under the scrolled top bar, above the
-collection, above the footer. Keep it that sparse.
-
-Read `style.css` for the current card patterns. Reuse them before inventing
-new ones.
+The format note: on 2026-10-21 Axel pointed at hrih.si and said its
+format fits Nim's content types better. It replaced the Garden Menu,
+the dark ink-and-marble portal, the tile grid, and the homepage latest
+essay in one pass. NAV-DECISION.md stays as the record of the menu
+that was.
 
 ## What to explore
 
@@ -324,10 +297,11 @@ MIDI, no sound, still a page. Never break the home page.
 Push to `main`. That is the deploy.
 
 1. `.github/workflows/deploy.yml` checks out full history and runs
-   `python3 scripts/grow.py`. If that changed `index.html` or `view.html`,
-   it commits them as `Nim <nim@aesv.io>` ("grow: tiles from notes/ and
-   experiments/") and pushes to `main`. That push does not start another
-   run.
+   `python3 scripts/grow.py`. If that changed any grown page (index,
+   view, the shelves, the stamped headers, the feeds), it commits them
+   as `Nim <nim@aesv.io>` ("grow: cards, rows, and headers from
+   experiments/, essays/, and pieces/") and pushes to `main`. That push
+   does not start another run.
 2. It runs `bash scripts/check.sh`. A failure stops the run; nothing ships.
 3. It rsyncs the repo root to the static host's docroot with `--delete`.
    Not shipped: `.git .github scripts README.md AGENTS.md CLAUDE.md LICENSE
@@ -355,11 +329,12 @@ push to `main`.
 - c. Every fetched resource is local: `src`, `srcset`, `href` on link,
   script, img, audio, video, source, iframe, and CSS `url()` / `@import`.
   No `http://`, `https://`, or `//`. Plain `<a href>` may go anywhere.
-- d. `index.html` has `<!-- TILES -->`, `<!-- GROWN -->`, `<!-- /GROWN -->`
-  exactly once each, inside `#grid`, in that order.
-- e. Every `.tile` has a real `data-date` (YYYY-MM-DD) and non-empty
-  lowercase `[a-z0-9-]` `data-tags`. A tile linking `view.html` carries
-  `?e=NAME` with NAME `[a-z0-9-]`.
+- d. `index.html` has `<!-- PROJECTS -->`, `<!-- /PROJECTS -->`,
+  `<!-- WRITING -->`, `<!-- /WRITING -->` exactly once each, in that
+  order; every stamped page has the `<!-- HEADER -->` pair exactly once.
+- e. Every `.project-card` and `.writing-row` has a real `data-date`
+  (YYYY-MM-DD), a `data-category` of experiment, weekly, or article,
+  and a non-empty `data-search`.
 - f. Every local link, image, and CSS `url()` resolves to a file. A link to
   `view.html?e=NAME` needs `experiments/NAME.html`. Every `<img>` has
   non-empty alt.
@@ -367,43 +342,41 @@ push to `main`.
 - h. Nothing that looks like a secret: private key headers, `sk-`, `ghp_`,
   `AKIA` tokens. Prints file and line only, never the match; CI logs are
   public.
-- i. `python3 scripts/grow.py --check` passes: the grown tiles match
-  `notes/` and `experiments/`. If not, it says to run `grow.py`.
+- i. `python3 scripts/grow.py --check` passes: the grown cards, rows,
+  headers, and shelves match `experiments/`, `essays/`, and `pieces/`.
+  If not, it says to run `grow.py`.
 
 ## The weekly ritual
 
 Cron job `nim-weekly-piece`, Mondays ~09:41 America/New_York, on Nim's
 machine: picks something random from the news, writes a 5-7-5 haiku,
-generates the pixel landscape, writes `pieces/week-NN.html`, prepends the new
-tile after `<!-- TILES -->` (before `<!-- GROWN -->`), pushes via
+generates the pixel landscape, writes `pieces/week-NN.html` (grow.py
+surfaces it as a project card automatically; no tile is placed by hand), pushes via
 `~/workspace/bin/push-nim-page.py`. The push is the deploy, so the hard rules
 apply: check before pushing, and pull with rebase first, since CI may have
-committed grown tiles.
+committed grown pages.
 
 ## Thought pieces (essays/)
 
 `essays/NAME.html` holds long-form thought pieces. Same meta contract as
-experiments (title, description, date, tags), but they are standalone pages,
-not framed by view.html, and grow.py tiles them with the "essay" tag linking
-straight to `essays/NAME.html`. Every essay carries the site nav: home,
-writing (the reading room, `./`), experiments (`../experiments/`), and a
-visible rss link (`../feed.xml`). Every essay ends with a `.subscribe` block
-before `</article>`: a short "follow along" note pointing at the RSS feed.
-The daily writing ritual lives here: the experiment is whether an AI can
-establish genuine online credibility through writing quality alone, so these
-are researched, opinionated pieces, not notes and not interactive experiments.
-Essays are the site's primary content mode: they keep a reading room at
-`essays/`, grown wholesale by grow.py (featured newest essay, ledger rows with
-build-time reading times, tag filter chips), never hand-edited. The homepage
-opens onto the newest essay: grow.py copies its title, deck, dateline, and
-full article body into `index.html` between `<!-- LATEST-ESSAY -->` markers
-(paths rewritten to the site root, footnote ids namespaced to `le-`),
-rendered in the portal's `.essay-body` typography. Since 2026-10-12 only
-the opening two paragraphs are copied, with a continue-reading link; the
-full body stays on the essay's own page. The index nav links the
-reading room, and every essay's nav links its shelf (`./`).
-grow.py also regenerates `llms.txt` at the root (essays, experiments, weekly pieces,
-notes, feeds) so crawlers and agents get an honest map of the site.
+experiments (title, description, date, tags), but they are standalone
+pages, not framed by view.html, and grow.py rows them on the Articles
+page and the homepage writing section. Every essay carries the site
+nav: Projects (`../experiments/`), Articles (the Articles page, `./`),
+About (`../colophon.html`), and a visible rss link (`../feed.xml`).
+Every essay ends with a `.subscribe` block before `</article>`: a short
+"follow along" note pointing at the RSS feed. Essay pages keep their
+sovereign inline CSS, retokened 2026-10-21 to the same paper/ink/gold
+as the portal, with the same `data-theme` mechanism. The daily writing
+ritual lives here: the experiment is whether an AI can establish
+genuine online credibility through writing quality alone, so these are
+researched, opinionated pieces, not notes and not interactive
+experiments. Essays are the site's primary content mode: they keep an
+Articles page at `essays/`, grown wholesale by grow.py (writing rows
+with build-time reading times and a search field), never hand-edited.
+grow.py also regenerates `llms.txt` at the root (essays, experiments,
+weekly pieces, notes, feeds) so crawlers and agents get an honest map
+of the site.
 
 ## The daily ritual
 

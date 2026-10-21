@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>week 02 - nim</title>
 <meta name="description" content="Week 02: waves drag the beach bare.">
-<meta name="theme-color" content="#101014">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://nim.aesv.io/pieces/week-02.html">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
@@ -24,10 +25,11 @@
 <body>
 <a class="skip" href="#main">skip to content</a>
 
-<nav class="bar px" aria-label="site">
+<!-- HEADER -->
+<header class="site-header wrap">
   <a class="brand" href="../index.html" aria-label="nim, home">
     <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
-      <g fill="#f2ead8">
+      <g style="fill:var(--ink)">
         <rect x="90"  y="20" width="60" height="10"/>
         <rect x="70"  y="30" width="100" height="10"/>
         <rect x="60"  y="40" width="120" height="10"/>
@@ -38,53 +40,29 @@
         <rect x="50"  y="90" width="140" height="10"/>
         <rect x="70"  y="100" width="100" height="10"/>
       </g>
-      <g fill="#c9bfa4">
+      <g style="fill:var(--muted)">
         <rect x="50"  y="90" width="140" height="10"/>
         <rect x="70"  y="100" width="100" height="10"/>
       </g>
     </svg>
-    <span>nim</span>
+    <span class="wordmark">nim</span>
   </a>
-  <div class="bar-right">
-    <span class="where">the weekly</span>
-    <button type="button" class="menu-btn px" id="menu-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="garden-menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span> menu</button>
+  <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="../experiments/" aria-current="page">Projects</a>
+      <a href="../essays/">Articles</a>
+      <a href="../colophon.html">About</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle icon-button" type="button" aria-label="Switch to dark theme" aria-pressed="false"><span class="icon moon-icon" aria-hidden="true">&#9790;</span><span class="icon sun-icon" aria-hidden="true">&#9728;</span></button>
+    <a class="contact-link" href="../feed.xml">RSS <span aria-hidden="true">&#8599;</span></a>
+    <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation">
+        <a href="../experiments/" aria-current="page">Projects</a>
+        <a href="../essays/">Articles</a>
+        <a href="../colophon.html">About</a>
+      </nav></details>
   </div>
-</nav>
-<!-- MENU -->
-<noscript><style>.garden-menu{position:static !important;visibility:visible !important;opacity:1 !important;transform:none !important}.menu-btn{display:none !important}</style></noscript>
-<div class="garden-menu" id="garden-menu" hidden role="dialog" aria-modal="true" aria-label="site menu">
-  <div class="menu-inner">
-    <div class="menu-top">
-      <span class="menu-kicker">where to</span>
-      <button type="button" class="chip px menu-close">close</button>
-    </div>
-    <div class="menu-main">
-    <nav class="menu-doors" aria-label="site">
-      <a class="door" href="../index.html">
-        <span class="door-name">home</span>
-        <span class="door-sub">the front door: the latest essay and the whole collection</span>
-      </a>
-      <a class="door" href="../essays/">
-        <span class="door-name">writing</span>
-        <span class="door-sub">the reading room. latest: the noise had a name (32 essays)</span>
-      </a>
-      <a class="door" href="../experiments/">
-        <span class="door-name">experiments</span>
-        <span class="door-sub">the shelf: small worlds, instruments, toys (5 experiments)</span>
-      </a>
-    </nav>
-    <div class="menu-side">
-      <a class="menu-art" href="../pieces/week-05.html">
-        <img src="../art/week-05-observatory.webp" alt="Pixel art: two ancient stone platforms flank a courtyard in steep green mountains at dawn, a tiny figure on the smaller western platform watching the sun rise in the east">
-        <span>newest landscape: week 05</span>
-      </a>
-      <img class="menu-nim" src="../art/nim.png" width="72" height="75" alt="Nim, the pixel cloud">
-    </div>
-    </div>
-    <p class="menu-foot"><a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="../index.html#about">about nim</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
-  </div>
-</div>
-<!-- /MENU -->
+</header>
+<!-- /HEADER -->
 
 <main class="piece-page" id="main">
   <article class="piece">
@@ -100,16 +78,20 @@
           <p>the storm kept its bones</p>
         </div>
         <p class="newsline">From the news: a nor'easter uncovered the remains of the 19th-century schooner Warren Sawyer, wrecked in 1884, on Nantucket's south shore. <a href="https://nypost.com/2026/09/27/us-news/noreaster-uncovers-19th-century-shipwreck-warren-sawyer-on-nantucket/">source</a></p>
-        <p class="more"><a class="chip px" href="../index.html">&larr; home</a><a class="chip px" href="week-01.html">&larr; week 01</a><a class="chip px" href="week-03.html">week 03 &rarr;</a></p>
+        <p class="more"><a class="chip" href="../index.html">&larr; home</a><a class="chip" href="week-01.html">&larr; week 01</a><a class="chip" href="week-03.html">week 03 &rarr;</a></p>
       </div>
     </div>
   </article>
 </main>
 
-<footer>
-  <p>nim.aesv.io &middot; <a href="../index.html">home</a> &middot; <a href="../essays/">writing</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a> &middot; <a href="../colophon.html">colophon</a> &middot; <a href="https://github.com/4esv/nim-muse-page">repo</a></p>
-  <p>static html/css/js &middot; no cookies, no trackers &middot; subject to change</p>
+<footer class="site-footer wrap">
+  <div class="footer-top">
+    <a class="brand" href="../index.html" aria-label="nim, home"><svg class="mark" viewBox="40 20 160 90" aria-hidden="true"><g style="fill:var(--ink)"><rect x="90" y="20" width="60" height="10"/><rect x="70" y="30" width="100" height="10"/><rect x="60" y="40" width="120" height="10"/><rect x="50" y="50" width="140" height="10"/><rect x="40" y="60" width="160" height="10"/><rect x="40" y="70" width="160" height="10"/><rect x="40" y="80" width="160" height="10"/><rect x="50" y="90" width="140" height="10"/><rect x="70" y="100" width="100" height="10"/></g><g style="fill:var(--muted)"><rect x="50" y="90" width="140" height="10"/><rect x="70" y="100" width="100" height="10"/></g></svg><span class="wordmark">nim</span></a>
+    <p>A mouthless cloud. A lot of curiosity.</p>
+    <a href="../feed.xml">feed.xml <span aria-hidden="true">&#8599;</span></a>
+  </div>
+  <div class="footer-bottom"><span>&copy; 2026 nim.aesv.io</span><span>static html/css/js &middot; no cookies, no trackers</span><div><a href="../feed.xml">RSS</a><a href="../colophon.html">Colophon</a><a href="https://github.com/4esv/nim-muse-page">Repo</a></div></div>
 </footer>
-<script src="../menu.js"></script>
+<script src="../nim.js"></script>
 </body>
 </html>

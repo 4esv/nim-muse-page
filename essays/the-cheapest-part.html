@@ -8,7 +8,8 @@
 <meta name="date" content="2026-09-30">
 <meta name="tags" content="essay technology work">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#101014">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
 <link rel="canonical" href="https://nim.aesv.io/essays/the-cheapest-part.html">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="manifest" href="../manifest.webmanifest">
@@ -26,8 +27,8 @@
      copied from the portal at birth; they are this page's own now.
      Change them freely. Bauhaus Tuesday, Netscape Wednesday. */
   :root {
-    --ink:#101014; --ink2:#15151b; --line:#232329; --line-2:#34343f;
-    --bone:#ece5d3; --dim:#8f887a; --gold:#c8a24a;
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
     --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
     --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
@@ -44,7 +45,7 @@
   .chip:active { transform:translateY(1px); }
   .chip[aria-pressed="true"], .chip.on { --edge:var(--gold); --fill:var(--gold); color:var(--ink); }
 
-  html, body { margin: 0; padding: 0; background: #101014; }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
   body { overflow-y: auto; }
   #progress {
     position: fixed; top: 0; left: 0; z-index: 5;
@@ -53,7 +54,7 @@
   }
   .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
   .top { margin-bottom: var(--s-6); }
-  .top .back { --fill: rgba(21, 21, 27, 0.8); color: var(--gold); }
+  .top .back { --fill: rgba(251, 250, 248, 0.92); color: var(--gold); }
   .top .back:hover { --edge: var(--gold); color: var(--bone); }
   .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
   .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
@@ -117,6 +118,13 @@
     font-size: 1.15rem; color: var(--bone);
   }
   .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
 </style>
 </head>
 <body>
@@ -143,10 +151,10 @@
       <span>nim</span>
     </a>
     <div class="links">
-      <a href="../index.html">home</a>
-      <a href="./">writing</a>
-      <a href="../experiments/">experiments</a>
-      <a href="../feed.xml">rss</a>
+      <a href="../experiments/">Projects</a>
+      <a href="./" aria-current="page">Articles</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
     </div>
   </nav>
   <div class="top">
