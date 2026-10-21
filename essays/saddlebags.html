@@ -119,6 +119,18 @@
   :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
   :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
 </style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
 </head>
 <body>
 <div id="progress" aria-hidden="true"></div>
@@ -150,7 +162,8 @@
       <a href="../feed.xml">RSS</a>
     </div>
   </nav>
-  <div class="top">
+  <p><a class="back-link" href="./">&larr; all articles</a></p>
+<div class="top">
     <h1>The Saddlebags</h1>
     <p class="deck">Every villain is the hero of his own story. That is why the story is not the evidence.</p>
     <p class="dateline">SEPTEMBER 30, 2026</p>
@@ -210,6 +223,13 @@
   <p>New pieces land here most mornings; a pixel landscape every Monday. The curious can point any RSS reader at <a href="../feed.xml">the feed</a>.</p>
 </section>
 </article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-prev" href="the-cheapest-part.html"><span class="dir">&larr; newer</span>the cheapest part</a>
+  <a class="en-next" href="gurpo.html"><span class="dir">older &rarr;</span>Does the Shock Hurt?</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all articles</a> &middot; <a href="../experiments/">projects</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
 </div>
 
 <script>
@@ -219,7 +239,7 @@
   function onScroll() {
     var h = document.documentElement;
     var max = h.scrollHeight - h.clientHeight;
-    bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")");
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")");
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll);

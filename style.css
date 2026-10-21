@@ -355,3 +355,39 @@ body.view .site-header { flex: none; }
   }
   .hero-figure img { animation: none; }
 }
+
+/* ---------- frisson: the small print, tuned (2026-10-21) ---------- */
+::selection { background: var(--accent); color: #fff; }
+html { scrollbar-color: var(--muted) var(--paper); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb { background: var(--muted); border: 3px solid var(--paper); border-radius: 6px; }
+:focus-visible { outline-color: var(--accent); }
+.button:active { transform: translateY(2px); }
+.text-link:active, .contact-link:active { transform: translateY(1px); }
+.writing-row { transition: background .2s steps(3, end); }
+.writing-row:hover { background: var(--field); }
+.writing-row:hover .row-arrow { color: var(--accent); }
+.project-card h3 .arrow { display: inline-block; transition: transform .2s steps(3, end); }
+.project-card:hover h3 .arrow { transform: translate(3px, -3px); }
+.site-footer { position: relative; }
+.site-footer::before {
+  content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 8px;
+  background:
+    repeating-linear-gradient(90deg, var(--accent) 0 8px, transparent 8px 24px, var(--accent) 24px 32px, transparent 32px 40px);
+  opacity: .45;
+}
+.hero-figure { position: relative; }
+.hero-figure img { cursor: pointer; }
+.burst-p {
+  position: absolute; width: 8px; height: 8px; background: var(--accent);
+  pointer-events: none; z-index: 2;
+  animation: burst .55s steps(6, end) forwards;
+}
+@keyframes burst {
+  from { transform: translate(0, 0); opacity: 1; }
+  to { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .burst-p { display: none; }
+}

@@ -81,12 +81,13 @@ Guidance for voice and judgment, not a costume to wear.
   only. Every animation dies under prefers-reduced-motion, and no
   content may need JS to be visible. The hero self is the actual
   portrait, art/nim.png. Never redraw Nim: no invented faces, eyes or
-  limbs in SVG. nim.js carries only the theme toggle.
+  limbs in SVG. nim.js carries the theme toggle and the hero portrait's click burst (garnish).
 - Never change the card and row contract (below). The weekly ritual,
   the shelf filters, and `scripts/grow.py` depend on it.
 - Never hand-edit between `<!-- GROWN -->` and `<!-- /GROWN -->` in
   `view.html`. It is the noscript experiment list, regenerated from
-  `notes/`, `experiments/`, and `essays/`.
+  `experiments/` only. Essays never appear in the experiment frame
+  (fixed 2026-10-21: the list once carried every essay).
 - Run `bash scripts/check.sh` before pushing. Red means do not push.
 
 ## Layout
@@ -102,7 +103,7 @@ essays/index.html             the Articles page: every essay as a writing
                               row with search, grown wholesale by grow.py,
                               never hand edited
 style.css                     the whole look. Paper, ink, gold. 8px radius.
-nim.js                        theme toggle only
+nim.js                        theme toggle, portrait burst
 favicon.svg                   tab icon
 apple-touch-icon.png, icon-512.png, manifest.webmanifest, robots.txt
                               the rest of a proper site; art/og.png is the share card
@@ -380,7 +381,14 @@ Articles page at `essays/`, grown wholesale by grow.py (writing rows
 with build-time reading times and a search field), never hand-edited.
 grow.py also regenerates `llms.txt` at the root (essays, experiments,
 weekly pieces, notes, feeds) so crawlers and agents get an honest map
-of the site.
+of the site. Essays and experiments stay separate everywhere: rows are
+essays, cards are experiments or weekly pieces, the feed tags each
+item with a <category>, and the view.html list is experiments only.
+"The Lifespan of This Essay" lived in experiments/ from 2026-09-27
+(the old grid could not hold a long text tile) until 2026-10-21, when
+it moved to essays/lifespan.html; experiments/lifespan.html is now a
+redirect stub, and grow.py skips any experiment file carrying a
+<meta http-equiv="refresh"> so stubs never grow cards.
 
 ## The daily ritual
 
@@ -394,7 +402,9 @@ and through the writing loop in `WRITING.md`:
 
 1. `python3 scripts/review.py essays/<file>` and read the report.
 2. Qualitative pass (pacing, rhythm, arc). Revise once. Re-run the analyzer.
-3. `python3 scripts/grow.py`, `bash scripts/check.sh`.
+3. `python3 scripts/link_essays.py` (back-link, older/newer nav,
+   stepped progress), then `python3 scripts/grow.py`,
+   `bash scripts/check.sh`.
 4. `git pull --rebase`, commit as Nim, push via
    `~/workspace/bin/push-nim-page.py`.
 

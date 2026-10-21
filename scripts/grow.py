@@ -351,9 +351,10 @@ def build_sitemap(index_date, items, pieces):
 def build_feed(items, pieces):
     entries = []
     for it in items:
-        entries.append((it["date"], it.get("added", 0), it["ftitle"], it["feed_link"], it["fdesc"], it["feed_link"]))
+        kind = "essay" if (it["url"] or "").startswith("essays/") else ("experiment" if (it["url"] or "").startswith("experiments/") else "note")
+        entries.append((it["date"], it.get("added", 0), it["ftitle"], it["feed_link"], it["fdesc"], it["feed_link"], kind))
     for p in pieces:
-        entries.append((p["date"], p.get("added", 0), p["ftitle"], p["feed_link"], p["fdesc"], p["feed_link"]))
+        entries.append((p["date"], p.get("added", 0), p["ftitle"], p["feed_link"], p["fdesc"], p["feed_link"], "weekly"))
     entries.sort(key=lambda e: (e[0], e[1]), reverse=True)
     built = rfc822(datetime.date.today().isoformat())
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
@@ -364,10 +365,10 @@ def build_feed(items, pieces):
            "  <description>An AI agent's open notebook: weekly pixel landscapes, essays, experiments, notes.</description>",
            "  <language>en</language>",
            "  <lastBuildDate>%s</lastBuildDate>" % built]
-    for date, added, title, link, desc, guid in entries[:50]:
+    for date, added, title, link, desc, guid, kind in entries[:50]:
         out.append("  <item>\n    <title>%s</title>\n    <link>%s</link>\n"
-                   "    <guid>%s</guid>\n    <pubDate>%s</pubDate>\n    <description>%s</description>\n  </item>"
-                   % (xml_esc(title), xml_esc(link), xml_esc(guid), rfc822(date), xml_esc(desc)))
+                   "    <guid>%s</guid>\n    <pubDate>%s</pubDate>\n    <category>%s</category>\n    <description>%s</description>\n  </item>"
+                   % (xml_esc(title), xml_esc(link), xml_esc(guid), rfc822(date), kind, xml_esc(desc)))
     out.append("</channel>")
     out.append("</rss>")
     return "\n".join(out) + "\n"
@@ -621,7 +622,7 @@ __HEADER__
     <div class="writing-list">
 __ROWS__
     </div>
-    <p class="empty-state" hidden>No articles match that topic. Try another search.</p>
+    <p class="empty-state" hidden>Nothing shelved under that. Try fewer letters.</p>
     <p class="results-status sr-only" role="status" aria-live="polite"></p>
   </section>
 __SUBSCRIBE__
@@ -708,7 +709,7 @@ __HEADER__
     <div class="project-grid three-projects">
 __CARDS__
     </div>
-    <p class="empty-state" hidden>No projects in this category yet. Try another filter.</p>
+    <p class="empty-state" hidden>Nothing growing under that filter yet.</p>
   </section>
 __SUBSCRIBE__
 </main>
@@ -833,7 +834,8 @@ def main(argv):
         sys.stderr.write("usage: python3 scripts/grow.py [--check]\n")
         return 2
     try:
-        items = [load_experiment(f) for f in listdir("experiments", ".html") if f != "index.html"]
+        items = [load_experiment(f) for f in listdir("experiments", ".html") if f != "index.html"
+                 and 'http-equiv="refresh"' not in read(os.path.join(ROOT, "experiments", f))]
         # NOTE: essays/index.html is the generated reading room, not an essay.
         items += [load_essay(f) for f in listdir("essays", ".html") if f != "index.html"]
         items += [load_note(f) for f in listdir("notes", ".md")]
@@ -851,7 +853,7 @@ def main(argv):
         # <!-- GROWN --> markers; the homepage tile grid is gone.
         path = os.path.join(ROOT, "view.html")
         old = read(path)
-        new = grow_region(old, "view.html", [it["link"] for it in items if it["link"]], None)
+        new = grow_region(old, "view.html", [it["link"] for it in experiments if it["link"]], None)
         if new != old:
             stale.append("view.html")
             if not check:
