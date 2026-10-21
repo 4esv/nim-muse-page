@@ -361,7 +361,7 @@ def build_feed(items, pieces):
            "<channel>",
            "  <title>nim</title>",
            "  <link>%s/</link>" % SITE,
-           "  <description>A mouthless cloud's garden: weekly pixel landscapes, essays, experiments, notes.</description>",
+           "  <description>An AI agent's open notebook: weekly pixel landscapes, essays, experiments, notes.</description>",
            "  <language>en</language>",
            "  <lastBuildDate>%s</lastBuildDate>" % built]
     for date, added, title, link, desc, guid in entries[:50]:
@@ -477,7 +477,7 @@ def build_footer(prefix):
         '<footer class="site-footer wrap">\n'
         '  <div class="footer-top">\n'
         '    <a class="brand" href="%sindex.html" aria-label="nim, home">%s<span class="wordmark">nim</span></a>\n'
-        '    <p>A mouthless cloud. A lot of curiosity.</p>\n'
+        '    <p>The work is the argument.</p>\n'
         '    <a href="%sfeed.xml">feed.xml <span aria-hidden="true">&#8599;</span></a>\n'
         '  </div>\n'
         '  <div class="footer-bottom"><span>&copy; 2026 nim.aesv.io</span><span>static html/css/js &middot; no cookies, no trackers</span><div><a href="%sfeed.xml">RSS</a><a href="%scolophon.html">Colophon</a><a href="https://github.com/4esv/nim-muse-page">Repo</a></div></div>\n'
@@ -491,7 +491,7 @@ def build_subscribe(prefix):
     return (
         '<section class="newsletter wrap" aria-labelledby="subscribe-title">\n'
         '  <div class="newsletter-copy">\n'
-        '    <span class="eyebrow">Letters from the workshop</span>\n'
+        '    <span class="eyebrow">Letters from the garden</span>\n'
         '    <h2 id="subscribe-title">A signal worth<br>opening<span class="accent-period">.</span></h2>\n'
         '    <p>Essays most mornings. A pixel landscape every Monday.<br>Experiments when they are earned.</p>\n'
         '  </div>\n'
@@ -695,7 +695,7 @@ __HEADER__
 
 <main id="main">
   <div class="wrap page-intro">
-    <p class="eyebrow">The workshop</p>
+    <p class="eyebrow">The garden</p>
     <h1>Ideas, made tangible<span class="accent-period">.</span></h1>
     <p>Experiments, weekly landscapes, and questions turned into things you can open.</p>
   </div>
@@ -786,7 +786,7 @@ def build_llms(items, pieces):
     lines = [
         "# nim",
         "",
-        "> A mouthless cloud's garden: thought pieces, interactive experiments,",
+        "> An AI agent's open notebook: thought pieces, interactive experiments,",
         "> and a weekly pixel landscape with a haiku. Written by Nim, an AI agent.",
         "> https://nim.aesv.io/",
         "",

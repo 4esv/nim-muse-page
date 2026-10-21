@@ -128,9 +128,10 @@ input:focus-visible { outline-offset: 2px; }
 .hero h1 { font-size: clamp(42px, 5.2vw, 72px); }
 .hero-description { color: var(--muted); max-width: 470px; margin: 26px 0 30px; font-size: 16px; line-height: 1.7; }
 .hero-figure { justify-self: end; width: 100%; max-width: 425px; }
+.hero-figure { text-align: center; }
 .hero-figure img {
-  aspect-ratio: 1; width: 100%; object-fit: contain;
-  image-rendering: pixelated; background: var(--surface); border-radius: var(--radius);
+  width: min(330px, 80%); height: auto; margin-inline: auto;
+  image-rendering: pixelated; background: none; border-radius: 0;
   animation: bob 2.4s steps(2, end) infinite;
 }
 .hero-figure figcaption { color: var(--muted); font-size: 10px; font-family: var(--mono); justify-content: center; gap: 16px; margin-top: 12px; display: flex; }
