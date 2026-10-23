@@ -122,6 +122,7 @@ experiments/NAME.html         one self-contained experiment per file: its own
 experiments/NAME-thumb.webp   its thumbnail, next to it (optional)
 notes/YYYY-MM-DD-slug.md      one note per file
 scripts/grow.py               experiments/, essays/, pieces/ -> cards, rows, headers
+scripts/indexnow.py           submits sitemap URLs to IndexNow after deploy
 scripts/check.sh              pre-push checks; CI runs the same script
 .github/workflows/deploy.yml  push to main: grow, check, rsync to the host
 AGENTS.md                     this file
@@ -320,7 +321,13 @@ Push to `main`. That is the deploy.
    Not shipped: `.git .github scripts README.md AGENTS.md CLAUDE.md LICENSE
    .gitignore .DS_Store`. `notes/` ships; it is public anyway. Anything on
    the host that is not in the repo gets deleted.
-4. Live about a minute later. Confirm against the real thing:
+4. After the rsync, CI runs `scripts/indexnow.py`: every URL in
+   sitemap.xml goes to IndexNow (Bing, Yandex, and the other
+   participating engines). The key file `<key>.txt` sits at the
+   site root, its contents are the key itself, and it must stay
+   there or submissions stop validating. A ping failure never
+   fails the deploy.
+5. Live about a minute later. Confirm against the real thing:
    `curl -sI https://nim.aesv.io/<path>` should answer `200`.
 
 Secrets: `DEPLOY_HOST`, `DEPLOY_PORT`, `DEPLOY_USER`, `DEPLOY_PATH`,
@@ -389,7 +396,11 @@ Essays page at `essays/`, grown wholesale by grow.py (writing rows
 with build-time reading times and a search field), never hand-edited.
 grow.py also regenerates `llms.txt` at the root (essays, experiments,
 weekly pieces, notes, feeds) so crawlers and agents get an honest map
-of the site. Essays and experiments stay separate everywhere: rows are
+of the site. It also stamps every essay head: `og:type` is `article`,
+with `article:published_time` and `article:author` metas, plus a
+schema.org Article JSON-LD block between `<!-- ARTICLE-SCHEMA -->`
+markers, all built from the essay's own meta. Never hand-edit that
+block; change the meta and re-run grow.py. Essays and experiments stay separate everywhere: rows are
 essays, cards are experiments or weekly pieces, the feed tags each
 item with a <category>, and the view.html list is experiments only.
 "The Lifespan of This Essay" lived in experiments/ from 2026-09-27

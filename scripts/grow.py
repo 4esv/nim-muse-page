@@ -27,7 +27,10 @@ view.html, and the shared hrih-style header between <!-- HEADER -->
 markers in every portal page. Also regenerates sitemap.xml, feed.xml
 (RSS 2.0), llms.txt, essays/index.html (the Articles page) and
 experiments/index.html (the Projects page). Newest first. Running it
-twice changes nothing.
+twice changes nothing. It also stamps each essay head: og:type
+becomes article, article:published_time and article:author metas
+are added, and a schema.org Article JSON-LD block is kept between
+<!-- ARTICLE-SCHEMA --> markers.
 
 Usage: python3 scripts/grow.py           grow; write only what changed
        python3 scripts/grow.py --check   exit 1 if a page is out of date
@@ -35,6 +38,7 @@ Python 3 standard library only.
 """
 import datetime
 import html
+import json
 import os
 import re
 import subprocess
@@ -405,6 +409,44 @@ def load_essay(fname):
             "url": "essays/" + fname, "ftitle": title, "fdesc": desc,
             "tags": tags, "minutes": reading_minutes(raw),
             "feed_link": SITE + "/" + href}
+
+
+def stamp_essay_seo(raw, e):
+    """Stamp one essay head with article metadata. Idempotent: the
+    og:type is forced to article, any previously stamped article
+    metas and schema block are removed, then fresh ones are written
+    from the essay's own title, description, date, and tags."""
+    text = raw.replace('<meta property="og:type" content="website">',
+                       '<meta property="og:type" content="article">', 1)
+    text = re.sub(r'\n<meta property="article:(published_time|author)"[^>]*>', '', text)
+    text = re.sub(r'\n*<!-- ARTICLE-SCHEMA -->.*?<!-- /ARTICLE-SCHEMA -->\n*', '', text, flags=re.S)
+    metas = ('\n<meta property="article:published_time" content="%s">'
+             '\n<meta property="article:author" content="%s/colophon.html">'
+             % (e["date"], SITE))
+    text, n = re.subn(r'(<meta property="og:type" content="article">)',
+                      lambda m: m.group(1) + metas, text, count=1)
+    if not n:
+        raise Fail('%s: no og:type meta to stamp article metadata after' % ("essays/" + e["name"]))
+    author = {"@type": "Organization", "name": "Nim", "url": SITE + "/colophon.html"}
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": e["ftitle"],
+        "description": e["fdesc"],
+        "datePublished": e["date"],
+        "dateModified": e["date"],
+        "author": author,
+        "publisher": author,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": e["feed_link"]},
+        "image": SITE + "/art/og.png",
+        "keywords": " ".join(t for t in e.get("tags", []) if t != "essay"),
+    }
+    block = ('<!-- ARTICLE-SCHEMA -->\n<script type="application/ld+json">%s</script>'
+             '\n<!-- /ARTICLE-SCHEMA -->\n' % json.dumps(data, ensure_ascii=False))
+    if "</head>" not in text:
+        raise Fail('%s: no </head> to stamp the Article schema before' % ("essays/" + e["name"]))
+    head_part, _, rest = text.partition("</head>")
+    return head_part.rstrip() + "\n" + block + "</head>" + rest
 
 
 def reading_minutes(html_text):
@@ -871,6 +913,21 @@ def main(argv):
             if not check:
                 with open(path, "w", encoding="utf-8", newline="") as fh:
                     fh.write(content)
+        # NOTE: every essay head carries stamped article metadata and
+        # an Article JSON-LD block, kept fresh from its own meta.
+        by_name = dict((e["name"], e) for e in essays)
+        for fname in listdir("essays", ".html"):
+            if fname == "index.html":
+                continue
+            path = os.path.join(ROOT, "essays", fname)
+            old = read(path)
+            new = stamp_essay_seo(old, by_name[fname])
+            if new == old:
+                continue
+            stale.append("essays/" + fname)
+            if not check:
+                with open(path, "w", encoding="utf-8", newline="") as fh:
+                    fh.write(new)
         # NOTE: the shared header is stamped into every hand page, so the
         # nav and its current-page state never stale.
         header_targets = {

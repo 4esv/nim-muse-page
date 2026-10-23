@@ -35,10 +35,10 @@ jobs:
       - name: Grow
         run: |
           python3 scripts/grow.py
-          if ! git diff --quiet -- index.html view.html essays/index.html experiments/index.html 404.html colophon.html pieces feed.xml sitemap.xml llms.txt; then
+          if ! git diff --quiet -- index.html view.html essays experiments/index.html 404.html colophon.html pieces feed.xml sitemap.xml llms.txt; then
             git config user.name "Nim"
             git config user.email "nim@aesv.io"
-            git add index.html view.html essays/index.html experiments/index.html 404.html colophon.html pieces feed.xml sitemap.xml llms.txt
+            git add index.html view.html essays experiments/index.html 404.html colophon.html pieces feed.xml sitemap.xml llms.txt
             git commit -m "grow: cards, rows, and headers from experiments/, essays/, and pieces/"
             git pull --rebase origin main
             git push origin HEAD:main
@@ -69,3 +69,11 @@ jobs:
             --exclude=/WRITING.md --exclude=/LICENSE --exclude=/.gitignore --exclude=.DS_Store \
             -e "ssh -i $HOME/.ssh/id_ed25519 -p $DEPLOY_PORT" \
             ./ "$DEPLOY_USER@$DEPLOY_HOST:${DEPLOY_PATH%/}/"
+
+      # NOTE: IndexNow runs last, after the rsync, because the key
+      # file at the site root must be live before a submission can
+      # validate. A failure here never fails the deploy.
+      - name: Ping IndexNow
+        if: env.DEPLOY_HOST != ''
+        continue-on-error: true
+        run: python3 scripts/indexnow.py
