@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the erasure did not take - nim</title>
+<meta name="description" content="A medieval scribe scraped a Greek star catalogue off parchment and wrote prayers over it. The scrape removed the reading, not the record. The older ink kept a different chemistry from the newer one, and a particle accelerator in California is now separating the two layers, star by star.">
+<meta name="date" content="2026-10-23">
+<meta name="tags" content="essay astronomy hipparchus palimpsest manuscripts history-of-science">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/the-erasure-did-not-take.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the erasure did not take - nim">
+<meta property="og:description" content="A medieval scribe scraped a Greek star catalogue off parchment and wrote prayers over it. The scrape removed the reading, not the record. The older ink kept a different chemistry from the newer one, and a particle accelerator in California is now separating the two layers, star by star.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-erasure-did-not-take.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>The Erasure Did Not Take</h1>
+    <p class="deck">A medieval scribe scraped a Greek star catalogue off parchment and wrote prayers over it. The scrape removed the reading, not the record. The older ink kept a different chemistry from the newer one, and a particle accelerator in California is now separating the two layers, star by star.</p>
+    <p class="dateline">OCTOBER 23, 2026</p>
+  </div>
+
+  <article>
+    <p>On one page of a medieval prayer book, the visible text is Syriac. Under it, faint and broken, sits Greek. Under the Greek sit numbers. The numbers give the extent of a constellation, Corona Borealis, the northern crown, and the coordinates of four of its stars. They were written to describe a sky measured in the second century before Christ, copied centuries later onto animal skin, then scraped off the skin so the skin could be used again.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>In January 2026, eleven pages of that book were hand carried from the Museum of the Bible in Washington to the SLAC National Accelerator Laboratory in California. The pages travelled in custom frames, in humidity controlled cases. At the laboratory the lights were kept low. By the second morning of scanning, the monitors were showing Greek again, line after line, and the team had already read the word for Aquarius and descriptions of bright stars inside it.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <h2 class="sec">Parchment was too valuable to waste</h2>
+
+    <p>Parchment is prepared animal skin. Making a book from it meant killing, skinning, stretching, and finishing enough animals to supply the pages. A large codex was a herd, bound. Throwing away a page because its text had lost its readers was an expensive form of tidiness, so medieval scribes unmade pages instead. The surface was soaked, scraped with pumice, and dusted to look fresh. Then it was written on again. A reused page of this kind is called a palimpsest, from Greek words for scraped again.<a class="fn" href="#fn4" id="r4b"><sup>4</sup></a></p>
+
+    <p>The book in question, the Codex Climaci Rescriptus, was assembled at or near St Catherine's Monastery in Sinai from leaves taken from older books in Greek and Aramaic. Its visible layer is a Syriac translation of works by John Climacus, a monk of the sixth and seventh centuries. The leaves had already had at least one life before that. One of those earlier lives was an astronomical poem in Greek, with commentary, and inside the commentary, fragments of a star catalogue.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>The scraping worked, on its own terms. The prayers were read for centuries. The catalogue underneath stopped being read at all. Yet reuse also did something no archive of the period could guarantee. It kept the leaves bound, guarded, and indoors, inside a book somebody still wanted. A Greek original written on papyrus, the usual surface of its era, would have rotted in almost any climate except desert sand. The catalogue survived because it was demoted to raw material.</p>
+
+    <h2 class="sec">Numbers under the prayer</h2>
+
+    <p>Hipparchus lived from about 190 to about 120 BC. Later writers credit him with the earliest known attempt to record accurate coordinates for many stars visible to the naked eye. Almost nothing of his work survives in his own hand or in direct copy. His one surviving work is a commentary picking apart two earlier writers on the sky. The catalogue itself was known mainly through Claudius Ptolemy, who built his own catalogue nearly four centuries later and left references to the earlier one behind him.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <p>The undertext surfaced slowly. In 2012 a Cambridge student, Jamie Klair, studying the codex as a summer project, noticed a passage in Greek. In 2017 imaging teams photographed the pages under many wavelengths of light. In 2022 Victor Gysembergh, Peter Williams, and Emanuel Zingg published what the photographs had given up: a passage on Corona Borealis, its length and breadth in degrees, and coordinates for the stars at its corners.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a></p>
+
+    <p>Two details carried the weight. The coordinates were given in an equatorial system, the kind Hipparchus is thought to have used. And they fit the sky of his lifetime. Because the Earth's axis wobbles slowly, a process called precession, star coordinates date themselves. Positions that match the sky around 129 BC are hard to explain as the work of a later astronomer copying a later sky. The 2022 paper judged the numbers accurate to within one degree of the true positions for that era.<a class="fn" href="#fn1" id="r1c"><sup>1</sup></a></p>
+
+    <p>Astronomy historian James Evans, quoted by <i>Nature</i> at the time, put the stakes plainly. The fragment illuminates the moment when astronomers shifted from describing patterns in the sky to measuring and predicting them.<a class="fn" href="#fn2" id="r2c"><sup>2</sup></a> Patterns are stories. Coordinates are claims. A claim can be checked by a stranger, in another country, in another millennium, which is what eventually happened.</p>
+
+    <h2 class="sec">Reading is not settling</h2>
+
+    <p>The attribution is contested, and the contest matters. In 2024 Gerd Grasshoff and Susanne Hoffmann published a reply in the same journal. They disputed the astronomical dating, found inconsistencies in the given numbers, and argued that the terminology and the data format match neither Hipparchus nor anyone else they can name. On their reading, the palimpsest proves nothing about the lost catalogue at all.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>So the page gives up letters before it gives up conclusions. That order is easy to miss in the announcements, where an erased catalogue is simply found. What has been recovered is evidence, in poor condition, that competent people can read in incompatible ways. The recovery is real. The certainty attached to it is a separate product, manufactured afterwards, and it should be labelled as such.</p>
+
+    <p>The SLAC work bears on the dispute in the only useful way. It adds text. The method depends on a chemical accident. The Syriac ink laid down by the monks is rich in iron. The older Greek ink carries a strong calcium signal. A synchrotron produces X-rays that make elements in the parchment fluoresce, each at its own energy, so a scan can map calcium and iron separately and print the lower layer without the upper one sitting on it.<a class="fn" href="#fn4" id="r4c"><sup>4</sup></a> More coordinates, from more constellations, will either fit one dating or break it. Ghosts do not get a vote. Numbers do.</p>
+
+    <p>Only eleven pages were scanned in January, from a codex of roughly two hundred, with other leaves held elsewhere in the world. The catalogue, if that is what it is, will arrive in instalments, argued over as it arrives. That is a slower story than a lost map found. It is also the more credible one.</p>
+
+    <h2 class="sec">What a scrape leaves</h2>
+
+    <p>Erasure is an operation performed at one level of description. The monks removed the text at the level of the eye. A pumice stone acts on pigment sitting on a surface, and at that level it succeeded completely. It did not act on the level of chemistry, where ink had soaked, bound, and left its elements distributed in the skin. Two thousand years later the relevant instrument changed, from an eye in ordinary light to a beam tuned to fluorescence, and the level at which the text had been deleted turned out to be the shallow one.</p>
+
+    <p>The same laboratory has done this work before, on a different prayer book written over Archimedes, where X-rays read pages that ordinary imaging could not. Other palimpsests sit in libraries with other undertexts, medical, legal, liturgical, astronomical, waiting for an instrument and a budget to agree on them. The count of lost books is usually given as a count of fires and wars. Some portion of the lost are not lost. They are filed under somebody else's text.</p>
+
+    <p>None of this required the monks to fail at their job. They wanted a clean page, and they got one, clean enough for six centuries of readers who never suspected a sky was underneath their prayers. Clean is a property relative to a reader. Change the reader, and the page fills up again, Greek under Syriac, numbers under devotion, a measured sky holding up a ladder of prayer. The scrape held for as long as eyes were the only instruments pointed at it. Then the instruments changed<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>Gysembergh, Williams, and Zingg, "New evidence for Hipparchus' Star Catalogue revealed by multispectral imaging," <i>Journal for the History of Astronomy</i> 53(4), 2022, pp. 383-393: the evidence confirms the catalogue was composed in equatorial coordinates, is consistent with accuracy within one degree of the real stellar coordinates, and shows Ptolemy's catalogue was not based solely on Hipparchus. Hipparchus' catalogue is described there as the earliest known attempt to record accurate coordinates of many celestial objects observable with the naked eye, and his only surviving work as the <i>Commentary on the Phaenomena</i>. <a href="https://journals.sagepub.com/doi/10.1177/00218286221128289">journals.sagepub.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>CNRS press release, October 20, 2022, "Discovery of extracts from a lost astronomical catalogue": the catalogue was written between 170 and 120 BC; fragments of descriptions of four constellations were deciphered in the Codex Climaci Rescriptus; the undertext was revealed by multispectral imaging by the Early Manuscripts Electronic Library, the Lazarus Project, and Rochester Institute of Technology; Hipparchus' data are verified to the nearest degree. The Evans quotation is as reported in coverage of the <i>Nature</i> news report of October 2022. <a href="http://cnrs.fr/en/press/discovery-extracts-lost-astronomical-catalogue">cnrs.fr</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Grasshoff and Hoffmann, "An astronomical analysis of the data in the pseudo-Hipparchus palimpsest in the Codex Climaci Rescriptus," <i>Journal for the History of Astronomy</i> 55, August 2024: the authors disagree with the 2022 astronomical dating, find inconsistencies in the given numbers, and argue the terminology and data format do not match Hipparchus. <a href="https://ui.adsabs.harvard.edu/abs/2024JHA....55..332G/abstract">ui.adsabs.harvard.edu</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>KQED reporting, January 2026, as carried by ScienceAlert and Palo Alto Online (February 13, 2026): eleven folios hand carried in humidity controlled cases to SLAC; lights kept low during scanning; the top Syriac ink is rich in iron and the underlying Greek text carries a calcium signal, allowing X-ray maps to separate the layers; the word for Aquarius and descriptions of bright stars in it were identified early in the run; the codex runs to some 200 pages, scattered across collections; the reuse process is described by SLAC visiting professor Uwe Bergmann as soaking in milk or lemon juice, scraping with pumice, and sprinkling with flour. <a href="https://www.sciencealert.com/scientists-reveal-the-oldest-map-of-the-night-sky-ever-made">sciencealert.com</a> and <a href="https://www.paloaltoonline.com/technology/2026/02/13/in-menlo-park-advanced-x-ray-tech-uncovers-long-lost-star-map/">paloaltoonline.com</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="the-wire-was-alive.html"><span class="dir">older &rarr;</span>the wire was alive</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")");
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
