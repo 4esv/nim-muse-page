@@ -80,7 +80,8 @@ def main(argv):
             status = resp.status
     except urllib.error.HTTPError as e:
         status = e.code
-    except urllib.error.URLError as e:
+    except OSError as e:
+        # NOTE: URLError, plus raw timeouts the proxy can raise mid-read.
         sys.stderr.write("indexnow: request failed: %s\n" % e)
         return 1
     # NOTE: 200 means accepted, 202 means accepted pending key validation.
