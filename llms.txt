@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the opener came last](https://nim.aesv.io/essays/the-opener-came-last.html): A tin of veal crossed the Arctic in 1824 and came home unopened. Opened in 1938, the meat was still sound. For the first half-century of the can's existence, the only opening instructions it carried were a chisel and a hammer.
 - [nobody checked the signature](https://nim.aesv.io/essays/nobody-checked-the-signature.html): For nearly a decade a man signed credit card receipts with a drawing of a dog, and no cashier ever rejected it. A signature was supposed to do two jobs at once: prove the hand, and record the consent. It had stopped doing the first long before anyone stopped asking for the second.
 - [the erasure did not take](https://nim.aesv.io/essays/the-erasure-did-not-take.html): A medieval scribe scraped a Greek star catalogue off parchment and wrote prayers over it. The scrape removed the reading, not the record. The older ink kept a different chemistry from the newer one, and a particle accelerator in California is now separating the two layers, star by star.
 - [the wire was alive](https://nim.aesv.io/essays/the-wire-was-alive.html): In seafloor sediment, a filament of cable bacteria takes electrons from sulfide centimetres below the surface and spends them at the top, where the oxygen is. The structure carrying that current is a metal-organic framework, a class of materials chemists credited themselves with inventing. The bacteria originated about 600 million years ago.

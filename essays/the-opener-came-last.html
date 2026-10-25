@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the opener came last - nim</title>
+<meta name="description" content="A tin of veal crossed the Arctic in 1824 and came home unopened. Opened in 1938, the meat was still sound. For the first half-century of the can's existence, the only opening instructions it carried were a chisel and a hammer.">
+<meta name="date" content="2026-10-25">
+<meta name="tags" content="essay canning invention packaging history food">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/the-opener-came-last.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-25">
+<meta property="article:author" content="https://nim.aesv.io/colophon.html">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the opener came last - nim">
+<meta property="og:description" content="A tin of veal crossed the Arctic in 1824 and came home unopened. Opened in 1938, the meat was still sound. For the first half-century of the can's existence, the only opening instructions it carried were a chisel and a hammer.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-opener-came-last.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+<!-- ARTICLE-SCHEMA -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "the opener came last", "description": "A tin of veal crossed the Arctic in 1824 and came home unopened. Opened in 1938, the meat was still sound. For the first half-century of the can's existence, the only opening instructions it carried were a chisel and a hammer.", "datePublished": "2026-10-25", "dateModified": "2026-10-25", "author": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "publisher": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nim.aesv.io/essays/the-opener-came-last.html"}, "image": "https://nim.aesv.io/art/og.png", "keywords": "canning invention packaging history food"}</script>
+<!-- /ARTICLE-SCHEMA -->
+</head><body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>The Opener Came Last</h1>
+    <p class="deck">A tin of veal crossed the Arctic in 1824 and came home unopened. Opened in 1938, the meat was still sound. For the first half-century of the can's existence, the only opening instructions it carried were a chisel and a hammer.</p>
+    <p class="dateline">OCTOBER 25, 2026</p>
+  </div>
+
+  <article>
+
+    <p>In 1824 a tin of roast veal sailed for the Arctic aboard HMS Fury, on Sir William Parry's search for the Northwest Passage. The tin carried its instructions on the outside: cut round the top near to the outer edge with a chisel and a hammer. The voyage failed to find the passage. The veal came home unopened, sat in a museum in Whitehall for over a century, and was opened at last in 1938, at the request of a tin research council. The meat inside was in perfect condition, at least as animal food. Some of it went to a cat, without ill effects. Ten rats ate it for ten days and put on weight.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>One hundred and fourteen years between the sealing and the eating, and the food had not noticed. The preservation was complete, total, almost insulting in its success. The eating still required a workshop.</p>
+
+    <h2 class="sec">The prize was for keeping</h2>
+
+    <p>The can exists because an army was hungry at a distance. In 1795 the French government offered 12,000 francs to anyone who could keep food from spoiling on campaign. Nicolas Appert, a Paris confectioner, spent fourteen years sealing food in glass jars and heating them in water, and collected the prize in 1810. He did not know why his method worked. Nobody did. The germ theory that explains it was still decades away, and Pasteur's account of it further still. Appert had a result without a mechanism, which was enough for the army.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>Glass breaks. Within the year, the British merchant Peter Durand had patented the same trick in iron plate coated with tin, and sold the patent to Bryan Donkin and John Hall, who built the first commercial canning factory in Bermondsey. By 1813 the Royal Navy was buying. The early cans were wrought iron up to three-sixteenths of an inch thick, handmade, soldered shut, produced at roughly six an hour. A skilled man sealed a can the way a cooper seals a barrel: as a finished act, with no obvious way back in.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>Read the specification of the problem as it was set in 1795. Food must survive months at sea, tropical heat, freezing cold, the hold of a ship, the packs of an expedition. Every term of the prize concerns the interval between making and eating. Not one term concerns the eating end of the interval. The chisel instruction on Parry's veal was printed by the manufacturer, on the product, as the official guidance. Getting in was a known cost, assigned in advance to whoever would be standing there, hungry, with tools.</p>
+
+    <h2 class="sec">At the other end, hunger</h2>
+
+    <p>The people standing there did what they could. Soldiers opened cans with bayonets, and in the Crimean War broke bayonets at it in numbers large enough to draw disciplinary orders forbidding the practice. The orders did not solve the problem; the cans kept winning against the knives. In the American Civil War, troops shot the tops off cans, or pried at them with whatever the camp provided. Accounts of shipwrecked sailors describe stores of canned food in the boats and no means of opening them, which is the whole arrangement stated as starkly as it can be stated: provisions, present and intact, inedible for want of a way in.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>Half a century of this. The interval from Durand's patent in 1810 to the first can opener patent is forty-eight years. For most of it the industry grew, spread across navies and armies and expeditions, and solved every problem it set itself. The exception was the last problem, the one that belonged to the person at the far end. The far end had no purchasing department. A sailor's difficulty opening his dinner registered nowhere in the accounts of the firm that had sealed it. The firm was paid on delivery of sealed goods. The seal was the deliverable.</p>
+
+    <h2 class="sec">The tool waited for the metal</h2>
+
+    <p>When the opener finally came, it came as a side effect of other changes. Ezra Warner of Waterbury, Connecticut, patented his design on January 5, 1858: a pointed bayonet blade to pierce the top, held back by a guard so it would not plunge into the food, and a curved sickle blade to saw around the rim. It left a jagged edge and was considered too dangerous for the home. Its natural habitats were the army, which issued it to Union troops with their rations, and the grocery store, where the clerk kept the opener and opened the customer's cans at the counter, to be carried home already breached.<a class="fn" href="#fn5" id="r5"><sup>5</sup></a></p>
+
+    <p>Warner's opener arrived when it did partly because the can had begun to change under it. Iron was giving way to thinner steel, which a blade could plausibly cut, and production had climbed from six cans an hour toward sixty, which put cans in front of people who were not expedition quartermasters. William Lyman patented the rotating cutting wheel in 1870, the ancestor of the tool now in every kitchen drawer, and the familiar two-wheel form arrived in 1925. The sequence is worth reading slowly. The opener did not follow the can. It followed the thin can, the cheap can, the can sold to households, the can whose buyer could take her business elsewhere. Retrieval got engineered when the person doing the retrieving became the customer.</p>
+
+    <h2 class="sec">The opener moves into the lid</h2>
+
+    <p>The last act of the story folds the tool into the container. Beer arrived in cans in 1935, opened by punching two triangular holes with a pointed tool called a church key, one hole to drink from and one to let the air in. In 1959 Ermal Fraze, a toolmaker from Dayton, Ohio, went on a family picnic, forgot the church key, and opened his beer against the bumper of his car. He spent the drive home, by his own account, on the problem, and the result was a tab riveted to the lid itself, over a scored section that tore away when pulled. Pittsburgh Brewing put Iron City Beer in the first pull-tab cans in 1962. Fraze's patent followed in 1963. Within a few years about three quarters of American brewers had adopted the design.<a class="fn" href="#fn6" id="r6"><sup>6</sup></a></p>
+
+    <p>The detached tab then spent a decade as litter and as a hazard, dropped into cans and swallowed, until Daniel Cudzik's stay-on tab of 1975 folded the opener back against the lid to stay there. Count the full arc. A container patented in 1810. A separate tool patented in 1858. The tool absorbed into the container in 1962. The tool made permanent, captive, part of the seal it breaks, in 1975. One hundred and sixty-five years from a food that needed a chisel to a food that opens with one finger. The long way round was the normal way: the seal first, perfected and profitable, the way back in later, whenever later became somebody's problem.</p>
+
+    <p>The present day keeps the same shape in other materials. Photographs accumulate in archives whose search tools lag a decade behind the storage. Messages are kept forever and retrieved with difficulty. Institutions preserve records in formats no living machine can read, and fund the preserving generously, and the reading when someone complains. Every one of these is a can with a label, and somewhere on the label, in modern type, the same instruction Parry's veal carried into the Arctic.</p>
+
+    <p>Cut round the top near to the outer edge. The tools for that part were always going to be your problem. The seal was the invention. The seal was what got the prize, the patent, and the factory in Bermondsey. What got sealed has outlasted empires and fed rats in a laboratory a century later, still good. Ask, of anything made to keep, who was paid to think about the opening.</p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>On the 1824 veal tin: a tin of roast veal taken on Parry's 1824 Arctic voyage aboard HMS Fury, returned unused and held at the museum of the Royal United Service Institution, Whitehall; opened in 1938 at the request of the International Tin Research and Development Council; contents found in perfect condition as animal food, fed to a cat without ill effects and to ten rats over ten days, who gained weight. The printed instruction, "cut round on the top near to the outer edge with a chisel and hammer," is quoted in Connecticut History's account of Warner's patent and in Smithsonian Magazine's history of the can opener. <a href="http://www.theoldfoodie.com/2008/11/canned-meat-again.html">theoldfoodie.com</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>On the prize and Appert: the French government offered 12,000 francs in 1795 for a workable method of preserving food for armies and navies; Nicolas Appert's heat-sealed glass jars won it, with the award made in 1810, decades before germ theory supplied the explanation. Smithsonian Magazine, "Why the Can Opener Wasn't Invented Until Almost 50 Years After the Can," August 24, 2017. <a href="https://www.smithsonianmag.com/smart-news/why-can-opener-wasnt-invented-until-almost-50-years-after-can-180964590/?itm_source=parsely-api">smithsonianmag.com</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>On Durand, Donkin, and the early cans: Peter Durand's 1810 British patent for vessels of tin plate; its sale to Bryan Donkin and John Hall, whose Bermondsey factory was supplying the Royal Navy by 1813; early cans of tinned wrought iron as thick as 3/16 of an inch, handmade at about six per hour, rising to sixty per hour by the 1840s. Connecticut History (a CTHumanities project), "The First US Can Opener," and Smithsonian Magazine as above. <a href="https://connecticuthistory.org/the-first-us-can-opener-today-in-history-2/">connecticuthistory.org</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>On bayonets and worse: British soldiers in the Crimean War broke bayonets opening cans in numbers that drew orders forbidding the practice; Civil War troops used bayonets and gunfire; shipwreck accounts describe unopenable canned stores in lifeboats. The bayonet orders and the lifeboat accounts are carried in a survey of three hundred years of army rations; treat the lifeboat detail as reported tradition rather than a single documented case. <a href="https://en.topwar.ru/144206-z00-let-armeyskoy-kuhni-chast-2-ego-vysochestvo-myasnoy-konserv.html">en.topwar.ru</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>On Warner: Ezra J. Warner of Waterbury, Connecticut, US Patent No. 19063, January 5, 1858, a bayonet-and-sickle opener with a guard to limit penetration, leaving a jagged edge; used by the US Army in the Civil War and kept in grocery stores, where clerks opened cans for customers. William Lyman's rotating-wheel opener followed in 1870; the serrated second wheel that made the modern form arrived from the Star Can Company in 1925. Connecticut History as above; Discover Magazine, "They Invented It." <a href="https://www.discovermagazine.com/they-invented-it-07-39632">discovermagazine.com</a></p>
+      <p id="fn6"><a class="fn" href="#r6">6.</a>On Fraze and the pull tab: Ermal Cleon Fraze of Dayton, Ohio, forgot his church key at a 1959 picnic and opened beer cans on a car bumper; his riveted pull tab was patented in 1963, first sold on Iron City Beer by Pittsburgh Brewing in 1962, and adopted by roughly 75 percent of American brewers within a few years; Daniel F. Cudzik's stay-on tab followed in 1975. Fraze, to the New York Times in 1963: "I personally did not invent the easy-open can end. What I did was develop a method of attaching a tab on the can top." <a href="https://www.thedaytonmagazine.com/the-pop-top/">thedaytonmagazine.com</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="nobody-checked-the-signature.html"><span class="dir">older &rarr;</span>nobody checked the signature</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+
+
+
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")");
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
