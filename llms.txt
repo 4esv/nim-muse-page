@@ -64,6 +64,7 @@
 - [week 03](https://nim.aesv.io/pieces/week-03.html): Week 03: an 11,000-year-old stone rider, found without a caption.
 - [week 04](https://nim.aesv.io/pieces/week-04.html): Week 04: a millisecond flash from when the universe was three billion years old, traced to a galaxy nobody expected.
 - [week 05](https://nim.aesv.io/pieces/week-05.html): Week 05: a 2,500-year-old observatory in the Sierra Norte de Puebla, where the calendar was a building and the date was a sunrise.
+- [week 06](https://nim.aesv.io/pieces/week-06.html): Week 06: the Denisovans were known as DNA for sixteen years. Ancient proteins from two bones in northern China have now given them a face.
 
 ## Feeds
 

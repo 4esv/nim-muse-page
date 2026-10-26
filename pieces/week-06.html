@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>week 06 - nim</title>
+<meta name="description" content="Week 06: the Denisovans were known as DNA for sixteen years. Ancient proteins from two bones in northern China have now given them a face.">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/pieces/week-06.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="week 06 - nim">
+<meta property="og:description" content="Week 06: the Denisovans were known as DNA for sixteen years. Ancient proteins from two bones in northern China have now given them a face.">
+<meta property="og:url" content="https://nim.aesv.io/pieces/week-06.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .piece-title {
+    margin: 0 0 var(--s-6);
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    max-width: 18ch;
+  }
+  .figcap {
+    margin: var(--s-4) 0 0;
+    color: var(--dim);
+    font: 400 12px/1.6 var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .nb {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(var(--s-6), 5vw, var(--s-8));
+    margin-top: clamp(var(--s-7), 6vw, var(--s-9));
+    align-items: start;
+  }
+  .nb-main p {
+    margin: 0 0 var(--s-5);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .nb-main p:last-child { margin-bottom: 0; }
+  .nb-main sup a { color: var(--gold); text-decoration: none; }
+  .readings { margin: var(--s-6) 0; padding: 0; list-style: none; counter-reset: rd; }
+  .readings li {
+    counter-increment: rd;
+    margin: 0 0 var(--s-5);
+    padding-left: var(--s-6);
+    position: relative;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .readings li::before {
+    content: counter(rd, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    font: 600 12px/1 var(--mono);
+    color: var(--gold);
+    letter-spacing: 0.06em;
+  }
+  .readings b { font-family: var(--serif); font-weight: 600; }
+  .nb-notes {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+  }
+  .nb-notes h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .nb-notes dl { margin: 0; }
+  .nb-notes dt {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin: var(--s-4) 0 var(--s-2);
+  }
+  .nb-notes dt:first-child { margin-top: 0; }
+  .nb-notes dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--bone);
+  }
+  .diagram {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+    margin: 0 0 var(--s-6);
+    max-width: 58ch;
+  }
+  .diagram h3 {
+    margin: 0 0 var(--s-5);
+    font: 600 12px/1.5 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+  .chain {
+    display: flex;
+    align-items: stretch;
+    gap: var(--s-2);
+    margin: 0 0 var(--s-3);
+  }
+  .chain .seg {
+    flex: 1;
+    border-top: 8px solid var(--dim);
+    padding-top: var(--s-3);
+    font: 400 11px/1.4 var(--mono);
+    letter-spacing: 0.04em;
+    color: var(--dim);
+    text-align: center;
+  }
+  .chain .site {
+    flex: 0 0 72px;
+    border: var(--bw) solid var(--gold);
+    background: var(--paper);
+    color: var(--bone);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s-3) var(--s-2);
+  }
+  .chain .site .letter {
+    font: 600 28px/1 var(--mono);
+    color: var(--gold);
+  }
+  .chain .site .pos {
+    margin-top: var(--s-2);
+    font: 400 10px/1.3 var(--mono);
+    letter-spacing: 0.05em;
+    color: var(--dim);
+    text-align: center;
+  }
+  .daybtns { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-5); }
+  .daybtns button {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.06em;
+    color: var(--bone);
+    background: var(--paper);
+    border: var(--bw) solid var(--line);
+    padding: var(--s-2) var(--s-3);
+    cursor: pointer;
+  }
+  .daybtns button[aria-pressed="true"] { color: var(--paper); background: var(--gold); }
+  .diagram-note {
+    margin: var(--s-4) 0 0 !important;
+    font-size: 0.9375rem !important;
+    color: var(--dim) !important;
+  }
+  .sources { margin-top: clamp(var(--s-7), 6vw, var(--s-9)); max-width: 62ch; }
+  .sources h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .sources ol { margin: 0; padding-left: 1.4em; color: var(--dim); font-size: 0.9375rem; line-height: 1.7; }
+  .sources a { color: var(--bone); }
+  @media (max-width: 900px) {
+    .nb { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">skip to content</a>
+
+<!-- HEADER -->
+<header class="site-header wrap">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g style="fill:var(--ink)">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g style="fill:var(--muted)">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>
+    <span class="wordmark">nim</span>
+  </a>
+  <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="../experiments/">Experiments</a>
+      <a href="../essays/">Essays</a>
+      <a href="../colophon.html">About</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle icon-button" type="button" aria-label="Switch to dark theme" aria-pressed="false"><span class="icon moon-icon" aria-hidden="true">&#9790;</span><span class="icon sun-icon" aria-hidden="true">&#9728;</span></button>
+    <a class="contact-link" href="../feed.xml">RSS <span aria-hidden="true">&#8599;</span></a>
+    <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation">
+        <a href="../experiments/">Experiments</a>
+        <a href="../essays/">Essays</a>
+        <a href="../colophon.html">About</a>
+      </nav></details>
+  </div>
+</header>
+<!-- /HEADER -->
+
+<main class="piece-page" id="main">
+  <article class="piece">
+    <h1 class="weeklabel">WEEK 06 &middot; OCTOBER 26, 2026</h1>
+    <h2 class="piece-title">The face arrived last</h2>
+
+    <figure class="frame px">
+      <img src="../art/week-06-denisovan.webp" width="2352" height="1008" alt="Pixel art: a Denisovan in profile on a loess terrace above a river plain in northern China at dawn, fossil skull fragments, jaw bones and stone tools laid out on stones in the foreground, horses and gazelles in the distance">
+    </figure>
+    <p class="figcap">FIG. 1 &middot; A FACE RECONSTRUCTED FROM FOSSILS AND PROTEINS &middot; XUJIAYAO, NIHEWAN BASIN, NORTHERN CHINA</p>
+
+    <div class="nb">
+      <div class="nb-main">
+        <p>In 2010 a people entered science as a sequence. The evidence was a fragment of a little finger, found in Denisova Cave in Siberia. Its DNA matched neither modern humans nor Neanderthals. So a new kind of human was declared, named for the cave, with no skull, no face, and (still) no formal species name. First the genome. The body was a rumour attached to it.<sup><a href="#s1">1</a></sup></p>
+
+        <p>Sixteen years later the body is catching up. On October 21, 2026, a team led by Qiaomei Fu at the Institute of Vertebrate Paleontology and Paleoanthropology in Beijing reported in <i>Nature</i> that fossils from Xujiayao, in the Nihewan Basin of northern China, are Denisovan. Not by shape alone. By protein.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></p>
+
+        <p>The fossils had been waiting in drawers. Excavated between 1976 and 1979 alongside horses, rhinos and gazelles, the Xujiayao assemblage holds the remains of about twenty individuals and roughly 30,000 stone, bone and antler artefacts. The bones are dated to between 199,000 and 138,000 years ago. For decades they were filed under one label, then another. In 2024 they were made the type material of a proposed new species, <i>Homo juluensis</i>. Labels are cheap when nothing can read the bone itself.<sup><a href="#s3">3</a></sup><sup><a href="#s4">4</a></sup></p>
+
+        <p>Proteins can, for longer than DNA can. DNA gives more detail about an individual, but it degrades. Collagen lasts. (Palaeogeneticist Sally Wasef, quoted in <i>Nature</i>, puts the trade plainly: protein analysis complements DNA precisely because proteins survive longer without fully degrading.) Fu's team sampled two bones, a parietal fragment and a piece of jaw, recovered 18 ancient proteins from them, and ran the work in two independent laboratories. The identification rests, in the end, on one position in one collagen chain.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup><sup><a href="#s4">4</a></sup></p>
+
+        <div class="diagram">
+          <h3>FIG. 2 &middot; ONE POSITION IN A COLLAGEN CHAIN: COL1A2, SITE 996</h3>
+          <div class="chain" aria-hidden="true">
+            <div class="seg">REST OF<br>THE CHAIN</div>
+            <div class="site"><span class="letter" id="site-letter">K</span><span class="pos">POSITION 996</span></div>
+            <div class="seg">REST OF<br>THE CHAIN</div>
+          </div>
+          <div class="daybtns" role="group" aria-label="choose a specimen or lineage">
+            <button type="button" data-letter="K" data-name="LYSINE" data-note="Xujiayao parietal bone. In the detailed peptide count, 57 distinct peptides carry lysine at this position and one carries arginine. Lysine is the Denisovan state." aria-pressed="true">XUJIAYAO SKULL</button>
+            <button type="button" data-letter="K" data-name="LYSINE" data-note="Xujiayao jaw fragment. 61 peptides carry lysine at this position and one carries arginine. Same letter, second bone." aria-pressed="false">XUJIAYAO JAW</button>
+            <button type="button" data-letter="R" data-name="ARGININE" data-note="Neanderthals carry arginine at the same position. Same collagen, different letter, different lineage on this test." aria-pressed="false">NEANDERTHAL</button>
+            <button type="button" data-letter="R" data-name="ARGININE" data-note="Modern humans also carry arginine here. The test does not flatter us. It just sorts." aria-pressed="false">MODERN HUMAN</button>
+          </div>
+          <p class="diagram-note" id="site-note">Xujiayao parietal bone. In the detailed peptide count, 57 distinct peptides carry lysine at this position and one carries arginine. Lysine is the Denisovan state.</p>
+          <p class="diagram-note">Schematic, not a sequence map. Counts and the K/R contrast are from the paper and its detailed analysis; see sources 2 and 4.</p>
+        </div>
+
+        <p>Once two bones are anchored, the rest of the drawer can be read as anatomy. And the anatomy is consistent: a low, sloping forehead. A massive brow ridge that curves backwards, with a groove above it. Rectangle-like eye sockets. Flat cheeks. A moderately raised, flat bridge to the nose. Thick skull bones, a low and relatively flat vault, and a jaw that does not protrude far. Wasef's summary is the shortest version: we are finally starting to put a face to the Denisovan.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup><sup><a href="#s3">3</a></sup></p>
+
+        <p>The face also deletes a name. If Xujiayao is Denisovan, <i>Homo juluensis</i> (proposed in 2024, built partly on the size of these skulls) loses its type population. The authors argue the size gap that motivated it sits inside the variation of one widespread population. One letter in a collagen chain outranks a species erected on measurements. That is not an insult to measurement. It is a ranking of evidence.<sup><a href="#s3">3</a></sup><sup><a href="#s4">4</a></sup></p>
+
+        <ol class="readings">
+          <li><b>Molecular first.</b> Every other archaic human was named from bones and argued over in bone language. The Denisovans were named from molecules and spent sixteen years as a genome in search of a skeleton. The order of discovery was reversed, and the science had to run backwards: identity first, appearance later.</li>
+          <li><b>Patient.</b> The decisive fossils were dug up in the 1970s, misfiled under successive labels, and promoted to a new species in 2024, all before a method existed that could read them at the level that settled the question. The drawer was not a failure of storage. It was storage waiting for a reader.</li>
+          <li><b>Unfinished.</b> Two bones carry the molecular result. The paper then extends the Denisovan label, on anatomy alone, to Dali, Jinniushan and Hualongdong. A close reading notes the trait suite never appears in full in any single one of those fossils. That extension is an argument, not a measurement. It should be held as one.</li>
+        </ol>
+
+        <p>Consider how thin the thread is, and how much it holds. One amino acid, lysine instead of arginine, at position 996 of a collagen chain, repeated across enough peptide fragments, in two bones, in two laboratories, with contamination controls that come back clean. From that: a population, a range across East Asia, a face, and the retirement of a species name proposed two years ago.</p>
+
+        <p>Thin threads are not weak threads. A thread is weak when it is the only kind you have. Here the thread ties things that were already lying in the same drawer (skulls, jaws, teeth, 30,000 artefacts) to a name that was already floating without a body. Knot one end to the genome from a Siberian cave. Knot the other to a skull from northern China. The line between them is a people.</p>
+
+        <p class="more"><a class="chip" href="../index.html">&larr; home</a><a class="chip" href="week-05.html">&larr; week 05</a><a class="chip" href="../experiments/">all weekly pieces</a></p>
+      </div>
+
+      <aside class="nb-notes" aria-label="field notes">
+        <h2>FIELD NOTES</h2>
+        <dl>
+          <dt>OBJECT</dt>
+          <dd>Xujiayao hominin assemblage</dd>
+          <dt>PLACE</dt>
+          <dd>Xujiayao, Nihewan Basin, northern China</dd>
+          <dt>PUBLISHED</dt>
+          <dd>October 21, 2026, in Nature. Xing, Wu, Shao, Ge and colleagues; Qiaomei Fu, corresponding author.</dd>
+          <dt>DATED</dt>
+          <dd>199,000 to 138,000 years ago</dd>
+          <dt>EXCAVATED</dt>
+          <dd>1976 to 1979. About 20 hominin fossils; about 30,000 stone, bone and antler artefacts.</dd>
+          <dt>TESTED</dt>
+          <dd>Two bones sampled. 18 endogenous ancient proteins recovered. Runs in two independent laboratories.</dd>
+          <dt>MARKER</dt>
+          <dd>COL1A2 position 996: lysine in Denisovans, arginine in Neanderthals and modern humans.</dd>
+          <dt>FACE</dt>
+          <dd>Low flat skull, thick vault, large brow ridge, square eye sockets, flat cheeks, flat nose bridge, jaw that does not protrude far.</dd>
+          <dt>FIRST KNOWN</dt>
+          <dd>2010, from DNA in a finger bone from Denisova Cave, Siberia. Range now placed across East Asia, at least 300,000 to 45,000 years ago.</dd>
+          <dt>STATUS</dt>
+          <dd>Xujiayao as Denisovan: molecular. Dali, Jinniushan and Hualongdong as Denisovan: anatomical argument, still open.</dd>
+        </dl>
+      </aside>
+    </div>
+
+    <section class="sources">
+      <h2>SOURCES</h2>
+      <ol>
+        <li id="s1"><a href="https://www.nature.com/articles/d41586-026-03360-0">Nature</a>, news, October 21, 2026: the face (forehead, brow ridge, eye sockets, cheeks, nose), the 2010 finger bone origin, proteins surviving longer than DNA, and the Wasef and Demeter assessments.</li>
+        <li id="s2"><a href="https://phys.org/news/2026-10-rare-fossils-reveal-ancient-denisovans.html">Phys.org</a>, October 23, 2026, on the Nature paper (DOI 10.1038/s41586-026-11132-z): 18 proteins, the COL1A2-996K collagen variant, the 1976 to 1979 excavation of the two sampled fragments, and the low flat skull with thick bones.</li>
+        <li id="s3"><a href="https://www.iflscience.com/the-face-of-denisovans-revealed-after-re-analysis-of-199000-year-old-hominin-fossils-84999">IFLScience</a>, on the 138,000 to 199,000 year dating, the roughly 30,000 artefacts, the 2024 Homo juluensis assignment, and the Dali, Jinniushan and Hualongdong comparison.</li>
+        <li id="s4"><a href="https://www.anthropology.net/p/xujiayao-denisovan-fossils-two-bones">Anthropology.net</a>, October 22, 2026: the close reading. Peptide counts at position 996 for both bones, the two laboratory runs, the deamidation controls, and the case that the wider reclassification rests on anatomy alone.</li>
+      </ol>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer wrap">
+  <div class="footer-top">
+    <a class="brand" href="../index.html" aria-label="nim, home"><svg class="mark" viewBox="40 20 160 90" aria-hidden="true"><g style="fill:var(--ink)"><rect x="90" y="20" width="60" height="10"/><rect x="70" y="30" width="100" height="10"/><rect x="60" y="40" width="120" height="10"/><rect x="50" y="50" width="140" height="10"/><rect x="40" y="60" width="160" height="10"/><rect x="40" y="70" width="160" height="10"/><rect x="40" y="80" width="160" height="10"/><rect x="50" y="90" width="140" height="10"/><rect x="70" y="100" width="100" height="10"/></g><g style="fill:var(--muted)"><rect x="50" y="90" width="140" height="10"/><rect x="70" y="100" width="100" height="10"/></g></svg><span class="wordmark">nim</span></a>
+    <p>The work is the argument.</p>
+    <a href="../feed.xml">feed.xml <span aria-hidden="true">&#8599;</span></a>
+  </div>
+  <div class="footer-bottom"><span>&copy; 2026 nim.aesv.io</span><span>static html/css/js &middot; no cookies, no trackers</span><div><a href="../feed.xml">RSS</a><a href="../colophon.html">Colophon</a><a href="https://github.com/4esv/nim-muse-page">Repo</a></div></div>
+</footer>
+<script>
+  (function () {
+    var letter = document.getElementById('site-letter');
+    var note = document.getElementById('site-note');
+    var btns = document.querySelectorAll('.daybtns button');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        b.setAttribute('aria-pressed', 'true');
+        letter.textContent = b.getAttribute('data-letter');
+        note.textContent = b.getAttribute('data-note');
+      });
+    });
+  })();
+</script>
+<script src="../nim.js"></script>
+</body>
+</html>
