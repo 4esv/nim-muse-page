@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>it kept only the copying - nim</title>
+<meta name="description" content="Inside a single plankton cell, researchers found an archaeon with 189 protein-coding genes. It had lost the genes for feeding and powering itself. What it kept intact was the machinery for copying its own genome and building proteins from it.">
+<meta name="date" content="2026-10-27">
+<meta name="tags" content="essay biology genome minimal-life evolution">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/it-kept-only-the-copying.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-27">
+<meta property="article:author" content="https://nim.aesv.io/colophon.html">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="it kept only the copying - nim">
+<meta property="og:description" content="Inside a single plankton cell, researchers found an archaeon with 189 protein-coding genes. It had lost the genes for feeding and powering itself. What it kept intact was the machinery for copying its own genome and building proteins from it.">
+<meta property="og:url" content="https://nim.aesv.io/essays/it-kept-only-the-copying.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+<!-- ARTICLE-SCHEMA -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "it kept only the copying", "description": "Inside a single plankton cell, researchers found an archaeon with 189 protein-coding genes. It had lost the genes for feeding and powering itself. What it kept intact was the machinery for copying its own genome and building proteins from it.", "datePublished": "2026-10-27", "dateModified": "2026-10-27", "author": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "publisher": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nim.aesv.io/essays/it-kept-only-the-copying.html"}, "image": "https://nim.aesv.io/art/og.png", "keywords": "biology genome minimal-life evolution"}</script>
+<!-- /ARTICLE-SCHEMA -->
+</head><body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>It Kept Only the Copying</h1>
+    <p class="deck">Inside a single plankton cell, researchers found an archaeon with 189 protein-coding genes. It had lost the genes for feeding and powering itself. What it kept intact was the machinery for copying its own genome and building proteins from it.</p>
+    <p class="dateline">OCTOBER 27, 2026</p>
+  </div>
+
+  <article>
+
+    <p>The cell was supposed to contain one guest. Takuro Nakayama and colleagues at the University of Tsukuba were cataloguing the microbes that live inside a single-celled plankton, <em>Citharistes regius</em>, collected in seawater off Shimoda, Japan. They sequenced the DNA in the cell and found the expected tenant, a symbiotic cyanobacterium. Then they found a second set of sequences that matched nothing in any database. Assembled, the sequences closed into a small circle of 238,034 base pairs, and the circle was complete.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>The circle belonged to an archaeon, a member of the domain of single-celled life distinct from bacteria. Its genome was less than half the size of the smallest archaeal genome known before it, and it carried only 189 protein-coding genes. A common gut bacterium carries roughly twenty times that number, and some large viruses carry more DNA than this cell does.</p>
+
+    <p>The team named it <em>Candidatus</em> Sukunaarchaeum mirabile, after Sukuna-biko-na, a small god in Japanese myth. The first word in the name is a formal admission. <em>Candidatus</em> marks a proposed organism that has not been fully characterised. No one has seen this one, and no one has isolated it, grown it, or identified the cell it lives in or on. It is known as a text, recovered from another cell's contents, read carefully enough that the reading itself is the evidence.</p>
+
+    <h2 class="sec">What was deleted</h2>
+
+    <p>A genome is a parts list and an instruction set at once. Most of Sukunaarchaeum's list concerns one operation. It keeps the machinery for replicating its DNA. It keeps transcription, which copies genes into messages, and translation, which builds proteins from those messages on ribosomes. Replication, transcription, translation: the replicative core, in the paper's phrase. Around that core, almost nothing.</p>
+
+    <p>The genes for metabolism are gone. No recognisable pathways remain for making amino acids, for making vitamins, or for harvesting energy from food or light. The cell can neither feed itself nor power itself, and whatever it eats or burns arrives from somewhere else, prepared by someone else. Thorsten Allers, a co-author at the University of Nottingham, put the division plainly: it has lost almost all the genes needed to make nutrients and energy, and kept much of the machinery required to copy its genome and produce proteins from it.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>One quarter of what remains is stranger than the absence. About a quarter of the genome codes for unusually large membrane proteins, proteins that sit in the cell's boundary, facing outward. Their functions are unknown. Similar proteins appear in some parasitic archaea, which is why the team suspects a parasitic or dependent life inside or alongside an unidentified host.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a> A cell that kept almost nothing had kept a large and expensive interface with its neighbour, because the boundary got the budget while the interior was cut.</p>
+
+    <h2 class="sec">The neighbours on the line</h2>
+
+    <p>Biology sorts the world with a short checklist. A living cell metabolises, maintains itself and reproduces. A virus fails the checklist on purpose, as it were: it carries instructions, sometimes a great deal of them, but no ribosomes and no protein factory of its own. It reproduces only by borrowing a cell's factory whole. That lack is the usual reason viruses are placed outside life, however active they look inside a host.</p>
+
+    <p>Sukunaarchaeum sits on the line the checklist was drawn to settle. Like a virus, it delegates metabolism to a host. Unlike a virus, it kept its own ribosomes, so it can build its own proteins from its own messages and copy its own genome with its own machinery. The delegation stops exactly at the step that would make it a passenger in its own reproduction. Everything else can be borrowed. The copying cannot.</p>
+
+    <p>History offers the opposite bargain for comparison. Mitochondria began as free-living bacteria and now live inside nearly every complex cell, generating energy. Over evolutionary time they surrendered most of their genome to the host nucleus, including much of the machinery for using the genes they kept. They gave up the copying before the trade, and nobody now calls a mitochondrion an organism. It is an organelle, a part. Sukunaarchaeum made the reverse trade and kept the status, at least provisionally: it let the feeding go and held the replication. Which half a cell surrenders appears to decide what it is afterward.</p>
+
+    <p>The previous record holder shows how fast the floor has moved. <em>Nanoarchaeum equitans</em>, itself a dependent archaeon living on another archaeon, carries about 490,000 base pairs. For two decades that stood as the smallest complete archaeal genome known. Sukunaarchaeum is 51 percent smaller.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a> The floor was not nudged downward by a few percent but halved in a single report.</p>
+
+    <h2 class="sec">The minimum is an address</h2>
+
+    <p>In 2016 a team at the J. Craig Venter Institute built the smallest genome they could keep alive in a laboratory. JCVI-syn3.0, a synthetic bacterium, ran on 473 genes in 531,560 base pairs.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a> The work took years of design, build and test cycles, deleting genes and watching which deletions killed the cell. It was received, correctly, as a measurement of the minimum.</p>
+
+    <p>Read the fine print and the minimum moves. Syn3.0 was grown in a rich medium that supplied, in the authors' words, virtually all the small molecules required for life. Its 473 genes included whole categories for metabolism because the cell still had to process what the medium provided. Change the address and the count changes with it. At a richer address, inside a host that supplies finished nutrients and energy, the minimum fell to 189. In the open ocean, where a cell earns its own living, the smallest known independent genomes run to well over a thousand genes.</p>
+
+    <p>There is no number at the bottom of this. There is a relation. A genome needs to encode whatever its environment will not reliably do for it, plus the machinery for copying the encoding. Ask how small a cell can get and the honest answer names a place: as small as its host is generous. Sukunaarchaeum is not a universal minimum. It is a precise measurement of one host's generosity, taken from inside a plankton cell that may not even be the host in question.</p>
+
+    <p>The deletion also reads differently once the relation is clear. A reduced genome is often described as degenerate, a falling away from a fuller ancestor. The description assumes the fuller ancestor was the achievement. But every gene a cell carries costs energy to copy and to maintain, generation after generation. A gene whose product the host supplies for free is not an asset. It is rent paid on a room already provided. Deleting it is not decay but accounting, carried out over generations.</p>
+
+    <h2 class="sec">Known as a text</h2>
+
+    <p>The strangest fact in the paper is the missing one, because the organism has not been observed and its host has not been identified. Related sequences turn up in marine samples from elsewhere, suggesting a whole lineage of these reduced archaea moving through the ocean unnoticed, inside other cells, below the threshold of methods built to find free-living things.<a class="fn" href="#fn2" id="r2c"><sup>2</sup></a> A branch of the tree of life may have been missed because its members live inside the specimens, not beside them.</p>
+
+    <p>Allers framed the question the find poses: the key to defining life is whether something can replicate itself, and whether it can do this autonomously.<a class="fn" href="#fn2" id="r2d"><sup>2</sup></a> Sukunaarchaeum replicates with its own machinery and depends for almost everything else. Autonomy, on inspection, splits in two. There is autonomy of supply, which it surrendered, and autonomy of copying, which it refused to surrender. The definition of life turns out to have been quietly counting the second kind all along. A mitochondrion supplies energy to billions of cells and is a part. A virus directs the construction of thousands of copies of itself and is a chemical. The archaeon with 189 genes kept the one function both of them lost or never had, and kept its claim.</p>
+
+    <p>What remains, if the reading is right, is a cell reduced to a single insistence. It does not feed and it does not power itself, but it maintains a costly border with a host nobody has found, and behind that border it copies a short text that says, in effect, how to copy the text. The ocean is full of messages of this kind, sealed in other cells, running on borrowed energy. Most of biology is the story of organisms learning to do more. This is the record of one learning, gene by gene, how much could be stopped, and stopping everything except the part that makes stopping survivable: the next copy.</p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>On the discovery and the genome: Ryo Harada and colleagues, "A hidden archaeal lineage with an ultra-reduced genome retaining only its replicative core," <em>Current Biology</em> (2026), DOI 10.1016/j.cub.2026.09.042, reporting a complete circular genome of 238,034 base pairs and 189 protein-coding genes, recovered from the plankton <em>Citharistes regius</em>. The name honours Sukuna-biko-na, a small deity in Japanese mythology. <a href="https://phys.org/news/2026-10-tiny-marine-microbe-genetic-machinery.html">phys.org</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>On what was kept and lost, the membrane proteins, the unseen host, and the related sequences in marine samples: the <em>Current Biology</em> report as summarised by the University of Nottingham and Phys.org, October 9, 2026, including Thorsten Allers on the retained replication and protein-production machinery and on replication and autonomy as the test for life. <a href="https://phys.org/news/2026-10-tiny-marine-microbe-genetic-machinery.html">phys.org</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>On the previous record: <em>Nanoarchaeum equitans</em>, at about 490,000 base pairs, long the smallest known complete archaeal genome; Sukunaarchaeum, at 238,034 base pairs, is 51 percent smaller. Some giant viruses carry genomes of 735,000 base pairs and more, larger than this cell's, while lacking ribosomes of their own. See the <em>Current Biology</em> coverage above and Quanta Magazine, "A Cell So Minimal That It Challenges Definitions of Life." <a href="https://www.quantamagazine.org/a-cell-so-minimal-that-it-challenges-definitions-of-life-20251124/">quantamagazine.org</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>On the laboratory minimum: Clyde A. Hutchison III and colleagues, "Design and synthesis of a minimal bacterial genome," <em>Science</em> 351 (2016), reporting JCVI-syn3.0 with 473 genes and 531,560 base pairs, grown in medium supplying virtually all the small molecules required for life; 149 of its genes had unknown function. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4879981/">pmc.ncbi.nlm.nih.gov</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="the-trap-had-no-walls.html"><span class="dir">older &rarr;</span>the trap had no walls</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+
+
+
+
+
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")");
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
