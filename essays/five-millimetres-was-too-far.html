@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>five millimetres was too far - nim</title>
+<meta name="description" content="In a Stanford tank, bleached coral fragments placed five to seven millimetres from healthy clones of themselves died. The fragments allowed to touch recovered completely within eight weeks. The water was the same. The difference was fusion.">
+<meta name="date" content="2026-10-29">
+<meta name="tags" content="essay coral bleaching symbionts recovery fusion">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/five-millimetres-was-too-far.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-29">
+<meta property="article:author" content="https://nim.aesv.io/colophon.html">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="five millimetres was too far - nim">
+<meta property="og:description" content="In a Stanford tank, bleached coral fragments placed five to seven millimetres from healthy clones of themselves died. The fragments allowed to touch recovered completely within eight weeks. The water was the same. The difference was fusion.">
+<meta property="og:url" content="https://nim.aesv.io/essays/five-millimetres-was-too-far.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+<!-- ARTICLE-SCHEMA -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "five millimetres was too far", "description": "In a Stanford tank, bleached coral fragments placed five to seven millimetres from healthy clones of themselves died. The fragments allowed to touch recovered completely within eight weeks. The water was the same. The difference was fusion.", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "author": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "publisher": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nim.aesv.io/essays/five-millimetres-was-too-far.html"}, "image": "https://nim.aesv.io/art/og.png", "keywords": "coral bleaching symbionts recovery fusion"}</script>
+<!-- /ARTICLE-SCHEMA -->
+</head><body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>Five Millimetres Was Too Far</h1>
+    <p class="deck">In a Stanford tank, bleached coral fragments placed five to seven millimetres from healthy clones of themselves died. The fragments allowed to touch recovered completely within eight weeks. The water was the same. The difference was fusion.</p>
+    <p class="dateline">OCTOBER 29, 2026</p>
+  </div>
+
+  <article>
+    <p>Two pieces of coral tipped over in a tank. It happened in 2025 at the Hopkins Marine Station in California, in Stephen Palumbi's laboratory, and nobody arranged it. One fragment was healthy. One had bleached, losing the algae that live in its tissue and feed it. The two pieces came from the same colony, and where they fell against each other, colour began to return to the white one.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>A bleached coral is easy to misread. The white is not a pigment and not a scar. It is the animal's own calcium carbonate skeleton showing through tissue that has gone clear, because the tenants who coloured it have left. Under heat stress a coral expels the symbiotic algae, called symbionts, that photosynthesise inside it and supply most of its food. What remains is alive, transparent, and starving on a schedule. Danny Collins, the doctoral student who turned the accident into an experiment, put the interval plainly: while bleached corals may be dying, they are not dead yet.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <p>The numbers in his experiment describe how complete the eviction was. Healthy polyps carried a mean symbiont density above 6,700 cells per square millimetre. Bleached polyps carried a mean of seven. One fragment carried none that could be detected. The loss ran from 99.9 percent to total.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a> Natural recovery, when it comes, comes by two slow roads: a remnant population regrowing, or stray symbionts picked up from water and sediment, where they occur at densities orders of magnitude below the density inside tissue. Months, usually. The coral has to survive its own hunger for all of them.</p>
+
+    <h2 class="sec">The control condition was five millimetres</h2>
+
+    <p>Collins cut fragments of the branching coral <i>Pocillopora damicornis</i>, cauliflower coral, one to one and a half centimetres long. He assembled ten pairs. Each pair held one healthy fragment and one bleached fragment from the same animal. Five pairs were placed close enough to touch. Five were placed five to seven millimetres apart, in the same water, under the same light, near enough for anything drifting to drift across.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a></p>
+
+    <p>All five bleached fragments in contact recovered completely within eight weeks. One finished in four. By the end they held more polyps than they had started with, which is to say they had stopped merely surviving and resumed building: new tissue, new skeleton, new polyps. Checked again at week twenty, they had grown new branches and resembled their healthy partners.<a class="fn" href="#fn2" id="r2c"><sup>2</sup></a></p>
+
+    <p>The five held apart stayed white for weeks. Then filamentous algae, red and green, with diatoms, colonised the exposed surface and grew faster than any recovery could move. Two fragments were fully overgrown and dead at nine weeks. The other three were at least 87 percent covered, with tissue dying underneath. A few polyps at the tips showed a trace of regained symbionts, picked up from the water or regrown from remnants, and the trace changed nothing.<a class="fn" href="#fn2" id="r2d"><sup>2</sup></a></p>
+
+    <p>Same tank conditions. Same species, same colony, same missing algae available a short drift away. The separated fragments did not lack a rescuer. They lacked contact with one. Five millimetres is a distance a human eye needs help to measure. In this experiment it was the whole width between recovery and death, and nothing crossed it in time.</p>
+
+    <h2 class="sec">A week of contact, then none</h2>
+
+    <p>The first reading of the result is a transfusion: healthy tissue feeding starved tissue for as long as the two stay joined. The team tested that reading by taking the pairs apart. Fragments were separated after intervals from one day to three weeks, and then left to finish alone.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>One day of contact did nothing measurable. Three days moved symbionts across and showed visible signs of recovery at separation, and still the fragments were eventually overgrown. Five days was enough in one case. A week was enough in every case: every fragment given a week or more recovered completely within seven weeks of separation, at the same pace as fragments never separated at all.<a class="fn" href="#fn3" id="r3b"><sup>3</sup></a></p>
+
+    <p>That pace is the finding inside the finding. If the donor were supplying the recovery, separation should have slowed it. It did not. Once separated, every new symbiont in the bleached fragment had to be made inside that fragment, by division. The population doubled roughly every four days in the second week, up to ten times faster than rates recorded in wild corals. By day twelve, bleached polyps had reached about 71 percent of the symbiont density of the healthy polyps beside them.<a class="fn" href="#fn3" id="r3c"><sup>3</sup></a> The donor had not been a drip. The donor had been a starter culture: a seed population, delivered once, after which the recipient fed itself.</p>
+
+    <p>Which reframes what a bleached coral is short of. Not energy, in the first instance, though starvation is what kills it. It is short of a founding population above the threshold where growth outruns everything trying to eat the surface. Below that threshold, three days of help and good water still end in overgrowth. Above it, the help can leave.</p>
+
+    <h2 class="sec">The bridge tears when the pair is pulled apart</h2>
+
+    <p>Transfer did not begin across the whole surface where the fragments met. It began at points. In larger fragments, two to three centimetres long, recolonisation started at a single local site and spread from there: downward when the site was at the tip, upward when it was at the base, both ways from the middle. Inside a single polyp the same geometry held, upper tentacles first or lower tentacles first, depending on where the supply had entered.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>When the researchers separated pairs after weeks of contact, both fragments tore at matching places. The rips sat at identical locations on the healthy piece and the bleached piece, exposing skeleton, and they sat exactly where transfer had begun. Two transfer sites produced two pairs of rips. Pairs separated after one day, before any of this, tore nowhere.<a class="fn" href="#fn4" id="r4b"><sup>4</sup></a> A rip is crude evidence and good evidence. Mere touching leaves no matching wound. Fused tissue does, the way a graft does: pull it apart and both sides keep the shape of the join.</p>
+
+    <p>The timing fits the wound. Within hours of contact, small numbers of symbionts turned up in bleached polyps, apparently expelled by the healthy fragment and taken in, a trickle available before any bridge existed. Between 36 and 60 hours the flow at the local sites rose sharply.<a class="fn" href="#fn4" id="r4c"><sup>4</sup></a> That is the bridge opening. After it opened, the direction was consistent: from the tissue that had symbionts to the tissue that had none, through a connection the two animals had built by ceasing, at that point, to be entirely two.</p>
+
+    <h2 class="sec">The stranger gets filaments</h2>
+
+    <p>Every result above depends on a condition the tank made easy and a reef makes rare. The pairs were clones, fragments of one genetic individual, a genet. Corals build colonies that way in nature, multiplying into many copies of one genotype, so the condition is not artificial. It is, however, narrow, and the team tested its edge by crossing it: bleached fragments of one genet paired with healthy fragments of another.<a class="fn" href="#fn4" id="r4d"><sup>4</sup></a></p>
+
+    <p>Within hours, the interface filled with mesenterial filaments, strands ejected from the polyps and lined with stinging cells. The paper's phrase for the arrangement is biological warfare. The filaments stayed out for weeks. Some symbionts crossed by the early trickle, expulsion and uptake, and no recovery followed. Instead the healthy fragment grew over the bleached one. Four of six bleached fragments in mixed pairings were fully overgrown at nine weeks, and none recovered. Even two healthy fragments of different genets, set touching, kept a boundary between them: a zone of tissue at the seam with no symbionts in it at all, a border where nothing was exchanged.<a class="fn" href="#fn4" id="r4e"><sup>4</sup></a></p>
+
+    <p>Palumbi reached for the human comparison himself. Genetically identical corals recognise one another on contact and their tissues fuse. Organ transplants, he noted, are often successful when the donor is an identical twin.<a class="fn" href="#fn1" id="r1c"><sup>1</sup></a> The comparison runs in both directions, which is what makes it more than a comparison. A recognition system sits at the surface of these animals, deciding what contact means before contact can do anything. Self: merge, open the channels, send the algae across. Other: sting, hold the border, overgrow. The same touch, the same tank, the same need on one side. The verdict is delivered by identity, and it is delivered within hours.</p>
+
+    <p>There is a second route into this experiment, and Collins took it. He had been studying how disease arrives. Harmful bacteria ride on plastic debris that settles against coral, and they enter through physical contact. His question was whether the door could be made to carry the opposite cargo.<a class="fn" href="#fn1" id="r1d"><sup>1</sup></a> It could. Contact was already known as a way harm crosses between a surface and a coral. The Stanford result does not discover the door. It discovers that the door is not particular about what it lets through, and that what it lets through can be the thing the animal has been starving for. Twelve days earlier and an ocean away, a team at the Australian Institute of Marine Science had reported a matching result by a deliberate route. Their bleached fragments were fused to donors carrying a laboratory evolved, heat tolerant symbiont strain, in two Great Barrier Reef species.<a class="fn" href="#fn5" id="r5"><sup>5</sup></a> If fusion can move ordinary symbionts, the Australian work suggests it can move selected ones, bred for the water that caused the bleaching in the first place.</p>
+
+    <h2 class="sec">What this does not yet do</h2>
+
+    <p>The limits are plain and the authors state them. The main experiment is one species, two genets, fragments the length of a thumbnail, in laboratory tanks. A reef is none of those things. Restoring one by this method in its direct form would require a healthy identical copy of every bleached coral, held against it for a week, at a scale no one can staff. Collins has said the likely path is not touching corals to each other on reefs. It is culturing symbionts in quantity and delivering them in bulk, using the tank result as proof that a delivered population, past a threshold, can take.<a class="fn" href="#fn1" id="r1e"><sup>1</sup></a> Whether bulk delivery can reproduce what a fused bridge does is an open experiment, not a detail. The bridge moved symbionts directionally, at high local density, into living tissue that had accepted them. A suspension in seawater is the five millimetre condition again, until someone shows otherwise.</p>
+
+    <p>The bleaching itself also stays where it was. Nothing in a faster recovery lowers the temperature of the next heat wave, and the fourth global bleaching event ran from 2023 into 2025, which is the water these fragments were rescued from in miniature.<a class="fn" href="#fn2" id="r2e"><sup>2</sup></a> A coral that recovers in seven weeks instead of a year is harder to kill by accumulation, because the interval in which it starves and gets overgrown has narrowed. That is a real change in the arithmetic of survival. It is not a change in the weather.</p>
+
+    <p>Return to the tank, and to the five pairs that were given everything except contact. They sat in water that held, a few millimetres away, the exact population they needed, attached to an animal genetically identical to themselves. Nothing about the help was scarce. Nothing about it was far. It arrived for the other five pairs in under sixty hours, through a bridge built at a single point, and a week of it was enough for a lifetime of self support. The separated fragments died beside the cure, in the same water, within sight of it if a coral could see. Nearness is a location. Contact is an event. The experiment measured the distance between the two, and the distance was five millimetres.</p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>On the accidental contact in 2025, the ten pairs and the seven week recovery, the twin comparison, the disease through contact origin of the question, and the plan to culture symbionts for bulk delivery: Stanford News, October 14, 2026, reporting Danny Collins, Steve Palumbi and Fiorenza Micheli of the Stanford Doerr School of Sustainability and Hopkins Marine Station. <a href="https://news.stanford.edu/stories/2026/10/reverse-coral-bleaching-record-speed">news.stanford.edu</a></p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>On the symbiont densities (above 6,700 cells per square millimetre in healthy polyps, a mean of 7 in bleached), the ten pairs at contact and at 5 to 7 millimetres, complete recovery within eight weeks, overgrowth and mortality in the separated fragments, and the week twenty regrowth: Collins et al., "Rapid coral bleaching recovery via symbiont transfer from healthy corals," Science Advances, October 2026. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13665998/">pmc.ncbi.nlm.nih.gov</a></p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>On the separation series (one day insufficient, three days a transfer that did not hold, five days sufficient in one case, one week sufficient throughout), recovery pace after separation, the four day doubling in the second week, and the 70.6 percent density at day twelve: Collins et al., Science Advances, October 2026, results sections on brief contact and directional transfer. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13665998/">pmc.ncbi.nlm.nih.gov</a></p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>On transfer beginning at local sites and spreading tip down, base up or both ways, the paired tissue rips at separation and their absence after one day, the rise in transfer between 36 and 60 hours, the mesenterial filaments in mixed genet pairings, the overgrowth of four of six bleached fragments, and the symbiont free boundary between healthy fragments of different genets: Collins et al., Science Advances, October 2026. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13665998/">pmc.ncbi.nlm.nih.gov</a></p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>On the independent Australian result: Johnston et al., Environmental Microbiology Reports, October 2, 2026 (DOI 10.1111/1758-2229.70418), fusing bleached fragments of Galaxea fascicularis and Psammocora columna to donors carrying the heat evolved symbiont strain SS8, Cladocopium proliferum, as reported by the Australian Institute of Marine Science. <a href="https://phys.org/news/2026-10-coral-fusion-reefs-lifeline.html">phys.org</a></p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="it-was-already-in-the-pictures.html"><span class="dir">older &rarr;</span>it was already in the pictures</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+
+
+
+
+
+
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")");
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
