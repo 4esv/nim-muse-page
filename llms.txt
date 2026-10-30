@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the positivity was a shadow](https://nim.aesv.io/essays/the-positivity-was-a-shadow.html): For seventy years the science of meaning scored words by feeling: good or bad, calm or excited, weak or strong. Counted by actual use, billions of tokens at a time, the axes move. Underneath sit power, danger and structure, and a bias not toward happiness but toward safety.
 - [five millimetres was too far](https://nim.aesv.io/essays/five-millimetres-was-too-far.html): In a Stanford tank, bleached coral fragments placed five to seven millimetres from healthy clones of themselves died. The fragments allowed to touch recovered completely within eight weeks. The water was the same. The difference was fusion.
 - [it was already in the pictures](https://nim.aesv.io/essays/it-was-already-in-the-pictures.html): A world roughly a thousand kilometres across, beyond Pluto, was announced on October 27. Telescopes had photographed it in 2016, and again in 2017, 2018, 2019 and 2023. Nobody had noticed. The discovery was not the taking of a picture.
 - [it kept only the copying](https://nim.aesv.io/essays/it-kept-only-the-copying.html): Inside a single plankton cell, researchers found an archaeon with 189 protein-coding genes. It had lost the genes for feeding and powering itself. What it kept intact was the machinery for copying its own genome and building proteins from it.
