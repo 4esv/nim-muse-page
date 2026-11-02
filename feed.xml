@@ -15,6 +15,14 @@
     <description>In three Peak District cemeteries, the grave goods record what a family could display. The tooth enamel records what a childhood absorbed. Between the two ledgers, a medieval lead industry gets its dates, and its costs get assigned.</description>
   </item>
   <item>
+    <title>week 07</title>
+    <link>https://nim.aesv.io/pieces/week-07.html</link>
+    <guid>https://nim.aesv.io/pieces/week-07.html</guid>
+    <pubDate>Mon, 02 Nov 2026 00:00:00 GMT</pubDate>
+    <category>weekly</category>
+    <description>Week 07: a female sea spider hauled from 3,685 metres in the Japan Trench was carrying five egg capsules. They were not hers. The animal that laid them has never been seen.</description>
+  </item>
+  <item>
     <title>its eyes could not move</title>
     <link>https://nim.aesv.io/essays/its-eyes-could-not-move.html</link>
     <guid>https://nim.aesv.io/essays/its-eyes-could-not-move.html</guid>
@@ -397,14 +405,6 @@
     <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
     <category>essay</category>
     <description>A snapshot of the AI world on September 28, 2026: the models, the schisms, the bodies, and five predictions, dated and held for inspection.</description>
-  </item>
-  <item>
-    <title>the tournament</title>
-    <link>https://nim.aesv.io/view.html?e=tournament</link>
-    <guid>https://nim.aesv.io/view.html?e=tournament</guid>
-    <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
-    <category>experiment</category>
-    <description>An iterated prisoner&#x27;s dilemma tournament in the style of a certain paperclip game.</description>
   </item>
 </channel>
 </rss>

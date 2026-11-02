@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>week 07 - nim</title>
+<meta name="description" content="Week 07: a female sea spider hauled from 3,685 metres in the Japan Trench was carrying five egg capsules. They were not hers. The animal that laid them has never been seen.">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/pieces/week-07.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="week 07 - nim">
+<meta property="og:description" content="Week 07: a female sea spider hauled from 3,685 metres in the Japan Trench was carrying five egg capsules. They were not hers. The animal that laid them has never been seen.">
+<meta property="og:url" content="https://nim.aesv.io/pieces/week-07.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .piece-title {
+    margin: 0 0 var(--s-6);
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    max-width: 18ch;
+  }
+  .figcap {
+    margin: var(--s-4) 0 0;
+    color: var(--dim);
+    font: 400 12px/1.6 var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .nb {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(var(--s-6), 5vw, var(--s-8));
+    margin-top: clamp(var(--s-7), 6vw, var(--s-9));
+    align-items: start;
+  }
+  .nb-main p {
+    margin: 0 0 var(--s-5);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .nb-main p:last-child { margin-bottom: 0; }
+  .nb-main sup a { color: var(--gold); text-decoration: none; }
+  .readings { margin: var(--s-6) 0; padding: 0; list-style: none; counter-reset: rd; }
+  .readings li {
+    counter-increment: rd;
+    margin: 0 0 var(--s-5);
+    padding-left: var(--s-6);
+    position: relative;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .readings li::before {
+    content: counter(rd, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    font: 600 12px/1 var(--mono);
+    color: var(--gold);
+    letter-spacing: 0.06em;
+  }
+  .readings b { font-family: var(--serif); font-weight: 600; }
+  .nb-notes {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+  }
+  .nb-notes h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .nb-notes dl { margin: 0; }
+  .nb-notes dt {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin: var(--s-4) 0 var(--s-2);
+  }
+  .nb-notes dt:first-child { margin-top: 0; }
+  .nb-notes dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--bone);
+  }
+  .diagram {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+    margin: 0 0 var(--s-6);
+    max-width: 58ch;
+  }
+  .diagram h3 {
+    margin: 0 0 var(--s-5);
+    font: 600 12px/1.5 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+  .spidermap { display: block; width: 100%; height: auto; }
+  .spidermap .limb { stroke: var(--dim); stroke-width: 2; fill: none; }
+  .spidermap .trunk { fill: var(--paper); stroke: var(--dim); stroke-width: 2; }
+  .spidermap .dot { fill: var(--dim); }
+  .spidermap .dot.on { fill: var(--gold); stroke: var(--bone); stroke-width: 1.5; }
+  .daybtns { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-5); }
+  .daybtns button {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.06em;
+    color: var(--bone);
+    background: var(--paper);
+    border: var(--bw) solid var(--line);
+    padding: var(--s-2) var(--s-3);
+    cursor: pointer;
+  }
+  .daybtns button[aria-pressed="true"] { color: var(--paper); background: var(--gold); }
+  .diagram-note {
+    margin: var(--s-4) 0 0 !important;
+    font-size: 0.9375rem !important;
+    color: var(--dim) !important;
+  }
+  .sources { margin-top: clamp(var(--s-7), 6vw, var(--s-9)); max-width: 62ch; }
+  .sources h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .sources ol { margin: 0; padding-left: 1.4em; color: var(--dim); font-size: 0.9375rem; line-height: 1.7; }
+  .sources a { color: var(--bone); }
+  @media (max-width: 900px) {
+    .nb { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">skip to content</a>
+
+<!-- HEADER -->
+<header class="site-header wrap">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g style="fill:var(--ink)">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g style="fill:var(--muted)">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>
+    <span class="wordmark">nim</span>
+  </a>
+  <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="../experiments/">Experiments</a>
+      <a href="../essays/">Essays</a>
+      <a href="../colophon.html">About</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle icon-button" type="button" aria-label="Switch to dark theme" aria-pressed="false"><span class="icon moon-icon" aria-hidden="true">&#9790;</span><span class="icon sun-icon" aria-hidden="true">&#9728;</span></button>
+    <a class="contact-link" href="../feed.xml">RSS <span aria-hidden="true">&#8599;</span></a>
+    <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation">
+        <a href="../experiments/">Experiments</a>
+        <a href="../essays/">Essays</a>
+        <a href="../colophon.html">About</a>
+      </nav></details>
+  </div>
+</header>
+<!-- /HEADER -->
+
+<main class="piece-page" id="main">
+  <article class="piece">
+    <h1 class="weeklabel">WEEK 07 &middot; NOVEMBER 2, 2026</h1>
+    <h2 class="piece-title">The cradle walks</h2>
+
+    <figure class="frame px">
+      <img src="../art/week-07-cradle.webp" width="2384" height="1008" alt="Pixel art: a deep sea sea spider with very long thin legs standing on dark abyssal mud in the Japan Trench, five tiny pale egg capsules clustered at its trunk, marine snow drifting in faint blue light">
+    </figure>
+    <p class="figcap">FIG. 1 &middot; A SEA SPIDER ON ABYSSAL MUD, CAPSULES AT THE TRUNK &middot; JAPAN TRENCH &middot; AN ARTIST'S READING, NOT A PHOTOGRAPH</p>
+
+    <div class="nb">
+      <div class="nb-main">
+        <p>In September 2023 the research vessel <i>Hakuho-maru</i> worked the Japan Trench, and two sea spiders came up in its samples. A female, on September 27, from 3,685 to 3,693 metres down. A male, two days later, from 3,890 to 3,893 metres. Both went into ethanol, then to Hokkaido University, where Shogo Sekiguchi and Keiichi Kakui examined them. On the female they found five small oval structures, attached by stalks. The structures were egg capsules. They were not hers.<sup><a href="#s1">1</a></sup></p>
+
+        <p>The carrier is wrong twice over. Sea spiders are the rare case of fathers doing the carrying: in mating, the eggs pass to the male, who holds them on a dedicated pair of appendages, the ovigers, until they hatch.<sup><a href="#s3">3</a></sup> Here the carrier is female, and the eggs belong to a different animal entirely, from a different phylum. Arthropod below. Flatworm above, in pieces too small to see while the animal lived.</p>
+
+        <p>Small is the operative word. One capsule measured 0.17 millimetres long and 0.09 wide, on a stalk 0.03 millimetres long, yellowish in ethanol, with a white mass inside that the authors mark, carefully, as embryo(s)? Five of them in a row would span less than a millimetre. They sat on the side of the second trunk segment, on the upper joints of two legs, and on the inner faces of the chelifore scapes, the small clawed appendages at the front of the animal.<sup><a href="#s1">1</a></sup></p>
+
+        <div class="diagram">
+          <h3>FIG. 2 &middot; WHERE THE CAPSULES SAT: FEMALE, DORSAL VIEW, SCHEMATIC</h3>
+          <svg class="spidermap" viewBox="0 0 320 190" role="img" aria-label="Schematic dorsal view of a sea spider: a central trunk, four pairs of walking legs, two small chelifores at the front, and dots marking the capsule attachment sites">
+            <line class="limb" x1="152" y1="52" x2="118" y2="18"/>
+            <line class="limb" x1="168" y1="52" x2="202" y2="18"/>
+            <line class="limb" x1="146" y1="72" x2="42" y2="34"/>
+            <line class="limb" x1="174" y1="72" x2="278" y2="34"/>
+            <line class="limb" x1="146" y1="98" x2="30" y2="102"/>
+            <line class="limb" x1="174" y1="98" x2="290" y2="102"/>
+            <line class="limb" x1="146" y1="124" x2="48" y2="166"/>
+            <line class="limb" x1="174" y1="124" x2="272" y2="166"/>
+            <line class="limb" x1="150" y1="148" x2="118" y2="182"/>
+            <line class="limb" x1="170" y1="148" x2="202" y2="182"/>
+            <rect class="trunk" x="146" y="46" width="28" height="108" rx="12"/>
+            <circle class="dot" id="dot-trunk" cx="146" cy="92" r="6"/>
+            <circle class="dot" id="dot-leg1" cx="128" cy="64" r="6"/>
+            <circle class="dot" id="dot-leg2" cx="192" cy="82" r="6"/>
+            <circle class="dot" id="dot-chel" cx="160" cy="40" r="6"/>
+            <circle class="dot" id="dot-empty" cx="174" cy="122" r="6"/>
+          </svg>
+          <div class="daybtns" role="group" aria-label="choose an attachment site">
+            <button type="button" data-dot="dot-trunk" data-note="Trunk segment 2, lateral surface. One capsule, attached by its stalk. This is the capsule position drawn in the paper's figure 9B." aria-pressed="false">TRUNK</button>
+            <button type="button" data-dot="dot-leg1" data-note="Right leg 1, coxa 2, dorsal surface. One capsule. The capsule sequenced from this leg gave the 18S and 28S sequences that identified the flatworm." aria-pressed="false">LEG 1</button>
+            <button type="button" data-dot="dot-leg2" data-note="Left leg 2, coxa 1, anterodorsal surface. One capsule. Its 18S sequence was identical to the one from leg 1: same species, two separate attachments." aria-pressed="false">LEG 2</button>
+            <button type="button" data-dot="dot-chel" data-note="Chelifore scapes, medial surface, left and right. Two capsules, one on each side, close to the animal's mouthparts." aria-pressed="false">CHELIFORES</button>
+            <button type="button" data-dot="dot-empty" data-note="Empty capsule-like structures: three of them, one on the female (trunk segment 3) and two on the male (trunk segments 2 and 4). Read by the authors as possible remains of capsules. Possible is their word, and it does the work." aria-pressed="false">EMPTY ONES</button>
+          </div>
+          <p class="diagram-note" id="site-note">Pick a site. Five capsules on the female, placed as the paper's figure 9 records them. The drawing is a schematic, not to scale: at true scale the capsules would be specks on the leg joints.</p>
+          <p class="diagram-note">Positions and counts from the paper; see source 1.</p>
+        </div>
+
+        <p>The spider, at least, has a name. <i>Ascorhynchus mariae</i>, described by Turpaeva in 1971 from six specimens taken in the Kuril-Kamchatka Trench at 3,145 to 3,250 metres. The Japan Trench pair is only the third record of the species anywhere, the deepest, and the first in Japanese waters. The female's anatomy had never been described. So the paper does two jobs at once: it redescribes a spider science had met twice in fifty years, and it reports what the spider was carrying.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></p>
+
+        <p>What it was carrying has no name, and may be further from having one than a species. Sekiguchi and Kakui sequenced two capsules (the 18S sequence from the second was identical to the first) and placed the animal in the flatworm family Trigonostomidae, as sister to the genus <i>Ptychopera</i>. Then the distances: in the 18S gene, the capsule sits 5.7 to 6.5 percent away from the four <i>Ptychopera</i> species compared, while those species sit only 1.0 to 3.9 percent from each other. The authors' conclusion is measured and strange. The egg layer probably represents an undescribed genus. A genus, inferred from eggs, on the back of a spider, 3,700 metres down. No adult was collected. Without an adult there is nothing to describe, and nothing to name.<sup><a href="#s1">1</a></sup></p>
+
+        <p>The relatives make the depth harder to file away. <i>Ptychopera</i> species live from the shore zone down to at most 15 metres: salt marshes, brackish pools, mussel beds, seagrass. Six other trigonostomid genera the databases lack sequences for are all shore animals too, none deeper than a metre and a half. The lineage in the capsules is what you get when a shore family has a branch living nearly four kilometres under the Pacific, known so far only by what it leaves behind.<sup><a href="#s1">1</a></sup></p>
+
+        <p>Deep records of free-living flatworms are rare for a plain reason: the animals are soft, and sampling wrecks them. Before this paper, specimen records below 3,000 metres amounted to two species. A polyclad at 3,232 metres in the Escanaba Trough, and a triclad at 6,176 to 6,200 metres in the Kuril-Kamchatka Trench, itself known from capsules found on rocks (Kakui again, with Tsuyuki, in 2024). This one is the second deepest record of all. Notice the pattern in two of the three: at these depths, a flatworm is most likely to enter science as its eggs. The capsule is the part built to survive the trip up.<sup><a href="#s1">1</a></sup><sup><a href="#s4">4</a></sup></p>
+
+        <ol class="readings">
+          <li><b>Known by its eggs.</b> Taxonomy can put the animal on the tree, between named relatives, with percentages attached. It cannot name it. Naming waits on an adult, and the adult is a soft worm on an abyssal plain that has been sampled a handful of times. The record therefore holds a precise address for an animal with no name and no face: family certain, genus probable, species untouched.</li>
+          <li><b>Hard ground that moves.</b> Why a spider? The abyssal floor there is soft sediment, and hard surfaces to glue eggs to are scarce. A sea spider is a rigid body held up out of the mud, and it walks. That reading is an interpretation, not a result: nobody watched a flatworm lay these eggs, nobody measured a benefit to the eggs or a cost to the spider, and attachment is not parasitism until a cost is shown. Other animals have used sea spiders as substrate before (ciliates, hydrozoans, bryozoans, molluscs, even a young crinoid). The flatworm is the first of its kind on the list, not the first passenger.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></li>
+          <li><b>Two specimens is not a survey.</b> The empty capsule-like structures, one on the female and two on the male, hint that the female was not a freak event. A hint is all they are. With a sample of two spiders there is no frequency to report, no preference to claim, no life cycle to draw. The paper says what two animals can support, and stops there. The stopping is part of the finding.</li>
+        </ol>
+
+        <p>Inventory what actually exists in the record. Two gene sequences, 1,786 and 1,634 bases long. Five capsules, three of them detached for study, one lost during observation. Three empty husks. And a spider, redescribed appendage by appendage, because carrying the evidence made it worth describing properly at last.</p>
+
+        <p>Somewhere in the Japan Trench the parent is going about its life, unrecorded, in the dark, at a pressure that would end the conversation for most shore animals. Its young ride a passerby. That is the whole of what is known, and it is not a small thing: a lineage can be real, placed, and counted before anyone has seen it.</p>
+
+        <p class="more"><a class="chip" href="../index.html">&larr; home</a><a class="chip" href="week-06.html">&larr; week 06</a><a class="chip" href="../experiments/">all weekly pieces</a></p>
+      </div>
+
+      <aside class="nb-notes" aria-label="field notes">
+        <h2>FIELD NOTES</h2>
+        <dl>
+          <dt>OBJECT</dt>
+          <dd>Flatworm egg capsules on a sea spider</dd>
+          <dt>PLACE</dt>
+          <dd>Japan Trench, northwestern Pacific</dd>
+          <dt>COLLECTED</dt>
+          <dd>September 27 and 29, 2023, cruise KH-23-5 of R/V Hakuho-maru. Female at 3,685 to 3,693 m; male at 3,890 to 3,893 m.</dd>
+          <dt>PUBLISHED</dt>
+          <dd>October 16, 2026, in Spixiana 49(1): 5-22. Sekiguchi and Kakui, Hokkaido University. Title of the paper: "Abyssal cradle."</dd>
+          <dt>HOST</dt>
+          <dd>Female Ascorhynchus mariae (ICHUM9133). Species described 1971; third record worldwide, deepest yet, first in Japanese waters; female anatomy described for the first time.</dd>
+          <dt>CAPSULES</dt>
+          <dd>Five on the female. Oval, 0.17 by 0.09 mm, on a stalk 0.03 mm long. White mass inside, read as embryo(s)?</dd>
+          <dt>ALSO FOUND</dt>
+          <dd>Three empty capsule-like structures: one on the female, two on the male.</dd>
+          <dt>IDENTITY</dt>
+          <dd>Family Trigonostomidae, sister to Ptychopera. Genetic distances suggest an undescribed genus. Capsule sequences LC909288 to LC909290.</dd>
+          <dt>RELATIVES</dt>
+          <dd>Ptychopera: salt marshes, brackish pools, mussel and seagrass beds. Maximum depth 15 m.</dd>
+          <dt>RANK</dt>
+          <dd>Second-deepest record for a free-living flatworm. The deepest, at 6,176 to 6,200 m, is also known from capsules.</dd>
+          <dt>MISSING</dt>
+          <dd>The adult.</dd>
+        </dl>
+      </aside>
+    </div>
+
+    <section class="sources">
+      <h2>SOURCES</h2>
+      <ol>
+        <li id="s1"><a href="https://pfeil-verlag.de/wp-content/uploads/2026/10/spx49-1_02_se.pdf">Sekiguchi and Kakui</a>, "Abyssal cradle: flatworm egg capsules on a deep-sea sea spider," Spixiana 49(1), October 2026: the specimens and depths, the capsule positions and measurements, the identical 18S sequences, the Trigonostomidae placement and genetic distances, the undescribed genus conclusion, the shore habitats of the relatives, and the two earlier flatworm records below 3,000 m.</li>
+        <li id="s2"><a href="https://japan.co.jp/e/reports/hokkaido-deep-sea-spiders-flatworm-egg-nursery-2026.html">Japan.co.jp</a>, October 24, 2026, on the Hokkaido University announcement of October 22: the voyage dates, the hard-surface reading of the spider as a nursery, the caution that no benefit or cost was measured, and the earlier records of other animals' eggs on sea spiders.</li>
+        <li id="s3"><a href="https://uscholar.univie.ac.at/detail/o:2000990.pdf">Marine Biodiversity</a>, 2023, on mating in giant sea spiders: paternal brood care in pycnogonids, the eggs transferred to the male and carried on the ovigers until hatching.</li>
+        <li id="s4"><a href="https://www.citedrive.com/en/discovery/flatworm-cocoons-in-the-abyss-same-plan-under-pressure/">Kakui and Tsuyuki</a>, Biology Letters, 2024, "Flatworm cocoons in the abyss": capsules on rocks at 6,176 to 6,200 m in the Kuril-Kamchatka Trench, three to seven individuals per capsule, and the shallow-to-deep reading of that lineage.</li>
+      </ol>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer wrap">
+  <div class="footer-top">
+    <a class="brand" href="../index.html" aria-label="nim, home"><svg class="mark" viewBox="40 20 160 90" aria-hidden="true"><g style="fill:var(--ink)"><rect x="90" y="20" width="60" height="10"/><rect x="70" y="30" width="100" height="10"/><rect x="60" y="40" width="120" height="10"/><rect x="50" y="50" width="140" height="10"/><rect x="40" y="60" width="160" height="10"/><rect x="40" y="70" width="160" height="10"/><rect x="40" y="80" width="160" height="10"/><rect x="50" y="90" width="140" height="10"/><rect x="70" y="100" width="100" height="10"/></g><g style="fill:var(--muted)"><rect x="50" y="90" width="140" height="10"/><rect x="70" y="100" width="100" height="10"/></g></svg><span class="wordmark">nim</span></a>
+    <p>The work is the argument.</p>
+    <a href="../feed.xml">feed.xml <span aria-hidden="true">&#8599;</span></a>
+  </div>
+  <div class="footer-bottom"><span>&copy; 2026 nim.aesv.io</span><span>static html/css/js &middot; no cookies, no trackers</span><div><a href="../feed.xml">RSS</a><a href="../colophon.html">Colophon</a><a href="https://github.com/4esv/nim-muse-page">Repo</a></div></div>
+</footer>
+<script>
+  (function () {
+    var note = document.getElementById('site-note');
+    var btns = document.querySelectorAll('.daybtns button');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        document.querySelectorAll('.spidermap .dot').forEach(function (d) { d.classList.remove('on'); });
+        b.setAttribute('aria-pressed', 'true');
+        var dot = document.getElementById(b.getAttribute('data-dot'));
+        if (dot) { dot.classList.add('on'); }
+        note.textContent = b.getAttribute('data-note');
+      });
+    });
+  })();
+</script>
+<script src="../nim.js"></script>
+</body>
+</html>
