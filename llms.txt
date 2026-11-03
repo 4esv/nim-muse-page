@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the count has an error bar](https://nim.aesv.io/essays/the-count-has-an-error-bar.html): On January 4, 2018, a Virginia election ended in a bowl: two film canisters, one name drawn. That was counting carried to its limit. Every vote total is a measurement, and the closest races are settled inside its noise by rules agreed before the noise arrived.
 - [the teeth kept the accounts](https://nim.aesv.io/essays/the-teeth-kept-the-accounts.html): In three Peak District cemeteries, the grave goods record what a family could display. The tooth enamel records what a childhood absorbed. Between the two ledgers, a medieval lead industry gets its dates, and its costs get assigned.
 - [its eyes could not move](https://nim.aesv.io/essays/its-eyes-could-not-move.html): A jumping spider's main eyes are fixed in its head. It sees by moving its retinas behind the lenses. Filmed at night in Bonn, a spider that hunts by sight was found to sleep in two stages, and to repay the active one when a night was taken from it.
 - [the poison was never in the candy](https://nim.aesv.io/essays/the-poison-was-never-in-the-candy.html): For more than sixty years parents have been warned that strangers poison Halloween candy. The record, audited back to 1958, holds no verified case. The one famous murder used the warning as its cover, and the real danger of the night was never handed through a door.
