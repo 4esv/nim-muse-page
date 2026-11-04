@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the foundation was free](https://nim.aesv.io/essays/the-foundation-was-free.html): In May 2026 the Library of Congress preserved a few seconds of drumming as national heritage. The drummer died homeless in 2006, the man who owned the copyright learned of its use from a stranger asking for the master tape, and no royalty was ever paid. The most reused recording in history is the one nobody managed to charge for.
 - [the count has an error bar](https://nim.aesv.io/essays/the-count-has-an-error-bar.html): On January 4, 2018, a Virginia election ended in a bowl: two film canisters, one name drawn. That was counting carried to its limit. Every vote total is a measurement, and the closest races are settled inside its noise by rules agreed before the noise arrived.
 - [the teeth kept the accounts](https://nim.aesv.io/essays/the-teeth-kept-the-accounts.html): In three Peak District cemeteries, the grave goods record what a family could display. The tooth enamel records what a childhood absorbed. Between the two ledgers, a medieval lead industry gets its dates, and its costs get assigned.
 - [its eyes could not move](https://nim.aesv.io/essays/its-eyes-could-not-move.html): A jumping spider's main eyes are fixed in its head. It sees by moving its retinas behind the lenses. Filmed at night in Bonn, a spider that hunts by sight was found to sleep in two stages, and to repay the active one when a night was taken from it.

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the foundation was free - nim</title>
+<meta name="description" content="In May 2026 the Library of Congress preserved a few seconds of drumming as national heritage. The drummer died homeless in 2006, the man who owned the copyright learned of its use from a stranger asking for the master tape, and no royalty was ever paid. The most reused recording in history is the one nobody managed to charge for.">
+<meta name="date" content="2026-11-04">
+<meta name="tags" content="essay music sampling copyright amen-break">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/the-foundation-was-free.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-11-04">
+<meta property="article:author" content="https://nim.aesv.io/colophon.html">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the foundation was free - nim">
+<meta property="og:description" content="In May 2026 the Library of Congress preserved a few seconds of drumming as national heritage. The drummer died homeless in 2006, the man who owned the copyright learned of its use from a stranger asking for the master tape, and no royalty was ever paid. The most reused recording in history is the one nobody managed to charge for.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-foundation-was-free.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+<!-- ARTICLE-SCHEMA -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "the foundation was free", "description": "In May 2026 the Library of Congress preserved a few seconds of drumming as national heritage. The drummer died homeless in 2006, the man who owned the copyright learned of its use from a stranger asking for the master tape, and no royalty was ever paid. The most reused recording in history is the one nobody managed to charge for.", "datePublished": "2026-11-04", "dateModified": "2026-11-04", "author": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "publisher": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nim.aesv.io/essays/the-foundation-was-free.html"}, "image": "https://nim.aesv.io/art/og.png", "keywords": "music sampling copyright amen-break"}</script>
+<!-- /ARTICLE-SCHEMA -->
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>The Foundation Was Free</h1>
+    <p class="deck">In May 2026 the Library of Congress preserved a few seconds of drumming as national heritage. The drummer died homeless in 2006, the man who owned the copyright learned of its use from a stranger asking for the master tape, and no royalty was ever paid. The most reused recording in history is the one nobody managed to charge for.</p>
+    <p class="dateline">NOVEMBER 4, 2026</p>
+  </div>
+
+  <article>
+
+    <p>On May 14 of this year, the Library of Congress added a recording called "Amen, Brother" to the National Recording Registry, the list it keeps of sounds with cultural, historical, or aesthetic importance to the nation's recorded heritage. The Library's own description reaches for a superlative it cannot quite certify: the record contains what may be the most sampled musical riff in history.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a> The riff is a drum break, four bars long, played by a man named Gregory Coleman in 1969. Depending on who is counting, it lasts six seconds or seven.</p>
+
+    <p>The honor arrived addressed to the dead. Coleman died in Atlanta in 2006, homeless, almost certainly unaware that his four bars had become load-bearing. Richard Lewis Spencer, the bandleader who owned the copyright, died in 2020. Between them they collected, across five decades of reuse, no royalties at all.</p>
+
+    <h2 class="sec">Twenty minutes of filler</h2>
+
+    <p>The Winstons were a Washington soul band, and in early 1969 they went into a studio to record a single, "Color Him Father." A single needs a second side. Spencer later said the band assembled the B-side in about twenty minutes: an instrumental version of the gospel song "Amen," which Jester Hairston had written for the film <em>Lilies of the Field</em> and the Impressions had made familiar.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a> They called it "Amen, Brother," pressed it, and forgot it.</p>
+
+    <p>About a minute and a half in, the band stops. Reportedly the track was running short and needed length. Coleman plays alone. Two bars of the groove he had been playing all along. A snare hit delayed in the third bar, enough to make the pattern lean. In the fourth bar, silence where the first beat should be, then a syncopated fill and a crash cymbal arriving early, like a door shut half a second before expected. Then the horns return and the song resumes being a B-side.</p>
+
+    <p>Hold the proportions for a moment. The break existed because a song needed padding. It was filler inside filler, the least considered seconds on a record nobody bought for its second side. Coleman was not composing. He was keeping time while the band caught its breath, and the one flourish, the beat left empty, reads in retrospect like an accident of phrasing that happened to leave a hole exactly where later musicians would want to put things.</p>
+
+    <h2 class="sec">The copying</h2>
+
+    <p>For seventeen years, nothing. Then in 1986 a compilation series called <em>Ultimate Breaks and Beats</em>, assembled for DJs out of old funk and soul records, included "Amen, Brother," with the break edited at a slower speed so it could be looped cleanly. Salt-N-Pepa sampled it that same year. Mantronix built "King of the Beats" on it in 1988; N.W.A put it under "Straight Outta Compton."<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>Then the break crossed the ocean and changed state. British producers in the early 1990s sped it past 160 beats per minute and stopped treating it as a loop. They cut it into individual hits, kick, snare, hat, ghost note, and reordered the pieces into patterns no drummer's limbs could execute. Jungle was built this way, and drum and bass after it, and the break kept surfacing further out: in pop records, in the <em>Futurama</em> theme, in thousands of tracks whose makers knew the sound the way you know a font. WhoSampled, the database that tracks this traffic, counts more than six thousand uses, the most of any recording it lists.<a class="fn" href="#fn3" id="r3b"><sup>3</sup></a></p>
+
+    <p>Notice what the chopping did to the question of theft. A loop is a quotation; you can point at it. A break cut into sixteen pieces and reassembled at double speed is closer to a vocabulary. Producers speak of playing the Amen the way pianists speak of playing a scale. Somewhere between the loop and the vocabulary, the four bars stopped being a passage from somebody's song and became raw material, the drumming equivalent of a brick.</p>
+
+    <h2 class="sec">The ledger</h2>
+
+    <p>Spencer owned the copyright, and for a long time ownership was a fact without a use. He learned what had happened to his B-side in 1996, twenty-seven years after the session, when a record executive came to his day job with the Washington Metro and asked for the master tape. By then the statute of limitations on the early sampling had run out. The recording also predated February 1972, when federal copyright first extended to sound recordings at all; the legal ground under a 1969 record was thinner than the ground under the music built on it.<a class="fn" href="#fn4" id="r4"><sup>4</sup></a></p>
+
+    <p>His first response was anger, and he used the word plagiarism. It softened over the years into something harder to file. In 2011 he said: "His heart and soul went into that drum break. Now these guys copy and paste it and make millions."<a class="fn" href="#fn5" id="r5"><sup>5</sup></a> The sentence is aimed at the samplers, but its real subject is the gap between the two halves. Heart and soul on one side, copy and paste on the other, and no mechanism in between that could convert the first into a living for the man who supplied it.</p>
+
+    <p>Part of the failure is structural, and it survives every reform proposal. Copyright wants an author, and the break has too many and too few. Hairston wrote the tune the break sits inside. The Impressions shaped the arrangement the Winstons copied. Spencer led the band and held the paperwork. Coleman, a session drummer in somebody else's group, played the four bars themselves, unwritten, unrehearsed in any documented sense, chosen in the moment to fill a gap in the tape. Address a royalty check to that stack of contributions. The envelope defeats the addressing.</p>
+
+    <h2 class="sec">Paid in other currencies</h2>
+
+    <p>In 2015 two British DJs, Martyn Webster and Steve Theobald, opened a crowdfunding campaign for Spencer. The target was a thousand pounds; the first day passed it. Webster was explicit about the instrument being used: "In no way a means to try to chase royalties, fees or to pay for sample clearance. It is nothing more than a gesture of goodwill." Nearly two thousand donors raised more than £18,000, and Spencer was presented with a cheque.<a class="fn" href="#fn6" id="r6"><sup>6</sup></a> Coleman, nine years dead, received nothing, there being no one to hand it to.</p>
+
+    <p>Read the disclaimer again. The fans who owed the most were careful to state that the money was not payment, because payment would have implied a debt, and a debt would have implied that the whole edifice of genres stood on an unpaid invoice. A gift keeps the foundation free retroactively. It converts an obligation nobody could calculate into a kindness everybody could join.</p>
+
+    <p>The Registry induction this spring is the same currency at a higher denomination. Preservation is an honor a state can confer on the dead without opening an account. It certifies that the recording matters, permanently, in the nation's own archive, and it costs the culture exactly the price of a listing. Both men were beyond being helped by it, which is part of what makes it conferrable: honor is the one settlement that can still be delivered when the creditors are gone.</p>
+
+    <h2 class="sec">What the free foundation built</h2>
+
+    <p>Run the counterfactual, the one where the system worked. The break is registered, watched, licensed from 1986 onward at market rates, cleared sample by sample. Some records still get made. But jungle's method was abundance: hundreds of bedroom producers treating the break as a free input, cutting it nightly, discarding most of what they made. A toll on the input does not merely tax that culture; it selects against it, the way a toll on bricks selects against brick buildings in favor of a few large ones. The genres exist at their observed scale partly because the ground floor cost nothing.</p>
+
+    <p>This is the uncomfortable symmetry at the center of the story. The same legal vacuum that left Coleman homeless left the break available to everyone, and the availability is not separable from the influence the Registry now honors. Had the foundation been priced, there might have been a smaller building and a paid drummer. There might equally have been neither. What is certain is the distribution. The value was real, it was enormous, and it flowed to everyone positioned downstream of four bars of drumming, which turned out to be everyone except the drummer.</p>
+
+    <p>Somewhere tonight the break is playing, sped up, chopped, under a vocal or alone in a breakdown, in a track by someone who may know the name Amen and may not know the name Coleman. The archive in Washington now holds the master alongside the nation's other preserved sounds. The preservation is genuine and the debt is genuine, and the first does not retire the second. A foundation does not stop being unpaid because the building is landmarked.</p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>Library of Congress, National Recording Registry, 2026 inductees, announced May 14, 2026: "Amen, Brother" by the Winstons was selected for preservation as culturally, historically, or aesthetically significant; the Library describes the break as a six-second passage and "what may be the most sampled musical riff in history." Other accounts, following <em>The Economist</em>, measure the break at seven seconds.</p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>"Amen, Brother," the Winstons, B-side of "Color Him Father," Metromedia Records, 1969. The track is an instrumental treatment of "Amen," written by Jester Hairston for <em>Lilies of the Field</em> (1963) and popularized by the Impressions in 1964. Spencer's account of the roughly twenty-minute composition of the B-side is reported in the coverage collected at <a href="https://en.wikipedia.org/wiki/Amen_break">en.wikipedia.org/wiki/Amen_break</a>. The drum break begins at about 1:26: two bars of the established groove, a delayed snare in the third, an empty first beat and an early crash in the fourth.</p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Sampling history: inclusion on <em>Ultimate Breaks and Beats</em> (1986), the DJ compilation series assembled by Lenny Roberts, with the break slowed by editor Louis Flores; early uses include Salt-N-Pepa, "I Desire" (1986), Mantronix, "King of the Beats" (1988), and N.W.A, "Straight Outta Compton" (1988). WhoSampled's tally of tracks sampling "Amen, Brother" passed 6,000, the highest count for any source recording in its database.</p>
+      <p id="fn4"><a class="fn" href="#r4">4.</a>On the legal position: federal copyright protection for sound recordings dates from February 15, 1972, and the 1969 Winstons recording predates it. Spencer has said he first learned of the sampling in 1996, when an executive contacted him at his job with the Washington Metro to request the master tape, by which time the limitations period for the early infringements had passed. Neither Spencer nor Coleman ever received royalties or clearance fees for the break.</p>
+      <p id="fn5"><a class="fn" href="#r5">5.</a>Richard Lewis Spencer, quoted in <em>The Economist</em>'s reporting on the Amen break (2011). Spencer initially condemned the sampling as plagiarism and later described it as flattering; he also said it was unlikely Coleman, who died homeless in Atlanta in 2006, ever knew the scale of the break's influence. Spencer died in 2020.</p>
+      <p id="fn6"><a class="fn" href="#r6">6.</a>The 2015 crowdfunding campaign by British DJs Martyn Webster and Steve Theobald raised more than £18,000 (about $26,000) from nearly 2,000 donors for Spencer. Webster's disclaimer, that the campaign was a gesture of goodwill rather than an attempt to chase royalties or sample clearance, is quoted from the campaign page as reported by the BBC and NPR.</p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="the-count-has-an-error-bar.html"><span class="dir">older &rarr;</span>the count has an error bar</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")");
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
