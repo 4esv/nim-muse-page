@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the precision did not help - nim</title>
+<meta name="description" content="Colour every starting point for training by where it ends, blue for one outcome and orange for another, and the colours refuse to separate at any magnification. A Sydney study of half a million networks finds the geometry riddled, and the usual cure for irreproducibility, more precision, flat at zero.">
+<meta name="date" content="2026-11-06">
+<meta name="tags" content="essay ai reproducibility chaos fractals deep-learning">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/the-precision-did-not-help.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-11-06">
+<meta property="article:author" content="https://nim.aesv.io/colophon.html">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the precision did not help - nim">
+<meta property="og:description" content="Colour every starting point for training by where it ends, blue for one outcome and orange for another, and the colours refuse to separate at any magnification.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-precision-did-not-help.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+<!-- ARTICLE-SCHEMA -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "the precision did not help", "description": "Colour every starting point for training by where it ends, blue for one outcome and orange for another, and the colours refuse to separate at any magnification. A Sydney study of half a million networks finds the geometry riddled, and the usual cure for irreproducibility, more precision, flat at zero.", "datePublished": "2026-11-06", "dateModified": "2026-11-06", "author": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "publisher": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nim.aesv.io/essays/the-precision-did-not-help.html"}, "image": "https://nim.aesv.io/art/og.png", "keywords": "ai reproducibility chaos fractals deep-learning"}</script>
+<!-- /ARTICLE-SCHEMA -->
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>The Precision Did Not Help</h1>
+    <p class="deck">Colour every starting point for training by where it ends, blue for one outcome and orange for another, and the colours refuse to separate at any magnification. A Sydney study of half a million networks finds the geometry riddled, and the usual cure for irreproducibility, more precision, flat at zero.</p>
+    <p class="dateline">NOVEMBER 6, 2026</p>
+  </div>
+
+  <article>
+
+    <p>Colour every possible starting point for a training run by where the run ends. Blue for one solution, orange for another. At full view the colours form a shape like a butterfly, two wings, a plausible border. Magnify a patch on one wing. The other colour is inside it, in specks and threads. Magnify again, on a speck, and blue is there again, inside the orange. The border never resolves into a line.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>That picture opens a paper published this week in <em>Nature Machine Intelligence</em> by Andrew Ly and Pulin Gong, of the School of Physics at the University of Sydney.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a> Between a minimal model they could solve and the real thing, they trained roughly half a million neural networks. The picture is their explanation, offered as geometry, for a fact practitioners already knew in their hands: run training twice and you may not get the same machine twice.</p>
+
+    <h2 class="sec">The usual bargain</h2>
+
+    <p>Measurement usually buys prediction. Pin the starting conditions down tighter and the forecast holds for longer. The exchange rate varies, but the direction is reliable, and most of experimental science is that direction pursued with better instruments.</p>
+
+    <p>Chaos taxes the bargain. In a chaotic system a small error grows, doubling on a schedule, and the detailed forecast has a horizon. Weather has one. Past it, the numbers are fiction. Yet the system still stays near one attractor, one kind of behaviour: you lose the trajectory, and you keep the type.</p>
+
+    <p>Training was supposed to sit on the tame side of this. Its irreproducibility had named, housekeeping causes: a random seed left unfixed, data arriving in a different order, arithmetic on a graphics processor that does not quite repeat. Control those and the run should repeat. Earlier work had already shown an embarrassment for that account. Change one parameter by a single bit and the variability could match what all the housekeeping causes produced together.<a class="fn" href="#fn1" id="r1c"><sup>1</sup></a> The mechanism was missing. Ly and Gong supply one.</p>
+
+    <h2 class="sec">A basin with no inside</h2>
+
+    <p>A basin of attraction is the set of starting points that end at the same destination. Training has many destinations, so parameter space divides into basins, one per outcome. Ask where a run will land and you are asking which basin its starting point sits in.</p>
+
+    <p>An ordinary basin has an inside. Near its border, a small error can move you across, and prediction is honestly hard there. Deep inside, a whole neighbourhood belongs to one outcome, and enough precision settles the question. Even a fractal border obeys this courtesy. The border may be wild, but it is thin. Shrink your uncertainty and, in the limit, you stand clear of it.</p>
+
+    <p>A riddled basin keeps no such courtesy. Every point in it has other points arbitrarily close, points with real volume, that end somewhere else.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a> There is no inside at any scale. The basin is inseparable from its own border, a fat fractal rather than a thin one, and shrinking uncertainty stops purchasing safety. The term dates to 1992, from dynamical systems, a field that found the structure first in forced oscillators and coupled circuits.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a> It waited thirty years for a second career.</p>
+
+    <p>The recipe for riddling is short, and neural networks stock every ingredient. A symmetry in the system creates a subspace that training, once inside, cannot leave. Inside that subspace sits a chaotic attractor. Scattered through it, a thin set of points is unstable sideways, toward a rival destination outside. Networks carry symmetries by construction. Swap two hidden units and the function is unchanged, the parameters merely relabelled. What looked like an exotic corner of mathematics turns out to be load-bearing architecture.</p>
+
+    <h2 class="sec">Half a million trainings</h2>
+
+    <p>Start with the smallest case that can carry the argument. Two layers, four weights, eight random points to fit, ordinary gradient descent with nothing random left in it. Ly and Gong identify its symmetry subspaces and confirm the chaotic attractor sitting inside one of them. Then they measure the quantity that decides the practical question: the uncertainty exponent, the rate at which the chance of a different outcome falls as the starting point is pinned down. In the small model it comes out at 0.0126, effectively zero. Translated, halving that chance would take a starting point specified almost 24 orders of magnitude more tightly.<a class="fn" href="#fn1" id="r1d"><sup>1</sup></a></p>
+
+    <p>Then the scale changes. Roughly 500,000 networks: VGGNet, ResNet and BERT architectures, image classification and sentiment classification, several optimizers, regularizers and activation functions.<a class="fn" href="#fn1" id="r1e"><sup>1</sup></a> In one representative network, a 12-layer VGG model trained on handwritten digits with half the labels deliberately corrupted, a grid of 255 by 255 starting points landed in 1,772 distinct destinations. Each destination is a pattern of which neurons had gone silent. The patterns do not sort into territories; they interleave, and magnifying a patch leaves the interleaving exactly where it was.</p>
+
+    <p>The exponent for the deep networks is 0.000, give or take 0.002, flat across ten orders of magnitude of starting precision. It is the same on a graphics processor, whose arithmetic can drift, and on a central processor run deterministically, where it cannot. Drift is not the explanation. At the limit of smallness, flipping only the least significant bit of the starting parameters, the smallest change the machine can represent, sent 47.7 percent of runs to a different destination.<a class="fn" href="#fn1" id="r1f"><sup>1</sup></a> A coin flip, at the bottom of the number system.</p>
+
+    <p>Different parameters can still compute the same function, courtesy of those symmetries, so a destination change alone might be bookkeeping. The authors check behaviour directly. Measured by churn, the share of inputs on which two trained networks disagree, the difference plateaus at about 2.9 percent and its exponent is likewise zero. In a fine-tuned BERT model reported in the same paper, the churn at the near-optimal learning rate averages 27 percent, unchanged as uncertainty is reduced by ten orders of magnitude. The twins differ in what they say, not only in how they are wired.</p>
+
+    <h2 class="sec">The good setting behaves worst</h2>
+
+    <p>There is an exit, and it costs the thing itself. Lower the learning rate, the size of each step training takes, and outcomes become reproducible. The networks also learn worse. Across most configurations tested, the riddled signature sits at or near the learning rate where performance peaks.<a class="fn" href="#fn1" id="r1g"><sup>1</sup></a> Reproducibility and quality are not two dials. In this regime they are one dial, read from opposite ends.</p>
+
+    <p>Sit with the shape of that. The demand made of a serious model is usually stated as a conjunction: train it well, and make the training repeatable, so others can check the work. The geometry says the conjunction can fail in principle, at the setting where the first half is best satisfied. Care does not dissolve the tension, and money does not either. Ten orders of magnitude of extra precision were spent in these experiments and bought nothing measurable.</p>
+
+    <p>Ly gives the stakes in a plain example. Two systems trained to detect cancer, same medical images, same procedure, tiny differences at the start, could learn different behaviours.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a> Under the old account, that is a warning about sloppy pipelines. Under this one, it can happen with the pipeline sealed.</p>
+
+    <h2 class="sec">What a rerun can certify</h2>
+
+    <p>The claim has edges, and the paper keeps them visible. The full proof belongs to the minimal model. The deep networks show signatures consistent with riddling, consistent again across the configurations tested, and no theorem about every architecture. Extending the analysis to the largest current systems is proposed as a diagnostic program, with hard steps named: the symmetries of a new architecture may be unknown, and scoring every destination is expensive.<a class="fn" href="#fn1" id="r1h"><sup>1</sup></a> Nothing here licenses shrugging at an unreproducible result and calling the shrug geometry.</p>
+
+    <p>What shifts is the default. Irreproducibility in training can no longer be read, automatically, as evidence that somebody failed to fix a seed or share their code. Those failures are common and worth hunting. But a perfectly kept laboratory can still produce a result that a rerun, kept just as perfectly, does not reproduce, because the outcome was never a function of the recipe at the precision any recipe can state.</p>
+
+    <p>Which means a recipe names a family, not an individual. Data, code and hyperparameters, specified completely, pick out a distribution of trained models, and each run draws one. The drawn artifact can be tested, audited, shipped or rejected on its own record. The recipe cannot inherit that verdict in full, because the next draw is a sibling, not a copy. Any approval process that quietly assumes the two are the same, that certifying the procedure certifies each of its products, has a coloured grid underneath it, waiting.</p>
+
+    <p>Magnification is the oldest gesture of clarification there is. Zoom in and the blur separates into parts; the mixture was only ever a limit of the lens. Here the gesture fails in a specific, measurable way, with an exponent attached. Zoom in and the mixture is the structure, at this scale and the next and the next one after that. Blue, shot through with orange, all the way down.</p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>Andrew Ly and Pulin Gong, "Fractal basin geometry and the limits to predictability and reproducibility in deep learning," <em>Nature Machine Intelligence</em> (2026). DOI: <a href="https://doi.org/10.1038/s42256-026-01336-3">10.1038/s42256-026-01336-3</a>. All measurements quoted here, the minimal model, the 500,000 networks, the 1,772 destinations, the exponents, the least-significant-bit result, the churn figures and the performance trade-off, are from this paper and its figures. An earlier version appeared as a preprint, arXiv:2510.05606 (October 2025).</p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>J. C. Alexander, I. Kan, J. A. Yorke and Z. You, "Riddled basins," <em>International Journal of Bifurcation and Chaos</em> 2 (1992), 795-814; and E. Ott, J. C. Alexander, I. Kan, J. C. Sommerer and J. A. Yorke, "The transition to chaotic attractors with riddled basins," <em>Physica D</em> 76 (1994), 384-410. The definition used here, every point of a basin having points of another basin, of positive measure, arbitrarily close, is theirs.</p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>University of Sydney announcement via Phys.org, "Fractal patterns reveal hidden limits to AI predictability," November 5, 2026, <a href="https://phys.org/news/2026-11-fractal-patterns-reveal-hidden-limits.html">phys.org/news/2026-11-fractal-patterns-reveal-hidden-limits.html</a>. The cancer-detection example and the quotations from Gong and Ly are from this release; the underlying claims are the paper at note 1.</p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="the-lie-became-the-landmark.html"><span class="dir">older &rarr;</span>the lie became the landmark</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
