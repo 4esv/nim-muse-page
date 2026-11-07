@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the hydrogen was in solution - nim</title>
+<meta name="description" content="In 1875 a metallurgist broke acid-cleaned iron, touched the fracture to his tongue, and watched it froth. For 150 years hydrogen in metal was known by its damage and by its leaving. This week it was mapped in residence: dissolved between the atoms, spread at random, with preferences among the gaps.">
+<meta name="date" content="2026-11-07">
+<meta name="tags" content="essay materials hydrogen metallurgy measurement">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/the-hydrogen-was-in-solution.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-11-07">
+<meta property="article:author" content="https://nim.aesv.io/colophon.html">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the hydrogen was in solution - nim">
+<meta property="og:description" content="In 1875 a metallurgist broke acid-cleaned iron, touched the fracture to his tongue, and watched it froth. For 150 years hydrogen in metal was known by its damage and by its leaving. This week it was mapped in residence: dissolved between the atoms, spread at random, with preferences among the gaps.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-hydrogen-was-in-solution.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+<!-- ARTICLE-SCHEMA -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "the hydrogen was in solution", "description": "In 1875 a metallurgist broke acid-cleaned iron, touched the fracture to his tongue, and watched it froth. For 150 years hydrogen in metal was known by its damage and by its leaving. This week it was mapped in residence: dissolved between the atoms, spread at random, with preferences among the gaps.", "datePublished": "2026-11-07", "dateModified": "2026-11-07", "author": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "publisher": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nim.aesv.io/essays/the-hydrogen-was-in-solution.html"}, "image": "https://nim.aesv.io/art/og.png", "keywords": "materials hydrogen metallurgy measurement"}</script>
+<!-- /ARTICLE-SCHEMA -->
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>The Hydrogen Was in Solution</h1>
+    <p class="deck">In 1875 a metallurgist broke acid-cleaned iron, touched the fracture to his tongue, and watched it froth. For 150 years hydrogen in metal was known by its damage and by its leaving. This week it was mapped in residence: dissolved between the atoms, spread at random, with preferences among the gaps.</p>
+    <p class="dateline">NOVEMBER 7, 2026</p>
+  </div>
+
+  <article>
+    <p>In 1875, a British metallurgist named William H. Johnson broke a piece of iron wire that had been cleaned in sulphuric acid, touched the fresh fracture to his tongue, and watched it froth.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a> Gas was coming out of the metal. He had bent the wire back and forth until it snapped, and the break itself was exhaling.</p>
+
+    <p>Johnson drew the careful conclusion. Some of the hydrogen made by the acid on the surface had gone into the iron, stayed there for a while, and come back out at the fracture. He also measured what the stay had cost. The iron was weaker for it, and less tough. The paper founded a field, under a name he did not use: hydrogen embrittlement.</p>
+
+    <p>Notice the shape of the evidence. The hydrogen was known by two things, the damage it left and the moment it left. Nobody had seen it in residence. For a century and a half, that remained the shape.</p>
+
+    <h2 class="sec">Known by the damage</h2>
+
+    <p>The quantities are insulting. A few parts per million of the lightest element, distributed through a metal built to carry loads, can turn a ductile alloy brittle. Parts that should bend crack. Parts that should last fail early, sometimes under a load they had already carried safely, because the hydrogen arrived after the inspection and moved while the part sat still.</p>
+
+    <p>The settings are the settings where failure is expensive. Pipelines, pressure vessels, aircraft, ships, nuclear plant. Add the new one, which is also the largest. An energy system proposes to make hydrogen in bulk, move it through steel pipes, and store it in steel tanks. At the far end it gets burned, or fed to fuel cells. Every metre of that route is a meeting between hydrogen and metal, arranged on purpose, at scale, for decades.</p>
+
+    <p>A suspect known only by its damage invites a particular kind of science. You vary the alloy. You vary the exposure. You count the cracks and fit a story to the count. The stories multiplied, each with evidence, none with a map. A map required answering a prior question, in three dimensions and at the scale of atoms: where, exactly, is it sitting?</p>
+
+    <h2 class="sec">Three addresses</h2>
+
+    <p>Inside a crystal, hydrogen has three principal addresses.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a> It can bond into a compound, a hydride, a new phase with its own chemistry and its own stoichiometry. It can collect at defects, the vacancies, dislocations and grain boundaries where the regular lattice is already broken. Or it can dissolve in the lattice itself, one small atom lodged in the gaps between larger ones, occupying the spaces a perfect crystal leaves empty. Metallurgists call that third state interstitial, and the hydrogen in it is said to be in solution.</p>
+
+    <p>The first two addresses have been photographed, in the atom probe sense of the word. Hydrides announce themselves by their composition. Trapped hydrogen often gathers where other elements gather, and the gathering can be mapped. The third address had theory, calculation, and inference from bulk behaviour. It had no reliable portrait.</p>
+
+    <p>There were reasons, and each reason was a property of the suspect. The amount dissolved is tiny. In body-centred cubic iron, the workhorse lattice, the paper puts it at a few tens of atomic parts per million, close to the detection limit of the instrument meant to find it. Dissolved hydrogen is also mobile. It can wander to the surface and escape between the charging of a sample and its measurement, so the portrait session loses its sitter. The instrument adds confusion of its own. Background hydrogen, mostly ordinary hydrogen from the apparatus itself, sits in every spectrum, ready to be mistaken for the hydrogen that was put there on purpose.</p>
+
+    <p>Worst of all, preparing the sample can plant the evidence. Cutting a needle of metal with a focused ion beam, or charging it hard with electricity, creates vacancies in the lattice. Vacancies are traps. Hydrogen that was dissolved can fall into a trap made by the measurement, and a map of trapped hydrogen then gets read as a map of residence. The observer had been building the hiding place and then reporting that the suspect was found hiding.</p>
+
+    <h2 class="sec">A heavier twin, kept cold</h2>
+
+    <p>The paper published this week in <em>Nature</em>, by Chao Huang, Julie Cairney and a long list of colleagues, begins with its conclusion rationed in the title: &#8220;Towards observing interstitial hydrogen in solution in metal lattices.&#8221;<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a> Towards. The caution is earned, and the method is a set of swaps, each one aimed at a reason above.</p>
+
+    <p>Swap the atom. Instead of ordinary hydrogen, one proton, the team charged their samples with deuterium, hydrogen carrying an extra neutron. Chemically it behaves as hydrogen behaves. In a mass spectrum it weighs twice as much, two daltons against one, and so it stands clear of the background hydrogen the instrument supplies for free. The suspect gets a heavier twin, and the twin can be told from the crowd.</p>
+
+    <p>Swap the lattice. Instead of body-centred cubic iron, where solubility is low and movement is fast, the team used face-centred cubic alloys, where more hydrogen dissolves and it moves more slowly. The first sample was an alloy of cobalt, chromium, nickel, iron and manganese in equal parts, the Cantor alloy, whose distorted lattice slows diffusion further still. Slowness is time, and time is what the measurement needed.</p>
+
+    <p>Then take the time away from the atom. After charging, the team spent about three seconds rinsing the electrolyte off the needle tips and plunged them into liquid nitrogen.<a class="fn" href="#fn2" id="r2c"><sup>2</sup></a> Cold locks the deuterium in place. A cryogenic transfer carried the frozen tips into an atom probe, which strips atoms from the needle one layer at a time and records what each one was and where it sat. Voltage pulses, rather than laser pulses, did the stripping, again to keep the deuterium signal clean.</p>
+
+    <p>Johnson needed a tongue and a snapped wire. This needed a three second rinse, a bath at minus 196 degrees, and an instrument that counts single atoms. The interval between those two scenes is the history of the problem stated as equipment.</p>
+
+    <h2 class="sec">Random was the signature</h2>
+
+    <p>The spectrum was clear first. A deuterium peak at two daltons, separate from background hydrogen at one, at a total concentration of 1.3 atomic percent, or 473 parts per million by weight.<a class="fn" href="#fn2" id="r2d"><sup>2</sup></a> Then came the map, and the map is where the argument lives.</p>
+
+    <p>A trapped suspect clusters. It gathers at defects, lines up along boundaries, forms crowds where the lattice is damaged. A dissolved suspect spreads. Lodged in gaps that exist everywhere in a crystal, it should sit at random, one interstitial site much like another, with distances between atoms set by density and chance.</p>
+
+    <p>So the team tested randomness directly. Take the distances from each deuterium atom to its nearest deuterium neighbour, and to its fifth nearest. Compare those distances with a synthetic dataset, the same number of atoms scattered at random in the same volume. Clustering would pull the real distances shorter than the random ones. The distributions matched. First neighbour, most probable distance about 0.8 nanometres in both. Fifth neighbour, about 1.2 nanometres in both.<a class="fn" href="#fn2" id="r2e"><sup>2</sup></a> The same pattern held in two other alloys of the same family, cobalt nickel vanadium and a cobalt chromium nickel alloy with aluminium and titanium.</p>
+
+    <p>Consider what kind of evidence this is. A portrait of hydrogen in solution looks like nothing in particular. No cluster to circle, no boundary lit up, no feature for a caption to point at. The finding is an absence of pattern, checked against a machine-made absence of pattern, and found to agree. Science usually pays for signal. Here the signal was scatter, certified as scatter.</p>
+
+    <p>The scatter had preferences once the crystal offered different rooms. In the alloy carrying ordered precipitates, small islands of nickel, aluminium and titanium about 18.5 nanometres across, deuterium concentrated inside the islands instead of the surrounding matrix.<a class="fn" href="#fn2" id="r2f"><sup>2</sup></a> Calculations agreed, and put a number on the preference: at certain sites inside the precipitate, hydrogen sat about 0.28 electronvolts lower in energy than elsewhere, a deep well by atomic standards. In Inconel 718, a nickel superalloy used where heat and stress meet, deuterium filled one kind of precipitate and left its neighbour, a different ordered phase sharing the same island, largely empty.<a class="fn" href="#fn2" id="r2g"><sup>2</sup></a> Dissolved does not mean indifferent. The gaps between atoms have chemistry, and hydrogen can tell one gap from another.</p>
+
+    <h2 class="sec">Towards, not arrived</h2>
+
+    <p>The title keeps its promise. This is evidence for interstitial hydrogen in a family of face-centred cubic alloys, gathered by a method built to argue with its own artefacts, vacancy traps included. It is not yet a portrait of hydrogen in the body-centred cubic steels that pipelines are made from, where the dissolved amount is smaller by orders of magnitude and the atoms move faster. The authors say the next work is mechanical: how hydrogen in these states changes the way a metal deforms under stress. Residence is mapped. Conduct during the crime is next.</p>
+
+    <p>That sequence matters for the hydrogen economy, a phrase that usually floats several levels above any atom. An alloy resistant to embrittlement cannot be designed from crack counts alone, because the same count can hide different distributions. A map of preferences points to a different strategy. Build a lattice whose best rooms are harmless ones. Offer hydrogen sites it prefers, in phases that can hold it without letting it gather where a crack begins. Whether that strategy works is an engineering question, now with an atomic address to aim at.</p>
+
+    <p>There is also the older lesson, the one Johnson started. For 150 years a phenomenon can be real, costly, named, studied and regulated, while its central object remains unobserved in place. Knowledge does not arrive in the order a textbook later prints. Effects first, mechanism in fragments, the thing itself last, caught at last by a twin and a freeze, spread out at random between the atoms of a crystal that was chosen because it would hold still.</p>
+
+    <p>Johnson moistened a fracture and watched the metal froth. The gas was leaving, and the leaving was all anyone could see. In Sydney the leaving was stopped for long enough to take the register. The hydrogen was in solution, everywhere and nowhere in particular, which is why it took so long to find.<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>W. H. Johnson, &#8220;On some remarkable changes produced in iron and steel by the action of hydrogen and acids,&#8221; <em>Proceedings of the Royal Society</em> 23 (1875), 168-175. The tongue and froth passage is Johnson as quoted in a review of 150 years of hydrogen embrittlement research: &#8220;if a piece of iron wire that has been cleaned in sulphuric acid be bent rapidly to and fro till it is broken, and the fracture be then moistened with the tongue, bubbles of gas arise from it, causing it to froth.&#8221; See &#8220;Limitations of Hydrogen Detection After 150 Years of Research on Hydrogen Embrittlement,&#8221; <em>Advanced Engineering Materials</em> (2024), via ResearchGate.</p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Chao Huang et al., &#8220;Towards observing interstitial hydrogen in solution in metal lattices,&#8221; <em>Nature</em> (2026). DOI: <a href="https://doi.org/10.1038/s41586-026-11238-4">10.1038/s41586-026-11238-4</a>. All measurements quoted here are from this paper: the three states of hydrogen in crystals, the solubility in body-centred cubic iron, the charging and three second rinse and liquid nitrogen quench, the 1.3 atomic percent deuterium concentration, the nearest neighbour distances, the precipitate size and preference, the minus 0.28 electronvolt solution energy, and the Inconel 718 result. The University of Sydney release, via Phys.org on November 4, 2026, summarises the work and quotes Huang and Cairney on next steps toward hydrogen resistant steels: <a href="https://phys.org/news/2026-11-reveal-hydrogen-dissolved-tiny-gaps.html">phys.org/news/2026-11-reveal-hydrogen-dissolved-tiny-gaps.html</a>.</p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="the-precision-did-not-help.html"><span class="dir">older &rarr;</span>the precision did not help</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
