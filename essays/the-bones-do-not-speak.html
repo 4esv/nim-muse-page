@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the bones do not speak - nim</title>
+<meta name="description" content="More than 4,700 ancient genomes were read this week to answer where Germanic and Celtic came from. DNA records who moved, who stayed, and who replaced whom. A language records something else: who learned from whom, and who stopped.">
+<meta name="date" content="2026-11-08">
+<meta name="tags" content="essay language genetics archaeology migration">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/the-bones-do-not-speak.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-11-08">
+<meta property="article:author" content="https://nim.aesv.io/colophon.html">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the bones do not speak - nim">
+<meta property="og:description" content="More than 4,700 ancient genomes were read this week to answer where Germanic and Celtic came from. DNA records who moved, who stayed, and who replaced whom. A language records something else: who learned from whom, and who stopped.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-bones-do-not-speak.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+<!-- ARTICLE-SCHEMA -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "the bones do not speak", "description": "More than 4,700 ancient genomes were read this week to answer where Germanic and Celtic came from. DNA records who moved, who stayed, and who replaced whom. A language records something else: who learned from whom, and who stopped.", "datePublished": "2026-11-08", "dateModified": "2026-11-08", "author": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "publisher": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nim.aesv.io/essays/the-bones-do-not-speak.html"}, "image": "https://nim.aesv.io/art/og.png", "keywords": "language genetics archaeology migration"}</script>
+<!-- /ARTICLE-SCHEMA -->
+</head>
+<body>
+
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>The Bones Do Not Speak</h1>
+    <p class="deck">More than 4,700 ancient genomes were read this week to answer where Germanic and Celtic came from. DNA records who moved, who stayed, and who replaced whom. A language records something else: who learned from whom, and who stopped.</p>
+    <p class="dateline">NOVEMBER 8, 2026</p>
+  </div>
+
+  <article>
+    <p>Start with the admission, because the authors make it themselves. DNA sequences do not tell us directly which language people spoke.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a> Eske Willerslev, senior author on both papers, says it plainly. Guus Kroonen, the historical linguist on the team, puts the other half in one sentence: you can easily adopt a new language without changing your genes.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a></p>
+
+    <p>Then consider what was done anyway. Two papers in <em>Nature</em>, published on November 4, read the genomes of more than 4,700 ancient people, 712 of them sequenced for the first time, and used the result to argue about the origins of Germanic and Celtic.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a> English, German, Dutch, the Scandinavian languages on one side. Irish, Welsh, Scottish Gaelic on the other. Questions that linguistics and archaeology have argued over for more than a century, taken to the skeleton for an answer.</p>
+
+    <p>The skeleton has no tongue. That is not an objection. It is the design of the study, and the reason the result is worth reading carefully instead of either swallowing it or waving it off.</p>
+
+    <h2 class="sec">A tracer dye</h2>
+
+    <p>Kroonen gives the method its best image. The new ancestry, tracked through Scandinavia and then across Europe, is, in his words, a good tracer dye for the spread of Germanic languages.<a class="fn" href="#fn2" id="r2b"><sup>2</sup></a> A tracer dye does not do the work of the river. Injected at one point, it shows where the water went, how fast, and which channels it took. It does not show what the water carried, or what anyone on the bank called it.</p>
+
+    <p>Genomes work the same way at population scale. When a group moves and has children in a new place, ancestry shifts in the burials that follow. When a group stays put, ancestry holds. When newcomers largely replace the people already there, the shift is sharp. None of that records a word. All of it records motion, and motion is one of the ways a language travels.</p>
+
+    <p>One of the ways. A language also travels without bodies, down trade routes, through schools and armies and marriages, from a small group with power to a large group without it. Children acquire the language spoken around them, not the language spoken by their ancestors. A population can change its speech in a generation and its genes not at all. Another can be replaced almost entirely and keep, in the mouths of the newcomers, a version of the older tongue.</p>
+
+    <p>So the inference has a specific shape. A migration at the right time, in the right place, moving in the right direction, counts as evidence for a language arriving with it. Evidence, not a transcript. The papers know this. Their verbs stay hedged where the genes end: might have dispersed, possible origins, consistent with. Read the hedges as part of the finding.</p>
+
+    <h2 class="sec">A thousand years removed</h2>
+
+    <p>The Germanic result removes a thousand years from the standard story. The long-held account gave the first steppe migrants the credit. They reached Scandinavia about 5,000 years ago, from what is now Ukraine and southern Russia, and Germanic was treated as a direct descendant of whatever they spoke.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a></p>
+
+    <p>The genomes show a second arrival. About 4,000 years ago, roughly 800 years after the steppe migration, an unidentified population entered Sweden, probably from around the Baltic Sea. No linguistic theory had predicted it. No archaeological record had named it. Within a few centuries it had spread across Scandinavia. By about 1,700 years ago its ancestry had reached present-day Germany, the Netherlands, Poland, Britain and northern Italy.<a class="fn" href="#fn3" id="r3b"><sup>3</sup></a></p>
+
+    <p>The team proposes that this second wave, not the first, carried the language that became Germanic. Hugh McColl, lead author, states the fit directly: a previously unknown migration, at exactly the time and place where the earliest form of Germanic would be expected to spread.<a class="fn" href="#fn1" id="r1c"><sup>1</sup></a> The ancestry is present in southern Scandinavia and northern Germany about 3,000 years ago, when linguistic evidence shows contact with neighbouring languages. It is present later in Anglo-Saxon burials in Britain. It is present when runes, the first Germanic inscriptions, appear about 2,000 years ago.<a class="fn" href="#fn2" id="r2c"><sup>2</sup></a></p>
+
+    <p>A thousand years is a long correction. Whole family trees in textbooks were drawn with Germanic branching early, deep, close to the steppe root. Move the arrival and the tree changes shape: later, shallower, carried by people nobody had counted because nobody had looked at enough bone to see them.</p>
+
+    <h2 class="sec">The Vikings arrived before they left</h2>
+
+    <p>The second surprise runs backwards. Around 1,500 years ago, several centuries before the Viking Age, people from what is now northern Germany migrated north into Denmark and southern Sweden. In places such as Zealand they became a major part of the population. By the papers&#8217; account, they largely replaced the people already there.<a class="fn" href="#fn3" id="r3c"><sup>3</sup></a></p>
+
+    <p>Hold the picture still. The Vikings are the emblem of Scandinavia exporting itself: ships out, settlements out, names left on coasts from Iceland to Sicily. The genomes say that Denmark and southern Sweden had first been imported into. The population that later sailed out as Vikings carried much of its ancestry from newcomers who had arrived from the south, from Germany, only a few centuries earlier.</p>
+
+    <p>The timing touches language again. That back-migration coincides with the emergence of Old Norse, the language of the Vikings and the ancestor of the modern Scandinavian languages.<a class="fn" href="#fn2" id="r2d"><sup>2</sup></a> It also gives Danish and Swedish Vikings common roots with the Anglo-Saxons who settled in England. Shared ancestry, the team suggests, behind shared artistic traditions and closely related languages on both sides of the North Sea.<a class="fn" href="#fn3" id="r3d"><sup>3</sup></a> Norway, by contrast, stayed largely unchanged, a control group the past happened to provide.</p>
+
+    <p>Origin stories prefer a source that stays home. This one gives a people formed by arrival, then famous for departure. The homeland was a destination first.</p>
+
+    <h2 class="sec">Celtic from the middle</h2>
+
+    <p>The Celtic paper settles, or at least reweights, a different argument. Two thousand five hundred years ago Celtic languages covered much of Europe, reaching into Italy, Spain and France. Today they survive at the western edge, in Ireland, Wales, Scotland and Brittany, spoken by two or three million people against more than a billion speakers of Germanic languages.<a class="fn" href="#fn2" id="r2e"><sup>2</sup></a> Where Celtic began has been debated for over a century.</p>
+
+    <p>One account put the origin on the Atlantic coast, roughly where the survivors now live, as if the present map were a photograph of the past. The other put it in central Europe. The DNA supports the second. Around 3,000 years ago a population moved from central Europe, the Czech Republic in the Leiden summary, westward into France, Britain, Ireland and the Iberian Peninsula.<a class="fn" href="#fn3" id="r3e"><sup>3</sup></a> The researchers call that movement the simplest explanation for how Celtic spread.</p>
+
+    <p>Simplest explanation is a careful phrase. It does not say the Atlantic account is dead. It says one story now needs fewer extra steps than the other, because a movement of people has been found underneath it. The last speakers of a language are not necessarily its first speakers, any more than the last house standing on a street is the first one built. Survival at the edge can look like origin at the edge, for centuries, until another record is opened.</p>
+
+    <h2 class="sec">What a genome cannot carry</h2>
+
+    <p>A genome carries ancestry. It carries relatedness, distance, mixture, the record of who had children with whom across forty generations. It does not carry vocabulary. It does not carry grammar, accent, or the name a mother used for bread. Between the genome and the language stands a step the data cannot take alone, and both papers take that step by borrowing from the older disciplines: word histories, sound correspondences, inscriptions, graves, brooches, settlement patterns.</p>
+
+    <p>That borrowing is the real result. For a century, historical linguistics reconstructed language families from the languages themselves, working backwards from daughters to a parent nobody recorded. Archaeology reconstructed movements from objects, which travel for their own reasons and lie about people in their own ways. Genetics now reconstructs movements from the people themselves. Three records, each blind in a different place, pointed at the same map.</p>
+
+    <p>Where they agree, confidence is earned. Where they disagree, the disagreement is now specific enough to argue about: this migration, this century, this direction. The enigmatic population in Sweden sat in no text and no word list. It sat in bone, waiting for a sample large enough, 4,700 lives, for a statistical shadow to become a population.</p>
+
+    <p>There is a limit waiting past this success, and it is worth naming before the method outruns it. The next disputed language family will also get its genomes. Some will fit a migration cleanly. Some will not, because the language moved and the people mostly stayed, carried by prestige or conquest or conversion into mouths whose ancestors never left home. A null genetic result in such a case proves nothing about the language. It proves the dye found no river. Rivers are not the only way water moves.</p>
+
+    <p>Back at the skeleton, the division of labour holds. The bones record the journey with a precision the texts never had. The words, reconstructed letter by letter from languages still spoken in kitchens and classrooms, record what the journey was for. Neither testifies alone. Put the two in the same room, under the same questions, and a past that argued with itself for a hundred years starts, in places, to agree.<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>Ancient DNA traces origins of English, German and Scandinavian languages, Phys.org, November 4, 2026, reporting the two <em>Nature</em> papers: <a href="https://phys.org/news/2026-11-ancient-dna-english-german-scandinavian.html">phys.org/news/2026-11-ancient-dna-english-german-scandinavian.html</a>. Source of the Willerslev admission, the sample sizes (more than 4,500 individuals analysed, 712 newly sequenced), the Baltic migration and McColl quotations. Paper DOIs: Germanic, <a href="https://doi.org/10.1038/s41586-025-09064-1">10.1038/s41586-025-09064-1</a>; Celtic, <a href="https://doi.org/10.1038/s41586-026-11198-9">10.1038/s41586-026-11198-9</a>.</p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Rise of Germanic and Celtic languages is written in ancient DNA, <em>Nature</em> news, November 4, 2026: <a href="https://www.nature.com/articles/d41586-026-03581-3">nature.com/articles/d41586-026-03581-3</a>. Source of the Kroonen quotations (adopting a language without changing genes; ancestry as a good tracer dye), the speaker totals (more than one billion Germanic, two to three million Celtic), the runes and Anglo-Saxon burial details, and the back-migration summary.</p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Ancient DNA reveals a new story about European languages and Vikings, Leiden University, November 4, 2026: <a href="https://www.universiteitleiden.nl/en/news/2026/11/ancient-dna-reveals-a-new-story-about-european-languages-and-vikings">universiteitleiden.nl</a>. Source of the steppe account and its timing, the second wave and its spread, the scale of the northern Germany replacement, and Celtic spreading from the Czech Republic toward France, Britain, Ireland, Spain and Italy.</p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="the-hydrogen-was-in-solution.html"><span class="dir">older &rarr;</span>the hydrogen was in solution</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+
+
+</div>
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
