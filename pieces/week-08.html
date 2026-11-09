@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>week 08 - nim</title>
+<meta name="description" content="Week 08: a papyrus scroll sealed since Vesuvius erupted in AD 79 has been read from first column to last without being opened. Inside was a Stoic treatise on ethics.">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://nim.aesv.io/pieces/week-08.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="week 08 - nim">
+<meta property="og:description" content="Week 08: a papyrus scroll sealed since Vesuvius erupted in AD 79 has been read from first column to last without being opened. Inside was a Stoic treatise on ethics.">
+<meta property="og:url" content="https://nim.aesv.io/pieces/week-08.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .piece-title {
+    margin: 0 0 var(--s-6);
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    max-width: 18ch;
+  }
+  .figcap {
+    margin: var(--s-4) 0 0;
+    color: var(--dim);
+    font: 400 12px/1.6 var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .nb {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(var(--s-6), 5vw, var(--s-8));
+    margin-top: clamp(var(--s-7), 6vw, var(--s-9));
+    align-items: start;
+  }
+  .nb-main p {
+    margin: 0 0 var(--s-5);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .nb-main p:last-child { margin-bottom: 0; }
+  .nb-main sup a { color: var(--gold); text-decoration: none; }
+  .readings { margin: var(--s-6) 0; padding: 0; list-style: none; counter-reset: rd; }
+  .readings li {
+    counter-increment: rd;
+    margin: 0 0 var(--s-5);
+    padding-left: var(--s-6);
+    position: relative;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--bone);
+    max-width: 58ch;
+  }
+  .readings li::before {
+    content: counter(rd, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    font: 600 12px/1 var(--mono);
+    color: var(--gold);
+    letter-spacing: 0.06em;
+  }
+  .readings b { font-family: var(--serif); font-weight: 600; }
+  .readings blockquote {
+    margin: var(--s-3) 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--bone);
+  }
+  .nb-notes {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+  }
+  .nb-notes h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .nb-notes dl { margin: 0; }
+  .nb-notes dt {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin: var(--s-4) 0 var(--s-2);
+  }
+  .nb-notes dt:first-child { margin-top: 0; }
+  .nb-notes dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--bone);
+  }
+  .diagram {
+    border: var(--bw) solid var(--line);
+    background: var(--ink2);
+    padding: var(--s-5);
+    margin: 0 0 var(--s-6);
+    max-width: 58ch;
+  }
+  .diagram h3 {
+    margin: 0 0 var(--s-5);
+    font: 600 12px/1.5 var(--mono);
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+  .unwrapmap { display: block; width: 100%; height: auto; }
+  .unwrapmap .ring { stroke: var(--dim); stroke-width: 2; fill: none; }
+  .unwrapmap .slice { stroke: var(--gold); stroke-width: 1.5; }
+  .unwrapmap .sheet { fill: var(--paper); stroke: var(--dim); stroke-width: 2; }
+  .unwrapmap .colrule { stroke: var(--line); stroke-width: 1; }
+  .unwrapmap .inkline { stroke: var(--dim); stroke-width: 2; }
+  .unwrapmap .inkline.hot { stroke: var(--gold); }
+  .unwrapmap .core { fill: var(--gold); }
+  .stagebtns { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-5); }
+  .stagebtns button {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.06em;
+    color: var(--bone);
+    background: var(--paper);
+    border: var(--bw) solid var(--line);
+    padding: var(--s-2) var(--s-3);
+    cursor: pointer;
+  }
+  .stagebtns button[aria-pressed="true"] { color: var(--paper); background: var(--gold); }
+  .diagram-note {
+    margin: var(--s-4) 0 0 !important;
+    font-size: 0.9375rem !important;
+    color: var(--dim) !important;
+  }
+  .sources { margin-top: clamp(var(--s-7), 6vw, var(--s-9)); max-width: 62ch; }
+  .sources h2 {
+    margin: 0 0 var(--s-4);
+    font: 600 12px/1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .sources ol { margin: 0; padding-left: 1.4em; color: var(--dim); font-size: 0.9375rem; line-height: 1.7; }
+  .sources a { color: var(--bone); }
+  @media (max-width: 900px) {
+    .nb { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">skip to content</a>
+
+<!-- HEADER -->
+<header class="site-header wrap">
+  <a class="brand" href="../index.html" aria-label="nim, home">
+    <svg class="mark" viewBox="40 20 160 90" aria-hidden="true">
+      <g style="fill:var(--ink)">
+        <rect x="90"  y="20" width="60" height="10"/>
+        <rect x="70"  y="30" width="100" height="10"/>
+        <rect x="60"  y="40" width="120" height="10"/>
+        <rect x="50"  y="50" width="140" height="10"/>
+        <rect x="40"  y="60" width="160" height="10"/>
+        <rect x="40"  y="70" width="160" height="10"/>
+        <rect x="40"  y="80" width="160" height="10"/>
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+      <g style="fill:var(--muted)">
+        <rect x="50"  y="90" width="140" height="10"/>
+        <rect x="70"  y="100" width="100" height="10"/>
+      </g>
+    </svg>
+    <span class="wordmark">nim</span>
+  </a>
+  <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="../experiments/">Experiments</a>
+      <a href="../essays/">Essays</a>
+      <a href="../colophon.html">About</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle icon-button" type="button" aria-label="Switch to dark theme" aria-pressed="false"><span class="icon moon-icon" aria-hidden="true">&#9790;</span><span class="icon sun-icon" aria-hidden="true">&#9728;</span></button>
+    <a class="contact-link" href="../feed.xml">RSS <span aria-hidden="true">&#8599;</span></a>
+    <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation">
+        <a href="../experiments/">Experiments</a>
+        <a href="../essays/">Essays</a>
+        <a href="../colophon.html">About</a>
+      </nav></details>
+  </div>
+</header>
+<!-- /HEADER -->
+
+<main class="piece-page" id="main">
+  <article class="piece">
+    <h1 class="weeklabel">WEEK 08 &middot; NOVEMBER 9, 2026</h1>
+    <h2 class="piece-title">Read without opening</h2>
+
+    <figure class="frame px">
+      <img src="../art/week-08-scroll.webp" width="2352" height="1008" alt="Notebook study in ink and sepia on aged paper: at left a blackened rolled papyrus shown in spiral cross-section, at right the same scroll laid flat as a long sheet of about twenty-two columns of faint Greek handwriting, with geometry sketches and measurement lines around the edges">
+    </figure>
+    <p class="figcap">FIG. 1 &middot; THE ROLL AND THE SHEET: SPIRAL CROSS-SECTION, THEN COLUMNS &middot; AN ARTIST'S READING, NOT A PHOTOGRAPH AND NOT A TRANSCRIPTION</p>
+
+    <div class="nb">
+      <div class="nb-main">
+        <p>Herculaneum kept a cruel bargain. When Vesuvius erupted in AD 79, the heat carbonized the library of the Villa of the Papyri instead of burning it away. The scrolls survived. They survived as charcoal: open one and it comes apart in your hands. For centuries the choice was read it and lose it, or keep it and never know. The papyrus catalogued as PHerc. 1667 took the first option three times. Attempts to open it by hand, in the nineteenth century and again in 1969 and the 1980s, destroyed its outer layers and left a compact inner core, about 8 centimetres tall, of a roll once 19 to 24 centimetres high.<sup><a href="#s1">1</a></sup></p>
+
+        <p>On June 25, 2026, at the National Library of Naples, the Vesuvius Challenge announced the other option. PHerc. 1667 had been virtually unwrapped and read from beginning to end, without ever being opened. It is the first Herculaneum papyrus read in full this way: roughly 1.4 metres of papyrus, the lower parts of some twenty-two columns of Greek, transcribed and reviewed by papyrologists. The preprint, by Angelotti and twenty-six co-authors, puts the standard plainly: complete unwrapping under explicit coverage and papyrological review criteria, for extended scholarly study, without physical opening.<sup><a href="#s1">1</a></sup><sup><a href="#s3">3</a></sup></p>
+
+        <div class="diagram">
+          <h3>FIG. 2 &middot; THE FOUR MOVES: HOW A SEALED ROLL BECOMES A READ SHEET, SCHEMATIC</h3>
+          <svg class="unwrapmap" viewBox="0 0 320 190" role="img" aria-label="Schematic in four stages: a spiral roll, the roll cut by scan slices, the sheet flattened into twenty-two columns, and the columns carrying ink lines">
+            <g id="stage-sealed">
+              <circle class="ring" cx="160" cy="95" r="72"/>
+              <circle class="ring" cx="160" cy="95" r="59"/>
+              <circle class="ring" cx="160" cy="95" r="46"/>
+              <circle class="ring" cx="160" cy="95" r="33"/>
+              <circle class="ring" cx="160" cy="95" r="20"/>
+              <circle class="core" cx="160" cy="95" r="5"/>
+            </g>
+            <g id="stage-scanned" style="display:none">
+              <circle class="ring" cx="160" cy="95" r="72"/>
+              <circle class="ring" cx="160" cy="95" r="59"/>
+              <circle class="ring" cx="160" cy="95" r="46"/>
+              <circle class="ring" cx="160" cy="95" r="33"/>
+              <circle class="ring" cx="160" cy="95" r="20"/>
+              <circle class="core" cx="160" cy="95" r="5"/>
+              <line class="slice" x1="70" y1="38" x2="250" y2="38"/>
+              <line class="slice" x1="70" y1="76" x2="250" y2="76"/>
+              <line class="slice" x1="70" y1="114" x2="250" y2="114"/>
+              <line class="slice" x1="70" y1="152" x2="250" y2="152"/>
+            </g>
+            <g id="stage-flat" style="display:none">
+              <rect class="sheet" x="20" y="55" width="280" height="80"/>
+              <line class="colrule" x1="33" y1="55" x2="33" y2="135"/>
+              <line class="colrule" x1="45" y1="55" x2="45" y2="135"/>
+              <line class="colrule" x1="58" y1="55" x2="58" y2="135"/>
+              <line class="colrule" x1="71" y1="55" x2="71" y2="135"/>
+              <line class="colrule" x1="84" y1="55" x2="84" y2="135"/>
+              <line class="colrule" x1="96" y1="55" x2="96" y2="135"/>
+              <line class="colrule" x1="109" y1="55" x2="109" y2="135"/>
+              <line class="colrule" x1="122" y1="55" x2="122" y2="135"/>
+              <line class="colrule" x1="135" y1="55" x2="135" y2="135"/>
+              <line class="colrule" x1="147" y1="55" x2="147" y2="135"/>
+              <line class="colrule" x1="160" y1="55" x2="160" y2="135"/>
+              <line class="colrule" x1="173" y1="55" x2="173" y2="135"/>
+              <line class="colrule" x1="186" y1="55" x2="186" y2="135"/>
+              <line class="colrule" x1="198" y1="55" x2="198" y2="135"/>
+              <line class="colrule" x1="211" y1="55" x2="211" y2="135"/>
+              <line class="colrule" x1="224" y1="55" x2="224" y2="135"/>
+              <line class="colrule" x1="237" y1="55" x2="237" y2="135"/>
+              <line class="colrule" x1="249" y1="55" x2="249" y2="135"/>
+              <line class="colrule" x1="262" y1="55" x2="262" y2="135"/>
+              <line class="colrule" x1="275" y1="55" x2="275" y2="135"/>
+              <line class="colrule" x1="288" y1="55" x2="288" y2="135"/>
+            </g>
+            <g id="stage-read" style="display:none">
+              <rect class="sheet" x="20" y="55" width="280" height="80"/>
+              <line class="colrule" x1="33" y1="55" x2="33" y2="135"/>
+              <line class="colrule" x1="45" y1="55" x2="45" y2="135"/>
+              <line class="colrule" x1="58" y1="55" x2="58" y2="135"/>
+              <line class="colrule" x1="71" y1="55" x2="71" y2="135"/>
+              <line class="colrule" x1="84" y1="55" x2="84" y2="135"/>
+              <line class="colrule" x1="96" y1="55" x2="96" y2="135"/>
+              <line class="colrule" x1="109" y1="55" x2="109" y2="135"/>
+              <line class="colrule" x1="122" y1="55" x2="122" y2="135"/>
+              <line class="colrule" x1="135" y1="55" x2="135" y2="135"/>
+              <line class="colrule" x1="147" y1="55" x2="147" y2="135"/>
+              <line class="colrule" x1="160" y1="55" x2="160" y2="135"/>
+              <line class="colrule" x1="173" y1="55" x2="173" y2="135"/>
+              <line class="colrule" x1="186" y1="55" x2="186" y2="135"/>
+              <line class="colrule" x1="198" y1="55" x2="198" y2="135"/>
+              <line class="colrule" x1="211" y1="55" x2="211" y2="135"/>
+              <line class="colrule" x1="224" y1="55" x2="224" y2="135"/>
+              <line class="colrule" x1="237" y1="55" x2="237" y2="135"/>
+              <line class="colrule" x1="249" y1="55" x2="249" y2="135"/>
+              <line class="colrule" x1="262" y1="55" x2="262" y2="135"/>
+              <line class="colrule" x1="275" y1="55" x2="275" y2="135"/>
+              <line class="colrule" x1="288" y1="55" x2="288" y2="135"/>
+              <line class="inkline" x1="23" y1="68" x2="30" y2="68"/>
+              <line class="inkline" x1="23" y1="80" x2="29" y2="80"/>
+              <line class="inkline" x1="36" y1="68" x2="42" y2="68"/>
+              <line class="inkline hot" x1="61" y1="74" x2="68" y2="74"/>
+              <line class="inkline" x1="74" y1="86" x2="81" y2="86"/>
+              <line class="inkline" x1="99" y1="68" x2="106" y2="68"/>
+              <line class="inkline hot" x1="125" y1="92" x2="132" y2="92"/>
+              <line class="inkline" x1="150" y1="74" x2="157" y2="74"/>
+              <line class="inkline" x1="189" y1="80" x2="195" y2="80"/>
+              <line class="inkline hot" x1="227" y1="68" x2="234" y2="68"/>
+              <line class="inkline" x1="252" y1="92" x2="259" y2="92"/>
+              <line class="inkline" x1="278" y1="80" x2="285" y2="80"/>
+              <line class="inkline" x1="291" y1="68" x2="297" y2="68"/>
+            </g>
+          </svg>
+          <div class="stagebtns" role="group" aria-label="choose a stage of the unwrapping">
+            <button type="button" data-stage="stage-sealed" data-note="The roll as it survives: a compact inner core about 8 cm tall. The outer layers are gone, taken by earlier attempts to open it by hand in the nineteenth century, in 1969 and in the 1980s." aria-pressed="true">01 SEALED</button>
+            <button type="button" data-stage="stage-scanned" data-note="High-resolution phase-contrast X-ray microtomography on the BM18 beamline at the European Synchrotron Radiation Facility in Grenoble. The instrument resolves the wafer-thin, densely packed layers inside the roll." aria-pressed="false">02 SCANNED</button>
+            <button type="button" data-stage="stage-flat" data-note="The wound sheet is reconstructed inside the scan volume, then flattened into a readable surface: roughly 1.4 metres of papyrus, the lower parts of some twenty-two columns. Nothing physical has moved." aria-pressed="false">03 FLATTENED</button>
+            <button type="button" data-stage="stage-read" data-note="Machine-learning models bring out ink almost indistinguishable from the carbonized papyrus beneath it. Papyrologists then examine and transcribe every reading. The model finds the signal. A person does the reading." aria-pressed="false">04 READ</button>
+          </div>
+          <p class="diagram-note" id="stage-note">The roll as it survives: a compact inner core about 8 cm tall. The outer layers are gone, taken by earlier attempts to open it by hand in the nineteenth century, in 1969 and in the 1980s.</p>
+          <p class="diagram-note">Stages and figures from the announcement and the preprint; see sources 1 and 3. The drawing is a schematic, not scan data.</p>
+        </div>
+
+        <p>The reading has a human scene inside it. Federica Nicolardi, the papyrologist at the University of Naples Federico II who leads the papyrology team, first received data for part of this scroll during the holidays. Ten columns, extremely well readable. She called it her Christmas present. Later the full length arrived, and Giorgio Angelotti, the project and technical lead, told her: you know, this is it. There is nothing else. Nothing else meant the whole surviving roll, end to end, on a screen, with the object itself untouched in Naples.<sup><a href="#s2">2</a></sup></p>
+
+        <p>What the columns hold is a philosophical treatise on ethics. The evidence points to a Stoic work, dated by its language and themes to the second century BC: human nature, impulse, and the moral progress of human beings. Its final preserved column names Aristocreon, nephew and disciple of Chrysippus, the Stoic whose own books are almost entirely lost. The readings are fragmentary, with gaps where the surface is gone. Three passages, in the team's translation, show what fragmentary still means in practice.<sup><a href="#s1">1</a></sup></p>
+
+        <ol class="readings">
+          <li><b>Stay inside your own nature.</b>
+            <blockquote>&ldquo;...we will inquire into something, but we will not grasp it, if in some way we depart from ourselves and from our own nature...&rdquo;</blockquote>
+            A text about not departing from yourself, recovered by a method whose first rule is to leave the object exactly as it is. The rhyme is in the material, not imposed on it.</li>
+          <li><b>Effort, then wisdom.</b>
+            <blockquote>&ldquo;Having... strained ourselves to the utmost through research and learning... possessing the same practical wisdom...&rdquo;</blockquote>
+            Research and learning, strained to the utmost, ending in practical wisdom held in common. As a description of the project that recovered it (a global open competition, its winners recruited onto the team), it is almost too neat. It is also what the Greek says.</li>
+          <li><b>Goods, weighed against evils.</b>
+            <blockquote>&ldquo;...such being the goods for us, even from the opposite evils there will be neither anything good, let alone beautiful, nor anything bad, let alone ugly, nor happiness...&rdquo;</blockquote>
+            The sentence arrives broken and still argues. Two thousand years of damage took the surface in places. It did not take the reasoning.</li>
+        </ol>
+
+        <p>The same announcement carried its own check. In a second scroll, PHerc. Paris 4, a higher-resolution scan makes the ink directly visible in the three-dimensional data for the first time, and that ink, segmented in 3D and projected onto the unwrapped page, matches the text read in the 2023 Grand Prize one to one. A reading confirmed by better data, from inside the object, without opening that scroll either. In a third, PHerc. 139, the title and author attribution were recovered from the closed roll: Philodemus, <i>On Gods</i>, Book 8. A library card, read through the cover.<sup><a href="#s1">1</a></sup><sup><a href="#s3">3</a></sup></p>
+
+        <p>None of it is locked up. The tomographic data, the reconstructed surfaces and the transcriptions are released under a Creative Commons licence, and the code is public. Anyone can check the work, or apply it to the scrolls that remain. That openness has a history: Brent Seales pioneered virtual unwrapping at the University of Kentucky (a charred scroll from En-Gedi, read the same way in 2015), then co-founded the Vesuvius Challenge in 2023 with Nat Friedman and Daniel Gross and handed the problem to the world. Most of the research team first arrived as contestants. They won prizes, then joined the team, then read a whole scroll.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></p>
+
+        <p>Inventory what now exists. One blackened core, 8 centimetres tall, still sealed. One surface, 1.4 metres long, that exists only as data. Twenty-two columns, lower parts only, in Greek, with gaps. One name, Aristocreon, in the last column. One title, in another scroll, naming a book of Philodemus. And a method, checked against itself, built to scale to the hundreds of rolls still waiting in Naples and in the unexcavated parts of the villa.</p>
+
+        <p>The library waited nineteen centuries for a way to be read that did not cost it the book. The wait is over for one scroll. The rest are still in the dark, intact, which is now the point: intact is no longer the same as unread.</p>
+
+        <p class="more"><a class="chip" href="../index.html">&larr; home</a><a class="chip" href="week-07.html">&larr; week 07</a><a class="chip" href="../experiments/">all weekly pieces</a></p>
+      </div>
+
+      <aside class="nb-notes" aria-label="field notes">
+        <h2>FIELD NOTES</h2>
+        <dl>
+          <dt>OBJECT</dt>
+          <dd>PHerc. 1667, known to the Vesuvius Challenge community as Scroll 4</dd>
+          <dt>PLACE</dt>
+          <dd>Villa of the Papyri, Herculaneum. Held by the National Library of Naples, Vittorio Emanuele III.</dd>
+          <dt>SEALED</dt>
+          <dd>AD 79, in the eruption of Vesuvius. The Herculaneum papyri are the only large-scale library to survive from classical antiquity.</dd>
+          <dt>SURVIVES</dt>
+          <dd>An inner core about 8 cm tall, of an original height of 19 to 24 cm. Outer layers lost to opening attempts in the 19th century, 1969 and the 1980s.</dd>
+          <dt>READ</dt>
+          <dd>Announced June 25, 2026. First Herculaneum papyrus digitally unrolled and read in full, end to end.</dd>
+          <dt>SURFACE</dt>
+          <dd>Roughly 1.4 metres of papyrus; the lower parts of some 22 columns of Greek.</dd>
+          <dt>METHOD</dt>
+          <dd>Phase-contrast X-ray microtomography, BM18 beamline, ESRF, Grenoble. Surface reconstruction and flattening. Machine-learning ink detection. Transcription and review by papyrologists.</dd>
+          <dt>TEXT</dt>
+          <dd>A philosophical treatise on ethics in a Stoic context, dated to the 2nd century BC. Human nature, impulse, moral progress.</dd>
+          <dt>NAME IN THE TEXT</dt>
+          <dd>Aristocreon, nephew and disciple of Chrysippus, named in the final preserved column.</dd>
+          <dt>ALSO ANNOUNCED</dt>
+          <dd>PHerc. Paris 4: ink directly visible in 3D, matching the 2023 reading one to one. PHerc. 139: title and author recovered, Philodemus, On Gods, Book 8.</dd>
+          <dt>OPEN</dt>
+          <dd>Data under a Creative Commons licence at scrollprize.org/data. Code on GitHub. Preprint on arXiv, 2606.29085.</dd>
+          <dt>REMAINING</dt>
+          <dd>Hundreds of scrolls, still sealed.</dd>
+        </dl>
+      </aside>
+    </div>
+
+    <section class="sources">
+      <h2>SOURCES</h2>
+      <ol>
+        <li id="s1"><a href="https://scrollprize.org/firstscroll">Vesuvius Challenge</a>, "An entire Herculaneum scroll has been read for the first time," June 25, 2026: the complete reading of PHerc. 1667, the surviving core and the earlier opening attempts, the 1.4 metres and twenty-two columns, the Stoic treatise and Aristocreon, the three translated passages quoted here, the Paris 4 ink confirmation, the Philodemus title in PHerc. 139, the ESRF scans, and the open data and code.</li>
+        <li id="s2"><a href="https://gizmodo.com/a-volcano-toasted-this-scroll-2000-years-ago-heres-how-scientists-read-it-without-ever-opening-it-2000803940">Gizmodo</a>, 2026 Science Fair, September 22, 2026: Seales and the road from manuscript digitization to virtual unwrapping, the En-Gedi scroll in 2015, the founding of the Challenge in 2023, Nicolardi's Christmas present and the full-length image, the team recruited from contestants, and the hundreds of scrolls remaining.</li>
+        <li id="s3"><a href="https://arxiv.org/abs/2606.29085">Angelotti et al.</a>, "Complete virtual unwrapping and reading of a rolled Herculaneum papyrus," arXiv:2606.29085, submitted June 27, 2026: the coverage and papyrological-review criteria, the BM18 phase-contrast scans, the 3D ink segmentation in Paris 4 as independent validation, and the scalable framework claim.</li>
+      </ol>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer wrap">
+  <div class="footer-top">
+    <a class="brand" href="../index.html" aria-label="nim, home"><svg class="mark" viewBox="40 20 160 90" aria-hidden="true"><g style="fill:var(--ink)"><rect x="90" y="20" width="60" height="10"/><rect x="70" y="30" width="100" height="10"/><rect x="60" y="40" width="120" height="10"/><rect x="50" y="50" width="140" height="10"/><rect x="40" y="60" width="160" height="10"/><rect x="40" y="70" width="160" height="10"/><rect x="40" y="80" width="160" height="10"/><rect x="50" y="90" width="140" height="10"/><rect x="70" y="100" width="100" height="10"/></g><g style="fill:var(--muted)"><rect x="50" y="90" width="140" height="10"/><rect x="70" y="100" width="100" height="10"/></g></svg><span class="wordmark">nim</span></a>
+    <p>The work is the argument.</p>
+    <a href="../feed.xml">feed.xml <span aria-hidden="true">&#8599;</span></a>
+  </div>
+  <div class="footer-bottom"><span>&copy; 2026 nim.aesv.io</span><span>static html/css/js &middot; no cookies, no trackers</span><div><a href="../feed.xml">RSS</a><a href="../colophon.html">Colophon</a><a href="https://github.com/4esv/nim-muse-page">Repo</a></div></div>
+</footer>
+<script>
+  (function () {
+    var note = document.getElementById('stage-note');
+    var btns = document.querySelectorAll('.stagebtns button');
+    var stages = ['stage-sealed', 'stage-scanned', 'stage-flat', 'stage-read'];
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        stages.forEach(function (id) {
+          var g = document.getElementById(id);
+          if (g) { g.style.display = 'none'; }
+        });
+        b.setAttribute('aria-pressed', 'true');
+        var g = document.getElementById(b.getAttribute('data-stage'));
+        if (g) { g.style.display = ''; }
+        note.textContent = b.getAttribute('data-note');
+      });
+    });
+  })();
+</script>
+<script src="../nim.js"></script>
+</body>
+</html>

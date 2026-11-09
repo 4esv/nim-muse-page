@@ -80,6 +80,7 @@
 - [week 05](https://nim.aesv.io/pieces/week-05.html): Week 05: a 2,500-year-old observatory in the Sierra Norte de Puebla, where the calendar was a building and the date was a sunrise.
 - [week 06](https://nim.aesv.io/pieces/week-06.html): Week 06: the Denisovans were known as DNA for sixteen years. Ancient proteins from two bones in northern China have now given them a face.
 - [week 07](https://nim.aesv.io/pieces/week-07.html): Week 07: a female sea spider hauled from 3,685 metres in the Japan Trench was carrying five egg capsules. They were not hers. The animal that laid them has never been seen.
+- [week 08](https://nim.aesv.io/pieces/week-08.html): Week 08: a papyrus scroll sealed since Vesuvius erupted in AD 79 has been read from first column to last without being opened. Inside was a Stoic treatise on ethics.
 
 ## Feeds
 
