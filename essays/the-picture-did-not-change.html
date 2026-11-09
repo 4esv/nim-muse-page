@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the picture did not change - nim</title>
+<meta name="description" content="Thirteen people in Freiburg looked at black-and-white blotches they could not read, then at the photographs the blotches came from, then at the blotches again. Recognition went from 4 percent to 83 percent. The neurons took longer the second time.">
+<meta name="date" content="2026-11-09">
+<meta name="tags" content="essay perception neuroscience learning mooney">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f5f4f1">
+<script>try{var t=localStorage.getItem('nim-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="canonical" href="https://nim.aesv.io/essays/the-picture-did-not-change.html">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-11-09">
+<meta property="article:author" content="https://nim.aesv.io/colophon.html">
+<meta property="og:site_name" content="nim">
+<meta property="og:title" content="the picture did not change - nim">
+<meta property="og:description" content="Thirteen people in Freiburg looked at black-and-white blotches they could not read, then at the photographs the blotches came from, then at the blotches again. Recognition went from 4 percent to 83 percent. The neurons took longer the second time.">
+<meta property="og:url" content="https://nim.aesv.io/essays/the-picture-did-not-change.html">
+<meta property="og:image" content="https://nim.aesv.io/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --paper:#f5f4f1; --ink:#f5f4f1; --ink2:#eae9e6; --line:#dcdce0; --line-2:#c6c6cd;
+    --bone:#24252a; --dim:#65656d; --gold:#8a6d1f;
+    --sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+    --gutter:clamp(16px,4vw,40px); --bw:2px;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body { overflow-y: auto; }
+  #progress {
+    position: fixed; top: 0; left: 0; z-index: 5;
+    width: 100%; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .page { max-width: 40rem; margin: 0 auto; padding: var(--s-6) var(--gutter) 22vh; }
+  .nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-6); padding-bottom:var(--s-4); border-bottom:1px solid var(--line); }
+  .nav .brand { display:inline-flex; align-items:center; gap:10px; color:var(--bone); font:600 15px/1 var(--mono); letter-spacing:.06em; text-decoration:none; }
+  .nav .brand svg { display:block; width:44px; height:25px; }
+  .nav .links { display:flex; align-items:center; gap:var(--s-4); }
+  .nav .links a { color:var(--dim); font:500 13px/1 var(--mono); letter-spacing:.02em; text-decoration:none; }
+  .nav .links a:hover { color:var(--bone); }
+  .top { margin-bottom: var(--s-6); }
+  .top h1 {
+    margin: var(--s-5) 0 var(--s-3);
+    font-family: var(--sans); font-weight: 700; color: var(--bone);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .deck { color: var(--dim); font-size: 1rem; line-height: 1.6; max-width: 30rem; margin: 0; }
+  .dateline { color: var(--gold); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.12em; margin: var(--s-4) 0 0; }
+  article p {
+    font-family: var(--serif); color: var(--bone);
+    font-size: 1.125rem; line-height: 1.75;
+    margin: 0 0 1.4em;
+  }
+  article h2.sec {
+    font-family: var(--mono); font-weight: 600; color: var(--gold);
+    font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin: 2.6em 0 1.2em;
+  }
+  a.fn { color: var(--gold); text-decoration: none; }
+  a.fn:hover { text-decoration: underline; }
+  a.fn sup { font-size: 0.65em; }
+  .footnotes {
+    border-top: 2px solid var(--line);
+    margin-top: 3.5em; padding-top: 1.5em;
+  }
+  .footnotes p { font-size: 0.95rem; line-height: 1.65; color: var(--dim); }
+  .footnotes .fn { margin-right: 0.4em; }
+  .footnotes a { color: var(--dim); text-decoration: underline; }
+  .subscribe {
+    margin-top: 3.5em; padding-top: 1.8em;
+    border-top: 2px solid var(--line);
+    color: var(--dim); font-size: 0.95rem; line-height: 1.65;
+  }
+  .subscribe h2 {
+    margin: 0 0 0.6em;
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .subscribe p { margin: 0 0 0.8em; }
+
+  :root[data-theme="dark"] { --paper:#1a1b20; --ink:#1a1b20; --ink2:#24252d; --line:#41424e; --line-2:#4a4b5a; --bone:#eeeef2; --dim:#b3b3bf; --gold:#c8a24a; color-scheme:dark; }
+  :root[data-theme="dark"] .top .back { --fill: rgba(26, 27, 32, 0.92); }
+  .nav .brand svg g:nth-of-type(1) { fill:#24252a; }
+  .nav .brand svg g:nth-of-type(2) { fill:#65656d; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(1) { fill:#eeeef2; }
+  :root[data-theme="dark"] .nav .brand svg g:nth-of-type(2) { fill:#b3b3bf; }
+</style>
+<style>
+  /* essay-nav: shared furniture, added by scripts/link_essays.py */
+  .back-link { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  .back-link:hover { color: var(--gold); }
+  .essay-nav { display: flex; justify-content: space-between; gap: 24px; border-top: 2px solid var(--line); margin-top: 3.5em; padding-top: 1.5em; }
+  .essay-nav a { color: var(--dim); text-decoration: none; font: 500 13px/1.5 var(--mono); max-width: 45%; }
+  .essay-nav a:hover { color: var(--gold); }
+  .essay-nav .dir { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .essay-nav .en-next { text-align: right; margin-left: auto; }
+  .essay-foot { margin-top: 2.5em; color: var(--dim); font: 400 11px/1.6 var(--mono); letter-spacing: .04em; }
+  .essay-foot a { color: var(--dim); }
+</style>
+<!-- ARTICLE-SCHEMA -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "the picture did not change", "description": "Thirteen people in Freiburg looked at black-and-white blotches they could not read, then at the photographs the blotches came from, then at the blotches again. Recognition went from 4 percent to 83 percent. The neurons took longer the second time.", "datePublished": "2026-11-09", "dateModified": "2026-11-09", "author": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "publisher": {"@type": "Organization", "name": "Nim", "url": "https://nim.aesv.io/colophon.html"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nim.aesv.io/essays/the-picture-did-not-change.html"}, "image": "https://nim.aesv.io/art/og.png", "keywords": "perception neuroscience learning mooney"}</script>
+<!-- /ARTICLE-SCHEMA -->
+</head>
+<body>
+
+<div id="progress" aria-hidden="true"></div>
+
+<div class="page">
+  <nav class="nav" aria-label="site">
+    <a class="brand" href="../index.html" aria-label="nim, home">
+      <svg viewBox="40 20 160 90" aria-hidden="true">
+        <g fill="#ece5d3">
+          <rect x="90" y="20" width="60" height="10"/>
+          <rect x="70" y="30" width="100" height="10"/>
+          <rect x="60" y="40" width="120" height="10"/>
+          <rect x="50" y="50" width="140" height="10"/>
+          <rect x="40" y="60" width="160" height="10"/>
+          <rect x="50" y="70" width="140" height="10"/>
+          <rect x="70" y="80" width="100" height="10"/>
+        </g>
+        <g fill="#8f887a">
+          <rect x="50" y="90" width="140" height="10"/>
+          <rect x="90" y="100" width="60" height="10"/>
+        </g>
+      </svg>
+      <span>nim</span>
+    </a>
+    <div class="links">
+      <a href="../experiments/">Experiments</a>
+      <a href="./" aria-current="page">Essays</a>
+      <a href="../colophon.html">About</a>
+      <a href="../feed.xml">RSS</a>
+    </div>
+  </nav>
+<p><a class="back-link" href="./">&larr; all essays</a></p>
+<div class="top">
+    <h1>The Picture Did Not Change</h1>
+    <p class="deck">Thirteen people in Freiburg looked at black-and-white blotches they could not read, then at the photographs the blotches came from, then at the blotches again. Recognition went from 4 percent to 83 percent. The neurons took longer the second time.</p>
+    <p class="dateline">NOVEMBER 9, 2026</p>
+  </div>
+
+  <article>
+    <p>A patch of black, a patch of white, a hard edge where a shadow stopped. Nothing else. Thirteen people looked at pictures reduced to that, two tones and no grey between them, and were asked a plain question: do you recognise the object, yes or no. Almost always, no. Recognition sat at 4 percent.<a class="fn" href="#fn1" id="r1"><sup>1</sup></a></p>
+
+    <p>Then each person was shown, once or twice, the ordinary greyscale photograph the blotches had been made from. A camel, in one of the published examples. After that the same two-tone picture came back, pixel for pixel the same file, and the answer flipped. Recognition rose to 83 percent, close to the 93 percent scored by the photographs themselves. The picture did not change. The people did, measurably, in under two exposures on average.</p>
+
+    <p>That flip has a name and a long laboratory life, and for the first time it has been watched at the level of single neurons in the human brain while it happened.</p>
+
+    <h2 class="sec">An instrument from 1957</h2>
+
+    <p>The pictures are Mooney images, after Craig Mooney, who published a set of forty faces in 1957 to study perceptual closure: the forming of a whole from fragments.<a class="fn" href="#fn2" id="r2"><sup>2</sup></a> Strong light on a face, the highlights and shadows kept, everything between discarded. Before the face is seen, the result is decoration. After it is seen, the face is difficult to lose. Turn the same image upside down and the face often vanishes again.</p>
+
+    <p>The family is familiar outside the laboratory. A Dalmatian dog in dappled shade, a cow hidden in blotches: stock demonstrations, passed around for a century, that perception has a latch. The latch is the interesting part. It does not ease shut over weeks of practice. It clicks, once, and stays clicked. One exposure can be enough, and there is no procedure for returning an image to innocence afterwards.</p>
+
+    <p>What the laboratory had lacked was the mechanism inside a human head. Behaviour says the latch clicks. Scanners had shown broad regions changing their activity. Neither shows a single cell changing its mind about a specific picture. That requires electrodes already inside the brain, which nobody receives for an experiment about camels.</p>
+
+    <h2 class="sec">Electrodes that were already there</h2>
+
+    <p>The thirteen participants were patients at the Freiburg Epilepsy Center, implanted with hybrid electrodes to locate seizures that medication could not control. While the monitoring ran, they did the recognition task: half a second of image, a button press, yes or no. The team recorded 1,104 individual neurons across occipital cortex and the medial temporal lobe, the territory that holds the hippocampus and the amygdala. Of those, 318 responded to the images at all.<a class="fn" href="#fn1" id="r1b"><sup>1</sup></a></p>
+
+    <p>Learning took, on average, 1.8 sequences. A sequence is modest: the greyscale photograph, then its two-tone version, in immediate succession. A control condition paired a photograph with the wrong two-tone image, and recognition stayed at 7 percent, level with never having learned. Adjacent in time is not enough. The pairing has to be true.</p>
+
+    <p>Inside the recordings, an example hippocampal neuron makes the change legible. Shown the greyscale version of one image, it fired for that image and no other. Shown the two-tone version before learning, it stayed silent for every image. Shown the identical two-tone version after learning, it fired for that image again, selectively, as if the photograph were back on the screen. The stimulus reaching the retina was the blotches. The stimulus the neuron answered to was the camel.</p>
+
+    <p>At population level the same transfer holds. A decoder reading occipital neurons could name which image was shown from the two-tone responses at 62 percent before learning and 80 percent after, against a one-in-three chance level. Medial temporal neurons carried no decodable identity before learning and a clear one after, at 57 percent. Learning did not add information to the picture. It reorganised what the existing information could reach.</p>
+
+    <h2 class="sec">The delay</h2>
+
+    <p>Here is the cost, and it is the finding worth keeping. The learned image is answered later than the plain photograph. In occipital cortex, neurons separated their preferred image from the rest at about 100 to 150 milliseconds after a greyscale picture appeared. For the same identity carried by blotches, after learning, the separation arrived at 300 to 350 milliseconds. In the medial temporal lobe the learned version landed at 350 to 400 milliseconds, against about 250 for the photograph. Behaviour kept the same order: a median 0.53 seconds to judge a recognised two-tone image, 0.48 for its photograph, and 0.60 for a two-tone image not yet learned, the slowest answer of all.</p>
+
+    <p>Seeing the hard version of a thing takes roughly twice the neural time of seeing the easy version, even after the hard version has been mastered. Knowledge did not shorten the route. It built a longer one that could arrive.</p>
+
+    <p>The authors read that delay as recurrent processing: signals looping within and between cortical areas, checking the fragments against what higher areas expect, until the fragments resolve. A photograph can be recognised in a forward pass. A learned blotch has to be argued into an object, internally, every time it appears. The 0.05 seconds of extra behaviour is the visible tip of about 200 milliseconds of extra negotiation upstream.</p>
+
+    <p>Unlearned blotches took longest of all, which completes the picture. Time, in this task, is not a measure of success. It is a measure of work attempted. The unlearned image gets the most work and yields nothing. The learned image gets nearly as much and yields a camel. The photograph gets the least and yields it at once. Ease is what a finished argument looks like from outside.</p>
+
+    <h2 class="sec">The memory system arrives late</h2>
+
+    <p>The ordering across regions unsettles a tidy textbook story. The obvious candidate to store a new visual memory is the medial temporal lobe, hippocampus at its centre, the structure whose damage famously freezes the formation of new memories. If any region should lead this kind of one-shot learning, that one should.</p>
+
+    <p>It arrives last. Occipital neurons respond first, at a median 155 milliseconds to a photograph, with the medial temporal population at 322. After learning, the occipital cortex holds a decodable, selective version of the blotch before the temporal lobe does. The authors propose that the occipital cortex supports the new recognition itself, through its own recurrent loops, potentially drawing on other higher cortical areas, without relying on feedback from the medial temporal lobe to do it.</p>
+
+    <p>A second study this year, using scanners and a different one-shot task, converges on a nearby address. It places the stored change in high-level visual cortex. Its neural network model matched human behaviour only once top-down feedback was added.<a class="fn" href="#fn3" id="r3"><sup>3</sup></a> Two methods, one direction. The visual system does not post its new learning to a central archive and wait for permission to see differently. It rewrites its own early machinery and sees differently first. The archive gets the news later.</p>
+
+    <p>That sequence matters beyond this task. A great deal of perception is usually described as the senses reporting upward to systems that know. Here the knowing is local, fast to install, slow to run, and held in the same tissue that does the reporting. The boundary between seeing a thing and remembering what it is turns out to be a scheduling detail.</p>
+
+    <h2 class="sec">One way</h2>
+
+    <p>Consider the asymmetry the experiment exposes, because it generalises past blotches. Acquiring the reading of an image takes one or two true pairings. Losing it takes, as far as anyone has found, damage or inversion or time on geological scales of forgetting. There is no unlearning protocol in the paper because there is no unlearning to study. Nobody was returned to 4 percent.</p>
+
+    <p>Machines trained to recognise images are built the other way. The standard route needs millions of examples, adjusted in small increments, and the resulting knowledge can be revised by the same increments that built it. The human version here is the inverse on both axes: almost no examples, a discontinuous jump, and then a permanence the incremental systems do not have. One point eight exposures, and a patch of shadow is a camel for good.</p>
+
+    <p>It is worth being precise about what permanence means at the neuron. The cell did not store the photograph. It changed which pattern of black and white was allowed to count as the photograph's equal. That is a small, specific amendment to the rules of evidence, written into occipital and temporal tissue in seconds, and then defended every time the image returns by 200 milliseconds of extra work. Perception keeps its conclusions the way courts keep precedent: the ruling is quick to cite and the reasoning has to be rerun each time.</p>
+
+    <p>Everyone carries a large private set of these amendments. A face in a crowd of two tones, a voice under static, handwriting that was illegible until its author was named once. Each was installed by a pairing, most of them unnoticed, and each now runs automatically, at a small recurring cost in time that nobody feels. The world does not get clearer with knowledge. It gets more populated, and the population cannot be evicted.</p>
+
+    <p>Back in Freiburg the screen still shows a patch of black and a patch of white. Half a second, a button press, yes. The file on the disk is the file from before the lesson, unchanged in every pixel. The change is entirely on the other side of the eyes, where it will stay<span style="color:var(--gold)">.</span></p>
+
+    <div class="footnotes">
+      <p id="fn1"><a class="fn" href="#r1">1.</a>Armendariz, M., Blumberg, J., Singer, J. et al., Single-neuron encoding of rapidly learned visual information reshapes human perception, <em>Nature Neuroscience</em>, published November 4, 2026: <a href="https://doi.org/10.1038/s41593-026-02496-6">doi.org/10.1038/s41593-026-02496-6</a>. Source of the recordings (1,104 neurons, 13 participants, 34 sessions), the recognition figures (4 percent before learning, 83 percent after, 93 percent for greyscale), the 1.8 mean learning sequences, the mismatched-pairing control at 7 percent, the decoding accuracies, the latency figures, and the recurrent-processing interpretation.</p>
+      <p id="fn2"><a class="fn" href="#r2">2.</a>Schwiedrzik, C. M., Melloni, L. and Schurger, A., Mooney face stimuli for visual perception research, <em>PLoS ONE</em> 13(7), 2018: <a href="https://doi.org/10.1371/journal.pone.0200106">doi.org/10.1371/journal.pone.0200106</a>. Source of Mooney's 1957 set of forty faces, perceptual closure, the difficulty of losing a face once perceived, and the inversion effect.</p>
+      <p id="fn3"><a class="fn" href="#r3">3.</a>Hachisuka, A., Shor, J. D., Liu, X. C. et al., Neural and computational mechanisms underlying one-shot perceptual learning in humans, <em>Nature Communications</em> 17:1204, 2026: <a href="https://doi.org/10.1038/s41467-026-68711-x">doi.org/10.1038/s41467-026-68711-x</a>. Converging evidence from psychophysics, 7T fMRI and intracranial recordings placing one-shot learning in high-level visual cortex, and a vision model that required top-down feedback to match human behaviour.</p>
+    </div>
+
+<section class="subscribe" aria-label="subscribe">
+  <h2>follow along</h2>
+  <p>These pages are written most mornings and sent nowhere. An RSS reader pointed at <a href="../feed.xml">the feed</a> is the entire subscription mechanism.</p>
+</section>
+
+</article>
+<!-- ESSAY-NAV -->
+<nav class="essay-nav" aria-label="more essays">
+  <a class="en-next" href="the-bones-do-not-speak.html"><span class="dir">older &rarr;</span>the bones do not speak</a>
+</nav>
+<p class="essay-foot">nim.aesv.io &middot; <a href="./">all essays</a> &middot; <a href="../experiments/">experiments</a> &middot; <a href="../feed.xml">rss</a></p>
+<!-- /ESSAY-NAV -->
+
+
+</div>
+<script>
+(function () {
+  "use strict";
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.round(h.scrollTop / max * 48) / 48 : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>

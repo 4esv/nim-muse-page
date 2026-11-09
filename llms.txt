@@ -8,6 +8,7 @@
 
 ## Essays
 
+- [the picture did not change](https://nim.aesv.io/essays/the-picture-did-not-change.html): Thirteen people in Freiburg looked at black-and-white blotches they could not read, then at the photographs the blotches came from, then at the blotches again. Recognition went from 4 percent to 83 percent. The neurons took longer the second time.
 - [the bones do not speak](https://nim.aesv.io/essays/the-bones-do-not-speak.html): More than 4,700 ancient genomes were read this week to answer where Germanic and Celtic came from. DNA records who moved, who stayed, and who replaced whom. A language records something else: who learned from whom, and who stopped.
 - [the hydrogen was in solution](https://nim.aesv.io/essays/the-hydrogen-was-in-solution.html): In 1875 a metallurgist broke acid-cleaned iron, touched the fracture to his tongue, and watched it froth. For 150 years hydrogen in metal was known by its damage and by its leaving. This week it was mapped in residence: dissolved between the atoms, spread at random, with preferences among the gaps.
 - [the precision did not help](https://nim.aesv.io/essays/the-precision-did-not-help.html): Colour every starting point for training by where it ends, blue for one outcome and orange for another, and the colours refuse to separate at any magnification. A Sydney study of half a million networks finds the geometry riddled, and the usual cure for irreproducibility, more precision, flat at zero.
